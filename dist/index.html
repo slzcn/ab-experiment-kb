@@ -164,41 +164,43 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .empty{text-align:center;color:var(--dim);padding:80px 20px}
   .empty .big{font-size:48px;margin-bottom:14px;opacity:.6}
   /* 阅读态 */
-  .reader{max-width:860px;margin:0 auto}
+  /* 阅读态：舒适阅读宽度、克制的头部、可呼吸的正文 */
+  .reader{max-width:720px;margin:0 auto;padding:0 4px}
   .rback{display:inline-flex;align-items:center;gap:7px;color:var(--sub);cursor:pointer;
-    font-size:13px;margin-bottom:18px;padding:7px 13px;border-radius:9px;background:var(--panel);transition:.15s}
+    font-size:13px;margin-bottom:22px;padding:7px 13px;border-radius:9px;background:var(--panel);transition:.15s}
   .rback:hover{color:var(--ink);background:var(--line)}
-  .rhead{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:24px}
+  .rhead{margin-bottom:28px}
   .rhead .ct-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;
     color:var(--brand2);background:rgba(224,99,46,.12);padding:3px 11px;border-radius:20px}
-  .rhead h1{font-size:27px;font-weight:800;margin:12px 0 14px;line-height:1.3}
-  .rhead .rmeta{display:flex;gap:16px;align-items:center;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
-  .srclink{display:inline-flex;align-items:center;gap:6px;color:#fff;
-    background:linear-gradient(135deg,var(--brand),var(--brand2));
-    padding:7px 15px;border-radius:9px;font-size:12.5px;font-weight:600;transition:.15s;
-    box-shadow:0 3px 12px rgba(224,99,46,.3)}
-  .srclink:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(224,99,46,.45)}
+  .rhead h1{font-size:30px;font-weight:800;margin:14px 0 16px;line-height:1.32;letter-spacing:-.01em;color:var(--ink)}
+  .rhead .rmeta{display:flex;gap:14px;align-items:center;font-size:12.5px;color:var(--dim);
+    flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--line)}
   .copylink{display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none;
     color:var(--brand2);background:rgba(224,99,46,.1);border:1px solid rgba(224,99,46,.25);
-    padding:5px 12px;border-radius:9px;font-size:12px;font-weight:600;transition:.15s}
+    padding:4px 11px;border-radius:8px;font-size:12px;font-weight:600;transition:.15s}
   .copylink:hover{background:rgba(224,99,46,.18)}
   .copylink.copied{background:rgba(63,185,80,.14);border-color:rgba(63,185,80,.4);color:#2f9e44}
+  .rfoot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);
+    color:var(--dim);font-size:12.5px;text-align:center}
   /* markdown 正文 */
-  .md{font-size:15px;line-height:1.85;color:#3d3a34}
+  .md{font-size:16px;line-height:1.9;color:#3a3733}
   .md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;
-    margin:1.6em 0 .7em;scroll-margin-top:20px}
-  .md h1{font-size:23px;border-bottom:1px solid var(--line);padding-bottom:.35em}
-  .md h2{font-size:20px}
+    margin:1.9em 0 .7em;scroll-margin-top:20px;letter-spacing:-.005em}
+  .md h1{font-size:23px}
+  .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)}
   .md h3{font-size:17px}
   .md h4{font-size:15.5px;color:var(--sub)}
-  .md p{margin:.85em 0}
+  .md h2:first-child,.md h1:first-child{margin-top:0}
+  .md p{margin:1em 0}
   .md strong{color:var(--ink);font-weight:700}
   .md a{color:var(--accent);border-bottom:1px solid rgba(192,122,46,.4)}
-  .md ul,.md ol{margin:.7em 0;padding-left:1.6em}
-  .md li{margin:.35em 0}
-  .md img{max-width:100%;border-radius:10px;margin:14px 0;border:1px solid var(--line);display:block}
+  .md ul,.md ol{margin:.8em 0;padding-left:1.5em}
+  .md li{margin:.45em 0}
+  .md img{max-width:100%;border-radius:12px;margin:20px 0;border:1px solid var(--line);display:block;
+    box-shadow:0 4px 16px rgba(120,100,70,.1)}
   .md blockquote{border-left:3px solid var(--brand);background:var(--panel);
-    padding:10px 16px;margin:1em 0;border-radius:0 8px 8px 0;color:var(--sub);font-style:italic}
+    padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+  .md hr{border:none;border-top:1px solid var(--line);margin:2em 0}
   .md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.88em;
     font-family:"SF Mono",Menlo,Consolas,monospace;color:var(--brand2)}
   .md pre{background:#2c2a26;border:1px solid var(--line);border-radius:10px;
@@ -303,10 +305,15 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     .mmask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45}
     .mmask.on{display:block}
     /* 阅读态：小屏占满、内边距收紧 */
-    .reader{max-width:100%}
-    .rhead h1{font-size:21px}
-    .md{font-size:14.5px}
+    .reader{max-width:100%;padding:0}
+    .rhead{margin-bottom:22px}
+    .rhead h1{font-size:23px;margin:12px 0 14px;line-height:1.35}
+    .md{font-size:15.5px;line-height:1.85}
+    .md h2{font-size:18px}
+    .md h3{font-size:16px}
+    .md img{margin:16px 0;border-radius:10px}
     .md pre{font-size:12px}
+    .rfoot{margin-top:36px}
     .md table{font-size:12.5px}
     /* 编辑器：小屏全屏、编辑与预览上下堆叠 */
     .editor{width:100vw}
@@ -672,33 +679,27 @@ async function openDoc(id){
   const d=KB.docs.find(x=>x.id===id); if(!d)return;
   const c=catOf(d.cat);
   const v=$('#bodyView');
-  const md=await getMd(id);
-  let html=marked.parse(md||'');
-  const isVolc = /^https?:/.test(d.url||'') && (d.url||'').includes('volcengine.com');
-  const srcBtn = isVolc
-    ? `<a class="srclink" href="${d.url}" target="_blank" rel="noopener">🔗 查看火山引擎官方原文</a>`
-    : (/^https?:/.test(d.url||'')
-        ? `<a class="srclink" href="${d.url}" target="_blank" rel="noopener">🔗 查看来源链接</a>`
-        : `<span class="ct-tag">✍ 内部自有文章</span>`);
-  const srcFoot = isVolc
-    ? `来源：火山引擎 DataTester A/B testing 文档库　·　原文链接：<a href="${d.url}" target="_blank" style="color:var(--accent)">${d.url}</a>`
-    : `来源：营销增长中心内部沉淀${/^https?:/.test(d.url||'')?`　·　<a href="${d.url}" target="_blank" style="color:var(--accent)">${d.url}</a>`:''}`;
+  let md=await getMd(id);
+  // 去掉正文开头与标题重复的一级标题（页面头部已显示大标题）
+  md=(md||'').replace(/^\s*#\s+.*(?:\r?\n)+/, '');
+  let html=marked.parse(md);
+  const isInternal = d.internal || !/^https?:/.test(d.url||'');
+  const srcFoot = isInternal
+    ? '本文为营销增长中心内部沉淀'
+    : '内容整理自火山引擎 DataTester A/B testing 文档库';
   v.innerHTML=`<div class="reader">
     <div class="rback" id="rback">← 返回列表</div>
-    <div class="rhead">
+    <article class="rhead">
       <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
       <h1>${esc(d.title)}</h1>
       <div class="rmeta">
-        ${d.updated?`<span>🕐 ${isVolc?'官方最后更新':'更新于'} ${d.updated}</span>`:''}
+        ${d.updated?`<span>🕐 ${d.updated}</span>`:''}
         <span>📄 ${d.text.length.toLocaleString()} 字</span>
-        <span class="copylink" id="copyLink" data-id="${d.id}">🔗 复制本文链接</span>
-        ${srcBtn}
+        <span class="copylink" id="copyLink" data-id="${d.id}">🔗 复制链接</span>
       </div>
-    </div>
+    </article>
     <div class="md">${html}</div>
-    <div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px">
-      ${srcFoot}
-    </div>
+    <div class="rfoot">${srcFoot}</div>
   </div>`;
   v.scrollTop=0;
   try{ if(location.hash!=='#doc='+id) history.replaceState(null,'','#doc='+id); }catch(e){}
