@@ -169,6 +169,12 @@
   .ed-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(224,99,46,.35)}
   .ed-btn.ghost{background:var(--panel);color:var(--sub);box-shadow:none}
   .ed-btn.ghost:hover{color:var(--ink);background:var(--line);transform:none}
+  .ed-btn.ghost2{background:var(--panel);color:var(--sub);box-shadow:none;flex:0 0 auto;padding:11px 14px}
+  .ed-btn.ghost2:hover{color:var(--ink);background:var(--line);transform:none;box-shadow:none}
+  .ed-msg{font-size:12.5px;margin-top:10px;padding:9px 12px;border-radius:9px;display:none}
+  .ed-msg.ok{display:block;background:rgba(63,185,80,.12);color:#2f9e44;border:1px solid rgba(63,185,80,.3)}
+  .ed-msg.err{display:block;background:rgba(224,99,46,.1);color:var(--brand2);border:1px solid rgba(224,99,46,.3)}
+  .ed-msg.load{display:block;background:var(--panel);color:var(--sub)}
   .ed-hint{font-size:11.5px;color:var(--dim);line-height:1.6;margin-top:12px;
     background:var(--panel);padding:11px 13px;border-radius:9px}
   .ed-hint code{background:var(--bg2);padding:1px 6px;border-radius:5px;color:var(--brand2);font-size:11px}
@@ -241,11 +247,14 @@
       <label>正文（Markdown）</label>
       <textarea id="edMd" placeholder="# 标题&#10;&#10;正文用 Markdown 书写，支持 **加粗**、列表、表格、代码块…&#10;&#10;## 小节&#10;- 要点一&#10;- 要点二"></textarea>
       <div class="ed-actions">
-        <button class="ed-btn" id="edDownload">⬇ 导出 .md 文件（右侧实时预览）</button>
+        <button class="ed-btn" id="edSubmit" style="display:none">✓ 提交并发布</button>
+        <button class="ed-btn" id="edDownload">⬇ 导出 .md 文件</button>
       </div>
-      <div class="ed-hint">
-        导出的 .md 文件放进项目 <code>articles/</code> 目录，运行 <code>python3 publish.py</code>，
-        双击生成的 <code>dist/index.html</code> 即可看到新文章（详见 README）。
+      <div class="ed-msg" id="edMsg"></div>
+      <div class="ed-hint" id="edHint">
+        导出的 .md 文件放进项目 <code>articles/</code> 目录，运行 <code>python3 publish.py</code>
+        即可入库（右侧为实时预览）。想「点一下直接提交」？在本机跑 <code>python3 serve.py --push</code>
+        并访问它给出的本地地址即可。
       </div>
     </div>
     <div class="ed-preview" id="edPrev">
@@ -276,6 +285,26 @@ async function boot(){
   renderCats(); renderFoot(); render();
   $('#loading').style.display='none'; $('#app').style.display='grid';
   marked.setOptions({breaks:true, gfm:true});
+  detectBackend();
+}
+
+// 探测本地发布服务：在则「提交并发布」直接入库，否则回退「导出.md」
+let HAS_BACKEND=false, BACKEND_PUSH=false;
+async function detectBackend(){
+  try{
+    const r=await fetch('/api/health',{cache:'no-store'});
+    if(!r.ok) throw 0;
+    const j=await r.json();
+    HAS_BACKEND=!!j.ok; BACKEND_PUSH=!!j.push;
+  }catch(e){ HAS_BACKEND=false; }
+  if(HAS_BACKEND){
+    $('#edSubmit').style.display='';
+    $('#edDownload').classList.add('ghost2');
+    $('#edDownload').textContent='⬇ 导出';
+    $('#edHint').innerHTML='点「提交并发布」即可直接入库'
+      +(BACKEND_PUSH?'并推送到线上':'（本地预览，刷新即见）')
+      +'，无需手动处理文件。';
+  }
 }
 
 function renderFoot(){
@@ -470,6 +499,36 @@ function downloadMd(){
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(a.href);
 }
+function edMsg(cls,txt){const m=$('#edMsg');m.className='ed-msg '+cls;m.textContent=txt;}
+async function submitArticle(){
+  const d=edData();
+  if(!d.title){edMsg('err','请先填写标题');return;}
+  if(!d.md.trim()){edMsg('err','正文不能为空');return;}
+  const btn=$('#edSubmit'); btn.disabled=true;
+  edMsg('load','正在提交并发布，请稍候…');
+  try{
+    const r=await fetch('/api/publish',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({title:d.title,cat:d.cat,keywords:d.kw,md:d.md})});
+    const j=await r.json();
+    if(!j.ok) throw new Error(j.error||'发布失败');
+    edMsg('ok','✓ '+(j.msg||'已发布')+'。正在刷新…');
+    // 重新拉取 kb.json，刷新列表，让新文章立刻出现
+    const kr=await fetch('kb.json?t='+Date.now(),{cache:'no-store'});
+    KB=await kr.json();
+    INDEX=KB.docs.map(x=>({d:x,t:(x.title+' '+x.keywords+' '+x.text).toLowerCase()}));
+    renderCats(); renderFoot();
+    setTimeout(()=>{
+      closeEditor();
+      // 清空表单，跳到新文章
+      $('#edTitle').value='';$('#edMd').value='';$('#edKw').value='';
+      const doc=KB.docs.find(x=>x.title===d.title);
+      CUR='all';Q='';$('#q').value='';renderCats();
+      if(doc){render();openDoc(doc.id);} else render();
+    },700);
+  }catch(e){
+    edMsg('err','✗ '+e.message+'（可改用「导出」兜底）');
+  }finally{ btn.disabled=false; }
+}
 $('#writeBtn').onclick=openEditor;
 $('#edClose').onclick=closeEditor;
 $('#editorMask').onclick=closeEditor;
@@ -477,6 +536,7 @@ $('#edMd').addEventListener('input',updatePrev);
 $('#edTitle').addEventListener('input',updatePrev);
 $('#edCat').addEventListener('change',updatePrev);
 $('#edDownload').onclick=downloadMd;
+$('#edSubmit').onclick=submitArticle;
 
 boot();
 </script>

@@ -14,24 +14,36 @@
 
 ## 新增一篇文章 → 一步更新线上
 
-**第 1 步：写文章**（二选一）
-- 网页里写：打开知识库点左下「✍ 写一篇新文章」，填标题/选分类/写 Markdown（右侧实时预览），
-  点「导出 .md 文件」，把下载的文件放进 `articles/` 目录。
-- 或直接在 `articles/` 建一个带 frontmatter 的 `.md`：
-  ```markdown
-  ---
-  title: 双十一大促实验复盘
-  cat: cases            # 分类key，见 python3 add.py --list-cats
-  keywords: 复盘 大促    # 选填
-  date: 2026-07-06      # 选填
-  ---
+### 方式一：网页点一下直接提交（推荐，零文件操作）
 
-  # 正文用 Markdown 随便写
-  ```
-
-**第 2 步：一条命令发布**
+在你自己的电脑上启动本地发布服务，然后在网页里写完点「提交并发布」就直接入库、直接上线：
 ```bash
 cd ~/ab-experiment-kb
+python3 serve.py --push        # 提交即推送线上（去掉 --push 则只入本地）
+# 也可再加 --miaoda 同步飞书妙搭
+```
+按提示打开 `http://localhost:8799` → 点左下「✍ 写一篇新文章」→ 填标题/选分类/写正文
+→ 点「✓ 提交并发布」。文章自动写入 `articles/`、合并打包、（--push 时）推送 GitHub Pages，
+新文章立刻出现在页面上，全程不下载、不碰文件。
+
+> 这个写入口只在本机 localhost 监听、不对外。线上公开版没有它，编辑器会自动回退成「导出 .md」，
+> 所以公网访客无法直接改你的库——安全。
+
+### 方式二：命令行（适合批量 / 已有 md）
+
+在 `articles/` 放带 frontmatter 的 `.md`，或用网页的「导出」按钮拿到 md 文件放进去：
+```markdown
+---
+title: 双十一大促实验复盘
+cat: cases            # 分类key，见 python3 add.py --list-cats
+keywords: 复盘 大促    # 选填
+date: 2026-07-06      # 选填
+---
+
+# 正文用 Markdown 随便写
+```
+然后一条命令发布：
+```bash
 python3 publish.py --push            # 合并 → 打包 → 推 GitHub Pages（约1分钟后线上更新）
 python3 publish.py --push --miaoda   # 想同时更新飞书妙搭就多加 --miaoda
 ```
@@ -55,7 +67,8 @@ python3 publish.py --push
 | `dev.html` | 前端源码模板（读同目录 kb.json，仅本地开发调试用） |
 | `articles/` | **放新文章的目录**（每篇一个带 frontmatter 的 .md） |
 | `kb.json` | 知识库数据 |
-| `publish.py` | ★ 一键发布：articles → kb.json → 打包 → --push 推线上 |
+| `serve.py` | ★ 本地发布服务：网页点「提交并发布」直接入库（--push 直推线上） |
+| `publish.py` | 一键发布：articles → kb.json → 打包 → --push 推线上 |
 | `bundle.py` | 打包 dev.html+数据 → index.html / dist/index.html |
 | `crawl.py` / `sync_volc.py` | 全量爬取 / 增量同步火山文档 |
 | `build_kb.py` / `add.py` | 重建分类 / 命令行新增知识 |
