@@ -102,12 +102,11 @@
   /* 阅读态：舒适阅读宽度、克制的头部、可呼吸的正文 */
   .reader{max-width:720px;margin:0 auto;padding:0 4px}
   .rtop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:26px}
-  /* 返回/复制统一为一对胶囊按钮，呼应首页卡片圆角与药丸风格 */
+  /* 返回/复制是辅助操作，弱化为安静的灰色文字链接，不做成按钮 */
   .rlink{display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none;white-space:nowrap;
-    font-size:12.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);
-    padding:6px 14px;border-radius:20px;transition:.15s;border:1px solid transparent}
-  .rlink:hover{background:rgba(224,99,46,.16);border-color:rgba(224,99,46,.3)}
-  .rlink.copied{color:var(--ok);background:rgba(63,185,80,.12)}
+    font-size:13px;color:var(--dim);transition:color .15s}
+  .rlink:hover{color:var(--sub)}
+  .rlink.copied{color:var(--ok)}
   .rhead{margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--line)}
   /* 分类：与首页卡片同款橙色药丸，放在标题下的 meta 行，布局与首页一致 */
   .rhead .ct-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;
