@@ -102,18 +102,19 @@
   /* 阅读态：舒适阅读宽度、克制的头部、可呼吸的正文 */
   .reader{max-width:720px;margin:0 auto;padding:0 4px}
   .rtop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:26px}
-  /* 返回/复制统一为同一套极简文字链接，左右对称 */
-  .rlink{display:inline-flex;align-items:center;color:var(--dim);cursor:pointer;user-select:none;
-    font-size:13px;transition:color .15s;white-space:nowrap}
-  .rlink:hover{color:var(--brand)}
-  .rlink.copied{color:var(--ok)}
+  /* 返回/复制统一为一对胶囊按钮，呼应首页卡片圆角与药丸风格 */
+  .rlink{display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none;white-space:nowrap;
+    font-size:12.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);
+    padding:6px 14px;border-radius:20px;transition:.15s;border:1px solid transparent}
+  .rlink:hover{background:rgba(224,99,46,.16);border-color:rgba(224,99,46,.3)}
+  .rlink.copied{color:var(--ok);background:rgba(63,185,80,.12)}
   .rhead{margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--line)}
-  /* 分类：标题上方的低调小标，不再是抢眼的实心药丸 */
-  .rhead .kicker{font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--brand);
-    margin-bottom:12px;display:inline-flex;align-items:center;gap:5px}
+  /* 分类：与首页卡片同款橙色药丸，保持视觉一致 */
+  .rhead .ct-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;
+    color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px;margin-bottom:14px}
   .rhead h1{font-size:30px;font-weight:800;margin:0 0 14px;line-height:1.32;letter-spacing:-.01em;color:var(--ink)}
-  .rhead .rmeta{display:flex;gap:9px;align-items:center;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
-  .rhead .rmeta span:not(:first-child)::before{content:"·";margin-right:9px;color:var(--dim);opacity:.55}
+  .rhead .rmeta{display:flex;gap:14px;align-items:center;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
+  .rhead .rmeta span{display:inline-flex;align-items:center;gap:5px}
   .rfoot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);
     color:var(--dim);font-size:12.5px;text-align:center}
   /* markdown 正文 */
@@ -671,14 +672,14 @@ async function openDoc(id){
   v.innerHTML=`<div class="reader">
     <div class="rtop">
       <span class="rlink" id="rback">← 返回列表</span>
-      <span class="rlink" id="copyLink" data-id="${d.id}">复制链接</span>
+      <span class="rlink" id="copyLink" data-id="${d.id}">🔗 复制链接</span>
     </div>
     <article class="rhead">
-      <div class="kicker">${c.icon} ${esc(c.name)}</div>
+      <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
       <h1>${esc(d.title)}</h1>
       <div class="rmeta">
-        ${d.updated?`<span>${d.updated}</span>`:''}
-        <span>${d.text.length.toLocaleString()} 字</span>
+        <span>📄 ${d.text.length.toLocaleString()} 字</span>
+        ${d.updated?`<span>🕐 ${d.updated}</span>`:''}
       </div>
     </article>
     <div class="md">${html}</div>
@@ -698,7 +699,7 @@ async function openDoc(id){
         document.body.appendChild(ta); ta.select(); ok=document.execCommand('copy'); ta.remove(); }catch(_){}
     }
     const old=cl.innerHTML;
-    cl.innerHTML = ok ? '已复制 ✓' : '复制失败，长按地址栏';
+    cl.innerHTML = ok ? '✅ 已复制' : '⚠️ 复制失败';
     cl.classList.add('copied');
     setTimeout(()=>{ cl.innerHTML=old; cl.classList.remove('copied'); }, 1800);
   };
