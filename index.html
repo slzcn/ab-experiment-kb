@@ -271,16 +271,36 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .mtoggle,.mmask{display:none}
   @media(max-width:820px){
     .app{grid-template-columns:1fr}
-    aside{position:fixed;left:0;top:0;bottom:0;width:265px;z-index:50;
+    aside{position:fixed;left:0;top:0;bottom:0;width:min(280px,82vw);z-index:50;
       transform:translateX(-100%);transition:.25s;box-shadow:var(--sh)}
     aside.open{transform:none}
-    .mtoggle{display:grid;place-items:center;position:fixed;left:14px;top:14px;z-index:60;
-      width:42px;height:42px;border-radius:11px;background:var(--brand);color:#fff;
+    .mtoggle{display:grid;place-items:center;position:fixed;left:12px;top:12px;z-index:60;
+      width:40px;height:40px;border-radius:11px;background:var(--brand);color:#fff;
       font-size:18px;box-shadow:var(--sh);cursor:pointer}
-    .top{padding:16px 18px 14px 66px}
-    .body{padding:18px}
+    .top{padding:14px 14px 12px 62px}
+    .searchbox input{padding:12px 40px 12px 40px;font-size:14px}
+    .searchbox .si{left:13px;font-size:15px}
+    .stat{font-size:11.5px;gap:10px;margin-top:9px}
+    .body{padding:14px}
+    .list{gap:10px}
+    .card{padding:14px 15px}
+    .card h3{font-size:15px}
     .mmask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45}
     .mmask.on{display:block}
+    /* 阅读态：小屏占满、内边距收紧 */
+    .reader{max-width:100%}
+    .rhead h1{font-size:21px}
+    .md{font-size:14.5px}
+    .md pre{font-size:12px}
+    .md table{font-size:12.5px}
+    /* 编辑器：小屏全屏、编辑与预览上下堆叠 */
+    .editor{width:100vw}
+    .ed-body{grid-template-columns:1fr;overflow-y:auto}
+    .ed-form{border-right:none;border-bottom:1px solid var(--line)}
+    .ed-form textarea{min-height:180px}
+    .ed-preview{min-height:200px}
+    /* 登录门 */
+    .login-box{padding:26px 22px}
   }
 </style>
 </head>
@@ -412,17 +432,23 @@ function kbSig(kb){
 async function boot(){
   marked.setOptions({breaks:true, gfm:true});
   let shown=false;
-  // 纯静态：只读静态内容，不连数据库。
-  // 静态文件由数据库变化触发 GitHub Action 重新生成（发布文章后自动刷新）。
-  // 1) 优先读同目录静态文件 kb_cache.json
+  // 纯静态：只读静态内容，不连数据库。静态文件由数据库变化触发 Action 重新生成。
+  // 1) 首屏只下轻量列表 kb_index.json（无正文，几百KB → 快）；正文点开时按需拉
   try{
-    const r=await fetch('kb_cache.json',{cache:'no-cache'});
+    const r=await fetch('kb_index.json',{cache:'no-cache'});
     if(r.ok){
-      const cache=await r.json();
-      if(cache&&cache.docs&&cache.docs.length){ applyKB(cache); shown=true; }
+      const idx=await r.json();
+      if(idx&&idx.docs&&idx.docs.length){ applyKB(idx); shown=true; }
     }
   }catch(e){}
-  // 2) 回退：读打包时内嵌的数据（standalone 单文件离线也能用）
+  // 2) 回退：完整 kb_cache.json（含正文）
+  if(!shown){
+    try{
+      const r=await fetch('kb_cache.json',{cache:'no-cache'});
+      if(r.ok){ const c=await r.json(); if(c&&c.docs&&c.docs.length){ applyKB(c); shown=true; } }
+    }catch(e){}
+  }
+  // 3) 回退：打包内嵌数据（standalone 离线可用）
   if(!shown){
     try{
       const embed=document.getElementById('kbdata');
@@ -543,35 +569,72 @@ function excerpt(d){
   return d.text.slice(0,140)+'…';
 }
 
-function render(){
-  const res=match();
-  $('#stat').innerHTML = Q
-    ? `找到 <b>${res.length}</b> 篇匹配「${esc(Q)}」的知识`
-    : `共 <b>${res.length}</b> 篇 · 全库 <b>${KB.docs.length}</b> 篇 · 每篇可溯源至官方原文`;
-  const v=$('#bodyView');
-  if(!res.length){
-    v.innerHTML=`<div class="empty"><div class="big">🔍</div>没有找到相关内容，换个关键词试试</div>`;return;
-  }
-  v.innerHTML=`<div class="list">`+res.map(d=>{
-    const c=catOf(d.cat);
-    return `<div class="card" data-id="${d.id}">
+const PAGE=24;                 // 每批渲染卡片数（约2-3屏）
+let RES=[], SHOWN=0, IO=null;  // 当前结果集 / 已渲染数 / 滚动观察器
+function cardHTML(d){
+  const c=catOf(d.cat);
+  return `<div class="card" data-id="${d.id}">
       <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
       <h3>${hi(d.title)}</h3>
       <div class="excerpt">${hi(excerpt(d))}</div>
       <div class="meta">
-        <span>📄 ${d.text.length.toLocaleString()} 字</span>
+        <span>📄 ${(d.text||'').length.toLocaleString()} 字</span>
         ${d.updated?`<span>🕐 ${d.updated} 更新</span>`:''}
         <span class="src">点开阅读 →</span>
       </div></div>`;
-  }).join('')+`</div>`;
-  document.querySelectorAll('.card').forEach(el=>el.onclick=()=>openDoc(+el.dataset.id));
+}
+function bindCards(scope){
+  (scope||document).querySelectorAll('.card:not([data-bound])').forEach(el=>{
+    el.dataset.bound='1'; el.onclick=()=>openDoc(+el.dataset.id);
+  });
+}
+function renderMore(){
+  const list=$('#kbList'); if(!list) return;
+  const next=RES.slice(SHOWN, SHOWN+PAGE);
+  list.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
+  SHOWN+=next.length; bindCards(list);
+  const sen=$('#sentinel');
+  if(sen){ if(SHOWN>=RES.length) sen.remove(); }
+}
+function render(){
+  RES=match(); SHOWN=0;
+  if(IO){ IO.disconnect(); IO=null; }
+  $('#stat').innerHTML = Q
+    ? `找到 <b>${RES.length}</b> 篇匹配「${esc(Q)}」的知识`
+    : `共 <b>${RES.length}</b> 篇 · 全库 <b>${KB.docs.length}</b> 篇 · 每篇可溯源至官方原文`;
+  const v=$('#bodyView');
+  if(!RES.length){
+    v.innerHTML=`<div class="empty"><div class="big">🔍</div>没有找到相关内容，换个关键词试试</div>`;return;
+  }
+  v.innerHTML=`<div class="list" id="kbList"></div><div id="sentinel" style="height:1px"></div>`;
+  renderMore();  // 先渲染第一批
+  // 滚动到底自动加载下一批
+  const sen=$('#sentinel');
+  if(sen && SHOWN<RES.length){
+    IO=new IntersectionObserver(es=>{ if(es[0].isIntersecting) renderMore(); }, {root:v, rootMargin:'600px'});
+    IO.observe(sen);
+  }
+  return;
 }
 
-function openDoc(id){
+// 正文按需加载：轻量列表无 md，点开文章时从 kb_docs.json 取（取一次缓存整份）
+let DOCS_CACHE=null;
+async function getMd(id){
+  const d=KB.docs.find(x=>x.id===id);
+  if(d && d.md) return d.md;                    // 已有正文（内嵌/完整版）
+  if(!DOCS_CACHE){
+    try{ const r=await fetch('kb_docs.json',{cache:'no-cache'}); if(r.ok) DOCS_CACHE=await r.json(); }
+    catch(e){ DOCS_CACHE={}; }
+  }
+  return (DOCS_CACHE&&DOCS_CACHE[String(id)])||'（正文加载失败，请刷新重试）';
+}
+
+async function openDoc(id){
   const d=KB.docs.find(x=>x.id===id); if(!d)return;
   const c=catOf(d.cat);
-  let html=marked.parse(d.md||'');
   const v=$('#bodyView');
+  const md=await getMd(id);
+  let html=marked.parse(md||'');
   const isVolc = /^https?:/.test(d.url||'') && (d.url||'').includes('volcengine.com');
   const srcBtn = isVolc
     ? `<a class="srclink" href="${d.url}" target="_blank" rel="noopener">🔗 查看火山引擎官方原文</a>`

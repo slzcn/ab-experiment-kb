@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
-# 从 Supabase 拉全部文章+分类，生成静态缓存 kb_cache.json（前端首屏秒开用）。
-# 发新文章后重新生成一次即可。前端仍会后台比对数据库，缓存过期会自动刷新。
+# 从 Supabase 拉全部文章+分类，生成静态文件（前端纯静态读取）。
+# 拆分优化：
+#   kb_index.json  轻量列表：标题/分类/关键词/检索文本/日期/来源（无 md 正文）→ 首屏只下这个
+#   kb_docs.json   id → md 正文映射 → 打开某篇文章时按需取（也可整体回退）
+#   kb_cache.json  完整数据（含 md）→ 兼容/离线回退，bundle 内嵌用
+# 发新文章后由 GitHub Action 重新生成。
 import json, os, urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -16,14 +20,26 @@ def sb_get(pathq):
 cats = sb_get("ab_categories?select=key,icon,name,descr,ord&order=ord")
 arts = sb_get("ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal&order=doc_id")
 
-kb = {
-    "meta": {"total": len(arts), "source": "Supabase 缓存"},
-    "categories": [{"key":c["key"],"icon":c["icon"],"name":c["name"],"desc":c.get("descr","")} for c in cats],
-    "docs": [{"id":a["doc_id"],"title":a["title"],"cat":a["cat"],"keywords":a.get("keywords","") or "",
+categories = [{"key":c["key"],"icon":c["icon"],"name":c["name"],"desc":c.get("descr","")} for c in cats]
+
+# 完整 docs（含 md）——保留给 bundle 内嵌 & 离线回退
+full_docs = [{"id":a["doc_id"],"title":a["title"],"cat":a["cat"],"keywords":a.get("keywords","") or "",
               "md":a.get("md","") or "","text":a.get("body_text","") or "",
               "updated":a.get("updated","") or "","url":a.get("source_url","") or "",
-              "internal":bool(a.get("is_internal"))} for a in arts],
-}
-out = os.path.join(HERE, "kb_cache.json")
-json.dump(kb, open(out,"w",encoding="utf-8"), ensure_ascii=False)
-print(f"✅ 缓存已生成: kb_cache.json  ({os.path.getsize(out)//1024} KB, {len(arts)} 篇 + {len(cats)} 分类)")
+              "internal":bool(a.get("is_internal"))} for a in arts]
+
+# 轻量索引（无 md，保留 text 供全文搜索）
+index_docs = [{k:v for k,v in d.items() if k!="md"} for d in full_docs]
+# 正文映射 id -> md
+docs_md = {str(d["id"]): d["md"] for d in full_docs}
+
+def dump(name, obj):
+    p = os.path.join(HERE, name)
+    json.dump(obj, open(p,"w",encoding="utf-8"), ensure_ascii=False)
+    return os.path.getsize(p)//1024
+
+s1 = dump("kb_index.json", {"meta":{"total":len(arts),"source":"Supabase"},"categories":categories,"docs":index_docs})
+s2 = dump("kb_docs.json", docs_md)
+s3 = dump("kb_cache.json", {"meta":{"total":len(arts),"source":"Supabase"},"categories":categories,"docs":full_docs})
+print(f"✅ 已生成: kb_index.json({s1}KB, 轻量列表) + kb_docs.json({s2}KB, 正文) + kb_cache.json({s3}KB, 完整)")
+print(f"   {len(arts)} 篇 + {len(categories)} 分类。首屏只需下 kb_index.json。")
