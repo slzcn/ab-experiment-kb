@@ -401,6 +401,9 @@ async function boot(){
   if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试'; return; }
   $('#loading').style.display='none'; $('#app').style.display='grid';
   detectBackend();
+  // 支持 URL 直达某篇文章：#doc=<id>
+  const m=/#doc=(\d+)/.exec(location.hash||'');
+  if(m){ const id=+m[1]; if(KB.docs.some(d=>d.id===id)) openDoc(id); }
 }
 
 // 决定「提交并发布」按钮：数据库在线 → 直接写库（线上也能提交）；否则探测本地服务
@@ -623,7 +626,8 @@ async function openDoc(id){
     </div>
   </div>`;
   v.scrollTop=0;
-  $('#rback').onclick=()=>{render();};
+  try{ if(location.hash!=='#doc='+id) history.replaceState(null,'','#doc='+id); }catch(e){}
+  $('#rback').onclick=()=>{ try{history.replaceState(null,'',location.pathname+location.search);}catch(e){} render(); };
 }
 
 // 搜索
