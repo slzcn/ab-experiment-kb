@@ -107,8 +107,8 @@
   .rhead{margin-bottom:28px}
   .rhead .ct-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;
     color:var(--brand2);background:rgba(224,99,46,.12);padding:3px 11px;border-radius:20px}
-  .rhead h1{font-size:30px;font-weight:800;margin:14px 0 16px;line-height:1.32;letter-spacing:-.01em;color:var(--ink)}
-  .rhead .rmeta{display:flex;gap:14px;align-items:center;font-size:12.5px;color:var(--dim);
+  .rhead h1{font-size:30px;font-weight:800;margin:0 0 16px;line-height:1.32;letter-spacing:-.01em;color:var(--ink)}
+  .rhead .rmeta{display:flex;gap:12px;align-items:center;font-size:12.5px;color:var(--dim);flex-wrap:wrap;
     flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--line)}
   .copylink{display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none;
     color:var(--brand2);background:rgba(224,99,46,.1);border:1px solid rgba(224,99,46,.25);
@@ -247,7 +247,7 @@
     /* 阅读态：小屏占满、内边距收紧 */
     .reader{max-width:100%;padding:0}
     .rhead{margin-bottom:22px}
-    .rhead h1{font-size:23px;margin:12px 0 14px;line-height:1.35}
+    .rhead h1{font-size:23px;margin:0 0 12px;line-height:1.35}
     .md{font-size:15.5px;line-height:1.85}
     .md h2{font-size:18px}
     .md h3{font-size:16px}
@@ -672,9 +672,9 @@ async function openDoc(id){
   v.innerHTML=`<div class="reader">
     <div class="rback" id="rback">← 返回列表</div>
     <article class="rhead">
-      <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
       <h1>${esc(d.title)}</h1>
       <div class="rmeta">
+        <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
         ${d.updated?`<span>🕐 ${d.updated}</span>`:''}
         <span>📄 ${d.text.length.toLocaleString()} 字</span>
         <span class="copylink" id="copyLink" data-id="${d.id}">🔗 复制链接</span>
