@@ -578,6 +578,13 @@ function match(){
       const as=terms.some(t=>at.includes(t))?1:0, bs=terms.some(t=>bt.includes(t))?1:0;
       return bs-as;
     });
+  }else{
+    // 不搜索时：按更新日期倒序（新发布的在最上面），同日期内部文章优先
+    arr=[...arr].sort((a,b)=>{
+      const au=a.d.updated||'', bu=b.d.updated||'';
+      if(au!==bu) return bu<au?-1:1;                    // 日期新的在前
+      return (b.d.internal?1:0)-(a.d.internal?1:0);      // 同日期内部文章优先
+    });
   }
   return arr.map(x=>x.d);
 }
