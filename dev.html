@@ -109,10 +109,10 @@
   .rlink:hover{background:rgba(224,99,46,.16);border-color:rgba(224,99,46,.3)}
   .rlink.copied{color:var(--ok);background:rgba(63,185,80,.12)}
   .rhead{margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--line)}
-  /* 分类：与首页卡片同款橙色药丸，保持视觉一致 */
+  /* 分类：与首页卡片同款橙色药丸，放在标题下的 meta 行，布局与首页一致 */
   .rhead .ct-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;
-    color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px;margin-bottom:14px}
-  .rhead h1{font-size:30px;font-weight:800;margin:0 0 14px;line-height:1.32;letter-spacing:-.01em;color:var(--ink)}
+    color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+  .rhead h1{font-size:30px;font-weight:800;margin:0 0 16px;line-height:1.32;letter-spacing:-.01em;color:var(--ink)}
   .rhead .rmeta{display:flex;gap:14px;align-items:center;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
   .rhead .rmeta span{display:inline-flex;align-items:center;gap:5px}
   .rfoot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);
@@ -675,9 +675,9 @@ async function openDoc(id){
       <span class="rlink" id="copyLink" data-id="${d.id}">🔗 复制链接</span>
     </div>
     <article class="rhead">
-      <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
       <h1>${esc(d.title)}</h1>
       <div class="rmeta">
+        <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
         <span>📄 ${d.text.length.toLocaleString()} 字</span>
         ${d.updated?`<span>🕐 ${d.updated}</span>`:''}
       </div>
