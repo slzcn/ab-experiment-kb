@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A/B 实验知识库 · 营销增长中心</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root{
+    --bg:#0e1116; --bg2:#161b22; --panel:#1a2029; --line:#252c38;
+    --ink:#e6edf3; --sub:#8b98a9; --dim:#5b6675;
+    --brand:#ff5a3c; --brand2:#ff8a3d; --accent:#4c8dff;
+    --ok:#3fb950; --mark:rgba(255,138,61,.28);
+    --r:14px; --sh:0 8px 30px rgba(0,0,0,.35);
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--brand);color:#fff}
+  /* ---- 布局 ---- */
+  .app{display:grid;grid-template-columns:280px 1fr;height:100vh}
+  /* 侧栏 */
+  aside{background:var(--bg2);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;overflow:hidden}
+  .brand{padding:22px 22px 16px;border-bottom:1px solid var(--line)}
+  .brand h1{font-size:17px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;gap:9px}
+  .logo{width:26px;height:26px;border-radius:8px;flex:none;
+    background:linear-gradient(135deg,var(--brand),var(--brand2));
+    display:grid;place-items:center;font-weight:900;color:#fff;font-size:13px;box-shadow:0 3px 10px rgba(255,90,60,.4)}
+  .brand p{color:var(--dim);font-size:11.5px;margin-top:7px;letter-spacing:.2px}
+  .cats{flex:1;overflow-y:auto;padding:12px 12px 30px}
+  .cat{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
+    color:var(--sub);cursor:pointer;font-size:13.5px;transition:.15s;user-select:none}
+  .cat:hover{background:var(--panel);color:var(--ink)}
+  .cat.on{background:linear-gradient(90deg,rgba(255,90,60,.16),transparent);color:var(--ink);
+    box-shadow:inset 2px 0 0 var(--brand)}
+  .cat .ic{font-size:15px;width:20px;text-align:center;flex:none}
+  .cat .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cat .ct{font-size:11px;color:var(--dim);background:var(--panel);
+    padding:1px 8px;border-radius:20px;min-width:24px;text-align:center}
+  .cat.on .ct{background:rgba(255,90,60,.2);color:var(--brand2)}
+  .side-foot{padding:12px 20px;border-top:1px solid var(--line);font-size:11px;color:var(--dim)}
+  /* 主区 */
+  main{display:flex;flex-direction:column;overflow:hidden}
+  .top{padding:20px 34px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+  .searchbox{position:relative;max-width:760px}
+  .searchbox input{width:100%;background:var(--panel);border:1px solid var(--line);
+    color:var(--ink);border-radius:12px;padding:14px 46px 14px 46px;font-size:15px;
+    font-family:var(--font);outline:none;transition:.2s}
+  .searchbox input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(255,90,60,.15)}
+  .searchbox .si{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:16px}
+  .searchbox .clr{position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    color:var(--dim);cursor:pointer;font-size:18px;display:none}
+  .stat{margin-top:11px;color:var(--dim);font-size:12.5px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .stat b{color:var(--brand2)}
+  .body{flex:1;overflow-y:auto;padding:22px 34px 60px;scroll-behavior:smooth}
+  /* 列表卡片 */
+  .list{display:grid;gap:12px;max-width:1000px}
+  .card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px 18px;cursor:pointer;transition:.16s;position:relative;overflow:hidden}
+  .card:hover{border-color:var(--brand);transform:translateY(-1px);box-shadow:var(--sh)}
+  .card .ct-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;
+    color:var(--brand2);background:rgba(255,90,60,.12);padding:2px 9px;border-radius:20px;margin-bottom:8px}
+  .card h3{font-size:15.5px;font-weight:700;line-height:1.45}
+  .card .excerpt{color:var(--sub);font-size:13px;margin-top:7px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .meta{margin-top:10px;font-size:11.5px;color:var(--dim);display:flex;gap:14px;align-items:center}
+  .card .meta .src{margin-left:auto;color:var(--accent)}
+  mark{background:var(--mark);color:var(--brand2);border-radius:3px;padding:0 2px;font-weight:600}
+  .empty{text-align:center;color:var(--dim);padding:80px 20px}
+  .empty .big{font-size:48px;margin-bottom:14px;opacity:.6}
+  /* 阅读态 */
+  .reader{max-width:860px;margin:0 auto}
+  .rback{display:inline-flex;align-items:center;gap:7px;color:var(--sub);cursor:pointer;
+    font-size:13px;margin-bottom:18px;padding:7px 13px;border-radius:9px;background:var(--panel);transition:.15s}
+  .rback:hover{color:var(--ink);background:var(--line)}
+  .rhead{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:24px}
+  .rhead .ct-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;
+    color:var(--brand2);background:rgba(255,90,60,.12);padding:3px 11px;border-radius:20px}
+  .rhead h1{font-size:27px;font-weight:800;margin:12px 0 14px;line-height:1.3}
+  .rhead .rmeta{display:flex;gap:16px;align-items:center;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
+  .srclink{display:inline-flex;align-items:center;gap:6px;color:#fff;
+    background:linear-gradient(135deg,var(--brand),var(--brand2));
+    padding:7px 15px;border-radius:9px;font-size:12.5px;font-weight:600;transition:.15s;
+    box-shadow:0 3px 12px rgba(255,90,60,.3)}
+  .srclink:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(255,90,60,.45)}
+  /* markdown 正文 */
+  .md{font-size:15px;line-height:1.85;color:#d3dbe4}
+  .md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;
+    margin:1.6em 0 .7em;scroll-margin-top:20px}
+  .md h1{font-size:23px;border-bottom:1px solid var(--line);padding-bottom:.35em}
+  .md h2{font-size:20px}
+  .md h3{font-size:17px}
+  .md h4{font-size:15.5px;color:var(--sub)}
+  .md p{margin:.85em 0}
+  .md strong{color:var(--ink);font-weight:700}
+  .md a{color:var(--accent);border-bottom:1px solid rgba(76,141,255,.4)}
+  .md ul,.md ol{margin:.7em 0;padding-left:1.6em}
+  .md li{margin:.35em 0}
+  .md img{max-width:100%;border-radius:10px;margin:14px 0;border:1px solid var(--line);display:block}
+  .md blockquote{border-left:3px solid var(--brand);background:var(--panel);
+    padding:10px 16px;margin:1em 0;border-radius:0 8px 8px 0;color:var(--sub);font-style:italic}
+  .md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.88em;
+    font-family:"SF Mono",Menlo,Consolas,monospace;color:var(--brand2)}
+  .md pre{background:#0b0e13;border:1px solid var(--line);border-radius:10px;
+    padding:15px 17px;overflow-x:auto;margin:1em 0}
+  .md pre code{background:none;padding:0;color:#c9d3e0;font-size:13px;line-height:1.6}
+  .md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:13.5px;display:block;overflow-x:auto}
+  .md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+  .md th{background:var(--panel);color:var(--ink);font-weight:700}
+  .md tr:nth-child(even){background:rgba(255,255,255,.02)}
+  /* 提示框 (data-tips) */
+  .md [data-tips]{background:var(--panel);border-left:3px solid var(--accent);
+    padding:10px 14px;border-radius:0 8px 8px 0;margin:.6em 0;color:var(--sub);font-size:14px}
+  .md [data-tips-is-title]{border:none;background:none;padding:0;margin:.8em 0 -.2em;
+    color:var(--accent);font-weight:700;font-size:13px}
+  .md [data-tips-type="warning"],.md [data-tips-type="danger"]{border-color:var(--brand)}
+  /* 加载/滚动条 */
+  .loading{display:grid;place-items:center;height:100vh;color:var(--sub);font-size:14px;gap:14px}
+  .spin{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--brand);
+    border-radius:50%;animation:sp .8s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  ::-webkit-scrollbar{width:9px;height:9px}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+  ::-webkit-scrollbar-thumb:hover{background:#33404f}
+  /* 移动端 */
+  .mtoggle,.mmask{display:none}
+  @media(max-width:820px){
+    .app{grid-template-columns:1fr}
+    aside{position:fixed;left:0;top:0;bottom:0;width:265px;z-index:50;
+      transform:translateX(-100%);transition:.25s;box-shadow:var(--sh)}
+    aside.open{transform:none}
+    .mtoggle{display:grid;place-items:center;position:fixed;left:14px;top:14px;z-index:60;
+      width:42px;height:42px;border-radius:11px;background:var(--brand);color:#fff;
+      font-size:18px;box-shadow:var(--sh);cursor:pointer}
+    .top{padding:16px 18px 14px 66px}
+    .body{padding:18px}
+    .mmask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45}
+    .mmask.on{display:block}
+  }
+</style>
+</head>
+<body>
+<script type="application/json" id="kbdata"><!--KB_DATA--></script>
+<div class="loading" id="loading"><div class="spin"></div><div>正在加载知识库…</div></div>
+
+<div class="app" id="app" style="display:none">
+  <div class="mtoggle" id="mtoggle">☰</div>
+  <div class="mmask" id="mmask"></div>
+  <aside id="aside">
+    <div class="brand">
+      <h1><span class="logo">AB</span>A/B 实验知识库</h1>
+      <p>营销增长中心 · 数据驱动决策手册</p>
+    </div>
+    <div class="cats" id="cats"></div>
+    <div class="side-foot">
+      内容源自火山引擎 DataTester<br>可溯源至官方原文 · 支持持续新增
+    </div>
+  </aside>
+
+  <main>
+    <div class="top">
+      <div class="searchbox">
+        <span class="si">🔍</span>
+        <input id="q" placeholder="搜索实验设计 / 报告解读 / 广告投放 / 假设检验…（支持标题+正文全文检索）" autocomplete="off">
+        <span class="clr" id="clr">✕</span>
+      </div>
+      <div class="stat" id="stat"></div>
+    </div>
+    <div class="body" id="bodyView"></div>
+  </main>
+</div>
+
+<script>
+let KB=null, CUR="all", Q="", INDEX=[];
+const $=s=>document.querySelector(s);
+const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+async function boot(){
+  try{
+    // 优先读内嵌数据（打包后的 standalone 版），否则 fetch 同目录 kb.json（本地开发）
+    const embed=document.getElementById('kbdata');
+    if(embed && embed.textContent.trim()){
+      KB=JSON.parse(embed.textContent);
+    }else{
+      const r=await fetch('kb.json'); KB=await r.json();
+    }
+  }catch(e){ $('#loading').innerHTML='加载失败：'+e; return; }
+  INDEX=KB.docs.map(d=>({d, t:(d.title+' '+d.keywords+' '+d.text).toLowerCase()}));
+  renderCats(); render();
+  $('#loading').style.display='none'; $('#app').style.display='grid';
+  marked.setOptions({breaks:true, gfm:true});
+}
+
+function counts(){
+  const m={all:KB.docs.length};
+  KB.categories.forEach(c=>m[c.key]=0);
+  KB.docs.forEach(d=>m[d.cat]=(m[d.cat]||0)+1);
+  return m;
+}
+function renderCats(){
+  const m=counts();
+  let h=`<div class="cat ${CUR==='all'?'on':''}" data-k="all">
+    <span class="ic">📚</span><span class="nm">全部知识</span><span class="ct">${m.all}</span></div>`;
+  KB.categories.forEach(c=>{
+    if(!m[c.key]) return;
+    h+=`<div class="cat ${CUR===c.key?'on':''}" data-k="${c.key}" title="${esc(c.desc)}">
+      <span class="ic">${c.icon}</span><span class="nm">${esc(c.name)}</span><span class="ct">${m[c.key]}</span></div>`;
+  });
+  $('#cats').innerHTML=h;
+  document.querySelectorAll('.cat').forEach(el=>el.onclick=()=>{
+    CUR=el.dataset.k; renderCats(); render(); closeSide();
+    $('#bodyView').scrollTop=0;
+  });
+}
+
+function match(){
+  let arr=INDEX;
+  if(CUR!=='all') arr=arr.filter(x=>x.d.cat===CUR);
+  if(Q){
+    const terms=Q.toLowerCase().split(/\s+/).filter(Boolean);
+    arr=arr.filter(x=>terms.every(t=>x.t.includes(t)));
+    // 标题命中优先
+    arr=[...arr].sort((a,b)=>{
+      const at=a.d.title.toLowerCase(), bt=b.d.title.toLowerCase();
+      const as=terms.some(t=>at.includes(t))?1:0, bs=terms.some(t=>bt.includes(t))?1:0;
+      return bs-as;
+    });
+  }
+  return arr.map(x=>x.d);
+}
+function catOf(k){return KB.categories.find(c=>c.key===k)||{icon:'📎',name:'其他'};}
+
+function hi(text){
+  if(!Q) return esc(text);
+  let h=esc(text);
+  Q.toLowerCase().split(/\s+/).filter(Boolean).forEach(t=>{
+    if(!t)return;
+    const re=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');
+    h=h.replace(re,'<mark>$1</mark>');
+  });
+  return h;
+}
+function excerpt(d){
+  if(Q){
+    const t=d.text, low=t.toLowerCase(), term=Q.toLowerCase().split(/\s+/)[0];
+    const i=low.indexOf(term);
+    if(i>=0){const s=Math.max(0,i-40);return (s>0?'…':'')+t.slice(s,s+140)+'…';}
+  }
+  return d.text.slice(0,140)+'…';
+}
+
+function render(){
+  const res=match();
+  $('#stat').innerHTML = Q
+    ? `找到 <b>${res.length}</b> 篇匹配「${esc(Q)}」的知识`
+    : `共 <b>${res.length}</b> 篇 · 全库 <b>${KB.docs.length}</b> 篇 · 每篇可溯源至官方原文`;
+  const v=$('#bodyView');
+  if(!res.length){
+    v.innerHTML=`<div class="empty"><div class="big">🔍</div>没有找到相关内容，换个关键词试试</div>`;return;
+  }
+  v.innerHTML=`<div class="list">`+res.map(d=>{
+    const c=catOf(d.cat);
+    return `<div class="card" data-id="${d.id}">
+      <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
+      <h3>${hi(d.title)}</h3>
+      <div class="excerpt">${hi(excerpt(d))}</div>
+      <div class="meta">
+        <span>📄 ${d.text.length.toLocaleString()} 字</span>
+        ${d.updated?`<span>🕐 ${d.updated} 更新</span>`:''}
+        <span class="src">点开阅读 →</span>
+      </div></div>`;
+  }).join('')+`</div>`;
+  document.querySelectorAll('.card').forEach(el=>el.onclick=()=>openDoc(+el.dataset.id));
+}
+
+function openDoc(id){
+  const d=KB.docs.find(x=>x.id===id); if(!d)return;
+  const c=catOf(d.cat);
+  let html=marked.parse(d.md||'');
+  const v=$('#bodyView');
+  v.innerHTML=`<div class="reader">
+    <div class="rback" id="rback">← 返回列表</div>
+    <div class="rhead">
+      <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
+      <h1>${esc(d.title)}</h1>
+      <div class="rmeta">
+        ${d.updated?`<span>🕐 官方最后更新 ${d.updated}</span>`:''}
+        <span>📄 ${d.text.length.toLocaleString()} 字</span>
+        <a class="srclink" href="${d.url}" target="_blank" rel="noopener">🔗 查看火山引擎官方原文</a>
+      </div>
+    </div>
+    <div class="md">${html}</div>
+    <div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px">
+      来源：火山引擎 DataTester A/B testing 文档库　·　原文链接：<a href="${d.url}" target="_blank" style="color:var(--accent)">${d.url}</a>
+    </div>
+  </div>`;
+  v.scrollTop=0;
+  $('#rback').onclick=()=>{render();};
+}
+
+// 搜索
+$('#q').addEventListener('input',e=>{
+  Q=e.target.value.trim();
+  $('#clr').style.display=Q?'block':'none';
+  render();
+});
+$('#clr').onclick=()=>{$('#q').value='';Q='';$('#clr').style.display='none';render();$('#q').focus();};
+// 移动端
+function closeSide(){$('#aside').classList.remove('open');$('#mmask').classList.remove('on');}
+$('#mtoggle').onclick=()=>{$('#aside').classList.toggle('open');$('#mmask').classList.toggle('on');};
+$('#mmask').onclick=closeSide;
+
+boot();
+</script>
+</body>
+</html>
