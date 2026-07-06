@@ -43,7 +43,18 @@
   .cat .ct{font-size:11px;color:var(--dim);background:var(--panel);
     padding:1px 8px;border-radius:20px;min-width:24px;text-align:center}
   .cat.on .ct{background:rgba(224,99,46,.2);color:var(--brand2)}
-  .side-foot{padding:12px 20px;border-top:1px solid var(--line);font-size:11px;color:var(--dim)}
+  .side-foot{padding:14px 18px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--dim);line-height:1.7}
+  .sf-stat{display:flex;gap:8px;margin-bottom:9px}
+  .sf-pill{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:9px;
+    padding:7px 6px;text-align:center}
+  .sf-pill b{display:block;font-size:16px;font-weight:800;color:var(--brand);line-height:1.2}
+  .sf-pill span{font-size:10px;color:var(--sub)}
+  .sf-line{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--dim)}
+  .sf-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none;
+    box-shadow:0 0 0 3px rgba(63,185,80,.16)}
+  .sf-src{margin-top:7px;padding-top:9px;border-top:1px dashed var(--line);
+    font-size:10.5px;color:var(--dim)}
+  .sf-src b{color:var(--sub);font-weight:700}
   /* 主区 */
   main{display:flex;flex-direction:column;overflow:hidden}
   .top{padding:20px 34px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
@@ -196,9 +207,7 @@
     </div>
     <div class="cats" id="cats"></div>
     <div class="write-btn" id="writeBtn">✍ 写一篇新文章</div>
-    <div class="side-foot">
-      内容源自火山引擎 DataTester<br>可溯源至官方原文 · 支持持续新增
-    </div>
+    <div class="side-foot" id="sideFoot"></div>
   </aside>
 
   <main>
@@ -264,9 +273,29 @@ async function boot(){
     }
   }catch(e){ $('#loading').innerHTML='加载失败：'+e; return; }
   INDEX=KB.docs.map(d=>({d, t:(d.title+' '+d.keywords+' '+d.text).toLowerCase()}));
-  renderCats(); render();
+  renderCats(); renderFoot(); render();
   $('#loading').style.display='none'; $('#app').style.display='grid';
   marked.setOptions({breaks:true, gfm:true});
+}
+
+function renderFoot(){
+  const total=KB.docs.length;
+  const internal=KB.docs.filter(d=>d.internal).length;
+  const official=total-internal;
+  const cats=KB.categories.filter(c=>KB.docs.some(d=>d.cat===c.key)).length;
+  // 最近更新日期
+  const dates=KB.docs.map(d=>d.updated).filter(Boolean).sort();
+  const latest=dates.length?dates[dates.length-1]:'';
+  $('#sideFoot').innerHTML=`
+    <div class="sf-stat">
+      <div class="sf-pill"><b>${total}</b><span>篇知识</span></div>
+      <div class="sf-pill"><b>${cats}</b><span>大主题</span></div>
+    </div>
+    <div class="sf-line"><span class="sf-dot"></span>知识库在线 · 最近更新 ${latest||'—'}</div>
+    <div class="sf-src">
+      <b>官方权威 ${official} 篇</b>整理自火山引擎 DataTester，篇篇可溯源原文；
+      ${internal?`<b>内部沉淀 ${internal} 篇</b>为团队实战经验。`:'并支持团队持续沉淀内部经验。'}
+    </div>`;
 }
 
 function counts(){
