@@ -671,7 +671,7 @@ async function openDoc(id){
   v.innerHTML=`<div class="reader">
     <div class="rtop">
       <span class="rlink" id="rback">← 返回列表</span>
-      <span class="rlink" id="copyLink" data-id="${d.id}">🔗 复制链接</span>
+      <span class="rlink" id="copyLink" data-id="${d.id}">复制链接</span>
     </div>
     <article class="rhead">
       <h1>${esc(d.title)}</h1>
@@ -698,7 +698,7 @@ async function openDoc(id){
         document.body.appendChild(ta); ta.select(); ok=document.execCommand('copy'); ta.remove(); }catch(_){}
     }
     const old=cl.innerHTML;
-    cl.innerHTML = ok ? '✅ 已复制' : '⚠️ 复制失败';
+    cl.innerHTML = ok ? '已复制' : '复制失败';
     cl.classList.add('copied');
     setTimeout(()=>{ cl.innerHTML=old; cl.classList.remove('copied'); }, 1800);
   };
