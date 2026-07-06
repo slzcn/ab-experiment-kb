@@ -510,7 +510,7 @@ function excerpt(d){
   return d.text.slice(0,140)+'…';
 }
 
-const PAGE=24;                 // 每批渲染卡片数（约2-3屏）
+const PAGE=12;                 // 每批渲染卡片数（手机约2屏，分批更多、加载更可感知）
 let RES=[], SHOWN=0, IO=null;  // 当前结果集 / 已渲染数 / 滚动观察器
 function cardHTML(d){
   const c=catOf(d.cat);
@@ -529,7 +529,8 @@ function bindCards(scope){
     el.dataset.bound='1'; el.onclick=()=>openDoc(+el.dataset.id);
   });
 }
-function renderMore(){
+let LOADING=false;
+function _appendBatch(){
   const list=$('#kbList'); if(!list) return;
   const start=SHOWN;
   const next=RES.slice(SHOWN, SHOWN+PAGE);
@@ -537,16 +538,25 @@ function renderMore(){
   SHOWN+=next.length; bindCards(list);
   // 让本批新卡片错落淡入（可见的瀑布流效果）
   const cards=list.querySelectorAll('.card');
-  for(let i=start;i<SHOWN;i++){ const el=cards[i]; if(el){ el.classList.add('new'); el.style.animationDelay=((i-start)*45)+'ms'; } }
-  // 更新底部指示器：还有更多→转圈加载中；已全部→显示总数
+  for(let i=start;i<SHOWN;i++){ const el=cards[i]; if(el){ el.classList.add('new'); el.style.animationDelay=((i-start)*55)+'ms'; } }
   const sen=$('#sentinel');
   if(sen){
     if(SHOWN>=RES.length){
       sen.className='loadmore done'; sen.innerHTML='— 已显示全部 '+RES.length+' 篇 —'; sen.removeAttribute('style');
     }else{
-      sen.className='loadmore'; sen.innerHTML='<span class="dot"></span>下滑加载更多（已显示 '+SHOWN+' / '+RES.length+'）';
+      sen.className='loadmore'; sen.innerHTML='下滑加载更多（已显示 '+SHOWN+' / '+RES.length+'）';
     }
   }
+}
+// first=true 为首批（立即渲染，秒开）；滚动触发的批次先显示“加载中”停顿一下再出，让用户看得见
+function renderMore(first){
+  if(LOADING) return;
+  if(first){ _appendBatch(); return; }
+  if(SHOWN>=RES.length) return;
+  LOADING=true;
+  const sen=$('#sentinel');
+  if(sen){ sen.className='loadmore'; sen.innerHTML='<span class="dot"></span>正在加载更多…'; }
+  setTimeout(()=>{ _appendBatch(); LOADING=false; }, 480);
 }
 function render(){
   RES=match(); SHOWN=0;
@@ -559,11 +569,11 @@ function render(){
     v.innerHTML=`<div class="empty"><div class="big">🔍</div>没有找到相关内容，换个关键词试试</div>`;return;
   }
   v.innerHTML=`<div class="list" id="kbList"></div><div id="sentinel" style="height:1px"></div>`;
-  renderMore();  // 先渲染第一批
+  renderMore(true);  // 首批立即渲染（秒开）
   // 滚动到底自动加载下一批
   const sen=$('#sentinel');
   if(sen && SHOWN<RES.length){
-    IO=new IntersectionObserver(es=>{ if(es[0].isIntersecting) renderMore(); }, {root:v, rootMargin:'600px'});
+    IO=new IntersectionObserver(es=>{ if(es[0].isIntersecting) renderMore(); }, {root:v, rootMargin:'80px'});
     IO.observe(sen);
   }
   return;
