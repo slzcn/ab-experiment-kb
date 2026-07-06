@@ -5,8 +5,10 @@ name: 刷新知识库缓存
 #  - 也可在 Actions 页面手动触发（workflow_dispatch）
 on:
   schedule:
-    - cron: '*/10 * * * *'   # 每 10 分钟检查一次数据库是否有变化
+    - cron: '*/10 * * * *'   # 每 10 分钟兜底检查一次数据库是否有变化
   workflow_dispatch:          # 支持手动点按钮立即刷新
+  repository_dispatch:        # 发布文章后由 Supabase Webhook 立即触发
+    types: [article-published]
 
 permissions:
   contents: write             # 允许 Action 提交回仓库
