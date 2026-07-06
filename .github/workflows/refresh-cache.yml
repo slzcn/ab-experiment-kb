@@ -1,0 +1,42 @@
+name: 刷新知识库缓存
+
+# 结合数据库变化自动刷新缓存：
+#  - 定时轮询 Supabase，指纹（篇数+最新更新日期）变了才重生成 kb_cache.json 并提交
+#  - 也可在 Actions 页面手动触发（workflow_dispatch）
+on:
+  schedule:
+    - cron: '*/10 * * * *'   # 每 10 分钟检查一次数据库是否有变化
+  workflow_dispatch:          # 支持手动点按钮立即刷新
+
+permissions:
+  contents: write             # 允许 Action 提交回仓库
+
+concurrency:
+  group: refresh-cache
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 从数据库生成缓存并打包
+        run: |
+          python3 gen_cache.py
+          # bundle 用最新缓存内嵌进 standalone，保持三处一致
+          cp kb_cache.json kb.json
+          python3 bundle.py
+
+      - name: 有变化才提交（数据库指纹驱动）
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "数据库无变化，缓存已是最新，跳过。"
+            exit 0
+          fi
+          git config user.name  "ab-kb-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A
+          git commit -m "自动刷新缓存：同步数据库最新文章 [skip ci]"
+          git push
+          echo "✅ 缓存已更新并推送。"
