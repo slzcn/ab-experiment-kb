@@ -170,8 +170,9 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   /* 阅读态 */
   /* 阅读态：舒适阅读宽度、克制的头部、可呼吸的正文 */
   .reader{max-width:720px;margin:0 auto;padding:0 4px}
-  .rback{display:inline-flex;align-items:center;gap:7px;color:var(--sub);cursor:pointer;
-    font-size:13px;margin-bottom:22px;padding:7px 13px;border-radius:9px;background:var(--panel);transition:.15s}
+  .rtop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+  .rback{display:inline-flex;align-items:center;gap:6px;color:var(--sub);cursor:pointer;
+    font-size:13px;padding:7px 13px;border-radius:9px;background:var(--panel);transition:.15s;white-space:nowrap}
   .rback:hover{color:var(--ink);background:var(--line)}
   .rhead{margin-bottom:28px}
   .rhead .ct-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;
@@ -179,9 +180,9 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .rhead h1{font-size:30px;font-weight:800;margin:0 0 16px;line-height:1.32;letter-spacing:-.01em;color:var(--ink)}
   .rhead .rmeta{display:flex;gap:12px;align-items:center;font-size:12.5px;color:var(--dim);flex-wrap:wrap;
     flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--line)}
-  .copylink{display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none;
+  .copylink{display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none;white-space:nowrap;
     color:var(--brand2);background:rgba(224,99,46,.1);border:1px solid rgba(224,99,46,.25);
-    padding:4px 11px;border-radius:8px;font-size:12px;font-weight:600;transition:.15s}
+    padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;transition:.15s}
   .copylink:hover{background:rgba(224,99,46,.18)}
   .copylink.copied{background:rgba(63,185,80,.14);border-color:rgba(63,185,80,.4);color:#2f9e44}
   .rfoot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);
@@ -739,14 +740,16 @@ async function openDoc(id){
     ? '本文为营销增长中心内部沉淀'
     : '内容整理自火山引擎 DataTester A/B testing 文档库';
   v.innerHTML=`<div class="reader">
-    <div class="rback" id="rback">← 返回列表</div>
+    <div class="rtop">
+      <div class="rback" id="rback">← 返回列表</div>
+      <span class="copylink" id="copyLink" data-id="${d.id}">🔗 复制链接</span>
+    </div>
     <article class="rhead">
       <h1>${esc(d.title)}</h1>
       <div class="rmeta">
         <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
         ${d.updated?`<span>🕐 ${d.updated}</span>`:''}
         <span>📄 ${d.text.length.toLocaleString()} 字</span>
-        <span class="copylink" id="copyLink" data-id="${d.id}">🔗 复制链接</span>
       </div>
     </article>
     <div class="md">${html}</div>
