@@ -270,15 +270,44 @@ let KB=null, CUR="all", Q="", INDEX=[];
 const $=s=>document.querySelector(s);
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+// Supabase 数据源（A方案：文章存数据库，前端实时读）
+const SB={
+  url:'https://cddkniwbhvcbfgkgomtl.supabase.co',
+  key:'***REMOVED_PUBLISHABLE_KEY***'
+};
+let DB_ONLINE=false;   // 是否成功连到数据库
+
+async function sbGet(path){
+  const r=await fetch(SB.url+'/rest/v1/'+path,{headers:{apikey:SB.key,Authorization:'Bearer '+SB.key}});
+  if(!r.ok) throw new Error('DB '+r.status);
+  return r.json();
+}
+// 从数据库拉分类+文章，组装成前端用的 KB 结构
+async function loadFromDB(){
+  const [cats,arts]=await Promise.all([
+    sbGet('ab_categories?select=key,icon,name,descr,ord&order=ord'),
+    sbGet('ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal&order=doc_id')
+  ]);
+  if(!arts.length) throw new Error('数据库暂无文章');
+  return {
+    meta:{total:arts.length, source:'Supabase 实时'},
+    categories:cats.map(c=>({key:c.key,icon:c.icon,name:c.name,desc:c.descr})),
+    docs:arts.map(a=>({id:a.doc_id,title:a.title,cat:a.cat,keywords:a.keywords||'',
+      md:a.md||'',text:a.body_text||'',updated:a.updated||'',url:a.source_url||'',
+      internal:!!a.is_internal}))
+  };
+}
+
 async function boot(){
   try{
-    // 优先读内嵌数据（打包后的 standalone 版），否则 fetch 同目录 kb.json（本地开发）
-    const embed=document.getElementById('kbdata');
-    const raw=embed?embed.textContent.trim():'';
-    if(raw && raw[0]==='{'){          // 已内嵌真实数据(standalone版)
-      KB=JSON.parse(raw);
-    }else{                            // 占位符或空 → fetch 同目录 kb.json(本地开发)
-      const r=await fetch('kb.json'); KB=await r.json();
+    // A方案：优先从 Supabase 实时读取；失败则回退内嵌/本地 kb.json（离线兜底）
+    try{
+      KB=await loadFromDB(); DB_ONLINE=true;
+    }catch(dbErr){
+      const embed=document.getElementById('kbdata');
+      const raw=embed?embed.textContent.trim():'';
+      if(raw && raw[0]==='{'){ KB=JSON.parse(raw); }
+      else{ const r=await fetch('kb.json'); KB=await r.json(); }
     }
   }catch(e){ $('#loading').innerHTML='加载失败：'+e; return; }
   INDEX=KB.docs.map(d=>({d, t:(d.title+' '+d.keywords+' '+d.text).toLowerCase()}));
@@ -288,9 +317,17 @@ async function boot(){
   detectBackend();
 }
 
-// 探测本地发布服务：在则「提交并发布」直接入库，否则回退「导出.md」
-let HAS_BACKEND=false, BACKEND_PUSH=false;
+// 决定「提交并发布」按钮：数据库在线 → 直接写库（线上也能提交）；否则探测本地服务
+let HAS_BACKEND=false, BACKEND_PUSH=false, SUBMIT_MODE='none';  // 'db' | 'local' | 'none'
 async function detectBackend(){
+  if(DB_ONLINE){
+    SUBMIT_MODE='db';
+    $('#edSubmit').style.display='';
+    $('#edDownload').classList.add('ghost2');
+    $('#edDownload').textContent='⬇ 导出';
+    $('#edHint').innerHTML='点「提交并发布」即可直接存入数据库，全网实时可见，无需手动处理文件。';
+    return;
+  }
   try{
     const r=await fetch('/api/health',{cache:'no-store'});
     if(!r.ok) throw 0;
@@ -298,6 +335,7 @@ async function detectBackend(){
     HAS_BACKEND=!!j.ok; BACKEND_PUSH=!!j.push;
   }catch(e){ HAS_BACKEND=false; }
   if(HAS_BACKEND){
+    SUBMIT_MODE='local';
     $('#edSubmit').style.display='';
     $('#edDownload').classList.add('ghost2');
     $('#edDownload').textContent='⬇ 导出';
@@ -320,7 +358,7 @@ function renderFoot(){
       <div class="sf-pill"><b>${total}</b><span>篇知识</span></div>
       <div class="sf-pill"><b>${cats}</b><span>大主题</span></div>
     </div>
-    <div class="sf-line"><span class="sf-dot"></span>知识库在线 · 最近更新 ${latest||'—'}</div>
+    <div class="sf-line"><span class="sf-dot"></span>${DB_ONLINE?'数据库实时':'知识库在线'} · 最近更新 ${latest||'—'}</div>
     <div class="sf-src">
       <b>官方权威 ${official} 篇</b>整理自火山引擎 DataTester，篇篇可溯源原文；
       ${internal?`<b>内部沉淀 ${internal} 篇</b>为团队实战经验。`:'并支持团队持续沉淀内部经验。'}
@@ -500,6 +538,24 @@ function downloadMd(){
   URL.revokeObjectURL(a.href);
 }
 function edMsg(cls,txt){const m=$('#edMsg');m.className='ed-msg '+cls;m.textContent=txt;}
+function plainText(md){
+  return (md||'').replace(/!\[[^\]]*\]\([^)]*\)/g,'').replace(/<[^>]+>/g,'')
+    .replace(/```[\s\S]*?```/g,'').replace(/[#>*`|\-]{1,}/g,' ').replace(/\s+/g,' ').trim();
+}
+// 直接写入 Supabase（A方案主路径）
+async function submitToDB(d){
+  const today=new Date().toISOString().slice(0,10);
+  const row={
+    doc_id: 910000000+Date.now()%90000000,   // 内部文章用9开头唯一id
+    title:d.title, cat:d.cat, keywords:(d.kw+' 内部文章').trim(),
+    md:d.md, body_text:plainText(d.md), updated:today,
+    source_url:'', is_internal:true
+  };
+  const r=await fetch(SB.url+'/rest/v1/ab_articles',{method:'POST',
+    headers:{apikey:SB.key,Authorization:'Bearer '+SB.key,'Content-Type':'application/json',Prefer:'return=minimal'},
+    body:JSON.stringify(row)});
+  if(!r.ok) throw new Error('数据库写入失败 '+r.status);
+}
 async function submitArticle(){
   const d=edData();
   if(!d.title){edMsg('err','请先填写标题');return;}
@@ -507,19 +563,22 @@ async function submitArticle(){
   const btn=$('#edSubmit'); btn.disabled=true;
   edMsg('load','正在提交并发布，请稍候…');
   try{
-    const r=await fetch('/api/publish',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({title:d.title,cat:d.cat,keywords:d.kw,md:d.md})});
-    const j=await r.json();
-    if(!j.ok) throw new Error(j.error||'发布失败');
-    edMsg('ok','✓ '+(j.msg||'已发布')+'。正在刷新…');
-    // 重新拉取 kb.json，刷新列表，让新文章立刻出现
-    const kr=await fetch('kb.json?t='+Date.now(),{cache:'no-store'});
-    KB=await kr.json();
+    if(SUBMIT_MODE==='db'){
+      await submitToDB(d);
+      KB=await loadFromDB();                    // 重新从数据库拉，新文章即时出现
+      edMsg('ok','✓《'+d.title+'》已存入数据库，全网可见。正在刷新…');
+    }else{
+      const r=await fetch('/api/publish',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({title:d.title,cat:d.cat,keywords:d.kw,md:d.md})});
+      const j=await r.json();
+      if(!j.ok) throw new Error(j.error||'发布失败');
+      const kr=await fetch('kb.json?t='+Date.now(),{cache:'no-store'}); KB=await kr.json();
+      edMsg('ok','✓ '+(j.msg||'已发布')+'。正在刷新…');
+    }
     INDEX=KB.docs.map(x=>({d:x,t:(x.title+' '+x.keywords+' '+x.text).toLowerCase()}));
     renderCats(); renderFoot();
     setTimeout(()=>{
       closeEditor();
-      // 清空表单，跳到新文章
       $('#edTitle').value='';$('#edMd').value='';$('#edKw').value='';
       const doc=KB.docs.find(x=>x.title===d.title);
       CUR='all';Q='';$('#q').value='';renderCats();
