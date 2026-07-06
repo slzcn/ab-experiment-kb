@@ -214,6 +214,22 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     box-shadow:0 3px 12px rgba(224,99,46,.32)}
   .write-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(224,99,46,.42)}
   /* 编辑器抽屉 */
+  /* 登录门 */
+  .login-mask{display:none;position:fixed;inset:0;background:rgba(60,50,35,.4);z-index:100;
+    backdrop-filter:blur(3px);align-items:center;justify-content:center}
+  .login-mask.on{display:flex}
+  .login-box{background:var(--bg2);border:1px solid var(--line);border-radius:16px;
+    padding:32px 30px;width:min(360px,90vw);text-align:center;box-shadow:var(--sh)}
+  .login-ic{font-size:34px;margin-bottom:6px}
+  .login-box h3{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:6px}
+  .login-box p{font-size:12.5px;color:var(--sub);margin-bottom:18px}
+  .login-box input{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    border-radius:10px;padding:12px 14px;font-size:16px;text-align:center;letter-spacing:3px;
+    outline:none;transition:.15s;font-family:var(--font)}
+  .login-box input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(224,99,46,.14)}
+  .login-box .ed-btn{width:100%;margin-top:14px}
+  .login-err{color:var(--brand2);font-size:12.5px;min-height:18px;margin-top:10px}
+  .login-tip{font-size:11px;color:var(--dim);margin-top:6px}
   .editor-mask{display:none;position:fixed;inset:0;background:rgba(60,50,35,.34);z-index:80;backdrop-filter:blur(2px)}
   .editor-mask.on{display:block}
   .editor{position:fixed;top:0;right:0;bottom:0;width:min(920px,94vw);z-index:90;
@@ -298,6 +314,19 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   </main>
 </div>
 
+<!-- 写文章登录门 -->
+<div class="login-mask" id="loginMask">
+  <div class="login-box">
+    <div class="login-ic">🔒</div>
+    <h3>发布文章需要口令</h3>
+    <p>写入知识库为受限操作，请输入口令</p>
+    <input id="loginPin" type="password" inputmode="numeric" placeholder="请输入口令" autocomplete="off">
+    <button class="ed-btn" id="loginBtn">进入编辑</button>
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-tip">登录后 24 小时内免再次验证</div>
+  </div>
+</div>
+
 <!-- 写文章编辑器 -->
 <div class="editor-mask" id="editorMask"></div>
 <div class="editor" id="editor">
@@ -367,22 +396,57 @@ async function loadFromDB(){
   };
 }
 
-async function boot(){
-  try{
-    // A方案：优先从 Supabase 实时读取；失败则回退内嵌/本地 kb.json（离线兜底）
-    try{
-      KB=await loadFromDB(); DB_ONLINE=true;
-    }catch(dbErr){
-      const embed=document.getElementById('kbdata');
-      const raw=embed?embed.textContent.trim():'';
-      if(raw && raw[0]==='{'){ KB=JSON.parse(raw); }
-      else{ const r=await fetch('kb.json'); KB=await r.json(); }
-    }
-  }catch(e){ $('#loading').innerHTML='加载失败：'+e; return; }
+function applyKB(kb){
+  KB=kb;
   INDEX=KB.docs.map(d=>({d, t:(d.title+' '+d.keywords+' '+d.text).toLowerCase()}));
-  renderCats(); renderFoot(); render();
-  $('#loading').style.display='none'; $('#app').style.display='grid';
+  renderCats(); renderFoot();
+  // 若正停在列表页则重渲染（阅读态不打断用户）
+  if(!document.querySelector('.reader')) render();
+}
+// 数据“指纹”：篇数 + 最新更新日期，用于判断缓存是否过期
+function kbSig(kb){
+  const ds=kb.docs.map(d=>d.updated).filter(Boolean).sort();
+  return kb.docs.length+'|'+(ds[ds.length-1]||'');
+}
+
+async function boot(){
   marked.setOptions({breaks:true, gfm:true});
+  let shown=false;
+  // 1) 先读静态缓存 kb_cache.json（秒开首屏）
+  try{
+    const r=await fetch('kb_cache.json?_='+Date.now(),{cache:'no-store'});
+    if(r.ok){
+      const cache=await r.json();
+      if(cache&&cache.docs&&cache.docs.length){
+        applyKB(cache);
+        $('#loading').style.display='none'; $('#app').style.display='grid';
+        shown=true;
+      }
+    }
+  }catch(e){}
+  // 2) 后台从数据库拉最新，与缓存比对；有变化则静默刷新
+  try{
+    const fresh=await loadFromDB(); DB_ONLINE=true;
+    if(!shown || kbSig(fresh)!==kbSig(KB)){
+      applyKB(fresh);
+      $('#loading').style.display='none'; $('#app').style.display='grid';
+      shown=true;
+    }else{
+      renderFoot();   // 数据与缓存一致，仅刷新页脚为「数据库实时」
+    }
+  }catch(dbErr){
+    // 数据库连不上：若缓存也没显示成功，回退内嵌/本地 kb.json
+    if(!shown){
+      try{
+        const embed=document.getElementById('kbdata');
+        const raw=embed?embed.textContent.trim():'';
+        if(raw && raw[0]==='{'){ applyKB(JSON.parse(raw)); }
+        else{ const r=await fetch('kb.json'); applyKB(await r.json()); }
+        $('#loading').style.display='none'; $('#app').style.display='grid'; shown=true;
+      }catch(e){}
+    }
+  }
+  if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试'; return; }
   detectBackend();
 }
 
@@ -563,6 +627,36 @@ $('#mtoggle').onclick=()=>{$('#aside').classList.toggle('open');$('#mmask').clas
 $('#mmask').onclick=closeSide;
 
 /* ===== 写文章编辑器 ===== */
+// ===== 写文章登录门（参考 vc 后台方案：口令存 Supabase，24h 免验证）=====
+const AUTH_KEY='ab_kb_auth_ts', AUTH_TTL=24*3600*1000;
+function loggedIn(){
+  try{const ts=+localStorage.getItem(AUTH_KEY); return ts && (Date.now()-ts)<AUTH_TTL;}catch(e){return false;}
+}
+// 点「写文章」：已登录直接进；否则先弹口令门
+function requireAuthThenEdit(){
+  if(loggedIn()){ openEditor(); return; }
+  $('#loginErr').textContent='';
+  $('#loginPin').value='';
+  $('#loginMask').classList.add('on');
+  setTimeout(()=>$('#loginPin').focus(),50);
+}
+async function doLogin(){
+  const pin=$('#loginPin').value.trim();
+  const err=$('#loginErr');
+  if(!pin){ err.textContent='请输入口令'; return; }
+  err.textContent='校验中…';
+  try{
+    // 口令存 Supabase dashboard_auth 表，不写死在前端
+    const rows=await sbGet('dashboard_auth?select=pin&limit=1');
+    const real=(rows&&rows[0]&&rows[0].pin)||'';
+    if(pin===real){
+      try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){}
+      $('#loginMask').classList.remove('on');
+      openEditor();
+    }else{ err.textContent='口令错误'; }
+  }catch(e){ err.textContent='网络错误，请稍后重试'; }
+}
+
 function openEditor(){
   // 填充分类下拉（排除兜底 misc 之外都可选，misc 也留着）
   const sel=$('#edCat');
@@ -657,7 +751,10 @@ async function submitArticle(){
     edMsg('err','✗ '+e.message+'（可改用「导出」兜底）');
   }finally{ btn.disabled=false; }
 }
-$('#writeBtn').onclick=openEditor;
+$('#writeBtn').onclick=requireAuthThenEdit;
+$('#loginBtn').onclick=doLogin;
+$('#loginPin').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+$('#loginMask').addEventListener('click',e=>{if(e.target===$('#loginMask'))$('#loginMask').classList.remove('on');});
 $('#edClose').onclick=closeEditor;
 $('#editorMask').onclick=closeEditor;
 $('#edMd').addEventListener('input',updatePrev);
