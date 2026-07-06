@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>知识库管理后台 · A/B 实验知识库</title>
+<title>内部工具 · A/B 实验知识库</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
   :root{
@@ -101,7 +101,7 @@
   .modal.on{display:block}
   .modal .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
   .modal .mh b{font-size:16px}.modal .x{cursor:pointer;color:var(--dim);font-size:18px}
-  /* 口令门 */
+  /* 访问控制 */
   #gate{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;
     align-items:center;justify-content:center;padding:24px}
   #gate .ic{font-size:40px;margin-bottom:12px}
@@ -111,16 +111,49 @@
   #gateBtn{width:260px;max-width:82vw;margin-top:12px;justify-content:center}
   #gateErr{color:var(--bad);font-size:13px;min-height:18px;margin-top:10px}
   #gate .tip{color:var(--dim);font-size:11.5px;margin-top:18px}
+  /* ============ 移动端适配 ============ */
+  @media(max-width:640px){
+    .wrap{padding:16px 12px 48px}
+    .top{margin-bottom:16px}
+    .top h1{font-size:16px}
+    .top a.back{font-size:12px}
+    /* tab 平分一行、可横滑兜底 */
+    .tabs{gap:6px;margin-bottom:16px}
+    .tab{flex:1 1 0;min-width:0;padding:9px 6px;font-size:12.5px;text-align:center}
+    .panel{padding:16px 14px}
+    .panel h2{font-size:14.5px;flex-wrap:wrap}
+    /* 文章列表：表格→堆叠卡片，操作按钮单独一行、不再被挤出屏 */
+    .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+    .tbl thead{display:none}
+    .tbl tr{border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:10px}
+    .tbl td{border:none;padding:3px 0}
+    .tbl td .tt{font-size:14px}
+    .tbl .acts{text-align:left;margin-top:8px;display:flex;gap:8px}
+    .tbl .acts .btn{flex:0 0 auto}
+    /* 分类配置：每条目上下堆叠，名称输入不再被压扁 */
+    .catrow{flex-wrap:wrap;gap:6px 8px;padding:12px 0}
+    .catrow input{flex:1 1 auto}
+    .catrow .k{flex:1 1 100%;order:1}
+    .catrow .nm{flex:1 1 100%;order:2}
+    .catrow .ic{flex:0 0 64px;order:3}
+    .catrow .od{flex:0 0 80px;order:4}
+    .catrow [data-del]{order:5;margin-left:auto}
+    .cathead{display:none}   /* 小屏隐藏表头行 */
+    /* 弹层编辑：占满、可滚 */
+    .modal{width:100vw;max-width:100vw;height:100%;max-height:100%;top:0;left:0;
+      transform:none;border-radius:0;padding:20px 16px}
+    .drop{padding:26px 16px}
+  }
 </style>
 </head>
 <body>
 
-<!-- 口令门 -->
+<!-- 访问控制 -->
 <div id="gate">
   <div class="ic">🔐</div>
-  <h2>知识库管理后台</h2>
-  <p>管理操作受限，请输入口令</p>
-  <input id="gatePin" type="password" inputmode="numeric" placeholder="输入口令" autocomplete="off">
+  <h2>内部工具</h2>
+  <p>此操作仅限授权用户</p>
+  <input id="gatePin" type="password" inputmode="numeric" placeholder="访问码" autocomplete="off">
   <button class="btn" id="gateBtn">进入后台</button>
   <div id="gateErr"></div>
   <div class="tip">登录后 24 小时内免再次验证</div>
@@ -131,7 +164,7 @@
     <div class="brand">
       <div class="logo">AB</div>
       <div>
-        <h1>知识库管理后台</h1>
+        <h1>内部工具</h1>
         <div class="sub" id="topSub">加载中…</div>
       </div>
     </div>
@@ -233,18 +266,18 @@ async function sbWrite(path,method,body,extra){
 function msg(el,cls,txt){const m=$(el);m.className='msg show '+cls;m.textContent=txt;}
 function msgClear(el){const m=$(el);m.className='msg';m.textContent='';}
 
-// ---- 口令门（复用 dashboard_auth）----
+// ---- 访问控制 ----
 const AUTH_KEY='ab_kb_auth_ts', AUTH_TTL=24*3600*1000;
 function loggedIn(){try{const t=+localStorage.getItem(AUTH_KEY);return t&&(Date.now()-t)<AUTH_TTL;}catch(e){return false;}}
 async function doGate(){
   const pin=$('#gatePin').value.trim(), err=$('#gateErr');
-  if(!pin){err.textContent='请输入口令';return;}
+  if(!pin){err.textContent='请输入访问码';return;}
   err.textContent='校验中…';
   try{
     const rows=await sbGet('dashboard_auth?select=pin&limit=1');
     const real=(rows&&rows[0]&&rows[0].pin)||'';
     if(pin===real){try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){} enter();}
-    else err.textContent='口令错误';
+    else err.textContent='访问码不正确';
   }catch(e){err.textContent='网络错误，请重试';}
 }
 function enter(){$('#gate').style.display='none';$('#app').style.display='';boot();}
@@ -406,7 +439,7 @@ function renderCats(){
   drawCats();
 }
 function drawCats(){
-  $('#catWrap').innerHTML=`<div class="catrow" style="font-size:11.5px;color:var(--dim);font-weight:700;border:none">
+  $('#catWrap').innerHTML=`<div class="catrow cathead" style="font-size:11.5px;color:var(--dim);font-weight:700;border:none">
     <span class="k">key</span><span class="ic">图标</span><span class="nm">名称</span><span class="od">排序</span><span style="flex:0 0 30px"></span></div>`
     +CAT_EDIT.map((c,i)=>`<div class="catrow">
       <input class="k" value="${esc(c.key)}" data-i="${i}" data-f="key">
