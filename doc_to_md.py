@@ -10,24 +10,20 @@
 #   默认输出 markdown 到 stdout；--json 输出 {title, md, images:[存好的文件名]}
 #
 # 依赖（本机已装）：python-pptx / python-docx / PyMuPDF(fitz) / Pillow
-# 被 serve.py 的批量上传接口调用，也可命令行单独跑。
+# 被 admin_server.py 的批量上传接口调用，也可命令行单独跑。
 
-import sys, os, re, json, zipfile, hashlib, io
-import xml.etree.ElementTree as ET
+import sys, os, re, json, hashlib, io
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(HERE, "assets")
+sys.path.insert(0, HERE)
+from kb_common import slugify as _slugify
+
 # 图片线上引用前缀（与最新文章一致：raw.githubusercontent 指向仓库 assets/）
 RAW_BASE = "https://raw.githubusercontent.com/slzcn/ab-experiment-kb/main/assets/"
 
 MIN_IMG_BYTES = 3000      # 小于此的多半是图标/装饰，跳过
 MIN_IMG_WH    = 80        # 任一边小于此像素跳过（去掉小logo/项目符号）
-
-
-def _slugify(s, fallback="doc"):
-    s = re.sub(r'[\\/:*?"<>|\s]+', "-", (s or "").strip()).strip("-").lower()
-    s = re.sub(r'[^a-z0-9一-鿿\-]', "", s)
-    return s[:32] or fallback
 
 
 def _img_ok(data):
@@ -82,10 +78,10 @@ def _pptx(path, slug):
                 t = "\n".join(p.text for p in shp.text_frame.paragraphs if p.text.strip())
                 if t.strip():
                     texts.append(t.strip())
-            if shp.shape_type == 13 or getattr(shp, "image", None):  # PICTURE
+            # 只认 PICTURE(13)：对非图片形状取 .image 会抛异常，别放进条件里求值
+            if shp.shape_type == 13:
                 try:
-                    blob = shp.image.blob
-                    url = _save_img(blob, slug, seen)
+                    url = _save_img(shp.image.blob, slug, seen)
                     if url:
                         pics.append(url)
                 except Exception:
@@ -194,6 +190,25 @@ def _pdf(path, slug):
     return "\n\n".join(md_parts), imgs
 
 
+def _text_fallback(path, ext):
+    """老格式/纯文本：借用 bot 项目的 read_doc.py 只抽文字（无图）。"""
+    # read_doc.py 在同级 feishu-claude-bot 项目里；找不到就报清晰的错
+    cand = os.path.join(os.path.dirname(HERE), "feishu-claude-bot", "scripts")
+    if cand not in sys.path:
+        sys.path.insert(0, cand)
+    try:
+        import read_doc
+    except ImportError:
+        raise RuntimeError(f"{ext} 需要 read_doc.py 抽文字，但未找到（应在 {cand}）")
+    try:
+        secs = read_doc.read(path)
+    except Exception as e:
+        raise RuntimeError(f"文本兜底解析失败：{ext}（{e}）")
+    return "\n\n".join(
+        (f"## {s['section']}\n\n{s['text']}" if s.get("section") not in ("正文", None) else s["text"])
+        for s in secs if s.get("text"))
+
+
 def convert(path, slug=None, title=None):
     ext = os.path.splitext(path)[1].lower()
     base = os.path.splitext(os.path.basename(path))[0]
@@ -206,18 +221,9 @@ def convert(path, slug=None, title=None):
     elif ext == ".pdf":
         md, imgs = _pdf(path, slug)
     else:
-        # 老格式/纯文本：退回 read_doc.py 只抽文字（无图）
-        sys.path.insert(0, os.path.join(os.path.dirname(HERE), "feishu-claude-bot", "scripts"))
-        try:
-            import read_doc
-            secs = read_doc.read(path)
-            md = "\n\n".join(
-                (f"## {s['section']}\n\n{s['text']}" if s.get("section") not in ("正文", None) else s["text"])
-                for s in secs if s.get("text")
-            )
-            imgs = []
-        except Exception as e:
-            raise RuntimeError(f"不支持的格式且文本兜底失败：{ext}（{e}）")
+        # 老格式/纯文本：退回项目工具 read_doc.py 只抽文字（无图）
+        md = _text_fallback(path, ext)
+        imgs = []
     md = re.sub(r"\n{3,}", "\n\n", md).strip()
     return {"title": title, "md": md, "images": imgs}
 

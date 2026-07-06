@@ -16,13 +16,13 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.6;
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.7;
     -webkit-font-smoothing:antialiased}
   .wrap{max-width:1000px;margin:0 auto;padding:22px 18px 60px}
   /* 顶栏 */
   .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap}
   .top .brand{display:flex;align-items:center;gap:10px}
-  .top .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--accent));
+  .top .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand2));
     color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:-.02em}
   .top h1{font-size:18px;font-weight:800;letter-spacing:-.01em}
   .top .sub{font-size:12px;color:var(--dim)}
@@ -47,17 +47,18 @@
     box-shadow:0 0 0 3px rgba(224,99,46,.14)}
   textarea{min-height:180px;resize:vertical;line-height:1.7;font-size:13.5px}
   .btn{display:inline-flex;align-items:center;gap:6px;font-family:inherit;font-size:13.5px;font-weight:700;
-    color:#fff;background:var(--brand);border:1px solid var(--brand);border-radius:9px;padding:10px 20px;
-    cursor:pointer;transition:.15s}
-  .btn:hover{background:var(--brand2);border-color:var(--brand2)}
-  .btn:disabled{opacity:.55;cursor:not-allowed}
-  .btn.ghost{background:transparent;color:var(--sub);border-color:var(--line)}
-  .btn.ghost:hover{color:var(--brand);border-color:var(--brand);background:transparent}
-  .btn.danger{background:transparent;color:var(--bad);border-color:transparent;padding:6px 10px;font-weight:600;font-size:12.5px}
-  .btn.danger:hover{background:rgba(229,72,77,.1)}
+    color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));border:1px solid transparent;
+    border-radius:9px;padding:10px 20px;cursor:pointer;transition:.15s;
+    box-shadow:0 3px 12px rgba(224,99,46,.28)}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(224,99,46,.4)}
+  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+  .btn.ghost{background:transparent;color:var(--sub);border-color:var(--line);box-shadow:none}
+  .btn.ghost:hover{color:var(--brand);border-color:var(--brand);background:transparent;transform:none;box-shadow:none}
+  .btn.danger{background:transparent;color:var(--bad);border-color:transparent;padding:6px 10px;font-weight:600;font-size:12.5px;box-shadow:none}
+  .btn.danger:hover{background:rgba(229,72,77,.1);transform:none;box-shadow:none}
   .msg{margin-top:14px;font-size:13px;border-radius:9px;padding:0}
   .msg.show{padding:11px 14px}
-  .msg.ok{background:rgba(63,185,80,.12);color:#2f7a38}
+  .msg.ok{background:rgba(63,185,80,.12);color:#2f9e44}
   .msg.err{background:rgba(229,72,77,.1);color:var(--bad)}
   .msg.load{background:var(--panel);color:var(--sub)}
   /* 拖拽上传区 */
@@ -336,6 +337,7 @@ $('#upBtn').onclick=async()=>{
     });
     msg('#upMsg','ok',`${j.msg} ${j.push_log||''}`);
     FILES=[];
+    renderFileList();          // 清掉旧文件行，避免残留 UI 与空 FILES 错位
     setTimeout(async()=>{await loadData();},500);
   }catch(e){
     msg('#upMsg','err','✗ '+e.message);
@@ -373,6 +375,7 @@ function openEdit(id){
 }
 function closeEdit(){$('#mask').classList.remove('on');$('#modal').classList.remove('on');}
 $('#modalX').onclick=closeEdit;$('#edCancel').onclick=closeEdit;$('#mask').onclick=closeEdit;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modal').classList.contains('on'))closeEdit();});
 $('#edSave').onclick=async()=>{
   const id=+$('#edId').value;
   const title=$('#edTitle').value.trim();
@@ -432,7 +435,7 @@ $('#catSave').onclick=async()=>{
     // upsert 现有
     await sbWrite('ab_categories','POST',
       CAT_EDIT.map(c=>({key:c.key.trim(),icon:c.icon||'📁',name:c.name.trim(),descr:c.descr||'',ord:c.ord||0})),
-      {Prefer:'resolution=merge-duplicates'});
+      {Prefer:'resolution=merge-duplicates,return=minimal'});
     msg('#catMsg','ok','✓ 分类已保存，约十几秒后线上同步');
     await loadData();
   }catch(e){msg('#catMsg','err','✗ '+e.message);}

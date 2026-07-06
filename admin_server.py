@@ -14,7 +14,7 @@
 #
 # 安全：只在本机 127.0.0.1 监听，不对外。公开站没有这个服务，也就没有上传转码入口。
 
-import json, os, re, sys, io, subprocess, datetime, time
+import os, sys, re, json, tempfile, datetime, time
 import http.server, socketserver
 
 HERE   = os.path.dirname(os.path.abspath(__file__))
@@ -23,34 +23,13 @@ PORT   = 8799
 PUSH   = "--push" in sys.argv
 
 sys.path.insert(0, HERE)
-import doc_to_md  # 同目录转码器
+import doc_to_md                       # 同目录转码器
+from kb_common import plain_text, slugify, git, Supabase
 
-# Supabase（与前端同一套 publishable key，可写）
-_cfg = json.load(open(os.path.join(HERE, "sb_config.json"), encoding="utf-8"))
-SB_URL, SB_KEY = _cfg["url"], _cfg["key"]
+SB = Supabase()                        # 从 sb_config.json 读 url+key，统一错误处理
 
 ALLOWED_EXT = {".pptx", ".docx", ".pdf", ".ppt", ".doc", ".xlsx", ".xls",
                ".csv", ".txt", ".md", ".markdown", ".rtf", ".html", ".htm"}
-
-
-def _slug_title(title, cat):
-    safe = re.sub(r'[\\/:*?"<>|\s]+', "-", (title or "").strip()).strip("-")[:32] or "doc"
-    return f"{cat}-{safe}"
-
-
-def _plain_text(md):
-    md = md or ""
-    md = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", md)      # 去图片
-    md = re.sub(r"```[\s\S]*?```", "", md)             # 去代码块
-    md = re.sub(r"<[^>]+>", "", md)
-    md = re.sub(r"[#>*`|\-]{1,}", " ", md)
-    return re.sub(r"\s+", " ", md).strip()
-
-
-def _git(*args):
-    return subprocess.run(["git", "-C", HERE, *args],
-                          capture_output=True, text=True,
-                          env={**os.environ, "GIT_TERMINAL_PROMPT": "0"})
 
 
 def _push_assets(files, note):
@@ -59,26 +38,14 @@ def _push_assets(files, note):
         return "无图片，跳过推送"
     if not PUSH:
         return f"已存本地 assets/（{len(files)} 张），未推送（加 --push 可推线上）"
-    _git("add", "assets")
-    r = _git("commit", "-m", f"上传文档配图：{note}")
+    git("add", "assets")
+    r = git("commit", "-m", f"上传文档配图：{note}")
     if "nothing to commit" in (r.stdout + r.stderr):
         return "图片已在仓库，无需重复提交"
-    p = _git("push", "origin", "main")
+    p = git("push", "origin", "main")
     if p.returncode != 0:
-        return f"⚠️ 图片 push 失败：{(p.stderr or p.stdout)[-200:]}（图片已在本地，稍后可手动 push）"
-    return f"✅ {len(files)} 张图片已推送到仓库"
-
-
-def _sb_insert(row):
-    import urllib.request
-    body = json.dumps(row, ensure_ascii=False).encode("utf-8")
-    req = urllib.request.Request(
-        SB_URL + "/rest/v1/ab_articles", data=body, method="POST",
-        headers={"apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY,
-                 "Content-Type": "application/json", "Prefer": "return=minimal"})
-    with urllib.request.urlopen(req) as resp:
-        if resp.status not in (200, 201, 204):
-            raise RuntimeError(f"数据库写入 HTTP {resp.status}")
+        return f"图片 push 失败：{(p.stderr or p.stdout)[-200:]}（图片已在本地，稍后可手动 push）"
+    return f"{len(files)} 张图片已推送到仓库"
 
 
 # ---------- 极简 multipart/form-data 解析（Py3.13+ 移除了 cgi 模块）----------
@@ -151,37 +118,39 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return self._json(400, {"ok": False, "error": "未收到文件"})
 
             results, all_imgs = [], []
-            for f in files:
+            today = datetime.date.today().isoformat()
+            # doc_id 用毫秒基数 + 文件序号偏移，保证同批内不撞（旧的"取模+sleep"会周期回绕）；
+            # 再用 upsert(on_conflict=doc_id) 兜底，撞到已有 id 也不会 500。
+            base = 910000000 + int(time.time() * 1000) % 80000000
+            for idx, f in enumerate(files):
                 fn = f["filename"]
                 ext = os.path.splitext(fn)[1].lower()
                 title = os.path.splitext(os.path.basename(fn))[0]
                 if ext not in ALLOWED_EXT:
                     results.append({"file": fn, "ok": False, "error": f"不支持的格式 {ext}"})
                     continue
-                # 落地临时文件供转码器读取
-                tmp = os.path.join("/tmp", f"abkb_{int(time.time()*1000)}_{re.sub(r'[^A-Za-z0-9._-]','_',fn)}")
-                with open(tmp, "wb") as w:
-                    w.write(f["data"])
+                # 落地临时文件供转码器读取（tempfile 跨平台，保留原扩展名）
+                fd, tmp = tempfile.mkstemp(prefix="abkb_", suffix=ext)
                 try:
-                    slug = _slug_title(title, default_cat)
+                    with os.fdopen(fd, "wb") as w:
+                        w.write(f["data"])
+                    slug = slugify(f"{default_cat}-{title}")
                     conv = doc_to_md.convert(tmp, slug=slug, title=title)
                     md = conv["md"]
                     if not md.strip():
                         results.append({"file": fn, "ok": False, "error": "未抽取到内容"})
                         continue
-                    today = datetime.date.today().isoformat()
-                    doc_id = 910000000 + int(time.time() * 1000) % 90000000
-                    _sb_insert({
+                    doc_id = base + idx
+                    SB.insert("ab_articles", {
                         "doc_id": doc_id, "title": title, "cat": default_cat,
                         "keywords": (title + " 上传文档").strip(),
-                        "md": md, "body_text": _plain_text(md),
+                        "md": md, "body_text": plain_text(md),
                         "updated": today, "source_url": "", "is_internal": True,
-                    })
+                    }, upsert_on="doc_id")
                     all_imgs += conv["images"]
                     results.append({"file": fn, "ok": True, "title": title,
                                     "doc_id": doc_id, "images": len(conv["images"]),
                                     "chars": len(md)})
-                    time.sleep(0.002)   # 保证 doc_id 唯一
                 except Exception as e:
                     results.append({"file": fn, "ok": False, "error": str(e)})
                 finally:
@@ -205,7 +174,7 @@ if __name__ == "__main__":
     os.chdir(HERE)
     with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as httpd:
         tip = "图片推送 GitHub（线上生效）" if PUSH else "图片仅存本地（不推线上）"
-        print(f"🛠  管理后台服务已启动（{tip}）")
+        print(f"管理后台服务已启动（{tip}）")
         print(f"   打开：http://localhost:{PORT}/admin.html")
         print(f"   批量上传文档 → 自动转码成带图文章入库。Ctrl+C 停止。")
         try:

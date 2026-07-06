@@ -361,27 +361,11 @@ const SB={
   url:'https://cddkniwbhvcbfgkgomtl.supabase.co',
   key:'***REMOVED_PUBLISHABLE_KEY***'
 };
-let DB_ONLINE=false;   // 是否成功连到数据库
 
 async function sbGet(path){
   const r=await fetch(SB.url+'/rest/v1/'+path,{headers:{apikey:SB.key,Authorization:'Bearer '+SB.key}});
   if(!r.ok) throw new Error('DB '+r.status);
   return r.json();
-}
-// 从数据库拉分类+文章，组装成前端用的 KB 结构
-async function loadFromDB(){
-  const [cats,arts]=await Promise.all([
-    sbGet('ab_categories?select=key,icon,name,descr,ord&order=ord'),
-    sbGet('ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal&order=doc_id')
-  ]);
-  if(!arts.length) throw new Error('数据库暂无文章');
-  return {
-    meta:{total:arts.length, source:'Supabase 实时'},
-    categories:cats.map(c=>({key:c.key,icon:c.icon,name:c.name,desc:c.descr})),
-    docs:arts.map(a=>({id:a.doc_id,title:a.title,cat:a.cat,keywords:a.keywords||'',
-      md:a.md||'',text:a.body_text||'',updated:a.updated||'',url:a.source_url||'',
-      internal:!!a.is_internal}))
-  };
 }
 
 function applyKB(kb){
@@ -390,11 +374,6 @@ function applyKB(kb){
   renderCats(); renderFoot();
   // 若正停在列表页则重渲染（阅读态不打断用户）
   if(!document.querySelector('.reader')) render();
-}
-// 数据“指纹”：篇数 + 最新更新日期，用于判断缓存是否过期
-function kbSig(kb){
-  const ds=kb.docs.map(d=>d.updated).filter(Boolean).sort();
-  return kb.docs.length+'|'+(ds[ds.length-1]||'');
 }
 
 async function boot(){
@@ -427,39 +406,18 @@ async function boot(){
   }
   if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试'; return; }
   $('#loading').style.display='none'; $('#app').style.display='grid';
-  detectBackend();
+  setupSubmit();
   // 支持 URL 直达某篇文章：#doc=<id>
   const m=/#doc=(\d+)/.exec(location.hash||'');
   if(m){ const id=+m[1]; if(KB.docs.some(d=>d.id===id)) openDoc(id); }
 }
 
-// 决定「提交并发布」按钮：数据库在线 → 直接写库（线上也能提交）；否则探测本地服务
-let HAS_BACKEND=false, BACKEND_PUSH=false, SUBMIT_MODE='none';  // 'db' | 'local' | 'none'
-async function detectBackend(){
-  // 页面纯静态读取，但“写文章提交”仍写入数据库（提交后由 webhook 触发重生成静态文件）
-  if(SB && SB.url && SB.key){
-    SUBMIT_MODE='db';
-    $('#edSubmit').style.display='';
-    $('#edDownload').classList.add('ghost2');
-    $('#edDownload').textContent='⬇ 导出';
-    $('#edHint').innerHTML='点「提交并发布」即可存入数据库，稍后自动同步到页面（约十几秒），无需手动处理文件。';
-    return;
-  }
-  try{
-    const r=await fetch('/api/health',{cache:'no-store'});
-    if(!r.ok) throw 0;
-    const j=await r.json();
-    HAS_BACKEND=!!j.ok; BACKEND_PUSH=!!j.push;
-  }catch(e){ HAS_BACKEND=false; }
-  if(HAS_BACKEND){
-    SUBMIT_MODE='local';
-    $('#edSubmit').style.display='';
-    $('#edDownload').classList.add('ghost2');
-    $('#edDownload').textContent='⬇ 导出';
-    $('#edHint').innerHTML='点「提交并发布」即可直接入库'
-      +(BACKEND_PUSH?'并推送到线上':'（本地预览，刷新即见）')
-      +'，无需手动处理文件。';
-  }
+// 写文章提交：页面纯静态读取，但提交直接写 Supabase（之后由 Action 重生成静态文件同步）
+function setupSubmit(){
+  $('#edSubmit').style.display='';
+  $('#edDownload').classList.add('ghost2');
+  $('#edDownload').textContent='⬇ 导出';
+  $('#edHint').innerHTML='点「提交并发布」即可存入数据库，稍后自动同步到页面（约十几秒），无需手动处理文件。';
 }
 
 function renderFoot(){
@@ -799,7 +757,7 @@ function plainText(md){
   return (md||'').replace(/!\[[^\]]*\]\([^)]*\)/g,'').replace(/<[^>]+>/g,'')
     .replace(/```[\s\S]*?```/g,'').replace(/[#>*`|\-]{1,}/g,' ').replace(/\s+/g,' ').trim();
 }
-// 直接写入 Supabase（A方案主路径）
+// 直接写入 Supabase，返回写入的行（含生成的 id，供本地内存同步复用同一 id）
 async function submitToDB(d){
   const today=new Date().toISOString().slice(0,10);
   const row={
@@ -808,10 +766,12 @@ async function submitToDB(d){
     md:d.md, body_text:plainText(d.md), updated:today,
     source_url:'', is_internal:true
   };
-  const r=await fetch(SB.url+'/rest/v1/ab_articles',{method:'POST',
-    headers:{apikey:SB.key,Authorization:'Bearer '+SB.key,'Content-Type':'application/json',Prefer:'return=minimal'},
+  const r=await fetch(SB.url+'/rest/v1/ab_articles?on_conflict=doc_id',{method:'POST',
+    headers:{apikey:SB.key,Authorization:'Bearer '+SB.key,'Content-Type':'application/json',
+      Prefer:'resolution=merge-duplicates,return=minimal'},
     body:JSON.stringify(row)});
   if(!r.ok) throw new Error('数据库写入失败 '+r.status);
+  return row;
 }
 async function submitArticle(){
   const d=edData();
@@ -820,35 +780,25 @@ async function submitArticle(){
   const btn=$('#edSubmit'); btn.disabled=true;
   edMsg('load','正在提交并发布，请稍候…');
   try{
-    if(SUBMIT_MODE==='db'){
-      await submitToDB(d);
-      // 纯静态：不回连数据库。本地把新文章插入内存，让提交者当场看到；
-      // 线上静态文件由数据库变化触发 GitHub Action 重新生成（约十几秒后全网同步）。
-      const today=new Date().toISOString().slice(0,10);
-      KB.docs.push({id:910000000+Date.now()%90000000,title:d.title,cat:d.cat,
-        keywords:(d.kw+' 内部文章').trim(),md:d.md,text:plainText(d.md),
-        updated:today,url:'',internal:true});
-      KB.meta.total=KB.docs.length;
-      edMsg('ok','✓《'+d.title+'》已提交，约十几秒后自动同步到线上。');
-    }else{
-      const r=await fetch('/api/publish',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({title:d.title,cat:d.cat,keywords:d.kw,md:d.md})});
-      const j=await r.json();
-      if(!j.ok) throw new Error(j.error||'发布失败');
-      const kr=await fetch('kb.json?t='+Date.now(),{cache:'no-store'}); KB=await kr.json();
-      edMsg('ok','✓ '+(j.msg||'已发布')+'。正在刷新…');
-    }
+    const row=await submitToDB(d);
+    // 纯静态：不回连数据库。用刚写库的 row（同一 id）插入内存，让提交者当场看到；
+    // 线上静态文件由数据库变化触发 GitHub Action 重新生成（约十几秒后全网同步）。
+    const newId=row.doc_id;
+    KB.docs.push({id:newId,title:d.title,cat:d.cat,
+      keywords:row.keywords,md:d.md,text:row.body_text,
+      updated:row.updated,url:'',internal:true});
+    KB.meta.total=KB.docs.length;
+    edMsg('ok','《'+d.title+'》已提交，约十几秒后自动同步到线上。');
     INDEX=KB.docs.map(x=>({d:x,t:(x.title+' '+x.keywords+' '+x.text).toLowerCase()}));
     renderCats(); renderFoot();
     setTimeout(()=>{
       closeEditor();
       $('#edTitle').value='';$('#edMd').value='';$('#edKw').value='';
-      const doc=KB.docs.find(x=>x.title===d.title);
       CUR='all';Q='';$('#q').value='';renderCats();
-      if(doc){render();openDoc(doc.id);} else render();
+      render(); openDoc(newId);   // 用确定的 id 打开，避免同名标题匹配错文章
     },700);
   }catch(e){
-    edMsg('err','✗ '+e.message+'（可改用「导出」兜底）');
+    edMsg('err','提交失败：'+e.message+'（可改用「导出」兜底）');
   }finally{ btn.disabled=false; }
 }
 $('#writeBtn').onclick=requireAuthThenEdit;

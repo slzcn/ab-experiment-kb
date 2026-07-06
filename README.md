@@ -14,20 +14,13 @@
 
 ## 新增一篇文章 → 一步更新线上
 
-### 方式一：网页点一下直接提交（推荐，零文件操作）
+### 方式一：网页直接写（推荐，零文件操作）
 
-在你自己的电脑上启动本地发布服务，然后在网页里写完点「提交并发布」就直接入库、直接上线：
-```bash
-cd ~/ab-experiment-kb
-python3 serve.py --push        # 提交即推送线上（去掉 --push 则只入本地）
-# 也可再加 --miaoda 同步飞书妙搭
-```
-按提示打开 `http://localhost:8799` → 点左下「✍ 写一篇新文章」→ 填标题/选分类/写正文
-→ 点「✓ 提交并发布」。文章自动写入 `articles/`、合并打包、（--push 时）推送 GitHub Pages，
-新文章立刻出现在页面上，全程不下载、不碰文件。
+打开线上或本地的知识库页面，点左下「✍ 写一篇新文章」→ 填标题/选分类/写 Markdown
+→ 点「✓ 提交并发布」。文章直接写入 Supabase，约十几秒后 GitHub Action 重生成静态文件、
+全网同步。全程不下载、不碰文件。
 
-> 这个写入口只在本机 localhost 监听、不对外。线上公开版没有它，编辑器会自动回退成「导出 .md」，
-> 所以公网访客无法直接改你的库——安全。
+> 需要上传文档转码 / 批量管理，见下方「管理后台」。
 
 ### 方式二：命令行（适合批量 / 已有 md）
 
@@ -95,7 +88,7 @@ python3 publish.py --push
 | `admin.html` | ★ 管理后台：口令进入，批量上传文档转码 / 文章增删改 / 分类配置 |
 | `admin_server.py` | ★ 后台本地服务：批量上传文档 → 转码带图入库（--push 推图片到仓库） |
 | `doc_to_md.py` | 文档→Markdown 转码器（抽文字+图，图存 assets/），被后台调用也可单跑 |
-| `serve.py` | 本地发布服务：网页点「提交并发布」直接入库（--push 直推线上） |
+| `kb_common.py` | 公共工具：纯文本提取 / slug / git / Supabase REST 客户端（各脚本复用）|
 | `publish.py` | 一键发布：articles → kb.json → 打包 → --push 推线上 |
 | `bundle.py` | 打包 dev.html+数据 → index.html / dist/index.html |
 | `crawl.py` / `sync_volc.py` | 全量爬取 / 增量同步火山文档 |

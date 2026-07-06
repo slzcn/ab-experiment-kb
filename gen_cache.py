@@ -5,20 +5,14 @@
 #   kb_docs.json   id → md 正文映射 → 打开某篇文章时按需取（也可整体回退）
 #   kb_cache.json  完整数据（含 md）→ 兼容/离线回退，bundle 内嵌用
 # 发新文章后由 GitHub Action 重新生成。
-import json, os, urllib.request
+import json, os
+from kb_common import Supabase
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-cfg  = json.load(open(os.path.join(HERE, "sb_config.json"), encoding="utf-8"))
-URL, KEY = cfg["url"].rstrip("/"), cfg["key"]
+SB = Supabase()
 
-def sb_get(pathq):
-    req = urllib.request.Request(f"{URL}/rest/v1/{pathq}",
-        headers={"apikey": KEY, "Authorization": f"Bearer {KEY}"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.loads(r.read().decode("utf-8"))
-
-cats = sb_get("ab_categories?select=key,icon,name,descr,ord&order=ord")
-arts = sb_get("ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal&order=doc_id")
+cats = SB.get("ab_categories?select=key,icon,name,descr,ord&order=ord")
+arts = SB.get("ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal&order=doc_id")
 
 categories = [{"key":c["key"],"icon":c["icon"],"name":c["name"],"desc":c.get("descr","")} for c in cats]
 
