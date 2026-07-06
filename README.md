@@ -51,6 +51,31 @@ python3 publish.py --push --miaoda   # 想同时更新飞书妙搭就多加 --mi
 
 > `publish.py` 幂等：同名文件重发只更新、不重复。文章标 `internal`，火山官方同步不会覆盖它。
 
+## 管理后台（增删改 + 批量上传文档转码）
+
+一个独立的管理后台 `admin.html`，口令进入（复用 `dashboard_auth` 表的 pin，24h 免验证），
+顶部三个 tab：
+
+- **📤 批量上传**：拖入 PPT / Word / PDF / Excel 等文档，后台自动抽取正文**并连同文档里的图片**
+  转成带图 Markdown 文章入库。图片存到 `assets/` 并推到仓库，md 用 `raw.githubusercontent` 引用
+  （与手工发布的文章图片模型一致）。
+- **📄 文章管理**：列出全部文章，可搜索、在线编辑（标题/分类/关键词/正文）、删除。
+- **🗂 分类配置**：增删改分类（key / 图标 / 名称 / 排序）。
+
+文章管理和分类配置是纯数据操作，直连 Supabase（打开线上 `admin.html` 也能用）。
+**但批量上传转码必须连本地后台**——解析文档二进制、抽图、git push 图片都需要本机能力：
+
+```bash
+cd ~/ab-experiment-kb
+python3 admin_server.py --push     # 转码后把图片推到仓库，线上图片 URL 生效（推荐）
+# 去掉 --push 则图片只存本地 assets/，用于本地预览转码效果
+```
+按提示打开 `http://localhost:8799/admin.html`。上传后文章写入数据库，约十几秒后 GitHub Action
+重生成静态文件，全网同步。
+
+> 后台只在本机 localhost 监听、不对外。公开站没有 `admin_server.py`，也就没有上传转码入口——安全。
+> 主站左下角「⚙ 管理后台」可进入。
+
 ## 同步火山官方最新文档
 ```bash
 python3 sync_volc.py     # 拉火山最新
@@ -67,7 +92,10 @@ python3 publish.py --push
 | `dev.html` | 前端源码模板（读同目录 kb.json，仅本地开发调试用） |
 | `articles/` | **放新文章的目录**（每篇一个带 frontmatter 的 .md） |
 | `kb.json` | 知识库数据 |
-| `serve.py` | ★ 本地发布服务：网页点「提交并发布」直接入库（--push 直推线上） |
+| `admin.html` | ★ 管理后台：口令进入，批量上传文档转码 / 文章增删改 / 分类配置 |
+| `admin_server.py` | ★ 后台本地服务：批量上传文档 → 转码带图入库（--push 推图片到仓库） |
+| `doc_to_md.py` | 文档→Markdown 转码器（抽文字+图，图存 assets/），被后台调用也可单跑 |
+| `serve.py` | 本地发布服务：网页点「提交并发布」直接入库（--push 直推线上） |
 | `publish.py` | 一键发布：articles → kb.json → 打包 → --push 推线上 |
 | `bundle.py` | 打包 dev.html+数据 → index.html / dist/index.html |
 | `crawl.py` / `sync_volc.py` | 全量爬取 / 增量同步火山文档 |

@@ -169,6 +169,9 @@
     background:linear-gradient(135deg,var(--brand),var(--brand2));
     box-shadow:0 3px 12px rgba(224,99,46,.32)}
   .write-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(224,99,46,.42)}
+  .admin-link{display:block;margin:2px 14px 4px;text-align:center;font-size:12px;color:var(--dim);
+    text-decoration:none;transition:color .15s}
+  .admin-link:hover{color:var(--brand)}
   /* 编辑器抽屉 */
   /* 登录门 */
   .login-mask{display:none;position:fixed;inset:0;background:rgba(60,50,35,.4);z-index:100;
@@ -282,6 +285,7 @@
     </div>
     <div class="cats" id="cats"></div>
     <div class="write-btn" id="writeBtn">✍ 写一篇新文章</div>
+    <a class="admin-link" href="admin.html">⚙ 管理后台</a>
     <div class="side-foot" id="sideFoot"></div>
   </aside>
 
