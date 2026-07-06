@@ -71,6 +71,16 @@
   .body{flex:1;overflow-y:auto;padding:22px 34px 60px;scroll-behavior:smooth}
   /* 列表卡片 */
   .list{display:grid;gap:12px;max-width:1000px}
+  /* 瀑布流新卡片淡入上浮 */
+  @keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .card.new{animation:cardIn .42s cubic-bezier(.22,.61,.36,1) both}
+  /* 底部“加载更多”指示器 */
+  .loadmore{max-width:1000px;text-align:center;color:var(--dim);font-size:12.5px;
+    padding:18px 0 8px;display:flex;align-items:center;justify-content:center;gap:9px}
+  .loadmore .dot{width:15px;height:15px;border:2px solid var(--line);border-top-color:var(--brand);
+    border-radius:50%;animation:sp .7s linear infinite}
+  .loadmore.done{color:var(--dim);opacity:.7}
+  .loadmore.done .dot{display:none}
   .card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);
     padding:16px 18px;cursor:pointer;transition:.16s;position:relative;overflow:hidden}
   .card:hover{border-color:var(--brand);transform:translateY(-1px);box-shadow:var(--sh)}
@@ -521,11 +531,22 @@ function bindCards(scope){
 }
 function renderMore(){
   const list=$('#kbList'); if(!list) return;
+  const start=SHOWN;
   const next=RES.slice(SHOWN, SHOWN+PAGE);
   list.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
   SHOWN+=next.length; bindCards(list);
+  // 让本批新卡片错落淡入（可见的瀑布流效果）
+  const cards=list.querySelectorAll('.card');
+  for(let i=start;i<SHOWN;i++){ const el=cards[i]; if(el){ el.classList.add('new'); el.style.animationDelay=((i-start)*45)+'ms'; } }
+  // 更新底部指示器：还有更多→转圈加载中；已全部→显示总数
   const sen=$('#sentinel');
-  if(sen){ if(SHOWN>=RES.length) sen.remove(); }
+  if(sen){
+    if(SHOWN>=RES.length){
+      sen.className='loadmore done'; sen.innerHTML='— 已显示全部 '+RES.length+' 篇 —'; sen.removeAttribute('style');
+    }else{
+      sen.className='loadmore'; sen.innerHTML='<span class="dot"></span>下滑加载更多（已显示 '+SHOWN+' / '+RES.length+'）';
+    }
+  }
 }
 function render(){
   RES=match(); SHOWN=0;
