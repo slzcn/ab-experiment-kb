@@ -109,6 +109,11 @@
     padding:7px 15px;border-radius:9px;font-size:12.5px;font-weight:600;transition:.15s;
     box-shadow:0 3px 12px rgba(224,99,46,.3)}
   .srclink:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(224,99,46,.45)}
+  .copylink{display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none;
+    color:var(--brand2);background:rgba(224,99,46,.1);border:1px solid rgba(224,99,46,.25);
+    padding:5px 12px;border-radius:9px;font-size:12px;font-weight:600;transition:.15s}
+  .copylink:hover{background:rgba(224,99,46,.18)}
+  .copylink.copied{background:rgba(63,185,80,.14);border-color:rgba(63,185,80,.4);color:#2f9e44}
   /* markdown 正文 */
   .md{font-size:15px;line-height:1.85;color:#3d3a34}
   .md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;
@@ -617,6 +622,7 @@ async function openDoc(id){
       <div class="rmeta">
         ${d.updated?`<span>🕐 ${isVolc?'官方最后更新':'更新于'} ${d.updated}</span>`:''}
         <span>📄 ${d.text.length.toLocaleString()} 字</span>
+        <span class="copylink" id="copyLink" data-id="${d.id}">🔗 复制本文链接</span>
         ${srcBtn}
       </div>
     </div>
@@ -628,6 +634,20 @@ async function openDoc(id){
   v.scrollTop=0;
   try{ if(location.hash!=='#doc='+id) history.replaceState(null,'','#doc='+id); }catch(e){}
   $('#rback').onclick=()=>{ try{history.replaceState(null,'',location.pathname+location.search);}catch(e){} render(); };
+  const cl=$('#copyLink');
+  if(cl) cl.onclick=async()=>{
+    const url=location.origin+location.pathname+'#doc='+cl.dataset.id;
+    let ok=false;
+    try{ await navigator.clipboard.writeText(url); ok=true; }
+    catch(e){
+      try{ const ta=document.createElement('textarea'); ta.value=url; ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select(); ok=document.execCommand('copy'); ta.remove(); }catch(_){}
+    }
+    const old=cl.innerHTML;
+    cl.innerHTML = ok ? '✅ 链接已复制' : '⚠️ 复制失败，长按地址栏';
+    cl.classList.add('copied');
+    setTimeout(()=>{ cl.innerHTML=old; cl.classList.remove('copied'); }, 1800);
+  };
 }
 
 // 搜索
