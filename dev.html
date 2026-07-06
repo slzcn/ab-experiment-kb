@@ -127,8 +127,13 @@
   .md a{color:var(--accent);border-bottom:1px solid rgba(192,122,46,.4)}
   .md ul,.md ol{margin:.8em 0;padding-left:1.5em}
   .md li{margin:.45em 0}
-  .md img{max-width:100%;border-radius:12px;margin:20px 0;border:1px solid var(--line);display:block;
+  /* 配图：按高度约束，不放大糊图，居中；成对图并排 */
+  .md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);
     box-shadow:0 4px 16px rgba(120,100,70,.1)}
+  .md p>img{display:block;margin:20px auto;max-height:460px;width:auto}
+  /* 相邻配图并排成一行（由 JS 包进 .imrow） */
+  .imrow{display:flex;gap:14px;justify-content:center;align-items:flex-start;flex-wrap:wrap;margin:20px 0}
+  .imrow img{margin:0;max-height:520px;width:auto;max-width:calc(50% - 7px);flex:0 1 auto}
   .md blockquote{border-left:3px solid var(--brand);background:var(--panel);
     padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
   .md hr{border:none;border-top:1px solid var(--line);margin:2em 0}
@@ -242,7 +247,10 @@
     .md{font-size:15.5px;line-height:1.85}
     .md h2{font-size:18px}
     .md h3{font-size:16px}
-    .md img{margin:16px 0;border-radius:10px}
+    .md img{border-radius:10px}
+    .md p>img{margin:16px auto;max-height:70vh}
+    .imrow{gap:10px;margin:16px 0}
+    .imrow img{max-height:56vh;max-width:calc(50% - 5px)}
     .md pre{font-size:12px}
     .rfoot{margin-top:36px}
     .md table{font-size:12.5px}
@@ -606,6 +614,38 @@ async function getMd(id){
   return (DOCS_CACHE&&DOCS_CACHE[String(id)])||'（正文加载失败，请刷新重试）';
 }
 
+// 把正文里“相邻的多张图”并排成一行(.imrow)。
+// marked(breaks:true) 会把连续图片行渲染成 <img><br><img>，需按同级相邻 img 分组。
+function groupImages(scope){
+  const md=(scope||document).querySelector('.md'); if(!md) return;
+  const imgs=[...md.querySelectorAll('img')];
+  const seen=new Set();
+  imgs.forEach(img=>{
+    if(seen.has(img)) return;
+    // 收集与该 img 同父、仅被 <br> 或空白文本隔开的连续 img
+    const run=[img]; let n=img.nextSibling;
+    while(n){
+      if(n.nodeType===3 && !n.textContent.trim()){ n=n.nextSibling; continue; }
+      if(n.nodeType===1 && n.tagName==='BR'){ n=n.nextSibling; continue; }
+      if(n.nodeType===1 && n.tagName==='IMG'){ run.push(n); n=n.nextSibling; continue; }
+      break;
+    }
+    if(run.length>=2){
+      const row=document.createElement('div'); row.className='imrow';
+      img.parentNode.insertBefore(row, img);
+      // 移走这些 img 及它们之间的 <br>
+      run.forEach((im,idx)=>{
+        let br=im.nextSibling;
+        row.appendChild(im); seen.add(im);
+        // 清掉紧跟的 <br>（并排后不需要换行）
+        while(br && ((br.nodeType===1&&br.tagName==='BR')||(br.nodeType===3&&!br.textContent.trim()))){
+          const del=br; br=br.nextSibling; if(del.parentNode) del.parentNode.removeChild(del);
+        }
+      });
+    } else { seen.add(img); }
+  });
+}
+
 async function openDoc(id){
   const d=KB.docs.find(x=>x.id===id); if(!d)return;
   const c=catOf(d.cat);
@@ -633,6 +673,7 @@ async function openDoc(id){
     <div class="rfoot">${srcFoot}</div>
   </div>`;
   v.scrollTop=0;
+  groupImages(v);
   try{ if(location.hash!=='#doc='+id) history.replaceState(null,'','#doc='+id); }catch(e){}
   $('#rback').onclick=()=>{ try{history.replaceState(null,'',location.pathname+location.search);}catch(e){} render(); };
   const cl=$('#copyLink');
