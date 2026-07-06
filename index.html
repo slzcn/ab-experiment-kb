@@ -412,53 +412,40 @@ function kbSig(kb){
 async function boot(){
   marked.setOptions({breaks:true, gfm:true});
   let shown=false;
-  // 1) 先读静态缓存 kb_cache.json（秒开首屏）
+  // 纯静态：只读静态内容，不连数据库。
+  // 静态文件由数据库变化触发 GitHub Action 重新生成（发布文章后自动刷新）。
+  // 1) 优先读同目录静态文件 kb_cache.json
   try{
-    const r=await fetch('kb_cache.json?_='+Date.now(),{cache:'no-store'});
+    const r=await fetch('kb_cache.json',{cache:'no-cache'});
     if(r.ok){
       const cache=await r.json();
-      if(cache&&cache.docs&&cache.docs.length){
-        applyKB(cache);
-        $('#loading').style.display='none'; $('#app').style.display='grid';
-        shown=true;
-      }
+      if(cache&&cache.docs&&cache.docs.length){ applyKB(cache); shown=true; }
     }
   }catch(e){}
-  // 2) 后台从数据库拉最新，与缓存比对；有变化则静默刷新
-  try{
-    const fresh=await loadFromDB(); DB_ONLINE=true;
-    if(!shown || kbSig(fresh)!==kbSig(KB)){
-      applyKB(fresh);
-      $('#loading').style.display='none'; $('#app').style.display='grid';
-      shown=true;
-    }else{
-      renderFoot();   // 数据与缓存一致，仅刷新页脚为「数据库实时」
-    }
-  }catch(dbErr){
-    // 数据库连不上：若缓存也没显示成功，回退内嵌/本地 kb.json
-    if(!shown){
-      try{
-        const embed=document.getElementById('kbdata');
-        const raw=embed?embed.textContent.trim():'';
-        if(raw && raw[0]==='{'){ applyKB(JSON.parse(raw)); }
-        else{ const r=await fetch('kb.json'); applyKB(await r.json()); }
-        $('#loading').style.display='none'; $('#app').style.display='grid'; shown=true;
-      }catch(e){}
-    }
+  // 2) 回退：读打包时内嵌的数据（standalone 单文件离线也能用）
+  if(!shown){
+    try{
+      const embed=document.getElementById('kbdata');
+      const raw=embed?embed.textContent.trim():'';
+      if(raw && raw[0]==='{'){ applyKB(JSON.parse(raw)); shown=true; }
+      else{ const r=await fetch('kb.json'); applyKB(await r.json()); shown=true; }
+    }catch(e){}
   }
   if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试'; return; }
+  $('#loading').style.display='none'; $('#app').style.display='grid';
   detectBackend();
 }
 
 // 决定「提交并发布」按钮：数据库在线 → 直接写库（线上也能提交）；否则探测本地服务
 let HAS_BACKEND=false, BACKEND_PUSH=false, SUBMIT_MODE='none';  // 'db' | 'local' | 'none'
 async function detectBackend(){
-  if(DB_ONLINE){
+  // 页面纯静态读取，但“写文章提交”仍写入数据库（提交后由 webhook 触发重生成静态文件）
+  if(SB && SB.url && SB.key){
     SUBMIT_MODE='db';
     $('#edSubmit').style.display='';
     $('#edDownload').classList.add('ghost2');
     $('#edDownload').textContent='⬇ 导出';
-    $('#edHint').innerHTML='点「提交并发布」即可直接存入数据库，全网实时可见，无需手动处理文件。';
+    $('#edHint').innerHTML='点「提交并发布」即可存入数据库，稍后自动同步到页面（约十几秒），无需手动处理文件。';
     return;
   }
   try{
@@ -491,7 +478,7 @@ function renderFoot(){
       <div class="sf-pill"><b>${total}</b><span>篇知识</span></div>
       <div class="sf-pill"><b>${cats}</b><span>大主题</span></div>
     </div>
-    <div class="sf-line"><span class="sf-dot"></span>${DB_ONLINE?'数据库实时':'知识库在线'} · 最近更新 ${latest||'—'}</div>
+    <div class="sf-line"><span class="sf-dot"></span>知识库在线 · 最近更新 ${latest||'—'}</div>
     <div class="sf-src">
       <b>官方权威 ${official} 篇</b>整理自火山引擎 DataTester，篇篇可溯源原文；
       ${internal?`<b>内部沉淀 ${internal} 篇</b>为团队实战经验。`:'并支持团队持续沉淀内部经验。'}
@@ -728,8 +715,14 @@ async function submitArticle(){
   try{
     if(SUBMIT_MODE==='db'){
       await submitToDB(d);
-      KB=await loadFromDB();                    // 重新从数据库拉，新文章即时出现
-      edMsg('ok','✓《'+d.title+'》已存入数据库，全网可见。正在刷新…');
+      // 纯静态：不回连数据库。本地把新文章插入内存，让提交者当场看到；
+      // 线上静态文件由数据库变化触发 GitHub Action 重新生成（约十几秒后全网同步）。
+      const today=new Date().toISOString().slice(0,10);
+      KB.docs.push({id:910000000+Date.now()%90000000,title:d.title,cat:d.cat,
+        keywords:(d.kw+' 内部文章').trim(),md:d.md,text:plainText(d.md),
+        updated:today,url:'',internal:true});
+      KB.meta.total=KB.docs.length;
+      edMsg('ok','✓《'+d.title+'》已提交，约十几秒后自动同步到线上。');
     }else{
       const r=await fetch('/api/publish',{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({title:d.title,cat:d.cat,keywords:d.kw,md:d.md})});
