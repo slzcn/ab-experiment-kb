@@ -46,12 +46,13 @@ python3 publish.py --push --miaoda   # 想同时更新飞书妙搭就多加 --mi
 
 ## 管理后台（增删改 + 批量上传文档转码）
 
-一个独立的管理后台 `admin.html`，口令进入（复用 `dashboard_auth` 表的 pin，24h 免验证），
+一个独立的管理后台 `admin.html`，需授权访问，
 顶部三个 tab：
 
-- **📤 批量上传**：拖入 PPT / Word / PDF / Excel 等文档，后台自动抽取正文**并连同文档里的图片**
-  转成带图 Markdown 文章入库。图片存到 `assets/` 并推到仓库，md 用 `raw.githubusercontent` 引用
-  （与手工发布的文章图片模型一致）。
+- **📤 批量上传**：拖入 PPT / Word / PDF / Excel 等文档，**上传秒回**（不用干等解析），
+  后台队列逐个抽取正文**并连同文档里的图片**转成带图 Markdown 文章入库，前端实时显示
+  每个文件的排队/转码/完成进度，可离开本页。图片存到 `assets/` 并推到仓库，
+  md 用 `raw.githubusercontent` 引用（与手工发布的文章图片模型一致）。
 - **📄 文章管理**：列出全部文章，可搜索、在线编辑（标题/分类/关键词/正文）、删除。
 - **🗂 分类配置**：增删改分类（key / 图标 / 名称 / 排序）。
 
@@ -85,7 +86,7 @@ python3 publish.py --push
 | `dev.html` | 前端源码模板（读同目录 kb.json，仅本地开发调试用） |
 | `articles/` | **放新文章的目录**（每篇一个带 frontmatter 的 .md） |
 | `kb.json` | 知识库数据 |
-| `admin.html` | ★ 管理后台：口令进入，批量上传文档转码 / 文章增删改 / 分类配置 |
+| `admin.html` | ★ 管理后台：授权访问，批量上传文档转码 / 文章增删改 / 分类配置 |
 | `admin_server.py` | ★ 后台本地服务：批量上传文档 → 转码带图入库（--push 推图片到仓库） |
 | `doc_to_md.py` | 文档→Markdown 转码器（抽文字+图，图存 assets/），被后台调用也可单跑 |
 | `kb_common.py` | 公共工具：纯文本提取 / slug / git / Supabase REST 客户端（各脚本复用）|

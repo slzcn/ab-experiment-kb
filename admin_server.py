@@ -14,8 +14,8 @@
 #
 # 安全：只在本机 127.0.0.1 监听，不对外。公开站没有这个服务，也就没有上传转码入口。
 
-import os, sys, re, json, tempfile, datetime, time
-import http.server, socketserver
+import os, sys, re, json, tempfile, datetime, time, threading, queue
+import http.server
 
 HERE   = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(HERE, "assets")
@@ -46,6 +46,109 @@ def _push_assets(files, note):
     if p.returncode != 0:
         return f"图片 push 失败：{(p.stderr or p.stdout)[-200:]}（图片已在本地，稍后可手动 push）"
     return f"{len(files)} 张图片已推送到仓库"
+
+
+# ============ 异步任务队列：上传秒回，后台线程逐个转码入库 ============
+# 上传接口只做“落地临时文件 + 入队”这点轻活，立即返回 job_id；真正耗时的
+# 解析/抽图/入库/推图在后台 worker 线程里跑，前端轮询 /api/upload/status 看进度。
+JOBS = {}                       # job_id -> {items:[...], created, done}
+JOBS_LOCK = threading.Lock()
+WORK_Q = queue.Queue()          # 队列元素：(job_id, item_index)
+
+
+def _new_job(entries):
+    """entries: [{filename, tmp, ext, title}]，返回 job dict。"""
+    jid = f"job{int(time.time()*1000)}{len(JOBS)}"
+    items = [{
+        "idx": i, "file": e["filename"], "status": "queued",
+        "title": e["title"], "images": 0, "chars": 0, "error": "",
+        "tmp": e["tmp"], "ext": e["ext"],
+    } for i, e in enumerate(entries)]
+    job = {"id": jid, "items": items, "created": time.time(),
+           "done": False, "push_log": "", "cat": None}
+    with JOBS_LOCK:
+        JOBS[jid] = job
+    return job
+
+
+def _job_public(job):
+    """给前端的精简视图（去掉 tmp 等内部字段）。"""
+    return {
+        "id": job["id"], "done": job["done"], "push_log": job["push_log"],
+        "items": [{k: it[k] for k in ("idx", "file", "status", "title", "images", "chars", "error")}
+                  for it in job["items"]],
+    }
+
+
+def _worker():
+    """单后台线程：从队列取任务，串行转码入库。串行是有意的——
+    避免多个 git/DB 写并发，也让 doc_id 生成简单可控。"""
+    while True:
+        jid, i = WORK_Q.get()
+        try:
+            _process_item(jid, i)
+        except Exception as e:
+            with JOBS_LOCK:
+                it = JOBS[jid]["items"][i]
+                it["status"] = "error"; it["error"] = str(e)
+        finally:
+            _maybe_finish_job(jid)
+            WORK_Q.task_done()
+
+
+def _process_item(jid, i):
+    job = JOBS[jid]
+    it = job["items"][i]
+    with JOBS_LOCK:
+        it["status"] = "processing"
+    ext, tmp, title, cat = it["ext"], it["tmp"], it["title"], job["cat"]
+    if ext not in ALLOWED_EXT:
+        with JOBS_LOCK:
+            it["status"] = "error"; it["error"] = f"不支持的格式 {ext}"
+        return
+    try:
+        conv = doc_to_md.convert(tmp, slug=slugify(f"{cat}-{title}"), title=title)
+        md = conv["md"]
+        if not md.strip():
+            with JOBS_LOCK:
+                it["status"] = "error"; it["error"] = "未抽取到内容"
+            return
+        doc_id = 910000000 + int(time.time() * 1000) % 90000000
+        SB.insert("ab_articles", {
+            "doc_id": doc_id, "title": title, "cat": cat,
+            "keywords": (title + " 上传文档").strip(),
+            "md": md, "body_text": plain_text(md),
+            "updated": datetime.date.today().isoformat(),
+            "source_url": "", "is_internal": True,
+        }, upsert_on="doc_id")
+        with JOBS_LOCK:
+            it["status"] = "done"; it["doc_id"] = doc_id
+            it["images"] = len(conv["images"]); it["chars"] = len(md)
+            job.setdefault("_imgs", []).extend(conv["images"])
+    finally:
+        try: os.remove(tmp)
+        except Exception: pass
+
+
+def _maybe_finish_job(jid):
+    """一个 job 的所有 item 处理完后：推图片、标记 done。"""
+    with JOBS_LOCK:
+        job = JOBS[jid]
+        if job["done"]:
+            return
+        if any(it["status"] in ("queued", "processing") for it in job["items"]):
+            return
+        imgs = job.get("_imgs", [])
+        ok_n = sum(1 for it in job["items"] if it["status"] == "done")
+    # 推图片放锁外（git 可能慢）
+    push_log = _push_assets(imgs, f"{ok_n} 篇文档")
+    with JOBS_LOCK:
+        job["push_log"] = push_log
+        job["done"] = True
+
+
+# 起后台 worker（daemon：主进程退出即随之结束）
+threading.Thread(target=_worker, daemon=True).start()
 
 
 # ---------- 极简 multipart/form-data 解析（Py3.13+ 移除了 cgi 模块）----------
@@ -92,6 +195,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if p == "/api/health":
             return self._json(200, {"ok": True, "push": PUSH,
                                     "formats": sorted(ALLOWED_EXT)})
+        if p == "/api/upload/status":
+            return self._upload_status()
         if p in ("/", "/index.html"):
             self.path = "/dev.html"      # 根路径给主站开发模板
         return super().do_GET()
@@ -102,7 +207,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return self._upload()
         return self._json(404, {"ok": False, "error": "not found"})
 
-    # 批量上传文档 → 逐个转码 → 图片推仓库 → 文章入库
+    # 批量上传：只落地临时文件 + 入队，立即返回 job（“丝滑成功”）；
+    # 后台 worker 线程再慢慢转码入库，前端轮询 status 看进度。
     def _upload(self):
         try:
             ctype = self.headers.get("Content-Type", "")
@@ -117,66 +223,54 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             if not files:
                 return self._json(400, {"ok": False, "error": "未收到文件"})
 
-            results, all_imgs = [], []
-            today = datetime.date.today().isoformat()
-            # doc_id 用毫秒基数 + 文件序号偏移，保证同批内不撞（旧的"取模+sleep"会周期回绕）；
-            # 再用 upsert(on_conflict=doc_id) 兜底，撞到已有 id 也不会 500。
-            base = 910000000 + int(time.time() * 1000) % 80000000
-            for idx, f in enumerate(files):
+            # 快速落地每个上传文件到临时路径（仅 IO，不解析）
+            entries = []
+            for f in files:
                 fn = f["filename"]
                 ext = os.path.splitext(fn)[1].lower()
-                title = os.path.splitext(os.path.basename(fn))[0]
-                if ext not in ALLOWED_EXT:
-                    results.append({"file": fn, "ok": False, "error": f"不支持的格式 {ext}"})
-                    continue
-                # 落地临时文件供转码器读取（tempfile 跨平台，保留原扩展名）
                 fd, tmp = tempfile.mkstemp(prefix="abkb_", suffix=ext)
-                try:
-                    with os.fdopen(fd, "wb") as w:
-                        w.write(f["data"])
-                    slug = slugify(f"{default_cat}-{title}")
-                    conv = doc_to_md.convert(tmp, slug=slug, title=title)
-                    md = conv["md"]
-                    if not md.strip():
-                        results.append({"file": fn, "ok": False, "error": "未抽取到内容"})
-                        continue
-                    doc_id = base + idx
-                    SB.insert("ab_articles", {
-                        "doc_id": doc_id, "title": title, "cat": default_cat,
-                        "keywords": (title + " 上传文档").strip(),
-                        "md": md, "body_text": plain_text(md),
-                        "updated": today, "source_url": "", "is_internal": True,
-                    }, upsert_on="doc_id")
-                    all_imgs += conv["images"]
-                    results.append({"file": fn, "ok": True, "title": title,
-                                    "doc_id": doc_id, "images": len(conv["images"]),
-                                    "chars": len(md)})
-                except Exception as e:
-                    results.append({"file": fn, "ok": False, "error": str(e)})
-                finally:
-                    try: os.remove(tmp)
-                    except Exception: pass
+                with os.fdopen(fd, "wb") as w:
+                    w.write(f["data"])
+                entries.append({"filename": fn, "tmp": tmp, "ext": ext,
+                                "title": os.path.splitext(os.path.basename(fn))[0]})
 
-            push_log = _push_assets(all_imgs, f"{len([r for r in results if r.get('ok')])} 篇文档")
-            ok_n = len([r for r in results if r.get("ok")])
-            return self._json(200, {
-                "ok": ok_n > 0, "count": ok_n, "total": len(files),
-                "images": len(all_imgs), "push_log": push_log,
-                "results": results,
-                "msg": f"成功转码入库 {ok_n}/{len(files)} 篇，抽出 {len(all_imgs)} 张图。"
-                       + ("约十几秒后线上自动同步。" if PUSH else "（本地模式，图片未推线上）"),
-            })
+            job = _new_job(entries)
+            job["cat"] = default_cat
+            for it in job["items"]:              # 入队交给后台 worker
+                WORK_Q.put((job["id"], it["idx"]))
+
+            # 秒回：告诉前端已收下，去轮询进度
+            return self._json(200, {"ok": True, "job": job["id"],
+                                    "total": len(entries),
+                                    "status": _job_public(job)})
         except Exception as e:
             return self._json(500, {"ok": False, "error": str(e)})
+
+    def _upload_status(self):
+        from urllib.parse import urlparse, parse_qs
+        q = parse_qs(urlparse(self.path).query)
+        jid = (q.get("job") or [""])[0]
+        with JOBS_LOCK:
+            job = JOBS.get(jid)
+            pub = _job_public(job) if job else None
+        if not pub:
+            return self._json(404, {"ok": False, "error": "job 不存在"})
+        return self._json(200, {"ok": True, "status": pub})
+
+
+class _Server(http.server.ThreadingHTTPServer):
+    # 多线程：上传在读大 body 时，状态轮询仍能被响应
+    allow_reuse_address = True
+    daemon_threads = True
 
 
 if __name__ == "__main__":
     os.chdir(HERE)
-    with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as httpd:
+    with _Server(("127.0.0.1", PORT), Handler) as httpd:
         tip = "图片推送 GitHub（线上生效）" if PUSH else "图片仅存本地（不推线上）"
         print(f"管理后台服务已启动（{tip}）")
         print(f"   打开：http://localhost:{PORT}/admin.html")
-        print(f"   批量上传文档 → 自动转码成带图文章入库。Ctrl+C 停止。")
+        print(f"   批量上传文档 → 上传秒回，后台转码成带图文章入库。Ctrl+C 停止。")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
