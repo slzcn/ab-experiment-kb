@@ -349,7 +349,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       </div>
       <div class="batchbar" id="batchBar">
         <span class="cnt" id="batchCnt">已选 0 项</span>
-        <button class="bb" id="batchSelPage" title="选中当前页全部文章">全选本页</button>
+        <button class="bb" id="batchSelPage" title="选中当前页全部文章">全选</button>
         <span class="sp"></span>
         <button class="bb" data-bulk="on">🟢 上线</button>
         <button class="bb" data-bulk="off">⚪ 下线</button>
@@ -859,10 +859,10 @@ function updateBatchBar(){
   const n=SELECTED.size;
   $('#batchBar').classList.toggle('on',n>0);
   if(n)$('#batchCnt').textContent=`已选 ${n} 项`;
-  // 本页全部已选 → 按钮变“取消本页”，否则“全选本页”
+  // 本页全部已选 → 按钮变“取消全选”，否则“全选”
   const list=curList();
   const allSel=list.length&&list.every(a=>SELECTED.has(a.id));
-  const b=$('#batchSelPage'); if(b)b.textContent=allSel?'取消本页':'全选本页';
+  const b=$('#batchSelPage'); if(b)b.textContent=allSel?'取消全选':'全选';
 }
 // 搜索防抖 300ms + 走后端
 let _searchTimer=null;
@@ -907,8 +907,8 @@ async function bulkAction(kind){
   const verb={on:'上线',off:'下线',del:'删除'}[kind];
   try{
     if(kind==='del'){
-      if(!await confirmBox({title:`删除选中的 ${n} 篇？`,
-        html:`将删除选中的 <b>${n}</b> 篇文章，此操作不可撤销。`}))return;
+      if(!await confirmBox({title:`删除选中的 ${n} 篇？`,okText:'删除',
+        html:`确定删除选中的 <b>${n}</b> 篇文章吗？`}))return;
       msg('#artMsg','load',`正在删除 ${n} 篇…`);
       await apiDeleteArticle('in.('+ids.join(',')+')'); // 软删除→回收站
     }else{
@@ -1027,15 +1027,15 @@ function focusArt(id){
 async function delArt(id){
   const a=ARTS.find(x=>x.id===id);
   const title=a?a.title:'';
-  if(!await confirmBox({title:'删除这篇文章？',okText:'移入回收站',
-    html:`将把《<b>${esc(title)}</b>》移入回收站，可随时恢复。`}))return;
+  if(!await confirmBox({title:'删除这篇文章？',okText:'删除',
+    html:`确定删除《<b>${esc(title)}</b>》吗？`}))return;
   msg('#artMsg','load','正在删除…');
   try{
     await apiDeleteArticle(String(id));
     await loadPage();
     // 删后校验：列表里还在 = 实际没删掉，明确报错而非静默
     if(ARTS.some(x=>x.id===id)) msg('#artMsg','err',`删除未生效：《${title}》仍在库中，请重试或检查权限。`);
-    else msg('#artMsg','ok',`已把《${title}》移入回收站，可在回收站恢复。`);
+    else msg('#artMsg','ok',`已删除《${title}》。`);
   }catch(e){ msg('#artMsg','err','删除失败：'+e.message); }
 }
 
