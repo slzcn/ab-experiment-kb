@@ -293,10 +293,10 @@
     <div class="top">
       <div class="searchbox">
         <span class="si">🔍</span>
-        <input id="q" placeholder="搜索实验设计 / 报告解读 / 广告投放…"
-          data-ph-full="搜索实验设计 / 报告解读 / 广告投放 / 假设检验…（支持标题+正文全文检索）"
-          data-ph-mid="搜索实验设计 / 报告解读 / 广告投放…"
-          data-ph-min="搜索实验设计 / 报告解读…" autocomplete="off">
+        <input id="q" placeholder="搜索实验设计"
+          data-ph-prefix="搜索"
+          data-ph-kw="实验设计,报告解读,广告投放,假设检验,指标体系,AB通识"
+          autocomplete="off">
         <span class="clr" id="clr">✕</span>
       </div>
       <div class="stat" id="stat"></div>
@@ -866,23 +866,28 @@ $('#edCat').addEventListener('change',updatePrev);
 $('#edDownload').onclick=downloadMd;
 $('#edSubmit').onclick=submitArticle;
 
-// 搜索框 placeholder 按输入框实际宽度自适应，避免窄浏览器里长文案被截断
+// 搜索框 placeholder：按框宽能放几个关键词就放几个，末尾不做省略号。
+// 例：宽屏「搜索 实验设计 / 报告解读 / 广告投放 / 假设检验」，窄屏自动减到「搜索 实验设计 / 报告解读」。
 (function(){
   const q=$('#q'); if(!q)return;
-  // 用一段隐藏文本测量给定文案在当前字体下的像素宽度
+  const prefix=q.dataset.phPrefix||'搜索';
+  const kws=(q.dataset.phKw||'').split(',').map(s=>s.trim()).filter(Boolean);
   const meas=document.createElement('span');
   meas.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;left:-9999px';
   document.body.appendChild(meas);
-  function fits(text){
+  function width(text){
     const cs=getComputedStyle(q);
     meas.style.font=cs.font||`${cs.fontSize} ${cs.fontFamily}`;
-    meas.textContent=text;
-    // 可用文字宽度 = 输入框宽 - 左右图标/内边距(约 46+46)
-    return meas.offsetWidth <= q.clientWidth-92;
+    meas.textContent=text; return meas.offsetWidth;
   }
   function pick(){
-    const full=q.dataset.phFull, mid=q.dataset.phMid, min=q.dataset.phMin;
-    q.placeholder = fits(full)?full : fits(mid)?mid : min;
+    const avail=q.clientWidth-92;   // 减去左右图标/内边距
+    let n=0;
+    for(let k=1;k<=kws.length;k++){
+      if(width(prefix+' '+kws.slice(0,k).join(' / '))<=avail) n=k; else break;
+    }
+    if(n===0) n=1;                  // 至少显示一个，实在放不下就交给输入框自身裁剪
+    q.placeholder = prefix+' '+kws.slice(0,n).join(' / ');
   }
   pick();
   if(window.ResizeObserver){ new ResizeObserver(pick).observe(q); }
