@@ -392,7 +392,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     <input id="loginPin" type="password" inputmode="numeric" placeholder="访问码" autocomplete="off">
     <button class="ed-btn" id="loginBtn">进入编辑</button>
     <div class="login-err" id="loginErr"></div>
-    <div class="login-tip">登录后 24 小时内免再次验证</div>
+    <div class="login-tip">登录后 2 小时内免再次验证</div>
   </div>
 </div>
 
@@ -419,9 +419,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       </div>
       <div class="ed-msg" id="edMsg"></div>
       <div class="ed-hint" id="edHint">
-        导出的 .md 文件放进项目 <code>articles/</code> 目录，运行 <code>python3 publish.py</code>
-        即可入库（右侧为实时预览）。想「点一下直接提交」？在本机跑 <code>python3 serve.py --push</code>
-        并访问它给出的本地地址即可。
+        导出的 .md 文件可作为本地备份。默认发布方式：在上方编辑器直接写并点「发布文章」（右侧为实时预览），或到后台批量上传文档。
       </div>
     </div>
     <div class="ed-preview" id="edPrev">
@@ -853,7 +851,7 @@ $('#mmask').onclick=closeSide;
 
 /* ===== 写文章编辑器 ===== */
 // ===== 写文章访问控制 =====
-const AUTH_KEY='ab_kb_auth_ts', AUTH_TTL=24*3600*1000;
+const AUTH_KEY='ab_kb_auth_ts', AUTH_TTL=2*3600*1000; // 对齐 EdgeFn JWT TTL(2h)
 function loggedIn(){
   try{const ts=+localStorage.getItem(AUTH_KEY); return ts && (Date.now()-ts)<AUTH_TTL;}catch(e){return false;}
 }
@@ -882,7 +880,7 @@ async function doLogin(){
 }
 
 function openEditor(){
-  // 填充分类下拉（排除兜底 misc 之外都可选，misc 也留着）
+  // 填充分类下拉（所有分类都可选，默认选 cases 实战案例库）
   const sel=$('#edCat');
   if(!sel.options.length){
     KB.categories.forEach(c=>{

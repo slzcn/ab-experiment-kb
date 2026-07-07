@@ -56,7 +56,8 @@ def process_one(job):
             _set(jid, {"status": "error", "error": "未抽取到内容"})
             return False
         # doc_id 由任务表自增 id 派生（9 开头内部区间），天然唯一、绝不碰撞
-        doc_id = 910000000 + int(jid)
+        # doc_id 用 920000000+ 段，避开 add.py/publish.py 的 910000000+ 段防冲突
+            doc_id = 920000000 + int(jid)
         SB.insert("ab_articles", {
             "doc_id": doc_id, "title": title, "cat": cat,
             "keywords": (title + " 上传文档").strip(),
