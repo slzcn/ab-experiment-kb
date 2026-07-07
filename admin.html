@@ -486,13 +486,13 @@ function renderArts(){
   const allSel=list.every(a=>SELECTED.has(a.id));
   $('#artWrap').innerHTML=`<table class="tbl"><thead><tr>
     <th class="chk"><input type="checkbox" id="chkAll" ${allSel?'checked':''}></th>
-    <th>标题</th><th>状态</th><th>分类</th><th>更新</th><th></th></tr></thead><tbody>${
+    <th>标题</th><th>分类</th><th>发布日期</th><th>状态</th><th></th></tr></thead><tbody>${
     list.map(a=>{const c=catOf(a.cat);const pub=isPub(a);return `<tr class="${SELECTED.has(a.id)?'sel':''}">
       <td class="chk"><input type="checkbox" data-sel="${a.id}" ${SELECTED.has(a.id)?'checked':''}></td>
       <td><span class="tt">${esc(a.title)}</span>${a.is_internal?'<span class="badge">内部</span>':''}</td>
-      <td><span class="sw ${pub?'on':'off'}" data-toggle="${a.id}" title="${pub?'点击下线（从公开站移除）':'点击上线（公开站显示）'}"><span class="track"></span><span class="lbl">${pub?'上线':'下线'}</span></span></td>
       <td><span class="cat">${c.icon} ${esc(c.name)}</span></td>
       <td style="color:var(--dim);font-size:12px">${esc(a.updated||'—')}</td>
+      <td><span class="sw ${pub?'on':'off'}" data-toggle="${a.id}" title="${pub?'点击下线（从公开站移除）':'点击上线（公开站显示）'}"><span class="track"></span><span class="lbl">${pub?'上线':'下线'}</span></span></td>
       <td class="acts">
         <button class="btn ghost" style="padding:5px 12px;font-size:12px" data-edit="${a.id}">编辑</button>
         <button class="btn danger" data-del="${a.id}">删除</button>
