@@ -664,12 +664,22 @@ async function bulkAction(kind){
 }
 document.querySelectorAll('.batchbar [data-bulk]').forEach(b=>b.onclick=()=>bulkAction(b.dataset.bulk));
 
-function openEdit(id){
+async function openEdit(id){
   const a=ARTS.find(x=>x.id===id);if(!a)return;
   $('#edId').value=a.id;$('#edTitle').value=a.title||'';
-  fillCatSelect($('#edCat'),a.cat);$('#edKw').value=a.keywords||'';$('#edMd').value=a.md||'';
+  fillCatSelect($('#edCat'),a.cat);$('#edKw').value=a.keywords||'';
   msgClear('#edMsg');
   $('#mask').classList.add('on');$('#modal').classList.add('on');
+  // 正文按需加载：列表不再携带 md（为提速），编辑时才拉这一篇的全文
+  if(a.md!==undefined){ $('#edMd').value=a.md||''; return; }
+  $('#edMd').value='加载正文中…';$('#edMd').disabled=true;
+  try{
+    const d=await apiCall('/article?id='+id,'GET');
+    const full=(d&&(d.article||d.data))||{};
+    a.md=full.md||'';            // 缓存到内存，避免重复拉
+    $('#edMd').value=a.md;
+  }catch(e){ $('#edMd').value=''; msg('#edMsg','err','正文加载失败：'+e.message); }
+  finally{ $('#edMd').disabled=false; }
 }
 function closeEdit(){$('#mask').classList.remove('on');$('#modal').classList.remove('on');}
 $('#modalX').onclick=closeEdit;$('#edCancel').onclick=closeEdit;$('#mask').onclick=closeEdit;
