@@ -537,8 +537,29 @@ function fillCatSelect(sel,val){
   if(val)sel.value=val;
 }
 
+// ---- 首屏列表缓存（刷新时秒显上次数据，后台再拉最新，掩盖 Edge Function 冷启动延迟）----
+const LIST_CACHE_KEY='ab_kb_list_cache_v1';
+function readListCache(){
+  try{ const raw=localStorage.getItem(LIST_CACHE_KEY); if(!raw) return null;
+    const d=JSON.parse(raw);
+    // 仅在第一页无搜索时用缓存，且缓存不超过 10 分钟
+    if(d&&d.arts&&Date.now()-d.ts<600000) return d; }catch(e){}
+  return null;
+}
+function writeListCache(){
+  try{ if(PAGE===1&&!Q) localStorage.setItem(LIST_CACHE_KEY,JSON.stringify({arts:ARTS,total:TOTAL,pub:PUB_COUNT,cats:CATS,ts:Date.now()})); }catch(e){}
+}
+
 async function boot(){
   try{ if(typeof marked!=='undefined') marked.setOptions({breaks:true,gfm:true}); }catch(e){}
+  // 有缓存先秒显（避免盯着"加载中"），后台再拉最新
+  const cache=readListCache();
+  if(cache){
+    ARTS=cache.arts; TOTAL=cache.total; PUB_COUNT=(typeof cache.pub==='number')?cache.pub:-1; CATS=cache.cats||[];
+    fillCatSelect($('#upCat')); fillCatSelect($('#edCat'));
+    renderArts(); renderCats();
+    $('#topSub').textContent=`共 ${TOTAL} 篇 · ${CATS.length} 个分类`;
+  }
   await loadData();
   $('#topSub').textContent=`共 ${TOTAL} 篇 · ${CATS.length} 个分类`;
 }
@@ -560,6 +581,7 @@ async function loadData(){
     fillCatSelect($('#upCat'));
     fillCatSelect($('#edCat'));
     renderArts(); renderCats();
+    writeListCache();
   } finally { LOADING=false; }
 }
 
