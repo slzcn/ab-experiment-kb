@@ -802,8 +802,18 @@ async function openDoc(id){
   </div>`;
   v.scrollTop=0;
   groupImages(v);
-  try{ if(location.hash!=='#doc='+id) history.replaceState(null,'','#doc='+id); }catch(e){}
-  $('#rback').onclick=()=>{ try{history.replaceState(null,'',location.pathname+location.search);}catch(e){} render(); };
+  // 在主站(index.html)：仅切视图并同步 #doc= hash，可就地返回列表；
+  // 在文章静态页(a/<id>.html，注入了 INIT_DOC)：不改 hash——因为刷新会再读 INIT_DOC 回到文章，
+  // 所以「返回列表」直接导航到根目录知识库首页。
+  const onArticlePage = (typeof window!=='undefined' && window.INIT_DOC);
+  if(!onArticlePage){
+    try{ if(location.hash!=='#doc='+id) history.replaceState(null,'','#doc='+id); }catch(e){}
+  }
+  $('#rback').onclick=()=>{
+    if(onArticlePage){ location.href = siteRoot(); return; }  // 回真正的列表页（根目录）
+    try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+    render();
+  };
   const cl=$('#copyLink');
   if(cl) cl.onclick=async()=>{
     // 复制的是真实静态页地址（可分享、可被搜索引擎收录）；本地 file:// 打开时回退 hash
