@@ -778,7 +778,7 @@ async function openDoc(id){
   const c=catOf(d.cat);
   const v=$('#bodyView');
   // 打开文章前，若当前是列表视图，记住其滚动位置，返回时恢复
-  if(!v.querySelector('.reader')) listScroll=v.scrollTop;
+  if(!v.querySelector('.reader')){ listScroll=v.scrollTop; listShown=SHOWN; }
   let md=await getMd(id);
   // 去掉正文开头与标题重复的一级标题（页面头部已显示大标题）
   md=(md||'').replace(/^\s*#\s+.*(?:\r?\n)+/, '');
@@ -816,7 +816,8 @@ async function openDoc(id){
     if(onArticlePage){ location.href = siteRoot(); return; }  // 回真正的列表页（根目录）
     try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
     render();
-    // 恢复到点进文章前的列表滚动位置（render 会重置到顶部，这里还原）
+    // render 只渲染首批并重置到顶部；先补齐到之前的批数，再恢复滚动位置，才能回到原处
+    while(SHOWN<listShown && SHOWN<RES.length) renderMore();
     requestAnimationFrame(()=>{ const bv=$('#bodyView'); if(bv) bv.scrollTop=listScroll; });
   };
   const cl=$('#copyLink');
