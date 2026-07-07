@@ -32,7 +32,7 @@
     background:linear-gradient(135deg,var(--brand),var(--brand2));
     display:grid;place-items:center;font-weight:900;color:#fff;font-size:13px;box-shadow:0 3px 10px rgba(224,99,46,.4)}
   .brand p{color:var(--dim);font-size:11.5px;margin-top:7px;letter-spacing:.2px}
-  .cats{flex:1;overflow-y:auto;padding:12px 12px 30px}
+  .cats{flex:1;min-height:0;overflow-y:auto;padding:12px 12px 30px}
   .cat{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
     color:var(--sub);cursor:pointer;font-size:13.5px;transition:.15s;user-select:none}
   .cat:hover{background:var(--panel);color:var(--ink)}
@@ -268,44 +268,6 @@
     .ed-preview{min-height:200px}
     /* 登录门 */
     .login-box{padding:26px 22px}
-  }
-  /* ===== 手机横屏适配（高度极小的横屏=手机横屏，切成移动单栏布局；平板/桌面横屏高度大不受影响）===== */
-  @media (orientation:landscape) and (max-height:500px){
-    .app{grid-template-columns:1fr}
-    aside{position:fixed;left:0;top:0;bottom:0;width:min(300px,70vw);z-index:50;
-      transform:translateX(-100%);transition:.25s;box-shadow:var(--sh);
-      display:flex;flex-direction:column;overflow:hidden}
-    aside.open{transform:none}
-    /* 横屏高度极矮：brand 收紧、隐藏副标题与底部统计，把空间全让给可滚动的分类列表 */
-    .brand{padding:12px 16px 10px}
-    .brand h1{font-size:15px}
-    .brand p{display:none}
-    .cats{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 10px 12px}
-    .cat{padding:8px 12px;font-size:13px}
-    .write-btn{flex:none;margin:6px 12px;padding:10px;font-size:13.5px}
-    .admin-link{flex:none;padding:6px 12px 10px;font-size:12.5px}
-    .side-foot{display:none}
-    .mtoggle{display:grid;place-items:center;position:fixed;left:12px;top:10px;z-index:60;
-      width:38px;height:38px;border-radius:11px;background:var(--brand);color:#fff;
-      font-size:17px;box-shadow:var(--sh);cursor:pointer}
-    .mmask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45}
-    .mmask.on{display:block}
-    /* 横屏高度金贵：顶部与内容内边距收紧，把汉堡按钮让位 */
-    .top{padding:10px 16px 8px 60px}
-    .searchbox input{padding:10px 40px 10px 40px;font-size:14px}
-    .searchbox .si{left:13px;font-size:15px}
-    .stat{font-size:11.5px;gap:10px;margin-top:7px}
-    .body{padding:12px 16px}
-    .list{gap:10px}
-    .card{padding:13px 15px}
-    .card h3{font-size:15px}
-    /* 阅读态横屏：占满、内边距收紧 */
-    .reader{max-width:100%;padding:0}
-    .rhead h1{font-size:22px;line-height:1.35}
-    .md{font-size:15px;line-height:1.8}
-    /* 编辑器横屏全宽 */
-    .editor{width:100vw}
-    .ed-body{grid-template-columns:1fr;overflow-y:auto}
   }
 </style>
 </head>
