@@ -368,6 +368,31 @@ async function sbGet(path){
   return r.json();
 }
 
+// ===== Edge Function 鉴权层（写操作走服务端，前端不碰 service_role）=====
+const API_BASE=SB.url+'/functions/v1/admin-api';
+const API_TOKEN_KEY='ab_kb_api_token';
+function apiToken(){try{return localStorage.getItem(API_TOKEN_KEY)||'';}catch(e){return '';}}
+function apiSetToken(t){try{localStorage.setItem(API_TOKEN_KEY,t||'');}catch(e){}}
+// 用访问码换令牌（成功返回 true）
+async function apiLogin(pin){
+  const r=await fetch(API_BASE+'/login',{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify({pin})});
+  if(!r.ok) return false;
+  const d=await r.json().catch(()=>({}));
+  if(d&&d.token){apiSetToken(d.token);return true;}
+  return false;
+}
+// 带令牌写文章（POST /article，upsert）；令牌过期抛错提示重登
+async function apiWriteArticle(row){
+  const r=await fetch(API_BASE+'/article',{method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiToken()},
+    body:JSON.stringify({row})});
+  if(r.status===401){apiSetToken('');throw new Error('登录已过期，请重新输入访问码');}
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok||!d.ok) throw new Error('写入失败 '+r.status+' '+JSON.stringify(d).slice(0,120));
+  return d.data;
+}
+
 function applyKB(kb){
   KB=kb;
   INDEX=KB.docs.map(d=>({d, t:(d.title+' '+d.keywords+' '+d.text).toLowerCase()}));
@@ -698,10 +723,9 @@ async function doLogin(){
   if(!pin){ err.textContent='请输入访问码'; return; }
   err.textContent='校验中…';
   try{
-    // 服务端校验访问码
-    const rows=await sbGet('dashboard_auth?select=pin&limit=1');
-    const real=(rows&&rows[0]&&rows[0].pin)||'';
-    if(pin===real){
+    // 服务端校验访问码 → 拿令牌（口令与 service_role 都在 Edge Function 环境变量）
+    const ok=await apiLogin(pin);
+    if(ok){
       try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){}
       $('#loginMask').classList.remove('on');
       openEditor();
@@ -766,11 +790,8 @@ async function submitToDB(d){
     md:d.md, body_text:plainText(d.md), updated:today,
     source_url:'', is_internal:true
   };
-  const r=await fetch(SB.url+'/rest/v1/ab_articles?on_conflict=doc_id',{method:'POST',
-    headers:{apikey:SB.key,Authorization:'Bearer '+SB.key,'Content-Type':'application/json',
-      Prefer:'resolution=merge-duplicates,return=minimal'},
-    body:JSON.stringify(row)});
-  if(!r.ok) throw new Error('数据库写入失败 '+r.status);
+  // 走 Edge Function 带令牌写（服务端用 service_role 落库），前端不再持写权限
+  await apiWriteArticle(row);
   return row;
 }
 async function submitArticle(){
