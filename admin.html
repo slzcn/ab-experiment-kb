@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>内部工具 · A/B 实验知识库</title>
+<title>A/B 实验知识库 · 管理后台</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
   :root{
@@ -35,12 +35,11 @@
   .tab:hover{border-color:var(--brand);color:var(--brand)}
   .tab.on{background:var(--brand);color:#fff;border-color:var(--brand)}
   .tabs .tab-sp{flex:1}   /* 把上传按钮顶到最右 */
-  /* 上传按钮：动作类，与 tab 的胶囊描边样式明确区分 —— 实心渐变、圆角方形、带图标 */
-  .tab-action{display:inline-flex;align-items:center;gap:6px;font-family:inherit;font-size:13px;font-weight:700;
-    color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));border:none;border-radius:10px;
-    padding:9px 16px;cursor:pointer;transition:.15s;box-shadow:0 3px 12px rgba(224,99,46,.28)}
-  .tab-action:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(224,99,46,.42)}
-  .tab-action:active{transform:none}
+  /* 上传按钮：次要操作，弱化——描边+浅色，不与实心 tab 抢视觉；hover 才提亮 */
+  .tab-action{display:inline-flex;align-items:center;gap:6px;font-family:inherit;font-size:13px;font-weight:600;
+    color:var(--sub);background:transparent;border:1px solid var(--line);border-radius:10px;
+    padding:8px 15px;cursor:pointer;transition:.15s}
+  .tab-action:hover{color:var(--brand);border-color:var(--brand);background:rgba(224,99,46,.05)}
   .page{display:none}
   .page.on{display:block;animation:fade .3s ease}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -209,7 +208,7 @@
 <!-- 访问控制 -->
 <div id="gate">
   <div class="ic">🔐</div>
-  <h2>内部工具</h2>
+  <h2>A/B 实验知识库 · 管理后台</h2>
   <p>此操作仅限授权用户</p>
   <input id="gatePin" type="password" inputmode="numeric" placeholder="访问码" autocomplete="off">
   <button class="btn" id="gateBtn">进入后台</button>
@@ -222,7 +221,7 @@
     <div class="brand">
       <div class="logo">AB</div>
       <div>
-        <h1>内部工具</h1>
+        <h1>A/B 实验知识库 · 管理后台</h1>
         <div class="sub" id="topSub">加载中…</div>
       </div>
     </div>
