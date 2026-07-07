@@ -255,8 +255,7 @@
       <h2>📄 文章管理 <span class="desc" style="margin:0 0 0 auto" id="artCount"></span></h2>
       <div class="toolbar">
         <input id="artSearch" placeholder="搜索标题…">
-        <button class="btn ghost" id="artReload" title="重新从数据库读取本页列表">↻ 刷新列表</button>
-        <button class="btn ghost" id="pubRefresh" title="立即让公开网站重建、同步最新改动">🌐 刷新公开站</button>
+        <button class="btn ghost" id="artReload" title="重新从数据库读取列表">↻ 刷新</button>
       </div>
       <div class="batchbar" id="batchBar">
         <span class="cnt" id="batchCnt">已选 0 项</span>
@@ -268,7 +267,7 @@
       </div>
       <div class="msg" id="artMsg"></div>
       <div id="artWrap"><div class="empty">加载中…</div></div>
-      <div class="desc" style="margin-top:12px">上线/下线改动会写入数据库，公开网站约几分钟后（服务器重建静态页）同步生效；本页是实时的。</div>
+      <div class="desc" style="margin-top:12px">上线/下线改动即时写入数据库，公开网站约 1–2 分钟后（服务器自动重建）同步生效，无需手动操作；本页是实时的。</div>
     </div>
   </div>
 
@@ -577,21 +576,6 @@ $('#artSearch').addEventListener('input',()=>{PAGE=1;renderArts();});
 $('#artReload').onclick=async()=>{await loadData();};
 $('#batchClear').onclick=()=>{SELECTED.clear();renderArts();};
 
-// 立即刷新公开站：调 Supabase Edge Function（服务端持 token 触发 GitHub Action 重建）
-$('#pubRefresh').onclick=async()=>{
-  const btn=$('#pubRefresh');btn.disabled=true;
-  msg('#artMsg','load','正在触发公开站刷新…');
-  try{
-    const r=await fetch(SB.url+'/functions/v1/refresh-site',{method:'POST',
-      headers:{apikey:SB.key,Authorization:'Bearer '+SB.key}});
-    const j=await r.json();
-    if(!j.ok)throw new Error(j.error||'触发失败');
-    msg('#artMsg','ok','已触发公开站刷新，约 1 分钟后线上同步最新改动。');
-  }catch(e){
-    msg('#artMsg','err','刷新触发失败：'+e.message+'（若提示未部署，请先部署 refresh-site 函数，见 README）');
-  }finally{ setTimeout(()=>btn.disabled=false,3000); }  // 防连点
-};
-
 // 单篇上线/下线切换
 async function togglePub(id){
   const a=ARTS.find(x=>x.id===id);if(!a)return;
@@ -601,8 +585,8 @@ async function togglePub(id){
     await sbWrite('ab_articles?id=eq.'+id,'PATCH',{published:next});
     a.published=next; renderArts();
     msg('#artMsg','ok', next
-      ? `《${a.title}》已上线，约几分钟后在公开网站显示。`
-      : `《${a.title}》已下线，约几分钟后从公开网站移除（后台仍保留）。`);
+      ? `《${a.title}》已上线，约 1–2 分钟后在公开网站显示。`
+      : `《${a.title}》已下线，约 1–2 分钟后从公开网站移除（后台仍保留）。`);
   }catch(e){
     if(sw)sw.classList.remove('busy');
     msg('#artMsg','err','操作失败：'+e.message+'（若提示缺 published 列，请先运行 supabase_published.sql）');
@@ -625,7 +609,7 @@ async function bulkAction(kind){
     const verb={on:'上线',off:'下线',del:'删除'}[kind];
     msg('#artMsg','ok', kind==='del'
       ? `已删除 ${n} 篇。`
-      : `已${verb} ${n} 篇，约几分钟后在公开网站同步生效。`);
+      : `已${verb} ${n} 篇，约 1–2 分钟后在公开网站同步生效。`);
   }catch(e){msg('#artMsg','err','批量操作失败：'+e.message);}
 }
 document.querySelectorAll('.batchbar [data-bulk]').forEach(b=>b.onclick=()=>bulkAction(b.dataset.bulk));
