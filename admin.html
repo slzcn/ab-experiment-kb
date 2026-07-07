@@ -1184,17 +1184,32 @@ function drawCats(){
 }
 $('#catAdd').onclick=()=>{CAT_EDIT.push({key:'',icon:'📁',name:'',ord:(CAT_EDIT.length+1)*10,_orig:null});drawCats();};
 $('#catSave').onclick=async()=>{
-  for(const c of CAT_EDIT){if(!c.key.trim()||!c.name.trim()){msg('#catMsg','err','每个分类的 key 和名称都不能为空');return;}}
-  const keys=CAT_EDIT.map(c=>c.key);
+  // 提交前从 DOM 输入框再同步一遍值（防某些输入法/时序下 oninput 未触发，界面有值但 CAT_EDIT 没更新）
+  document.querySelectorAll('#catWrap input').forEach(inp=>{
+    const i=+inp.dataset.i, f=inp.dataset.f;
+    if(CAT_EDIT[i]) CAT_EDIT[i][f]= f==='ord' ? (+inp.value||0) : inp.value;
+  });
+  // 完全空的行（key 和 name 都没填，通常是点了「新增分类」还没填的空行）→ 静默忽略，不报错
+  CAT_EDIT=CAT_EDIT.filter(c=>String(c.key||'').trim()||String(c.name||'').trim());
+  // 校验：填了一半的行（只填了 key 或只填了 name）才提示
+  for(let i=0;i<CAT_EDIT.length;i++){
+    const c=CAT_EDIT[i];
+    if(!String(c.key||'').trim()||!String(c.name||'').trim()){
+      msg('#catMsg','err',`第 ${i+1} 行：key 和名称都要填（不填的空行可以留空，会自动忽略）`);drawCats();return;
+    }
+  }
+  const keys=CAT_EDIT.map(c=>c.key.trim());
   if(new Set(keys).size!==keys.length){msg('#catMsg','err','分类 key 不能重复');return;}
+  drawCats();
   msg('#catMsg','load','保存中…');
   try{
     // 删除被移除的分类
     const curKeys=new Set(CAT_EDIT.map(c=>c._orig).filter(Boolean));
     for(const oldc of CATS){if(!curKeys.has(oldc.key))await apiDeleteCategory(oldc.key);}
-    // upsert 现有
+    // upsert 现有（只提交填了 key 的行，双保险绝不给后端传空 key）
     for(const c of CAT_EDIT){
-      await apiSaveCategory({key:c.key.trim(),icon:c.icon||'📁',name:c.name.trim(),descr:c.descr||'',ord:c.ord||0});
+      const k=String(c.key||'').trim(); if(!k) continue;
+      await apiSaveCategory({key:k,icon:c.icon||'📁',name:String(c.name||'').trim(),descr:c.descr||'',ord:c.ord||0});
     }
     msg('#catMsg','ok','✓ 分类已保存，约十几秒后线上同步');
     await loadData();
