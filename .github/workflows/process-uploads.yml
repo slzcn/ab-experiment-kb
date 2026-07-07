@@ -31,6 +31,8 @@ jobs:
 
       - name: 处理待上传文档（转码 → 入库）
         id: proc
+        env:
+          SB_SERVICE_KEY: ${{ secrets.SB_SERVICE_KEY }}
         run: |
           python3 process_uploads.py | tee /tmp/proc.log
           # 把 HAS_NEW 传给后续步骤

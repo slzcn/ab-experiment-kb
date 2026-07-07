@@ -41,7 +41,11 @@ def git(*args, capture=True):
 # ---------------- 配置 ----------------
 def load_sb_config():
     cfg = json.load(open(os.path.join(HERE, "sb_config.json"), encoding="utf-8"))
-    return cfg["url"].rstrip("/"), cfg["key"]
+    url = cfg["url"].rstrip("/")
+    # 服务端（GitHub Action / 本地维护脚本）优先用 service_role（写库/读删 Storage 需要）。
+    # 前端从不用本文件；anon key 仅作无 service_role 时的只读回退。
+    key = os.environ.get("SB_SERVICE_KEY") or os.environ.get("SUPABASE_SERVICE_KEY") or cfg["key"]
+    return url, key
 
 
 # ---------------- Supabase REST ----------------

@@ -330,6 +330,38 @@ async function sbWrite(path,method,body,extra){
     body:body?JSON.stringify(body):undefined});
   if(!r.ok){const t=await r.text();throw new Error('写入失败 '+r.status+' '+t.slice(0,120));}
 }
+
+// ===== Edge Function 鉴权层（写操作走服务端，前端不碰 service_role）=====
+const API_BASE=SB.url+'/functions/v1/admin-api';
+const API_TOKEN_KEY='ab_kb_api_token';
+function apiToken(){try{return localStorage.getItem(API_TOKEN_KEY)||'';}catch(e){return '';}}
+function apiSetToken(t){try{localStorage.setItem(API_TOKEN_KEY,t||'');}catch(e){}}
+async function apiLogin(pin){
+  const r=await fetch(API_BASE+'/login',{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify({pin})});
+  if(!r.ok) return false;
+  const d=await r.json().catch(()=>({}));
+  if(d&&d.token){apiSetToken(d.token);return true;}
+  return false;
+}
+async function apiCall(path,method,body){
+  const r=await fetch(API_BASE+path,{method,
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiToken()},
+    body:body!==undefined?JSON.stringify(body):undefined});
+  if(r.status===401){apiSetToken('');throw new Error('登录已过期，请刷新页面重新输入访问码');}
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok||(d&&d.ok===false)) throw new Error('操作失败 '+r.status+' '+JSON.stringify(d).slice(0,120));
+  return d;
+}
+// 文章：upsert / 删除
+async function apiSaveArticle(row){return (await apiCall('/article','POST',{row})).data;}
+async function apiDeleteArticle(idExpr){ // idExpr: 单个 id 或 'in.(1,2,3)'
+  const q=idExpr.startsWith('in.')?('?id='+encodeURIComponent(idExpr)):('?id='+encodeURIComponent(idExpr));
+  return apiCall('/article'+q,'DELETE');
+}
+// 分类：upsert / 删除
+async function apiSaveCategory(row){return (await apiCall('/category','POST',{row})).data;}
+async function apiDeleteCategory(key){return apiCall('/category?key='+encodeURIComponent(key),'DELETE');}
 function msg(el,cls,txt){const m=$(el);m.className='msg show '+cls;m.textContent=txt;}
 function msgClear(el){const m=$(el);m.className='msg';m.textContent='';}
 
@@ -341,9 +373,8 @@ async function doGate(){
   if(!pin){err.textContent='请输入访问码';return;}
   err.textContent='校验中…';
   try{
-    const rows=await sbGet('dashboard_auth?select=pin&limit=1');
-    const real=(rows&&rows[0]&&rows[0].pin)||'';
-    if(pin===real){try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){} enter();}
+    const ok=await apiLogin(pin);
+    if(ok){try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){} enter();}
     else err.textContent='访问码不正确';
   }catch(e){err.textContent='网络错误，请重试';}
 }
@@ -441,10 +472,12 @@ function paintRows(rows){
 }
 // 上传单个文件到 Storage 桶
 async function uploadToStorage(file,path){
-  const r=await fetch(`${SB.url}/storage/v1/object/${UP_BUCKET}/${encodeURIComponent(path)}`,{
-    method:'POST',
-    headers:{...SBH,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},
-    body:file});
+  // 1) 向 Edge Function 要一次性签名上传 URL（service_role 签，前端不持 Storage 写权限）
+  const s=await apiCall('/upload-url','POST',{bucket:UP_BUCKET,path});
+  if(!s||!s.uploadUrl) throw new Error('获取上传地址失败');
+  // 2) 用签名 URL 直传文件（PUT，无需 anon key）
+  const r=await fetch(s.uploadUrl,{method:'PUT',
+    headers:{'Content-Type':file.type||'application/octet-stream'},body:file});
   if(!r.ok){const t=await r.text();throw new Error('文件上传失败 '+r.status+' '+t.slice(0,100));}
 }
 let POLL=null;
@@ -463,8 +496,7 @@ $('#upBtn').onclick=async()=>{
       const ext=(x.file.name.match(/\.[^.]+$/)||[''])[0].toLowerCase().replace(/[^.a-z0-9]/g,'');
       const path=`${batch}/${i}${ext}`;
       await uploadToStorage(x.file,path);
-      await sbWrite('upload_jobs','POST',
-        {batch,filename:x.file.name,cat:x.cat,path,status:'queued'});
+      await apiCall('/upload-job','POST',{row:{batch,filename:x.file.name,cat:x.cat,path,status:'queued'}});
     }
     msg('#upMsg','ok',`已上传 ${FILES.length} 个文件，服务器正在后台转码入库，可关闭本页，几分钟后自动同步到线上。`);
     // 2) 轮询这个 batch 的 job 进度（服务器 Action 每隔几分钟处理一批）
@@ -474,7 +506,7 @@ $('#upBtn').onclick=async()=>{
     POLL=setInterval(async()=>{
       ticks++;
       try{
-        const rows=await sbGet(`upload_jobs?batch=eq.${batch}&select=path,filename,status,images,error&order=id`);
+        const rows=(await apiCall('/upload-jobs?batch='+encodeURIComponent(batch),'GET')).jobs||[];
         paintRows(rows);
         const done=rows.filter(r=>r.status==='done'||r.status==='error');
         if(done.length>=total && total>0){
@@ -591,7 +623,7 @@ async function togglePub(id){
   const next=!isPub(a);
   const sw=$(`[data-toggle="${id}"]`); if(sw)sw.classList.add('busy');
   try{
-    await sbWrite('ab_articles?id=eq.'+id,'PATCH',{published:next});
+    await apiSaveArticle({id, published:next});
     a.published=next; renderArts();
     msg('#artMsg','ok', next
       ? `《${a.title}》已上线，约 1 分钟后在公开网站显示。`
@@ -609,9 +641,9 @@ async function bulkAction(kind){
   try{
     if(kind==='del'){
       if(!confirm(`确定删除选中的 ${n} 篇？此操作不可撤销。`))return;
-      await sbWrite('ab_articles?'+inList,'DELETE');
+      await apiDeleteArticle('in.('+ids.join(',')+')');
     }else{
-      await sbWrite('ab_articles?'+inList,'PATCH',{published:kind==='on'});
+      await Promise.all(ids.map(x=>apiSaveArticle({id:x, published:kind==='on'})));
     }
     SELECTED.clear();
     await loadData();
@@ -649,8 +681,7 @@ $('#edSave').onclick=async()=>{
     .replace(/<[^>]+>/g,'').replace(/[#>*`|\-]{1,}/g,' ').replace(/\s+/g,' ').trim();
   msg('#edMsg','load','保存中…');
   try{
-    await sbWrite('ab_articles?id=eq.'+id,'PATCH',
-      {title,cat:$('#edCat').value,keywords:$('#edKw').value.trim(),md,body_text});
+    await apiSaveArticle({id,title,cat:$('#edCat').value,keywords:$('#edKw').value.trim(),md,body_text});
     msg('#edMsg','ok','✓ 已保存，约十几秒后线上同步');
     await loadData();
     setTimeout(closeEdit,700);
@@ -659,7 +690,7 @@ $('#edSave').onclick=async()=>{
 async function delArt(id){
   const a=ARTS.find(x=>x.id===id);
   if(!confirm(`确定删除《${a?a.title:''}》？此操作不可撤销。`))return;
-  try{await sbWrite('ab_articles?id=eq.'+id,'DELETE');await loadData();}
+  try{await apiDeleteArticle(String(id));await loadData();}
   catch(e){alert('删除失败：'+e.message);}
 }
 
@@ -695,11 +726,11 @@ $('#catSave').onclick=async()=>{
   try{
     // 删除被移除的分类
     const curKeys=new Set(CAT_EDIT.map(c=>c._orig).filter(Boolean));
-    for(const old of CATS){if(!curKeys.has(old.key))await sbWrite('ab_categories?key=eq.'+encodeURIComponent(old.key),'DELETE');}
+    for(const oldc of CATS){if(!curKeys.has(oldc.key))await apiDeleteCategory(oldc.key);}
     // upsert 现有
-    await sbWrite('ab_categories','POST',
-      CAT_EDIT.map(c=>({key:c.key.trim(),icon:c.icon||'📁',name:c.name.trim(),descr:c.descr||'',ord:c.ord||0})),
-      {Prefer:'resolution=merge-duplicates,return=minimal'});
+    for(const c of CAT_EDIT){
+      await apiSaveCategory({key:c.key.trim(),icon:c.icon||'📁',name:c.name.trim(),descr:c.descr||'',ord:c.ord||0});
+    }
     msg('#catMsg','ok','✓ 分类已保存，约十几秒后线上同步');
     await loadData();
   }catch(e){msg('#catMsg','err','✗ '+e.message);}
