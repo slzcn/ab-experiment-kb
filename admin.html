@@ -71,9 +71,10 @@
   .filelist{margin-top:14px;display:flex;flex-direction:column;gap:8px}
   .fitem{display:flex;align-items:center;gap:10px;font-size:13px;background:var(--bg);
     border:1px solid var(--line);border-radius:9px;padding:9px 12px}
-  .fitem .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .fitem .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
   .fitem .sz{color:var(--dim);font-size:11.5px;flex:0 0 auto}
-  .fitem .st{flex:0 0 auto;font-size:12px;font-weight:700}
+  .fitem .fcat{flex:0 0 auto;width:auto;padding:5px 8px;font-size:12px;border-radius:7px}
+  .fitem .st{flex:0 0 auto;font-size:12px;font-weight:700;min-width:44px;text-align:right}
   .fitem .rm{cursor:pointer;color:var(--dim);flex:0 0 auto}
   .fitem .rm:hover{color:var(--bad)}
   /* 文章列表表格 */
@@ -143,6 +144,10 @@
     .modal{width:100vw;max-width:100vw;height:100%;max-height:100%;top:0;left:0;
       transform:none;border-radius:0;padding:20px 16px}
     .drop{padding:26px 16px}
+    /* 文件行在窄屏换行：文件名占满一行，分类下拉/大小/状态/删除排第二行 */
+    .fitem{flex-wrap:wrap}
+    .fitem .nm{flex:1 1 100%}
+    .fitem .fcat{flex:1 1 auto}
   }
 </style>
 </head>
@@ -182,7 +187,7 @@
     <div class="panel">
       <h2>📤 批量上传文档，自动转码成文章</h2>
       <div class="desc">支持 PPT / Word / PDF / Excel 等常见格式。上传后<b>秒回</b>，服务器（GitHub Action）自动抽取正文<b>并连同文档里的图片</b>转成带图 Markdown 文章入库——可关闭本页，几分钟后自动同步到线上。</div>
-      <label>归入分类</label>
+      <label>默认分类（每个文件可在下方单独调整）</label>
       <select id="upCat"></select>
       <label>选择或拖入文件（可多选）</label>
       <div class="drop" id="drop">
@@ -326,30 +331,43 @@ fin.onchange=()=>{addFiles(fin.files);fin.value='';};
 ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over');}));
 drop.addEventListener('drop',e=>{if(e.dataTransfer.files)addFiles(e.dataTransfer.files);});
 function fmtSize(n){return n<1024?n+'B':n<1048576?(n/1024).toFixed(0)+'KB':(n/1048576).toFixed(1)+'MB';}
+// FILES 元素：{file, cat}——每个文件带自己的分类，默认继承顶部“默认分类”
 function addFiles(list){
-  Array.from(list).forEach(f=>{if(!FILES.some(x=>x.name===f.name&&x.size===f.size))FILES.push(f);});
+  const def=$('#upCat').value;
+  Array.from(list).forEach(f=>{
+    if(!FILES.some(x=>x.file.name===f.name&&x.file.size===f.size))
+      FILES.push({file:f, cat:def});
+  });
   renderFileList();
+}
+function catOptions(sel){
+  return CATS.map(c=>`<option value="${c.key}"${c.key===sel?' selected':''}>${c.icon} ${esc(c.name)}</option>`).join('');
 }
 function renderFileList(){
   const wrap=$('#filelist');
-  wrap.innerHTML=FILES.map((f,i)=>`<div class="fitem"><span class="nm">${esc(f.name)}</span>
-    <span class="sz">${fmtSize(f.size)}</span><span class="st" id="fst${i}"></span>
+  wrap.innerHTML=FILES.map((x,i)=>`<div class="fitem">
+    <span class="nm">${esc(x.file.name)}</span>
+    <span class="sz">${fmtSize(x.file.size)}</span>
+    <select class="fcat" data-i="${i}" title="该文件的分类">${catOptions(x.cat)}</select>
+    <span class="st" id="fst${i}"></span>
     <span class="rm" data-i="${i}">✕</span></div>`).join('');
+  wrap.querySelectorAll('.fcat').forEach(el=>el.onchange=()=>{FILES[+el.dataset.i].cat=el.value;});
   wrap.querySelectorAll('.rm').forEach(el=>el.onclick=()=>{FILES.splice(+el.dataset.i,1);renderFileList();});
   $('#upBtn').disabled=!FILES.length;
 }
 // 各状态在文件行右侧的呈现
 const ST_LABEL={queued:'排队中',processing:'转码中…',done:'✓ 完成',error:'✗ 失败'};
 const ST_COLOR={queued:'var(--dim)',processing:'var(--accent)',done:'var(--ok)',error:'var(--bad)'};
-function paintByName(rows){
-  // rows: upload_jobs 记录，按 filename 匹配到文件行
-  FILES.forEach((f,i)=>{
-    const row=rows.find(r=>r.filename===f.name);
-    const el=$('#fst'+i);if(!el)return;
-    const st=row?row.status:'queued';
+function paintRows(rows){
+  // rows: upload_jobs 记录，按 path 里的序号匹配回文件行（path = batch/<i>_<name>）
+  rows.forEach(row=>{
+    const mi=/\/(\d+)_/.exec(row.path||'');
+    if(!mi)return;
+    const el=$('#fst'+(+mi[1]));if(!el)return;
+    const st=row.status;
     let t=ST_LABEL[st]||st;
     if(st==='done'&&row.images)t=`✓ ${row.images}图`;
-    el.textContent=t;el.style.color=ST_COLOR[st]||'var(--sub)';el.title=(row&&row.error)||'';
+    el.textContent=t;el.style.color=ST_COLOR[st]||'var(--sub)';el.title=row.error||'';
   });
 }
 // 上传单个文件到 Storage 桶
@@ -364,17 +382,18 @@ let POLL=null;
 $('#upBtn').onclick=async()=>{
   if(!FILES.length)return;
   const btn=$('#upBtn');btn.disabled=true;
-  const cat=$('#upCat').value;
   const batch='b'+Date.now();
   try{
     msg('#upMsg','load','正在上传文件…');
     // 1) 逐个直传 Storage + 建 upload_jobs 记录（这步很快，只传原始文件）
-    for(const f of FILES){
-      const safe=f.name.replace(/[^\w.\-一-龥]/g,'_');
-      const path=`${batch}/${safe}`;
-      await uploadToStorage(f,path);
+    //    path 前缀文件序号，既避免同名冲突，也便于回填进度时定位文件行
+    for(let i=0;i<FILES.length;i++){
+      const x=FILES[i];
+      const safe=x.file.name.replace(/[^\w.\-一-龥]/g,'_');
+      const path=`${batch}/${i}_${safe}`;
+      await uploadToStorage(x.file,path);
       await sbWrite('upload_jobs','POST',
-        {batch,filename:f.name,cat,path,status:'queued'});
+        {batch,filename:x.file.name,cat:x.cat,path,status:'queued'});
     }
     msg('#upMsg','ok',`已上传 ${FILES.length} 个文件，服务器正在后台转码入库，可关闭本页，几分钟后自动同步到线上。`);
     // 2) 轮询这个 batch 的 job 进度（服务器 Action 每隔几分钟处理一批）
@@ -382,8 +401,8 @@ $('#upBtn').onclick=async()=>{
     if(POLL)clearInterval(POLL);
     POLL=setInterval(async()=>{
       try{
-        const rows=await sbGet(`upload_jobs?batch=eq.${batch}&select=filename,status,images,error&order=id`);
-        paintByName(rows);
+        const rows=await sbGet(`upload_jobs?batch=eq.${batch}&select=path,filename,status,images,error&order=id`);
+        paintRows(rows);
         const done=rows.filter(r=>r.status==='done'||r.status==='error');
         if(done.length>=total && total>0){
           clearInterval(POLL);POLL=null;
