@@ -155,8 +155,20 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .fitem .rm{cursor:pointer;color:var(--dim);flex:0 0 auto}
   .fitem .rm:hover{color:var(--bad)}
   /* 文章列表表格 */
-  .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
-  .toolbar input{flex:1;min-width:180px}
+  /* 一行放下：搜索框自适应伸缩填充剩余宽度，按钮不换行不压缩 */
+  .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:nowrap}
+  .toolbar input{flex:1 1 auto;min-width:0}   /* 允许收窄到很短，把空间让给按钮同行 */
+  .toolbar .btn{flex:0 0 auto;white-space:nowrap}
+  @media(max-width:640px){
+    /* 小屏按钮收紧，给搜索框留空间 */
+    .toolbar{gap:6px}
+    .toolbar .btn{padding:9px 11px;font-size:12px}
+  }
+  @media(max-width:440px){
+    /* 极窄屏：按钮只留图标，搜索框撑满整行 */
+    .toolbar .btn .lbl{display:none}
+    .toolbar .btn{padding:9px 12px}
+  }
   .tbl{width:100%;border-collapse:collapse;font-size:13px}
   .tbl th,.tbl td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
   .tbl th{font-size:11.5px;color:var(--dim);font-weight:700;text-transform:none}
@@ -332,8 +344,8 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <h2>📄 文章管理 <span class="desc" style="margin:0 0 0 auto" id="artCount"></span></h2>
       <div class="toolbar">
         <input id="artSearch" placeholder="搜索标题…">
-        <button class="btn ghost" id="artReload" title="重新从数据库读取列表">↻ 刷新</button>
-        <button class="btn ghost" id="trashOpen" title="查看已删除的文章，可恢复或彻底删除">🗑 回收站</button>
+        <button class="btn ghost" id="artReload" title="重新从数据库读取列表">↻<span class="lbl"> 刷新</span></button>
+        <button class="btn ghost" id="trashOpen" title="查看已删除的文章，可恢复或彻底删除">🗑<span class="lbl"> 回收站</span></button>
       </div>
       <div class="batchbar" id="batchBar">
         <span class="cnt" id="batchCnt">已选 0 项</span>
@@ -357,11 +369,12 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <h2>🗂 分类配置</h2>
       <div class="desc">增删改分类。key 为英文标识（文章的 cat 字段引用它），排序号小的在前。</div>
       <div id="catWrap"><div class="empty">加载中…</div></div>
-      <div style="margin-top:16px;display:flex;gap:10px">
+      <div style="margin-top:16px;display:flex;gap:10px;align-items:center">
         <button class="btn ghost" id="catAdd">＋ 新增分类</button>
-        <button class="btn ghost" id="catRestore" title="清空当前分类，重置为系统预设的 12 个默认分类">↺ 恢复默认</button>
         <button class="btn" id="catSave">✓ 保存分类</button>
+        <button class="btn danger" id="catRestore" style="margin-left:auto;border:1px solid var(--bad)" title="危险操作：清空当前全部分类，重置为系统预设的 12 个默认分类">↺ 恢复默认</button>
       </div>
+      <div class="desc" style="margin-top:8px;color:var(--dim)">「新增分类」「保存分类」是日常编辑；「恢复默认」是重置操作，会清空当前全部分类，请谨慎使用。</div>
       <div class="msg" id="catMsg"></div>
     </div>
   </div>
