@@ -150,6 +150,17 @@
   .modal.on{display:block}
   .modal .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
   .modal .mh b{font-size:16px}.modal .x{cursor:pointer;color:var(--dim);font-size:18px}
+  /* 确认弹层 */
+  .cf-modal{width:min(400px,92vw);text-align:center;padding:26px 24px 22px}
+  .cf-ic{font-size:34px;margin-bottom:10px}
+  .cf-title{font-size:16.5px;font-weight:800;color:var(--ink);margin-bottom:8px}
+  .cf-body{font-size:13.5px;color:var(--sub);line-height:1.6;margin-bottom:20px}
+  .cf-body b{color:var(--ink)}
+  .cf-acts{display:flex;gap:10px;justify-content:center}
+  .cf-acts .btn{min-width:96px;justify-content:center}
+  .cf-acts .btn.danger-solid{background:linear-gradient(135deg,var(--bad),#c93a3f);
+    border-color:transparent;color:#fff;box-shadow:0 3px 12px rgba(229,72,77,.32)}
+  .cf-acts .btn.danger-solid:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(229,72,77,.42)}
   /* 访问控制 */
   #gate{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;
     align-items:center;justify-content:center;padding:24px}
@@ -315,10 +326,49 @@
   <div class="msg" id="upMsg"></div>
 </div>
 
+<!-- 通用确认弹层（替代系统 confirm）-->
+<div class="mask" id="cfMask"></div>
+<div class="modal cf-modal" id="cfModal">
+  <div class="cf-ic" id="cfIc">🗑</div>
+  <div class="cf-title" id="cfTitle">确认操作</div>
+  <div class="cf-body" id="cfBody"></div>
+  <div class="cf-acts">
+    <button class="btn ghost" id="cfCancel">取消</button>
+    <button class="btn" id="cfOk">确定删除</button>
+  </div>
+</div>
+
 <script>
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// 自定义确认弹层，替代系统 confirm。返回 Promise<bool>。
+// opts: {title, html, okText, danger}
+function confirmBox(opts){
+  opts=opts||{};
+  return new Promise(resolve=>{
+    $('#cfIc').textContent=opts.icon||'🗑';
+    $('#cfTitle').textContent=opts.title||'确认操作';
+    $('#cfBody').innerHTML=opts.html||'';
+    const ok=$('#cfOk');
+    ok.textContent=opts.okText||'确定删除';
+    ok.classList.toggle('danger-solid',opts.danger!==false);
+    $('#cfMask').classList.add('on');$('#cfModal').classList.add('on');
+    setTimeout(()=>ok.focus(),50);
+    function done(v){
+      $('#cfMask').classList.remove('on');$('#cfModal').classList.remove('on');
+      ok.onclick=null;$('#cfCancel').onclick=null;$('#cfMask').onclick=null;
+      document.removeEventListener('keydown',onKey);
+      resolve(v);
+    }
+    function onKey(e){ if(e.key==='Escape')done(false); else if(e.key==='Enter')done(true); }
+    ok.onclick=()=>done(true);
+    $('#cfCancel').onclick=()=>done(false);
+    $('#cfMask').onclick=()=>done(false);
+    document.addEventListener('keydown',onKey);
+  });
+}
 
 // ---- Supabase ----
 const SB={url:'https://cddkniwbhvcbfgkgomtl.supabase.co',key:'***REMOVED_PUBLISHABLE_KEY***'};
@@ -649,7 +699,8 @@ async function bulkAction(kind){
   const verb={on:'上线',off:'下线',del:'删除'}[kind];
   try{
     if(kind==='del'){
-      if(!confirm(`确定删除选中的 ${n} 篇？此操作不可撤销。`))return;
+      if(!await confirmBox({title:`删除选中的 ${n} 篇？`,
+        html:`将删除选中的 <b>${n}</b> 篇文章，此操作不可撤销。`}))return;
       msg('#artMsg','load',`正在删除 ${n} 篇…`);
       await apiDeleteArticle('in.('+ids.join(',')+')');
     }else{
@@ -729,7 +780,8 @@ function focusArt(id){
 async function delArt(id){
   const a=ARTS.find(x=>x.id===id);
   const title=a?a.title:'';
-  if(!confirm(`确定删除《${title}》？此操作不可撤销。`))return;
+  if(!await confirmBox({title:'删除这篇文章？',
+    html:`将删除《<b>${esc(title)}</b>》，此操作不可撤销。`}))return;
   msg('#artMsg','load','正在删除…');
   try{
     await apiDeleteArticle(String(id));
