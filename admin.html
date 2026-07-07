@@ -645,21 +645,26 @@ async function togglePub(id){
 // 批量：上线/下线/删除
 async function bulkAction(kind){
   const ids=[...SELECTED]; if(!ids.length)return;
-  const inList='id=in.('+ids.join(',')+')';
   const n=ids.length;
+  const verb={on:'上线',off:'下线',del:'删除'}[kind];
   try{
     if(kind==='del'){
       if(!confirm(`确定删除选中的 ${n} 篇？此操作不可撤销。`))return;
+      msg('#artMsg','load',`正在删除 ${n} 篇…`);
       await apiDeleteArticle('in.('+ids.join(',')+')');
     }else{
+      msg('#artMsg','load',`正在${verb} ${n} 篇…`);
       await Promise.all(ids.map(x=>apiSaveArticle({id:x, published:kind==='on'})));
     }
     SELECTED.clear();
     await loadData();
-    const verb={on:'上线',off:'下线',del:'删除'}[kind];
-    msg('#artMsg','ok', kind==='del'
-      ? `已删除 ${n} 篇。`
-      : `已${verb} ${n} 篇，约 1 分钟后在公开网站同步生效。`);
+    if(kind==='del'){
+      const left=ids.filter(id=>ARTS.some(x=>x.id===id)).length;
+      if(left) msg('#artMsg','err',`删除未完全生效：还有 ${left} 篇仍在库中，请重试或检查权限。`);
+      else msg('#artMsg','ok',`已删除 ${n} 篇。`);
+    }else{
+      msg('#artMsg','ok',`已${verb} ${n} 篇，约 1 分钟后在公开网站同步生效。`);
+    }
   }catch(e){msg('#artMsg','err','批量操作失败：'+e.message);}
 }
 document.querySelectorAll('.batchbar [data-bulk]').forEach(b=>b.onclick=()=>bulkAction(b.dataset.bulk));
@@ -708,9 +713,16 @@ $('#edSave').onclick=async()=>{
 };
 async function delArt(id){
   const a=ARTS.find(x=>x.id===id);
-  if(!confirm(`确定删除《${a?a.title:''}》？此操作不可撤销。`))return;
-  try{await apiDeleteArticle(String(id));await loadData();}
-  catch(e){alert('删除失败：'+e.message);}
+  const title=a?a.title:'';
+  if(!confirm(`确定删除《${title}》？此操作不可撤销。`))return;
+  msg('#artMsg','load','正在删除…');
+  try{
+    await apiDeleteArticle(String(id));
+    await loadData();
+    // 删后校验：列表里还在 = 实际没删掉，明确报错而非静默
+    if(ARTS.some(x=>x.id===id)) msg('#artMsg','err',`删除未生效：《${title}》仍在库中，请重试或检查权限。`);
+    else msg('#artMsg','ok',`已删除《${title}》。`);
+  }catch(e){ msg('#artMsg','err','删除失败：'+e.message); }
 }
 
 // ================= 分类配置 =================
