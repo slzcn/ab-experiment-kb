@@ -215,6 +215,13 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .catrow .nm{flex:1}.catrow .od{flex:0 0 64px}
   /* 弹层：编辑文章 */
   .mask{position:fixed;inset:0;background:rgba(40,36,30,.4);backdrop-filter:blur(2px);z-index:100;display:none}
+  .pubtabs{display:flex;gap:2px;background:#f5efe6;border-radius:10px;padding:3px;margin:14px 0 4px;width:fit-content}
+  .ptab{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;color:#8a7d6b;cursor:pointer;transition:all .15s;user-select:none}
+  .ptab:hover{color:#5a4a35}
+  .ptab.on{background:#fff;color:var(--brand);box-shadow:0 2px 4px rgba(0,0,0,.04)}
+  .ppane{display:none;margin-top:8px}
+  .ppane.on{display:block}
+  #pubMd{min-height:280px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.6}
   .mask.on{display:block}
   .modal{position:fixed;z-index:101;top:50%;left:50%;transform:translate(-50%,-50%);width:min(680px,94vw);
     max-height:88vh;overflow:auto;background:var(--bg2);border-radius:16px;box-shadow:var(--sh);padding:22px 24px;display:none}
@@ -316,7 +323,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     <div class="tab on" data-p="arts">📄 文章管理</div>
     <div class="tab" data-p="cats">🗂 分类配置</div>
     <span class="tab-sp"></span>
-    <button class="tab-action" id="upOpen" title="上传 PPT/Word/PDF 等文档，自动转码成文章">📤 上传文档</button>
+    <button class="tab-action" id="upOpen" title="发布单篇文章或批量上传文档">✍️ 发布文章</button>
   </div>
 
   <!-- 文章管理 -->
@@ -378,27 +385,55 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   <div class="msg" id="edMsg"></div>
 </div>
 
-<!-- 上传文档弹层 -->
+<!-- 发布文章弹层（子 Tab：发布单篇 / 上传文档）-->
 <div class="mask" id="upMask"></div>
 <div class="modal" id="upModal">
-  <div class="mh"><b>📤 上传文档，自动转码成文章</b><span class="x" id="upModalX">✕</span></div>
-  <div class="desc">支持 PPT / Word / PDF / Excel 等格式。上传后<b>秒回</b>，服务器自动抽取正文<b>并连同图片</b>转成文章入库——可关闭本弹层，约 1 分钟自动同步到线上。</div>
-  <label>默认分类（每个文件可在下方单独调整）</label>
-  <select id="upCat"></select>
-  <label>选择或拖入文件（可多选）</label>
-  <div class="drop" id="drop">
-    <div class="ic">📁</div>
-    <div class="t">点击选择文件，或拖拽到这里</div>
-    <div class="s" id="dropFmt">支持 .pptx .docx .pdf .xlsx .csv .txt .md 等</div>
+  <div class="mh"><b>✍️ 发布文章</b><span class="x" id="upModalX">✕</span></div>
+  <div class="pubtabs">
+    <div class="ptab on" data-pt="single">✍️ 发布单篇</div>
+    <div class="ptab" data-pt="batch">📤 上传文档</div>
   </div>
-  <input type="file" id="fileInput" multiple style="display:none"
-    accept=".pptx,.docx,.pdf,.xlsx,.csv,.txt,.md,.markdown,.html,.htm">
-  <div class="filelist" id="filelist"></div>
-  <div style="margin-top:16px;display:flex;gap:10px">
-    <button class="btn" id="upBtn" disabled>⬆ 上传（服务器自动转码）</button>
-    <button class="btn ghost" id="upClose">关闭</button>
+
+  <!-- 子面板 1：发布单篇（Markdown 编辑）-->
+  <div class="ppane on" id="pp-single">
+    <div class="desc">直接手写 Markdown 发布一篇新文章。保存后约 1 分钟自动同步到公开网站。</div>
+    <label>标题</label>
+    <input id="pubTitle" placeholder="输入文章标题">
+    <label>分类</label>
+    <select id="pubCat"></select>
+    <label>检索关键词（空格分隔，可选）</label>
+    <input id="pubKw" placeholder="例如：AB测试 显著性 假设检验">
+    <label>正文（Markdown）</label>
+    <textarea id="pubMd" placeholder="# 一级标题
+
+直接写 Markdown 即可…"></textarea>
+    <div style="margin-top:16px;display:flex;gap:10px">
+      <button class="btn" id="pubSave">✓ 发布文章</button>
+      <button class="btn ghost" id="pubClose1">关闭</button>
+    </div>
+    <div class="msg" id="pubMsg"></div>
   </div>
-  <div class="msg" id="upMsg"></div>
+
+  <!-- 子面板 2：批量上传文档（原有功能）-->
+  <div class="ppane" id="pp-batch">
+    <div class="desc">支持 PPT / Word / PDF / Excel 等格式。上传后<b>秒回</b>，服务器自动抽取正文<b>并连同图片</b>转成文章入库——可关闭本弹层，约 1 分钟自动同步到线上。</div>
+    <label>默认分类（每个文件可在下方单独调整）</label>
+    <select id="upCat"></select>
+    <label>选择或拖入文件（可多选）</label>
+    <div class="drop" id="drop">
+      <div class="ic">📁</div>
+      <div class="t">点击选择文件，或拖拽到这里</div>
+      <div class="s" id="dropFmt">支持 .pptx .docx .pdf .xlsx .csv .txt .md 等</div>
+    </div>
+    <input type="file" id="fileInput" multiple style="display:none"
+      accept=".pptx,.docx,.pdf,.xlsx,.csv,.txt,.md,.markdown,.html,.htm">
+    <div class="filelist" id="filelist"></div>
+    <div style="margin-top:16px;display:flex;gap:10px">
+      <button class="btn" id="upBtn" disabled>⬆ 上传（服务器自动转码）</button>
+      <button class="btn ghost" id="upClose">关闭</button>
+    </div>
+    <div class="msg" id="upMsg"></div>
+  </div>
 </div>
 
 <!-- 通用确认弹层（替代系统 confirm）-->
@@ -580,6 +615,7 @@ async function loadData(){
     SELECTED.clear();
     fillCatSelect($('#upCat'));
     fillCatSelect($('#edCat'));
+    try{ if(document.getElementById('pubCat')) fillCatSelect($('#pubCat')); }catch(e){}
     renderArts(); renderCats();
     writeListCache();
   } finally { LOADING=false; }
@@ -887,12 +923,51 @@ function closeEdit(){$('#mask').classList.remove('on');$('#modal').classList.rem
 $('#modalX').onclick=closeEdit;$('#edCancel').onclick=closeEdit;$('#mask').onclick=closeEdit;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modal').classList.contains('on'))closeEdit();});
 
-// 上传弹层开关
-function openUpload(){$('#upMask').classList.add('on');$('#upModal').classList.add('on');}
+// 发布文章弹层开关（含子 Tab：发布单篇 / 上传文档）
+function openUpload(paneKey){
+  $('#upMask').classList.add('on');$('#upModal').classList.add('on');
+  // 每次打开默认切到"发布单篇"（除非明确传 'batch'）
+  switchPubTab(paneKey==='batch'?'batch':'single');
+}
 function closeUpload(){$('#upMask').classList.remove('on');$('#upModal').classList.remove('on');}
-$('#upOpen').onclick=openUpload;
-$('#upModalX').onclick=closeUpload;$('#upClose').onclick=closeUpload;$('#upMask').onclick=closeUpload;
+function switchPubTab(key){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.toggle('on',t.dataset.pt===key));
+  document.querySelectorAll('.ppane').forEach(p=>p.classList.toggle('on',p.id==='pp-'+key));
+  // 切到 single 时聚焦标题输入
+  if(key==='single') setTimeout(()=>{try{$('#pubTitle').focus();}catch(e){}},50);
+}
+document.querySelectorAll('.ptab').forEach(t=>t.onclick=()=>switchPubTab(t.dataset.pt));
+
+$('#upOpen').onclick=()=>openUpload('single');
+$('#upModalX').onclick=closeUpload;$('#upClose').onclick=closeUpload;$('#pubClose1').onclick=closeUpload;$('#upMask').onclick=closeUpload;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#upModal').classList.contains('on'))closeUpload();});
+
+// 发布文章弹层打开时同步分类选项（batch 面板的 #upCat 已由 loadData 更新，单篇的 #pubCat 也要）
+const _origFillCat=fillCatSelect;
+// 每次打开时确保 #pubCat 是新的
+function refreshPubCat(){ try{ if($('#pubCat')) fillCatSelect($('#pubCat')); }catch(e){} }
+
+// 发布单篇：调用 apiSaveArticle 走 upsert（无 id → 新增）
+$('#pubSave').onclick=async()=>{
+  const title=$('#pubTitle').value.trim();
+  if(!title){msg('#pubMsg','err','标题不能为空');return;}
+  const md=$('#pubMd').value;
+  if(!md.trim()){msg('#pubMsg','err','正文不能为空');return;}
+  const body_text=md.replace(/!\[[^\]]*\]\([^)]*\)/g,'').replace(/```[\s\S]*?```/g,'')
+    .replace(/<[^>]+>/g,'').replace(/[#>*`|\-]{1,}/g,' ').replace(/\s+/g,' ').trim();
+  msg('#pubMsg','load','发布中…');
+  try{
+    const row={title,cat:$('#pubCat').value,keywords:$('#pubKw').value.trim(),md,body_text};
+    const saved=await apiSaveArticle(row);
+    msg('#pubMsg','ok','✓ 已发布《'+title+'》，约十几秒后同步到公开网站');
+    // 清空表单，方便继续发下一篇
+    $('#pubTitle').value='';$('#pubKw').value='';$('#pubMd').value='';
+    await loadPage();
+    // 定位新文章（用返回的 id 或用标题匹配）
+    const newId=(saved&&saved.id)||null;
+    setTimeout(()=>{ closeUpload(); if(newId)focusArt(newId); msg('#artMsg','ok','《'+title+'》已发布，正在同步…'); }, 900);
+  }catch(e){msg('#pubMsg','err','✗ '+e.message);}
+};
 $('#edSave').onclick=async()=>{
   const id=+$('#edId').value;
   const title=$('#edTitle').value.trim();
