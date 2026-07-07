@@ -88,6 +88,26 @@
     background:rgba(224,99,46,.1);padding:2px 9px;border-radius:20px;white-space:nowrap}
   .tbl .badge{font-size:10.5px;color:var(--accent);border:1px solid rgba(192,122,46,.4);border-radius:5px;padding:0 5px;margin-left:6px}
   .tbl .acts{white-space:nowrap;text-align:right}
+  .tbl td.chk,.tbl th.chk{width:34px;text-align:center;padding-right:0}
+  .tbl input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand);cursor:pointer;vertical-align:middle}
+  .tbl tr.sel td{background:rgba(224,99,46,.05)}
+  /* 上线/下线状态标 */
+  .stat-pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;
+    padding:2px 9px;border-radius:20px;white-space:nowrap;cursor:pointer;user-select:none;border:1px solid transparent}
+  .stat-pill.on{color:#2f9e44;background:rgba(63,185,80,.12)}
+  .stat-pill.off{color:var(--dim);background:var(--panel);border-color:var(--line)}
+  .stat-pill:hover{filter:brightness(.97);border-color:currentColor}
+  /* 批量操作条：选中后出现 */
+  .batchbar{display:none;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:10px 14px;
+    background:rgba(224,99,46,.07);border:1px solid rgba(224,99,46,.25);border-radius:11px;font-size:13px}
+  .batchbar.on{display:flex}
+  .batchbar .cnt{font-weight:700;color:var(--brand2)}
+  .batchbar .sp{flex:1}
+  .batchbar .bb{font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;border-radius:8px;
+    padding:6px 14px;border:1px solid var(--line);background:var(--bg2);color:var(--sub);transition:.15s}
+  .batchbar .bb:hover{border-color:var(--brand);color:var(--brand)}
+  .batchbar .bb.danger{color:var(--bad)}
+  .batchbar .bb.danger:hover{border-color:var(--bad);color:var(--bad);background:rgba(229,72,77,.08)}
   .empty{text-align:center;color:var(--dim);padding:40px 0;font-size:13px}
   /* 分类配置行 */
   .catrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
@@ -126,8 +146,10 @@
     /* 文章列表：表格→堆叠卡片，操作按钮单独一行、不再被挤出屏 */
     .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
     .tbl thead{display:none}
-    .tbl tr{border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:10px}
+    .tbl tr{position:relative;border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:10px}
     .tbl td{border:none;padding:3px 0}
+    .tbl td.chk{position:absolute;top:12px;right:12px;width:auto;padding:0}  /* 复选框浮到卡片右上角 */
+    .tbl tr>td:nth-child(2){padding-right:32px}   /* 标题格留出右上角复选框的空间 */
     .tbl td .tt{font-size:14px}
     .tbl .acts{text-align:left;margin-top:8px;display:flex;gap:8px}
     .tbl .acts .btn{flex:0 0 auto}
@@ -213,6 +235,14 @@
         <input id="artSearch" placeholder="搜索标题…">
         <button class="btn ghost" id="artReload">↻ 刷新</button>
       </div>
+      <div class="batchbar" id="batchBar">
+        <span class="cnt" id="batchCnt">已选 0 项</span>
+        <span class="sp"></span>
+        <button class="bb" data-bulk="on">✓ 上线</button>
+        <button class="bb" data-bulk="off">✕ 下线</button>
+        <button class="bb danger" data-bulk="del">🗑 删除</button>
+        <button class="bb" id="batchClear">取消</button>
+      </div>
       <div id="artWrap"><div class="empty">加载中…</div></div>
     </div>
   </div>
@@ -297,6 +327,7 @@ $$('.tab').forEach(t=>t.onclick=()=>{
 
 // ---- 全局数据 ----
 let CATS=[], ARTS=[];
+const SELECTED=new Set();   // 文章管理里勾选的文章 id
 
 function catOf(k){return CATS.find(c=>c.key===k)||{icon:'📎',name:k||'其他'};}
 function fillCatSelect(sel,val){
@@ -312,10 +343,14 @@ async function boot(){
 }
 
 async function loadData(){
-  [CATS,ARTS]=await Promise.all([
-    sbGet('ab_categories?select=key,icon,name,descr,ord&order=ord'),
-    sbGet('ab_articles?select=id,doc_id,title,cat,keywords,md,updated,is_internal&order=updated.desc'),
-  ]);
+  // 带 published 查询；该列未 ALTER 出来时退回不带它（过渡期兼容）
+  const artQ='ab_articles?select=id,doc_id,title,cat,keywords,md,updated,is_internal,published&order=updated.desc';
+  const artQ0='ab_articles?select=id,doc_id,title,cat,keywords,md,updated,is_internal&order=updated.desc';
+  let arts;
+  try{ arts=await sbGet(artQ); }catch(e){ arts=await sbGet(artQ0); }
+  CATS=await sbGet('ab_categories?select=key,icon,name,descr,ord&order=ord');
+  ARTS=arts;
+  SELECTED.clear();
   fillCatSelect($('#upCat'));
   fillCatSelect($('#edCat'));
   renderArts(); renderCats();
@@ -430,15 +465,24 @@ $('#upBtn').onclick=async()=>{
 };
 
 // ================= 文章管理 =================
-function renderArts(){
+const isPub=a=>a.published!==false;   // 缺字段/未设 → 视为上线
+function curList(){
   const q=($('#artSearch').value||'').toLowerCase().trim();
-  const list=ARTS.filter(a=>!q||(a.title||'').toLowerCase().includes(q));
-  $('#artCount').textContent=`共 ${ARTS.length} 篇`;
-  if(!list.length){$('#artWrap').innerHTML='<div class="empty">没有匹配的文章</div>';return;}
+  return ARTS.filter(a=>!q||(a.title||'').toLowerCase().includes(q));
+}
+function renderArts(){
+  const list=curList();
+  const onN=ARTS.filter(isPub).length;
+  $('#artCount').textContent=`共 ${ARTS.length} 篇 · 上线 ${onN} · 下线 ${ARTS.length-onN}`;
+  if(!list.length){$('#artWrap').innerHTML='<div class="empty">没有匹配的文章</div>';updateBatchBar();return;}
+  const allSel=list.every(a=>SELECTED.has(a.id));
   $('#artWrap').innerHTML=`<table class="tbl"><thead><tr>
-    <th>标题</th><th>分类</th><th>更新</th><th></th></tr></thead><tbody>${
-    list.map(a=>{const c=catOf(a.cat);return `<tr>
+    <th class="chk"><input type="checkbox" id="chkAll" ${allSel?'checked':''}></th>
+    <th>标题</th><th>状态</th><th>分类</th><th>更新</th><th></th></tr></thead><tbody>${
+    list.map(a=>{const c=catOf(a.cat);const pub=isPub(a);return `<tr class="${SELECTED.has(a.id)?'sel':''}">
+      <td class="chk"><input type="checkbox" data-sel="${a.id}" ${SELECTED.has(a.id)?'checked':''}></td>
       <td><span class="tt">${esc(a.title)}</span>${a.is_internal?'<span class="badge">内部</span>':''}</td>
+      <td><span class="stat-pill ${pub?'on':'off'}" data-toggle="${a.id}" title="点击${pub?'下线':'上线'}">${pub?'● 上线':'○ 下线'}</span></td>
       <td><span class="cat">${c.icon} ${esc(c.name)}</span></td>
       <td style="color:var(--dim);font-size:12px">${esc(a.updated||'—')}</td>
       <td class="acts">
@@ -447,9 +491,52 @@ function renderArts(){
       </td></tr>`;}).join('')}</tbody></table>`;
   $('#artWrap').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openEdit(+b.dataset.edit));
   $('#artWrap').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delArt(+b.dataset.del));
+  $('#artWrap').querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>togglePub(+b.dataset.toggle));
+  $('#artWrap').querySelectorAll('[data-sel]').forEach(cb=>cb.onchange=()=>{
+    const id=+cb.dataset.sel; cb.checked?SELECTED.add(id):SELECTED.delete(id);
+    cb.closest('tr').classList.toggle('sel',cb.checked); updateBatchBar();
+  });
+  const all=$('#chkAll');
+  if(all)all.onchange=()=>{
+    list.forEach(a=>all.checked?SELECTED.add(a.id):SELECTED.delete(a.id));
+    renderArts();
+  };
+  updateBatchBar();
+}
+function updateBatchBar(){
+  const n=SELECTED.size;
+  $('#batchBar').classList.toggle('on',n>0);
+  if(n)$('#batchCnt').textContent=`已选 ${n} 项`;
 }
 $('#artSearch').addEventListener('input',renderArts);
 $('#artReload').onclick=async()=>{await loadData();};
+$('#batchClear').onclick=()=>{SELECTED.clear();renderArts();};
+
+// 单篇上线/下线切换
+async function togglePub(id){
+  const a=ARTS.find(x=>x.id===id);if(!a)return;
+  const next=!isPub(a);
+  try{
+    await sbWrite('ab_articles?id=eq.'+id,'PATCH',{published:next});
+    a.published=next; renderArts();
+  }catch(e){alert('操作失败：'+e.message+'（可能未运行 supabase_published.sql 加字段）');}
+}
+// 批量：上线/下线/删除
+async function bulkAction(kind){
+  const ids=[...SELECTED]; if(!ids.length)return;
+  const inList='id=in.('+ids.join(',')+')';
+  try{
+    if(kind==='del'){
+      if(!confirm(`确定删除选中的 ${ids.length} 篇？此操作不可撤销。`))return;
+      await sbWrite('ab_articles?'+inList,'DELETE');
+    }else{
+      await sbWrite('ab_articles?'+inList,'PATCH',{published:kind==='on'});
+    }
+    SELECTED.clear();
+    await loadData();
+  }catch(e){alert('批量操作失败：'+e.message);}
+}
+document.querySelectorAll('.batchbar [data-bulk]').forEach(b=>b.onclick=()=>bulkAction(b.dataset.bulk));
 
 function openEdit(id){
   const a=ARTS.find(x=>x.id===id);if(!a)return;

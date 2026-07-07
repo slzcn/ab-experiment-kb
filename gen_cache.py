@@ -12,7 +12,16 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SB = Supabase()
 
 cats = SB.get("ab_categories?select=key,icon,name,descr,ord&order=ord")
-arts = SB.get("ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal&order=doc_id")
+# 带 published 列查询；若该列尚未 ALTER 出来（PostgREST 400），退回不带该列的查询，
+# 保证 Action 在“加字段 SQL 还没跑”的过渡期也不会挂。
+try:
+    arts = SB.get("ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal,published&order=doc_id")
+except Exception:
+    arts = SB.get("ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal&order=doc_id")
+
+# 只把「上线」文章写进公开静态文件——下线的库里保留、但公开站不显示。
+# published 为 None（老数据未设/该列不存在）按上线处理。
+arts = [a for a in arts if a.get("published", True) is not False]
 
 categories = [{"key":c["key"],"icon":c["icon"],"name":c["name"],"desc":c.get("descr","")} for c in cats]
 
