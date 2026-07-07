@@ -29,11 +29,18 @@
   .top a.back{font-size:13px;color:var(--dim);text-decoration:none}
   .top a.back:hover{color:var(--brand)}
   /* tab */
-  .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+  .tabs{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
   .tab{padding:9px 18px;font-size:13.5px;font-weight:700;color:var(--sub);background:var(--bg2);
     border:1px solid var(--line);border-radius:22px;cursor:pointer;transition:.15s;user-select:none}
   .tab:hover{border-color:var(--brand);color:var(--brand)}
   .tab.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .tabs .tab-sp{flex:1}   /* 把上传按钮顶到最右 */
+  /* 上传按钮：动作类，与 tab 的胶囊描边样式明确区分 —— 实心渐变、圆角方形、带图标 */
+  .tab-action{display:inline-flex;align-items:center;gap:6px;font-family:inherit;font-size:13px;font-weight:700;
+    color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));border:none;border-radius:10px;
+    padding:9px 16px;cursor:pointer;transition:.15s;box-shadow:0 3px 12px rgba(224,99,46,.28)}
+  .tab-action:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(224,99,46,.42)}
+  .tab-action:active{transform:none}
   .page{display:none}
   .page.on{display:block;animation:fade .3s ease}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -160,9 +167,11 @@
     .top{margin-bottom:16px}
     .top h1{font-size:16px}
     .top a.back{font-size:12px}
-    /* tab 平分一行、可横滑兜底 */
+    /* tab 平分一行；上传按钮换到第二行占满，作为明确的操作入口 */
     .tabs{gap:6px;margin-bottom:16px}
     .tab{flex:1 1 0;min-width:0;padding:9px 6px;font-size:12.5px;text-align:center}
+    .tabs .tab-sp{display:none}
+    .tab-action{flex:1 1 100%;justify-content:center;padding:11px}
     .panel{padding:16px 14px}
     .panel h2{font-size:14.5px;flex-wrap:wrap}
     /* 文章列表：表格→堆叠卡片，操作按钮单独一行、不再被挤出屏 */
@@ -223,6 +232,8 @@
   <div class="tabs">
     <div class="tab on" data-p="arts">📄 文章管理</div>
     <div class="tab" data-p="cats">🗂 分类配置</div>
+    <span class="tab-sp"></span>
+    <button class="tab-action" id="upOpen" title="上传 PPT/Word/PDF 等文档，自动转码成文章">📤 上传文档</button>
   </div>
 
   <!-- 文章管理 -->
@@ -231,7 +242,6 @@
       <h2>📄 文章管理 <span class="desc" style="margin:0 0 0 auto" id="artCount"></span></h2>
       <div class="toolbar">
         <input id="artSearch" placeholder="搜索标题…">
-        <button class="btn" id="upOpen" title="上传 PPT/Word/PDF 等文档，自动转码成文章">📤 上传文档</button>
         <button class="btn ghost" id="artReload" title="重新从数据库读取列表">↻ 刷新</button>
       </div>
       <div class="batchbar" id="batchBar">
