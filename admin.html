@@ -301,18 +301,27 @@ function fillCatSelect(sel,val){
   if(val)sel.value=val;
 }
 
+// 后台 API 基地址：先试同源（后台直接托管本页时），失败再兜底本机 8799
+// （这样从 github.io 线上页或双击本地文件打开、但本机跑了后台时也能连上）。
+let API='';
+async function probe(base){
+  try{
+    const r=await fetch(base+'/api/health',{cache:'no-store'});
+    if(!r.ok)return null;
+    return await r.json();
+  }catch(e){return null;}
+}
 async function boot(){
   marked.setOptions({breaks:true,gfm:true});
-  // 探测本地后台（批量上传必须走它）
-  try{
-    const r=await fetch('/api/health',{cache:'no-store'});
-    if(r.ok){const j=await r.json();HAS_BACKEND=!!j.ok;BACKEND_PUSH=!!j.push;
-      if(j.formats)$('#dropFmt').textContent='支持 '+j.formats.join(' ');}
-  }catch(e){HAS_BACKEND=false;}
+  // 探测本地后台（批量上传必须走它）：同源 → localhost:8799
+  let j=await probe('');
+  if(!j){ const alt='http://localhost:8799'; j=await probe(alt); if(j)API=alt; }
+  if(j){HAS_BACKEND=!!j.ok;BACKEND_PUSH=!!j.push;
+    if(j.formats)$('#dropFmt').textContent='支持 '+j.formats.join(' ');}
   if(!HAS_BACKEND){
     $('#beWarn').style.display='';
     $('#beWarn').classList.add('show');
-    $('#beWarn').innerHTML='⚠️ 未连接本地后台服务，无法上传转码。请在本机运行 <code>python3 admin_server.py --push</code> 后从它给出的地址访问本页。文章管理/分类配置仍可正常使用。';
+    $('#beWarn').innerHTML='⚠️ 未连接本地后台服务，无法上传转码。请在本机运行 <code>python3 admin_server.py --push</code>（会自动打开可上传的地址）。文章管理/分类配置仍可正常使用。';
     $('#upBtn').disabled=true;
   }
   await loadData();
@@ -373,7 +382,7 @@ $('#upBtn').onclick=async()=>{
   FILES.forEach(f=>fd.append('files',f,f.name));
   try{
     // 1) 秒回：上传只是把文件交给后台，立刻拿到 job
-    const r=await fetch('/api/upload',{method:'POST',body:fd});
+    const r=await fetch(API+'/api/upload',{method:'POST',body:fd});
     const j=await r.json();
     if(!j.ok)throw new Error(j.error||'上传失败');
     msg('#upMsg','ok',`已收下 ${j.total} 个文件，后台正在转码入库，可离开本页，完成后自动同步。`);
@@ -383,7 +392,7 @@ $('#upBtn').onclick=async()=>{
     if(POLL)clearInterval(POLL);
     POLL=setInterval(async()=>{
       try{
-        const sr=await fetch('/api/upload/status?job='+encodeURIComponent(jid),{cache:'no-store'});
+        const sr=await fetch(API+'/api/upload/status?job='+encodeURIComponent(jid),{cache:'no-store'});
         const sj=await sr.json();
         if(!sj.ok)return;
         paintStatus(sj.status.items);

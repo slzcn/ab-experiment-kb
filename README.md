@@ -64,8 +64,11 @@ cd ~/ab-experiment-kb
 python3 admin_server.py --push     # 转码后把图片推到仓库，线上图片 URL 生效（推荐）
 # 去掉 --push 则图片只存本地 assets/，用于本地预览转码效果
 ```
-按提示打开 `http://localhost:8799/admin.html`。上传后文章写入数据库，约十几秒后 GitHub Action
-重生成静态文件，全网同步。
+启动后会**自动打开浏览器**到 `http://localhost:8799/admin.html`。上传后文章写入数据库，
+约十几秒后 GitHub Action 重生成静态文件，全网同步。
+
+> 后台带 CORS：即使你从线上 github.io 或双击本地文件打开 admin.html，只要本机跑了
+> `admin_server.py`，页面也会自动兜底连到 `localhost:8799` 完成上传——不必纠结从哪个地址进。
 
 > 后台只在本机 localhost 监听、不对外。公开站没有 `admin_server.py`，也就没有上传转码入口——安全。
 > 主站左下角「⚙ 管理后台」可进入。

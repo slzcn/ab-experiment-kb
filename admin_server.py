@@ -182,6 +182,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a):
         pass
 
+    # 所有响应都带上 CORS，这样从 github.io 线上页 / 双击本地文件打开时，
+    # 也能跨源访问本机后台（localhost 是浏览器信任源，https 页面也允许）。
+    def end_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        super().end_headers()
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "*")
+        self.end_headers()
+
     def _json(self, code, obj):
         b = json.dumps(obj, ensure_ascii=False).encode("utf-8")
         self.send_response(code)
@@ -266,11 +278,18 @@ class _Server(http.server.ThreadingHTTPServer):
 
 if __name__ == "__main__":
     os.chdir(HERE)
+    url = f"http://localhost:{PORT}/admin.html"
     with _Server(("127.0.0.1", PORT), Handler) as httpd:
         tip = "图片推送 GitHub（线上生效）" if PUSH else "图片仅存本地（不推线上）"
         print(f"管理后台服务已启动（{tip}）")
-        print(f"   打开：http://localhost:{PORT}/admin.html")
+        print(f"   请从这个地址访问（务必用这个，才能上传转码）：{url}")
         print(f"   批量上传文档 → 上传秒回，后台转码成带图文章入库。Ctrl+C 停止。")
+        # 自动打开浏览器到正确地址，省去“该开哪个网址”的困惑
+        try:
+            import webbrowser, threading
+            threading.Timer(0.6, lambda: webbrowser.open(url)).start()
+        except Exception:
+            pass
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
