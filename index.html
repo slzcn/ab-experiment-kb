@@ -422,6 +422,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 
 <script>
 let KB=null, CUR="all", Q="", INDEX=[];
+let SEARCH={};   // id -> 全文检索文本（kb_search.json 异步加载后填充）
 const $=s=>document.querySelector(s);
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -437,9 +438,42 @@ async function sbGet(path){
   return r.json();
 }
 
+// ===== Edge Function 鉴权层（写操作走服务端，前端不碰 service_role）=====
+const API_BASE=SB.url+'/functions/v1/admin-api';
+const API_TOKEN_KEY='ab_kb_api_token';
+function apiToken(){try{return localStorage.getItem(API_TOKEN_KEY)||'';}catch(e){return '';}}
+function apiSetToken(t){try{localStorage.setItem(API_TOKEN_KEY,t||'');}catch(e){}}
+// 用访问码换令牌（成功返回 true）
+async function apiLogin(pin){
+  const r=await fetch(API_BASE+'/login',{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify({pin})});
+  if(!r.ok) return false;
+  const d=await r.json().catch(()=>({}));
+  if(d&&d.token){apiSetToken(d.token);return true;}
+  return false;
+}
+// 带令牌写文章（POST /article，upsert）；令牌过期抛错提示重登
+async function apiWriteArticle(row){
+  const r=await fetch(API_BASE+'/article',{method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiToken()},
+    body:JSON.stringify({row})});
+  if(r.status===401){apiSetToken('');throw new Error('登录已过期，请重新输入访问码');}
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok||!d.ok) throw new Error('写入失败 '+r.status+' '+JSON.stringify(d).slice(0,120));
+  return d.data;
+}
+
+function buildIndex(){
+  // 检索文本：优先用已加载的全文(SEARCH[id] 或 d.text)，否则用摘要 excerpt。
+  // 全文索引(kb_search.json)后台加载完后会重建一次，届时升级为正文全文搜索。
+  INDEX=KB.docs.map(d=>{
+    const full=SEARCH[d.id]!==undefined?SEARCH[d.id]:(d.text||d.excerpt||'');
+    return {d, t:(d.title+' '+(d.keywords||'')+' '+full).toLowerCase()};
+  });
+}
 function applyKB(kb){
   KB=kb;
-  INDEX=KB.docs.map(d=>({d, t:(d.title+' '+d.keywords+' '+d.text).toLowerCase()}));
+  buildIndex();
   renderCats(); renderFoot();
   // 若正停在列表页则重渲染（阅读态不打断用户）
   if(!document.querySelector('.reader')) render();
@@ -479,6 +513,20 @@ async function boot(){
   // 支持 URL 直达某篇文章：#doc=<id>
   const m=/#doc=(\d+)/.exec(location.hash||'');
   if(m){ const id=+m[1]; if(KB.docs.some(d=>d.id===id)) openDoc(id); }
+  // 首屏已出。若走的是轻量列表(docs 无全文)，后台异步加载全文检索索引，
+  // 加载完重建 INDEX——此后搜索从"标题+摘要"升级为"正文全文"。不阻塞首屏。
+  loadSearchIndex();
+}
+
+async function loadSearchIndex(){
+  if(KB && KB.docs && KB.docs[0] && KB.docs[0].text!==undefined) return; // 已含全文(cache/embed 路径)
+  try{
+    const r=await fetch('kb_search.json',{cache:'no-cache'});
+    if(!r.ok) return;
+    SEARCH=await r.json();
+    buildIndex();               // 用全文重建检索索引
+    if(Q && !document.querySelector('.reader')) render();  // 用户已在搜且停列表 → 用全文重刷结果
+  }catch(e){}
 }
 
 // 写文章提交：页面纯静态读取，但提交直接写 Supabase（之后由 Action 重生成静态文件同步）
@@ -565,13 +613,18 @@ function hi(text){
   });
   return h;
 }
+function docText(d){ return SEARCH[d.id]!==undefined?SEARCH[d.id]:(d.text||''); }
 function excerpt(d){
   if(Q){
-    const t=d.text, low=t.toLowerCase(), term=Q.toLowerCase().split(/\s+/)[0];
-    const i=low.indexOf(term);
-    if(i>=0){const s=Math.max(0,i-40);return (s>0?'…':'')+t.slice(s,s+140)+'…';}
+    // 搜索时：若已有全文，截取命中词附近片段；否则用已有摘要
+    const t=docText(d);
+    if(t){
+      const low=t.toLowerCase(), term=Q.toLowerCase().split(/\s+/)[0];
+      const i=low.indexOf(term);
+      if(i>=0){const s=Math.max(0,i-40);return (s>0?'…':'')+t.slice(s,s+140)+'…';}
+    }
   }
-  return d.text.slice(0,140)+'…';
+  return (d.excerpt!==undefined?d.excerpt:(d.text||'').slice(0,140))+'…';
 }
 
 const PAGE=12;                 // 每批渲染卡片数（手机约2屏，分批更多、加载更可感知）
@@ -583,7 +636,7 @@ function cardHTML(d){
       <div class="excerpt">${hi(excerpt(d))}</div>
       <div class="meta">
         <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
-        <span class="mdot">📄 ${(d.text||'').length.toLocaleString()} 字</span>
+        <span class="mdot">📄 ${(d.len!==undefined?d.len:(d.text||'').length).toLocaleString()} 字</span>
         ${d.updated?`<span class="mdot">🕐 ${d.updated}</span>`:''}
         <span class="src">阅读 →</span>
       </div></div>`;
@@ -708,7 +761,7 @@ async function openDoc(id){
       <h1>${esc(d.title)}</h1>
       <div class="rmeta">
         <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
-        <span>📄 ${d.text.length.toLocaleString()} 字</span>
+        <span>📄 ${(d.len!==undefined?d.len:(d.text||'').length).toLocaleString()} 字</span>
         ${d.updated?`<span>🕐 ${d.updated}</span>`:''}
       </div>
     </article>
@@ -767,10 +820,9 @@ async function doLogin(){
   if(!pin){ err.textContent='请输入访问码'; return; }
   err.textContent='校验中…';
   try{
-    // 服务端校验访问码
-    const rows=await sbGet('dashboard_auth?select=pin&limit=1');
-    const real=(rows&&rows[0]&&rows[0].pin)||'';
-    if(pin===real){
+    // 服务端校验访问码 → 拿令牌（口令与 service_role 都在 Edge Function 环境变量）
+    const ok=await apiLogin(pin);
+    if(ok){
       try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){}
       $('#loginMask').classList.remove('on');
       openEditor();
@@ -835,11 +887,8 @@ async function submitToDB(d){
     md:d.md, body_text:plainText(d.md), updated:today,
     source_url:'', is_internal:true
   };
-  const r=await fetch(SB.url+'/rest/v1/ab_articles?on_conflict=doc_id',{method:'POST',
-    headers:{apikey:SB.key,Authorization:'Bearer '+SB.key,'Content-Type':'application/json',
-      Prefer:'resolution=merge-duplicates,return=minimal'},
-    body:JSON.stringify(row)});
-  if(!r.ok) throw new Error('数据库写入失败 '+r.status);
+  // 走 Edge Function 带令牌写（服务端用 service_role 落库），前端不再持写权限
+  await apiWriteArticle(row);
   return row;
 }
 async function submitArticle(){
@@ -855,10 +904,11 @@ async function submitArticle(){
     const newId=row.doc_id;
     KB.docs.push({id:newId,title:d.title,cat:d.cat,
       keywords:row.keywords,md:d.md,text:row.body_text,
+      excerpt:(row.body_text||'').slice(0,140),len:(row.body_text||'').length,
       updated:row.updated,url:'',internal:true});
     KB.meta.total=KB.docs.length;
     edMsg('ok','《'+d.title+'》已提交，约十几秒后自动同步到线上。');
-    INDEX=KB.docs.map(x=>({d:x,t:(x.title+' '+x.keywords+' '+x.text).toLowerCase()}));
+    buildIndex();
     renderCats(); renderFoot();
     setTimeout(()=>{
       closeEditor();

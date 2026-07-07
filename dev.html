@@ -353,6 +353,7 @@
 
 <script>
 let KB=null, CUR="all", Q="", INDEX=[];
+let SEARCH={};   // id -> 全文检索文本（kb_search.json 异步加载后填充）
 const $=s=>document.querySelector(s);
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -393,9 +394,17 @@ async function apiWriteArticle(row){
   return d.data;
 }
 
+function buildIndex(){
+  // 检索文本：优先用已加载的全文(SEARCH[id] 或 d.text)，否则用摘要 excerpt。
+  // 全文索引(kb_search.json)后台加载完后会重建一次，届时升级为正文全文搜索。
+  INDEX=KB.docs.map(d=>{
+    const full=SEARCH[d.id]!==undefined?SEARCH[d.id]:(d.text||d.excerpt||'');
+    return {d, t:(d.title+' '+(d.keywords||'')+' '+full).toLowerCase()};
+  });
+}
 function applyKB(kb){
   KB=kb;
-  INDEX=KB.docs.map(d=>({d, t:(d.title+' '+d.keywords+' '+d.text).toLowerCase()}));
+  buildIndex();
   renderCats(); renderFoot();
   // 若正停在列表页则重渲染（阅读态不打断用户）
   if(!document.querySelector('.reader')) render();
@@ -435,6 +444,20 @@ async function boot(){
   // 支持 URL 直达某篇文章：#doc=<id>
   const m=/#doc=(\d+)/.exec(location.hash||'');
   if(m){ const id=+m[1]; if(KB.docs.some(d=>d.id===id)) openDoc(id); }
+  // 首屏已出。若走的是轻量列表(docs 无全文)，后台异步加载全文检索索引，
+  // 加载完重建 INDEX——此后搜索从"标题+摘要"升级为"正文全文"。不阻塞首屏。
+  loadSearchIndex();
+}
+
+async function loadSearchIndex(){
+  if(KB && KB.docs && KB.docs[0] && KB.docs[0].text!==undefined) return; // 已含全文(cache/embed 路径)
+  try{
+    const r=await fetch('kb_search.json',{cache:'no-cache'});
+    if(!r.ok) return;
+    SEARCH=await r.json();
+    buildIndex();               // 用全文重建检索索引
+    if(Q && !document.querySelector('.reader')) render();  // 用户已在搜且停列表 → 用全文重刷结果
+  }catch(e){}
 }
 
 // 写文章提交：页面纯静态读取，但提交直接写 Supabase（之后由 Action 重生成静态文件同步）
@@ -521,13 +544,18 @@ function hi(text){
   });
   return h;
 }
+function docText(d){ return SEARCH[d.id]!==undefined?SEARCH[d.id]:(d.text||''); }
 function excerpt(d){
   if(Q){
-    const t=d.text, low=t.toLowerCase(), term=Q.toLowerCase().split(/\s+/)[0];
-    const i=low.indexOf(term);
-    if(i>=0){const s=Math.max(0,i-40);return (s>0?'…':'')+t.slice(s,s+140)+'…';}
+    // 搜索时：若已有全文，截取命中词附近片段；否则用已有摘要
+    const t=docText(d);
+    if(t){
+      const low=t.toLowerCase(), term=Q.toLowerCase().split(/\s+/)[0];
+      const i=low.indexOf(term);
+      if(i>=0){const s=Math.max(0,i-40);return (s>0?'…':'')+t.slice(s,s+140)+'…';}
+    }
   }
-  return d.text.slice(0,140)+'…';
+  return (d.excerpt!==undefined?d.excerpt:(d.text||'').slice(0,140))+'…';
 }
 
 const PAGE=12;                 // 每批渲染卡片数（手机约2屏，分批更多、加载更可感知）
@@ -539,7 +567,7 @@ function cardHTML(d){
       <div class="excerpt">${hi(excerpt(d))}</div>
       <div class="meta">
         <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
-        <span class="mdot">📄 ${(d.text||'').length.toLocaleString()} 字</span>
+        <span class="mdot">📄 ${(d.len!==undefined?d.len:(d.text||'').length).toLocaleString()} 字</span>
         ${d.updated?`<span class="mdot">🕐 ${d.updated}</span>`:''}
         <span class="src">阅读 →</span>
       </div></div>`;
@@ -664,7 +692,7 @@ async function openDoc(id){
       <h1>${esc(d.title)}</h1>
       <div class="rmeta">
         <span class="ct-tag">${c.icon} ${esc(c.name)}</span>
-        <span>📄 ${d.text.length.toLocaleString()} 字</span>
+        <span>📄 ${(d.len!==undefined?d.len:(d.text||'').length).toLocaleString()} 字</span>
         ${d.updated?`<span>🕐 ${d.updated}</span>`:''}
       </div>
     </article>
@@ -807,10 +835,11 @@ async function submitArticle(){
     const newId=row.doc_id;
     KB.docs.push({id:newId,title:d.title,cat:d.cat,
       keywords:row.keywords,md:d.md,text:row.body_text,
+      excerpt:(row.body_text||'').slice(0,140),len:(row.body_text||'').length,
       updated:row.updated,url:'',internal:true});
     KB.meta.total=KB.docs.length;
     edMsg('ok','《'+d.title+'》已提交，约十几秒后自动同步到线上。');
-    INDEX=KB.docs.map(x=>({d:x,t:(x.title+' '+x.keywords+' '+x.text).toLowerCase()}));
+    buildIndex();
     renderCats(); renderFoot();
     setTimeout(()=>{
       closeEditor();

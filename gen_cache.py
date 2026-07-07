@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # 从 Supabase 拉全部文章+分类，生成静态文件（前端纯静态读取）。
-# 拆分优化：
-#   kb_index.json  轻量列表：标题/分类/关键词/检索文本/日期/来源（无 md 正文）→ 首屏只下这个
-#   kb_docs.json   id → md 正文映射 → 打开某篇文章时按需取（也可整体回退）
-#   kb_cache.json  完整数据（含 md）→ 兼容/离线回退，bundle 内嵌用
+# 拆分优化（首屏最小化）：
+#   kb_index.json  轻量列表：标题/分类/关键词/日期/来源 + 140字摘要 + 字数（无全文）
+#                  → 首屏只下这个，几十KB，秒出列表
+#   kb_search.json id → 全文检索文本（body_text）→ 后台异步加载，加载完启用正文全文搜索
+#   kb_docs.json   id → md 正文 → 打开某篇文章时按需取
+#   kb_cache.json  完整数据（含 md+text）→ 妙搭内嵌/离线回退
 # 发新文章后由 GitHub Action 重新生成。
 import json, os
 from kb_common import Supabase
@@ -31,9 +33,15 @@ full_docs = [{"id":a["doc_id"],"title":a["title"],"cat":a["cat"],"keywords":a.ge
               "updated":a.get("updated","") or "","url":a.get("source_url","") or "",
               "internal":bool(a.get("is_internal"))} for a in arts]
 
-# 轻量索引（无 md，保留 text 供全文搜索）
-index_docs = [{k:v for k,v in d.items() if k!="md"} for d in full_docs]
-# 正文映射 id -> md
+# 轻量列表：去掉全文 text，改放 140 字摘要 + 字数（列表卡片只需这些）
+index_docs = [{
+    "id":d["id"], "title":d["title"], "cat":d["cat"], "keywords":d["keywords"],
+    "updated":d["updated"], "url":d["url"], "internal":d["internal"],
+    "excerpt":(d["text"][:140]), "len":len(d["text"]),
+} for d in full_docs]
+# 全文检索索引：id -> 全文（后台异步加载，用于正文全文搜索）
+search_idx = {str(d["id"]): d["text"] for d in full_docs}
+# 正文映射 id -> md（点开文章时按需取）
 docs_md = {str(d["id"]): d["md"] for d in full_docs}
 
 def dump(name, obj):
@@ -42,7 +50,9 @@ def dump(name, obj):
     return os.path.getsize(p)//1024
 
 s1 = dump("kb_index.json", {"meta":{"total":len(arts),"source":"Supabase"},"categories":categories,"docs":index_docs})
+s4 = dump("kb_search.json", search_idx)
 s2 = dump("kb_docs.json", docs_md)
 s3 = dump("kb_cache.json", {"meta":{"total":len(arts),"source":"Supabase"},"categories":categories,"docs":full_docs})
-print(f"✅ 已生成: kb_index.json({s1}KB, 轻量列表) + kb_docs.json({s2}KB, 正文) + kb_cache.json({s3}KB, 完整)")
+print(f"✅ 已生成: kb_index.json({s1}KB, 轻量列表+摘要) + kb_search.json({s4}KB, 全文索引) "
+      f"+ kb_docs.json({s2}KB, 正文) + kb_cache.json({s3}KB, 完整)")
 print(f"   {len(arts)} 篇 + {len(categories)} 分类。首屏只需下 kb_index.json。")
