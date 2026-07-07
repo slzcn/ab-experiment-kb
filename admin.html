@@ -181,8 +181,7 @@
   <div class="page on" id="tab-upload">
     <div class="panel">
       <h2>📤 批量上传文档，自动转码成文章</h2>
-      <div class="desc">支持 PPT / Word / PDF / Excel 等常见格式。上传后<b>秒回</b>，后台自动抽取正文<b>并连同文档里的图片</b>转成带图 Markdown 文章入库——可离开本页，完成后自动同步。</div>
-      <div id="beWarn" class="msg err" style="display:none"></div>
+      <div class="desc">支持 PPT / Word / PDF / Excel 等常见格式。上传后<b>秒回</b>，服务器（GitHub Action）自动抽取正文<b>并连同文档里的图片</b>转成带图 Markdown 文章入库——可关闭本页，几分钟后自动同步到线上。</div>
       <label>归入分类</label>
       <select id="upCat"></select>
       <label>选择或拖入文件（可多选）</label>
@@ -195,7 +194,7 @@
         accept=".pptx,.ppt,.docx,.doc,.pdf,.xlsx,.xls,.csv,.txt,.md,.markdown,.rtf,.html,.htm">
       <div class="filelist" id="filelist"></div>
       <div style="margin-top:16px">
-        <button class="btn" id="upBtn" disabled>⬆ 上传并后台转码</button>
+        <button class="btn" id="upBtn" disabled>⬆ 上传（服务器自动转码）</button>
       </div>
       <div class="msg" id="upMsg"></div>
     </div>
@@ -292,7 +291,7 @@ $$('.tab').forEach(t=>t.onclick=()=>{
 });
 
 // ---- 全局数据 ----
-let CATS=[], ARTS=[], HAS_BACKEND=false, BACKEND_PUSH=false;
+let CATS=[], ARTS=[];
 
 function catOf(k){return CATS.find(c=>c.key===k)||{icon:'📎',name:k||'其他'};}
 function fillCatSelect(sel,val){
@@ -301,32 +300,10 @@ function fillCatSelect(sel,val){
   if(val)sel.value=val;
 }
 
-// 后台 API 基地址：先试同源（后台直接托管本页时），失败再兜底本机 8799
-// （这样从 github.io 线上页或双击本地文件打开、但本机跑了后台时也能连上）。
-let API='';
-async function probe(base){
-  try{
-    const r=await fetch(base+'/api/health',{cache:'no-store'});
-    if(!r.ok)return null;
-    return await r.json();
-  }catch(e){return null;}
-}
 async function boot(){
   marked.setOptions({breaks:true,gfm:true});
-  // 探测本地后台（批量上传必须走它）：同源 → localhost:8799
-  let j=await probe('');
-  if(!j){ const alt='http://localhost:8799'; j=await probe(alt); if(j)API=alt; }
-  if(j){HAS_BACKEND=!!j.ok;BACKEND_PUSH=!!j.push;
-    if(j.formats)$('#dropFmt').textContent='支持 '+j.formats.join(' ');}
-  if(!HAS_BACKEND){
-    $('#beWarn').style.display='';
-    $('#beWarn').classList.add('show');
-    $('#beWarn').innerHTML='⚠️ 未连接本地后台服务，无法上传转码。请在本机运行 <code>python3 admin_server.py --push</code>（会自动打开可上传的地址）。文章管理/分类配置仍可正常使用。';
-    $('#upBtn').disabled=true;
-  }
   await loadData();
-  $('#topSub').textContent=`共 ${ARTS.length} 篇 · ${CATS.length} 个分类`
-    +(HAS_BACKEND?(BACKEND_PUSH?' · 后台已连(推线上)':' · 后台已连(本地)'):' · 后台未连');
+  $('#topSub').textContent=`共 ${ARTS.length} 篇 · ${CATS.length} 个分类`;
 }
 
 async function loadData(){
@@ -339,7 +316,8 @@ async function loadData(){
   renderArts(); renderCats();
 }
 
-// ================= 批量上传 =================
+// ================= 批量上传（纯 web：直传 Storage + 建 job，服务器 Action 处理）=================
+const UP_BUCKET='doc-uploads';
 let FILES=[];
 const drop=$('#drop'), fin=$('#fileInput');
 drop.onclick=()=>fin.click();
@@ -358,61 +336,71 @@ function renderFileList(){
     <span class="sz">${fmtSize(f.size)}</span><span class="st" id="fst${i}"></span>
     <span class="rm" data-i="${i}">✕</span></div>`).join('');
   wrap.querySelectorAll('.rm').forEach(el=>el.onclick=()=>{FILES.splice(+el.dataset.i,1);renderFileList();});
-  $('#upBtn').disabled=!(HAS_BACKEND&&FILES.length);
+  $('#upBtn').disabled=!FILES.length;
 }
 // 各状态在文件行右侧的呈现
 const ST_LABEL={queued:'排队中',processing:'转码中…',done:'✓ 完成',error:'✗ 失败'};
 const ST_COLOR={queued:'var(--dim)',processing:'var(--accent)',done:'var(--ok)',error:'var(--bad)'};
-function paintStatus(items){
-  items.forEach(it=>{
-    const el=$('#fst'+it.idx);if(!el)return;
-    let t=ST_LABEL[it.status]||it.status;
-    if(it.status==='done'&&it.images)t=`✓ ${it.images}图`;
-    el.textContent=t;
-    el.style.color=ST_COLOR[it.status]||'var(--sub)';
-    el.title=it.error||'';
+function paintByName(rows){
+  // rows: upload_jobs 记录，按 filename 匹配到文件行
+  FILES.forEach((f,i)=>{
+    const row=rows.find(r=>r.filename===f.name);
+    const el=$('#fst'+i);if(!el)return;
+    const st=row?row.status:'queued';
+    let t=ST_LABEL[st]||st;
+    if(st==='done'&&row.images)t=`✓ ${row.images}图`;
+    el.textContent=t;el.style.color=ST_COLOR[st]||'var(--sub)';el.title=(row&&row.error)||'';
   });
+}
+// 上传单个文件到 Storage 桶
+async function uploadToStorage(file,path){
+  const r=await fetch(`${SB.url}/storage/v1/object/${UP_BUCKET}/${encodeURIComponent(path)}`,{
+    method:'POST',
+    headers:{...SBH,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},
+    body:file});
+  if(!r.ok){const t=await r.text();throw new Error('文件上传失败 '+r.status+' '+t.slice(0,100));}
 }
 let POLL=null;
 $('#upBtn').onclick=async()=>{
   if(!FILES.length)return;
   const btn=$('#upBtn');btn.disabled=true;
-  const fd=new FormData();
-  fd.append('cat',$('#upCat').value);
-  FILES.forEach(f=>fd.append('files',f,f.name));
+  const cat=$('#upCat').value;
+  const batch='b'+Date.now();
   try{
-    // 1) 秒回：上传只是把文件交给后台，立刻拿到 job
-    const r=await fetch(API+'/api/upload',{method:'POST',body:fd});
-    const j=await r.json();
-    if(!j.ok)throw new Error(j.error||'上传失败');
-    msg('#upMsg','ok',`已收下 ${j.total} 个文件，后台正在转码入库，可离开本页，完成后自动同步。`);
-    paintStatus(j.status.items);
-    // 2) 轮询进度，直到后台把这个 job 全部处理完
-    const jid=j.job;
+    msg('#upMsg','load','正在上传文件…');
+    // 1) 逐个直传 Storage + 建 upload_jobs 记录（这步很快，只传原始文件）
+    for(const f of FILES){
+      const safe=f.name.replace(/[^\w.\-一-龥]/g,'_');
+      const path=`${batch}/${safe}`;
+      await uploadToStorage(f,path);
+      await sbWrite('upload_jobs','POST',
+        {batch,filename:f.name,cat,path,status:'queued'});
+    }
+    msg('#upMsg','ok',`已上传 ${FILES.length} 个文件，服务器正在后台转码入库，可关闭本页，几分钟后自动同步到线上。`);
+    // 2) 轮询这个 batch 的 job 进度（服务器 Action 每隔几分钟处理一批）
+    const total=FILES.length;
     if(POLL)clearInterval(POLL);
     POLL=setInterval(async()=>{
       try{
-        const sr=await fetch(API+'/api/upload/status?job='+encodeURIComponent(jid),{cache:'no-store'});
-        const sj=await sr.json();
-        if(!sj.ok)return;
-        paintStatus(sj.status.items);
-        if(sj.status.done){
+        const rows=await sbGet(`upload_jobs?batch=eq.${batch}&select=filename,status,images,error&order=id`);
+        paintByName(rows);
+        const done=rows.filter(r=>r.status==='done'||r.status==='error');
+        if(done.length>=total && total>0){
           clearInterval(POLL);POLL=null;
-          const items=sj.status.items;
-          const ok=items.filter(x=>x.status==='done').length;
-          const imgs=items.reduce((a,x)=>a+(x.images||0),0);
-          const fail=items.filter(x=>x.status==='error');
-          let m=`转码入库完成：成功 ${ok}/${items.length} 篇，抽出 ${imgs} 张图。${sj.status.push_log||''}`;
-          if(fail.length)m+=` 失败 ${fail.length} 篇：`+fail.map(x=>x.file).join('、');
+          const ok=rows.filter(r=>r.status==='done').length;
+          const imgs=rows.reduce((a,r)=>a+(r.images||0),0);
+          const fail=rows.filter(r=>r.status==='error');
+          let m=`处理完成：成功 ${ok}/${total} 篇，抽出 ${imgs} 张图，已同步到线上。`;
+          if(fail.length)m+=` 失败 ${fail.length} 篇：`+fail.map(r=>r.filename).join('、');
           msg('#upMsg', fail.length?(ok?'ok':'err'):'ok', m);
           FILES=[];renderFileList();
           await loadData();
         }
-      }catch(e){/* 轮询失败下次再试，不打断 */}
-    },1200);
+      }catch(e){/* 轮询失败下次再试 */}
+    },4000);
   }catch(e){
     msg('#upMsg','err','✗ '+e.message);
-  }finally{btn.disabled=!(HAS_BACKEND&&FILES.length);}
+  }finally{btn.disabled=!FILES.length;}
 };
 
 // ================= 文章管理 =================

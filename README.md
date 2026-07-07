@@ -49,29 +49,36 @@ python3 publish.py --push --miaoda   # 想同时更新飞书妙搭就多加 --mi
 一个独立的管理后台 `admin.html`，需授权访问，
 顶部三个 tab：
 
-- **📤 批量上传**：拖入 PPT / Word / PDF / Excel 等文档，**上传秒回**（不用干等解析），
-  后台队列逐个抽取正文**并连同文档里的图片**转成带图 Markdown 文章入库，前端实时显示
-  每个文件的排队/转码/完成进度，可离开本页。图片存到 `assets/` 并推到仓库，
-  md 用 `raw.githubusercontent` 引用（与手工发布的文章图片模型一致）。
+- **📤 批量上传**：拖入 PPT / Word / PDF / Excel 等文档，**纯网页操作、零本地依赖**。
+  浏览器把原始文件直传 Supabase Storage 并建一条处理任务；**服务器（GitHub Action）**
+  自动抽取正文**并连同文档里的图片**转成带图 Markdown 文章入库。前端实时显示每个文件的
+  排队/转码/完成进度，可关闭本页，几分钟后自动同步到线上。
 - **📄 文章管理**：列出全部文章，可搜索、在线编辑（标题/分类/关键词/正文）、删除。
 - **🗂 分类配置**：增删改分类（key / 图标 / 名称 / 排序）。
 
-文章管理和分类配置是纯数据操作，直连 Supabase（打开线上 `admin.html` 也能用）。
-**但批量上传转码必须连本地后台**——解析文档二进制、抽图、git push 图片都需要本机能力：
+三个 tab 全部纯 web、直连 Supabase，**不需要在本地跑任何脚本**。打开线上
+`https://slzcn.github.io/ab-experiment-kb/admin.html` 即可用。
 
-```bash
-cd ~/ab-experiment-kb
-python3 admin_server.py --push     # 转码后把图片推到仓库，线上图片 URL 生效（推荐）
-# 去掉 --push 则图片只存本地 assets/，用于本地预览转码效果
+### 上传处理链路（纯 web）
+
 ```
-启动后会**自动打开浏览器**到 `http://localhost:8799/admin.html`。上传后文章写入数据库，
-约十几秒后 GitHub Action 重生成静态文件，全网同步。
+浏览器 admin.html
+  ① 原始文件 → Supabase Storage 桶(doc-uploads)
+  ② 插一条 upload_jobs 记录(status=queued)
+        ▼
+GitHub Action = 服务器 (.github/workflows/process-uploads.yml，每 5 分钟 / 可手动触发)
+  ③ 拉 queued 任务 → 从 Storage 下载 → doc_to_md 转码抽图
+  ④ 写 ab_articles + 提交图片到仓库 → 回填 upload_jobs 状态
+        ▼
+触发 refresh-cache Action 重生成静态文件，全网同步
+浏览器轮询 upload_jobs 看进度
+```
 
-> 后台带 CORS：即使你从线上 github.io 或双击本地文件打开 admin.html，只要本机跑了
-> `admin_server.py`，页面也会自动兜底连到 `localhost:8799` 完成上传——不必纠结从哪个地址进。
+**一次性初始化**：在 Supabase 控制台 SQL Editor 跑一次 `supabase_uploads.sql`
+（建 Storage 桶 + upload_jobs 表 + RLS）。之后永远不用碰本地。
 
-> 后台只在本机 localhost 监听、不对外。公开站没有 `admin_server.py`，也就没有上传转码入口——安全。
-> 主站左下角「⚙ 管理后台」可进入。
+> 图片存到 `assets/` 并由 Action 推到仓库，md 用 `raw.githubusercontent` 引用
+> （与手工发布的文章图片模型一致）。主站左下角「⚙ 管理后台」可进入。
 
 ## 同步火山官方最新文档
 ```bash
@@ -89,10 +96,12 @@ python3 publish.py --push
 | `dev.html` | 前端源码模板（读同目录 kb.json，仅本地开发调试用） |
 | `articles/` | **放新文章的目录**（每篇一个带 frontmatter 的 .md） |
 | `kb.json` | 知识库数据 |
-| `admin.html` | ★ 管理后台：授权访问，批量上传文档转码 / 文章增删改 / 分类配置 |
-| `admin_server.py` | ★ 后台本地服务：批量上传文档 → 转码带图入库（--push 推图片到仓库） |
-| `doc_to_md.py` | 文档→Markdown 转码器（抽文字+图，图存 assets/），被后台调用也可单跑 |
-| `kb_common.py` | 公共工具：纯文本提取 / slug / git / Supabase REST 客户端（各脚本复用）|
+| `admin.html` | ★ 管理后台：授权访问，批量上传文档 / 文章增删改 / 分类配置（纯 web）|
+| `supabase_uploads.sql` | ★ 一次性初始化：建 Storage 桶 + upload_jobs 表 + RLS |
+| `process_uploads.py` | ★ 服务器处理器：拉待处理任务 → 转码入库（在 GitHub Action 里跑）|
+| `.github/workflows/process-uploads.yml` | ★ 上传处理 workflow（每 5 分钟 / 可手动触发）|
+| `doc_to_md.py` | 文档→Markdown 转码器（抽文字+图，图存 assets/），被处理器调用也可单跑 |
+| `kb_common.py` | 公共工具：纯文本提取 / slug / git / Supabase REST + Storage 客户端 |
 | `publish.py` | 一键发布：articles → kb.json → 打包 → --push 推线上 |
 | `bundle.py` | 打包 dev.html+数据 → index.html / dist/index.html |
 | `crawl.py` / `sync_volc.py` | 全量爬取 / 增量同步火山文档 |

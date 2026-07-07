@@ -1,0 +1,61 @@
+name: 处理上传文档
+
+# 纯 web 上传方案的“服务器”：浏览器把文档直传 Supabase Storage + 建 upload_jobs 任务，
+# 本 Action 拉取待处理任务 → 转码抽图 → 写文章入库 → 提交图片 → 触发重建缓存。
+on:
+  schedule:
+    - cron: '*/5 * * * *'     # 每 5 分钟兜底扫一次待处理任务
+  workflow_dispatch:          # Actions 页面手动触发
+  repository_dispatch:        # 上传后由 Supabase Webhook 立即触发（可选）
+    types: [doc-uploaded]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: process-uploads
+  cancel-in-progress: false
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 安装文档解析依赖
+        run: pip install --quiet python-pptx python-docx pymupdf pillow openpyxl
+
+      - name: 处理待上传文档（转码 → 入库）
+        id: proc
+        run: |
+          python3 process_uploads.py | tee /tmp/proc.log
+          # 把 HAS_NEW 传给后续步骤
+          grep -q 'HAS_NEW=1' /tmp/proc.log && echo "has_new=1" >> "$GITHUB_OUTPUT" || echo "has_new=0" >> "$GITHUB_OUTPUT"
+
+      - name: 提交新抽出的配图
+        run: |
+          if [ -z "$(git status --porcelain assets)" ]; then
+            echo "无新增图片，跳过提交。"
+            exit 0
+          fi
+          git config user.name  "ab-kb-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add assets
+          git commit -m "上传文档配图（自动） [skip ci]"
+          git push
+          echo "✅ 配图已提交。"
+
+      - name: 触发重建静态缓存
+        if: steps.proc.outputs.has_new == '1'
+        run: |
+          # 复用现有 refresh-cache workflow：用 GITHUB_TOKEN 发 repository_dispatch
+          curl -s -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/dispatches" \
+            -d '{"event_type":"article-published"}'
+          echo "✅ 已触发缓存重建。"

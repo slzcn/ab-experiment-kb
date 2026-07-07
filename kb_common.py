@@ -93,3 +93,18 @@ class Supabase:
             path = f"{table}?on_conflict={upsert_on}"
             headers["Prefer"] = "resolution=merge-duplicates,return=minimal"
         return self._do("POST", path, body=row, headers=headers)
+
+    def update(self, table, filt, patch):
+        """PATCH：table 加 PostgREST 过滤（如 'id=eq.5'）后打补丁。"""
+        return self._do("PATCH", f"{table}?{filt}", body=patch,
+                         headers={"Prefer": "return=minimal"})
+
+    def storage_download(self, bucket, path):
+        """从 Storage 桶下载对象，返回 bytes（走公开路径，免密）。"""
+        url = f"{self.url}/storage/v1/object/public/{bucket}/{path}"
+        req = urllib.request.Request(url, headers=self._headers())
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as e:
+            raise RuntimeError(f"Storage 下载失败 {bucket}/{path} HTTP {e.code}") from None
