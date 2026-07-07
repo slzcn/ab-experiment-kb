@@ -46,6 +46,8 @@ jobs:
           git config user.email "bot@users.noreply.github.com"
           git add assets
           git commit -m "上传文档配图（自动） [skip ci]"
+          # 先 rebase 拉取 refresh-cache 可能刚推的提交，避免 non-fast-forward
+          git pull --rebase --autostash origin main || true
           git push
           echo "✅ 配图已提交。"
 

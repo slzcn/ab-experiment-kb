@@ -108,3 +108,10 @@ class Supabase:
                 return resp.read()
         except urllib.error.HTTPError as e:
             raise RuntimeError(f"Storage 下载失败 {bucket}/{path} HTTP {e.code}") from None
+
+    def storage_delete(self, bucket, path):
+        """删除 Storage 桶里的对象（处理完清理原始文件用）。"""
+        url = f"{self.url}/storage/v1/object/{bucket}/{path}"
+        req = urllib.request.Request(url, method="DELETE", headers=self._headers())
+        with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+            return resp.status in (200, 204)

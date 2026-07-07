@@ -196,7 +196,7 @@
         <div class="s" id="dropFmt">支持 .pptx .docx .pdf .xlsx .csv .txt .md 等</div>
       </div>
       <input type="file" id="fileInput" multiple style="display:none"
-        accept=".pptx,.ppt,.docx,.doc,.pdf,.xlsx,.xls,.csv,.txt,.md,.markdown,.rtf,.html,.htm">
+        accept=".pptx,.docx,.pdf,.xlsx,.csv,.txt,.md,.markdown,.html,.htm">
       <div class="filelist" id="filelist"></div>
       <div style="margin-top:16px">
         <button class="btn" id="upBtn" disabled>⬆ 上传（服务器自动转码）</button>
@@ -399,7 +399,9 @@ $('#upBtn').onclick=async()=>{
     // 2) 轮询这个 batch 的 job 进度（服务器 Action 每隔几分钟处理一批）
     const total=FILES.length;
     if(POLL)clearInterval(POLL);
+    let ticks=0; const MAX=225;   // 4s×225 ≈ 15 分钟，超时不再空转
     POLL=setInterval(async()=>{
+      ticks++;
       try{
         const rows=await sbGet(`upload_jobs?batch=eq.${batch}&select=path,filename,status,images,error&order=id`);
         paintRows(rows);
@@ -414,6 +416,9 @@ $('#upBtn').onclick=async()=>{
           msg('#upMsg', fail.length?(ok?'ok':'err'):'ok', m);
           FILES=[];renderFileList();
           await loadData();
+        }else if(ticks>=MAX){
+          clearInterval(POLL);POLL=null;
+          msg('#upMsg','err','处理超时（服务器 Action 可能未运行或排队中）。文件已上传，稍后可在“文章管理”查看是否入库，或到 GitHub Actions 页面查看进度。');
         }
       }catch(e){/* 轮询失败下次再试 */}
     },4000);

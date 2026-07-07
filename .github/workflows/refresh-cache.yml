@@ -40,5 +40,7 @@ jobs:
           git config user.email "bot@users.noreply.github.com"
           git add -A
           git commit -m "自动刷新缓存：同步数据库最新文章 [skip ci]"
+          # 先 rebase 拉取 process-uploads 可能刚推的配图提交，避免 non-fast-forward
+          git pull --rebase --autostash origin main || true
           git push
           echo "✅ 缓存已更新并推送。"

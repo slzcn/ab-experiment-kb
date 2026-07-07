@@ -190,23 +190,47 @@ def _pdf(path, slug):
     return "\n\n".join(md_parts), imgs
 
 
-def _text_fallback(path, ext):
-    """老格式/纯文本：借用 bot 项目的 read_doc.py 只抽文字（无图）。"""
-    # read_doc.py 在同级 feishu-claude-bot 项目里；找不到就报清晰的错
-    cand = os.path.join(os.path.dirname(HERE), "feishu-claude-bot", "scripts")
-    if cand not in sys.path:
-        sys.path.insert(0, cand)
-    try:
-        import read_doc
-    except ImportError:
-        raise RuntimeError(f"{ext} 需要 read_doc.py 抽文字，但未找到（应在 {cand}）")
-    try:
-        secs = read_doc.read(path)
-    except Exception as e:
-        raise RuntimeError(f"文本兜底解析失败：{ext}（{e}）")
-    return "\n\n".join(
-        (f"## {s['section']}\n\n{s['text']}" if s.get("section") not in ("正文", None) else s["text"])
-        for s in secs if s.get("text"))
+# ---------------- 纯文本 / 表格：自包含处理（无图，不依赖外部脚本，Action 里可跑）----------------
+def _plain(path):
+    return open(path, encoding="utf-8", errors="replace").read().strip()
+
+
+def _csv_md(path):
+    import csv
+    rows = []
+    with open(path, encoding="utf-8", errors="replace", newline="") as f:
+        for r in csv.reader(f):
+            if any(c.strip() for c in r):
+                rows.append("| " + " | ".join(c.strip() for c in r) + " |")
+    if rows:
+        ncol = rows[0].count("|") - 1
+        rows.insert(1, "|" + "---|" * ncol)
+    return "\n".join(rows)
+
+
+def _xlsx_md(path):
+    import openpyxl
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    out = []
+    for ws in wb.worksheets:
+        rows = []
+        for row in ws.iter_rows(values_only=True):
+            cells = [str(c) for c in row if c is not None]
+            if cells:
+                rows.append("| " + " | ".join(cells) + " |")
+        if rows:
+            ncol = rows[0].count("|") - 1
+            rows.insert(1, "|" + "---|" * ncol)
+            out.append(f"## {ws.title}\n\n" + "\n".join(rows))
+    return "\n\n".join(out)
+
+
+def _html_text(path):
+    raw = open(path, encoding="utf-8", errors="replace").read()
+    raw = re.sub(r"<(script|style)[^>]*>[\s\S]*?</\1>", "", raw, flags=re.I)
+    txt = re.sub(r"<[^>]+>", " ", raw)
+    txt = re.sub(r"&nbsp;", " ", txt)
+    return re.sub(r"[ \t]*\n[ \t]*", "\n", re.sub(r"[ \t]+", " ", txt)).strip()
 
 
 def convert(path, slug=None, title=None):
@@ -220,10 +244,17 @@ def convert(path, slug=None, title=None):
         md, imgs = _docx(path, slug)
     elif ext == ".pdf":
         md, imgs = _pdf(path, slug)
+    elif ext in (".txt", ".md", ".markdown"):
+        md, imgs = _plain(path), []
+    elif ext == ".csv":
+        md, imgs = _csv_md(path), []
+    elif ext in (".xlsx", ".xlsm"):
+        md, imgs = _xlsx_md(path), []
+    elif ext in (".html", ".htm"):
+        md, imgs = _html_text(path), []
     else:
-        # 老格式/纯文本：退回项目工具 read_doc.py 只抽文字（无图）
-        md = _text_fallback(path, ext)
-        imgs = []
+        # 老二进制格式（.doc .ppt .xls .rtf）需 LibreOffice/textutil，Action 环境不具备
+        raise RuntimeError(f"暂不支持的格式 {ext}（请先另存为 .docx/.pptx/.xlsx/.pdf 再上传）")
     md = re.sub(r"\n{3,}", "\n\n", md).strip()
     return {"title": title, "md": md, "images": imgs}
 

@@ -11,7 +11,7 @@
 #
 # 退出码：有成功入库的文章时打印 HAS_NEW=1（Action 据此决定要不要触发重建缓存）。
 
-import os, sys, time, datetime, tempfile
+import os, sys, datetime, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -21,8 +21,10 @@ from kb_common import plain_text, slugify, Supabase
 BUCKET = "doc-uploads"
 SB = Supabase()
 
-ALLOWED_EXT = {".pptx", ".docx", ".pdf", ".ppt", ".doc", ".xlsx", ".xls",
-               ".csv", ".txt", ".md", ".markdown", ".rtf", ".html", ".htm"}
+# 仅列 Action 环境（ubuntu + pip 依赖）真正能处理的格式；
+# 老二进制 .doc/.ppt/.xls/.rtf 需 LibreOffice，不在此列，前端也不再放它们进来
+ALLOWED_EXT = {".pptx", ".docx", ".pdf", ".xlsx", ".xlsm",
+               ".csv", ".txt", ".md", ".markdown", ".html", ".htm"}
 
 
 def _set(job_id, patch):
@@ -53,7 +55,8 @@ def process_one(job):
         if not md.strip():
             _set(jid, {"status": "error", "error": "未抽取到内容"})
             return False
-        doc_id = 910000000 + int(time.time() * 1000) % 90000000
+        # doc_id 由任务表自增 id 派生（9 开头内部区间），天然唯一、绝不碰撞
+        doc_id = 910000000 + int(jid)
         SB.insert("ab_articles", {
             "doc_id": doc_id, "title": title, "cat": cat,
             "keywords": (title + " 上传文档").strip(),
@@ -63,6 +66,9 @@ def process_one(job):
         }, upsert_on="doc_id")
         _set(jid, {"status": "done", "doc_id": doc_id,
                    "images": len(conv["images"]), "chars": len(md)})
+        # 转码成功后删掉桶里的原始文件，避免无限累积
+        try: SB.storage_delete(BUCKET, job["path"])
+        except Exception: pass
         return True
     except Exception as e:
         _set(jid, {"status": "error", "error": str(e)[:400]})
