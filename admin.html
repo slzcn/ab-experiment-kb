@@ -267,7 +267,7 @@
       </div>
       <div class="msg" id="artMsg"></div>
       <div id="artWrap"><div class="empty">加载中…</div></div>
-      <div class="desc" style="margin-top:12px">上线/下线改动即时写入数据库，公开网站约 1–2 分钟后（服务器自动重建）同步生效，无需手动操作；本页是实时的。</div>
+      <div class="desc" style="margin-top:12px">上线/下线改动即时写入数据库，并自动触发公开网站重建，约 1 分钟同步生效，无需任何手动操作；本页是实时的。</div>
     </div>
   </div>
 
@@ -585,8 +585,8 @@ async function togglePub(id){
     await sbWrite('ab_articles?id=eq.'+id,'PATCH',{published:next});
     a.published=next; renderArts();
     msg('#artMsg','ok', next
-      ? `《${a.title}》已上线，约 1–2 分钟后在公开网站显示。`
-      : `《${a.title}》已下线，约 1–2 分钟后从公开网站移除（后台仍保留）。`);
+      ? `《${a.title}》已上线，约 1 分钟后在公开网站显示。`
+      : `《${a.title}》已下线，约 1 分钟后从公开网站移除（后台仍保留）。`);
   }catch(e){
     if(sw)sw.classList.remove('busy');
     msg('#artMsg','err','操作失败：'+e.message+'（若提示缺 published 列，请先运行 supabase_published.sql）');
@@ -609,7 +609,7 @@ async function bulkAction(kind){
     const verb={on:'上线',off:'下线',del:'删除'}[kind];
     msg('#artMsg','ok', kind==='del'
       ? `已删除 ${n} 篇。`
-      : `已${verb} ${n} 篇，约 1–2 分钟后在公开网站同步生效。`);
+      : `已${verb} ${n} 篇，约 1 分钟后在公开网站同步生效。`);
   }catch(e){msg('#artMsg','err','批量操作失败：'+e.message);}
 }
 document.querySelectorAll('.batchbar [data-bulk]').forEach(b=>b.onclick=()=>bulkAction(b.dataset.bulk));

@@ -4,18 +4,18 @@ name: 刷新知识库缓存
 #  - 定时轮询 Supabase，指纹（篇数+最新更新日期）变了才重生成 kb_cache.json 并提交
 #  - 也可在 Actions 页面手动触发（workflow_dispatch）
 on:
-  schedule:
-    - cron: '*/2 * * * *'    # 每 2 分钟检查数据库是否有变化（上下线/编辑/删除/新文章都自动同步）
-  workflow_dispatch:          # 也可在 Actions 页面手动触发
-  repository_dispatch:        # 预留：外部 webhook 可发 article-published 立即触发
+  repository_dispatch:        # 主路径：数据库触发器（supabase_autosync.sql）在增删改后即时触发
     types: [article-published]
+  schedule:
+    - cron: '*/10 * * * *'   # 兜底：万一某次即时触发漏了，每 10 分钟补一次
+  workflow_dispatch:          # 也可在 Actions 页面手动触发
 
 permissions:
   contents: write             # 允许 Action 提交回仓库
 
 concurrency:
   group: refresh-cache
-  cancel-in-progress: false
+  cancel-in-progress: true   # 短时间多次触发时，取消旧的、只跑最新一次（最新一次已含全部改动）
 
 jobs:
   refresh:

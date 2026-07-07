@@ -81,15 +81,23 @@ GitHub Action = 服务器 (.github/workflows/process-uploads.yml，每 5 分钟 
 > 图片存到 `assets/` 并由 Action 推到仓库，md 用 `raw.githubusercontent` 引用
 > （与手工发布的文章图片模型一致）。主站左下角「⚙ 管理后台」可进入。
 
-## 公开站如何同步后台改动（全自动，无需手动操作）
+## 公开站如何同步后台改动（数据库触发，即时全自动）
 
-后台的上下线/编辑/删除/新文章都即时写入数据库；公开站（GitHub Pages）由
-`refresh-cache` Action **每 2 分钟**自动检查数据库、有变化就重建静态文件。
-所以改完后约 1–2 分钟自动同步，**不用点任何按钮、不用部署任何东西**。
+任何改动——前端「写文章」、后台的增/删/改/上下线、批量上传——都即时写入数据库；
+数据库的**触发器**会在写入后立刻通知 GitHub 重建公开站，约 1 分钟同步，**全程零手动**。
 
-- 原理：Action 跑 `gen_cache.py` 重生成 `kb_index/kb_cache.json`（已排除下线文章），
-  `git status` 检测到内容变化才提交，无变化则跳过（不产生空提交）。
-- 也可在 GitHub Actions 页面手动 **Run workflow** 立即触发一次。
+链路：`ab_articles/ab_categories` 增删改 → 数据库触发器（pg_net 发 repository_dispatch）
+→ `refresh-cache` Action 跑 `gen_cache.py` 重生成静态文件（已排除下线文章）→ 提交上线。
+每 10 分钟另有一次定时兜底，万一某次即时触发漏了也能补上。
+
+**一次性初始化**（跑一次 SQL，之后永久生效）：
+1. 建 GitHub token：https://github.com/settings/personal-access-tokens/new
+   → 选仓库 `slzcn/ab-experiment-kb` → Contents: Read and write → 生成复制
+2. 在 Supabase 控制台 SQL Editor 打开 `supabase_autosync.sql`，把第 1 段的
+   `<YOUR_GITHUB_TOKEN>` 换成刚建的 token，整个文件运行一次。
+
+> token 存进 Supabase Vault（加密），不明文落在触发器里；触发器用 statement 级 +
+> Action 端 `cancel-in-progress`，短时间多次改动会自动合并成最新一次重建，不会堆积。
 
 ## 同步火山官方最新文档
 ```bash
