@@ -292,12 +292,12 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     .tbl td.chk{position:absolute;top:12px;right:12px;width:auto;padding:0;flex:0 0 auto}  /* 复选框浮到卡片右上角 */
     .tbl tr>td:nth-child(2){padding-right:32px;margin-bottom:6px;flex:1 1 100%}   /* 标题占整行，留出右上角复选框空间 */
     .tbl td .tt{font-size:14px}
-    /* 分类(第3格) 与 日期(第4格) 并到同一行 */
-    .tbl tr>td:nth-child(3){flex:0 0 auto;margin-right:12px}
-    .tbl tr>td:nth-child(4){flex:1 1 auto;color:var(--dim)}
-    /* 底部操作条：状态开关(第5格)靠左 + 编辑/删除(第6格 acts)靠右，同一行 */
-    .tbl tr>td:nth-child(5){flex:0 0 auto;order:5;margin-top:10px}
-    .tbl .acts{flex:1 1 auto;order:6;margin-top:10px;display:inline-flex;gap:8px;justify-content:flex-end;text-align:right}
+    /* 分类(第3格) 与 日期(第4格) 并到同一行，占整行 */
+    .tbl tr>td:nth-child(3){order:3;flex:0 0 auto;margin-right:12px}
+    .tbl tr>td:nth-child(4){order:4;flex:1 1 auto;color:var(--dim);text-align:right}
+    /* 底部操作条：上下线开关(第5格) + 编辑/删除(acts) 全在同一行；开关靠左，编辑删除靠右；上方一条分隔线 */
+    .tbl tr>td:nth-child(5){order:5;flex:0 0 auto;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+    .tbl .acts{order:6;flex:1 1 auto;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);display:inline-flex;gap:8px;justify-content:flex-end;align-items:center}
     .tbl .acts .btn{flex:0 0 auto}
     /* 分类配置：每条目上下堆叠，名称输入不再被压扁 */
     .catrow{flex-wrap:wrap;gap:6px 8px;padding:12px 0}
