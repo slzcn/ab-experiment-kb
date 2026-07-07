@@ -87,25 +87,20 @@ GitHub Action = 服务器 (.github/workflows/process-uploads.yml，每 5 分钟 
 后台「🌐 刷新公开站」按钮可立即触发重建，约 1 分钟生效。
 
 它走一个 **Supabase Edge Function** 中转——因为 admin.html 在公开的 GitHub Pages 上，
-不能把 GitHub token 写进前端；token 只存在函数的环境变量里。**部署一次即可：**
+不能把 GitHub token 写进前端；token 只存在函数的环境变量里，函数跑在 Supabase 云端，
+与用哪台设备无关。**全程网页操作、无需安装任何工具，部署一次即可：**
 
-```bash
-# 1) 建一个细粒度 GitHub token（只给本仓库、Contents 读写权限即可）：
-#    https://github.com/settings/personal-access-tokens/new
-#    Repository access → Only select repositories → slzcn/ab-experiment-kb
-#    Permissions → Repository permissions → Contents: Read and write
-#
-# 2) 装 Supabase CLI 并登录（若未装）：
-brew install supabase/tap/supabase
-supabase login
-supabase link --project-ref cddkniwbhvcbfgkgomtl
-#
-# 3) 部署函数 + 设置密钥（token 只存服务端，前端拿不到）：
-supabase functions deploy refresh-site --no-verify-jwt
-supabase secrets set GH_TOKEN=<刚建的token> GH_REPO=slzcn/ab-experiment-kb
-```
+1. **建 GitHub token**：https://github.com/settings/personal-access-tokens/new
+   - Repository access → Only select repositories → `slzcn/ab-experiment-kb`
+   - Permissions → Repository permissions → **Contents: Read and write** → 生成并复制
+2. **网页建函数**：Supabase 项目 → 左侧 **Edge Functions** → **Deploy a new function → Via Editor**
+   → 函数名 `refresh-site` → 清空默认代码，粘贴 `supabase/functions/refresh-site/index.ts`
+   的内容 → **Deploy function**（10–30 秒）
+3. **设密钥**：Edge Functions → **Secrets** → 加 `GH_TOKEN`=刚建的 token、
+   `GH_REPO`=`slzcn/ab-experiment-kb` → Save
 
-部署后，后台点「🌐 刷新公开站」即可立即触发。函数源码在 `supabase/functions/refresh-site/`。
+部署后，后台点「🌐 刷新公开站」即可立即触发（任何设备都行）。
+函数源码存档在 `supabase/functions/refresh-site/index.ts`；用 CLI 部署也行，但网页更省事。
 
 ## 同步火山官方最新文档
 ```bash
