@@ -138,6 +138,16 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .msg.ok{background:rgba(63,185,80,.12);color:#2f9e44}
   .msg.err{background:rgba(229,72,77,.1);color:var(--bad)}
   .msg.load{background:var(--panel);color:var(--sub)}
+  /* 顶部居中 toast：始终可见（不被底部批量条/滚动遮挡）*/
+  #toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-24px);z-index:200;
+    max-width:calc(100vw - 24px);padding:11px 18px;border-radius:12px;font-size:13.5px;font-weight:600;
+    box-shadow:0 10px 34px rgba(120,100,70,.24);opacity:0;pointer-events:none;
+    transition:transform .24s cubic-bezier(.2,.7,.3,1),opacity .2s;white-space:nowrap;
+    max-width:calc(100vw - 24px);overflow:hidden;text-overflow:ellipsis}
+  #toast.on{transform:translate(-50%,0);opacity:1}
+  #toast.ok{background:#e9f7ec;color:#2f7d3a;border:1px solid rgba(63,185,80,.35)}
+  #toast.err{background:#fdeceb;color:var(--bad);border:1px solid rgba(229,72,77,.35)}
+  #toast.load{background:#fff;color:var(--sub);border:1px solid var(--line)}
   /* 拖拽上传区 */
   .drop{border:2px dashed var(--line);border-radius:var(--r);padding:34px 20px;text-align:center;
     cursor:pointer;transition:.18s;background:var(--bg)}
@@ -362,7 +372,6 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         <span class="sp"></span>
         <button class="bb x" id="batchClear" title="取消选择">✕</button>
       </div>
-      <div class="msg" id="artMsg"></div>
       <div id="artWrap"><div class="empty">加载中…</div></div>
       <div class="desc" style="margin-top:12px">上线/下线改动即时写入数据库，并自动触发公开网站重建，约 1 分钟同步生效，无需任何手动操作；本页是实时的。</div>
     </div>
@@ -467,6 +476,9 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   <div class="msg" id="trashMsg"></div>
 </div>
 
+<!-- 顶部 toast：操作结果提示，始终可见 -->
+<div id="toast"></div>
+
 <!-- 通用确认弹层（替代系统 confirm）-->
 <div class="mask" id="cfMask"></div>
 <div class="modal cf-modal" id="cfModal">
@@ -564,6 +576,15 @@ async function apiSaveCategory(row){return (await apiCall('/category','POST',{ro
 async function apiDeleteCategory(key){return apiCall('/category?key='+encodeURIComponent(key),'DELETE');}
 function msg(el,cls,txt){const m=$(el);m.className='msg show '+cls;m.textContent=txt;}
 function msgClear(el){const m=$(el);m.className='msg';m.textContent='';}
+// 顶部 toast：始终可见（列表底部操作、批量条遮挡都不影响）。load 不自动消失，ok/err 定时消失。
+let _toastTimer=null;
+function toast(cls,txt,ms){
+  const t=$('#toast'); if(!t)return;
+  t.className=cls; t.textContent=txt;
+  requestAnimationFrame(()=>t.classList.add('on'));
+  clearTimeout(_toastTimer);
+  if(cls!=='load') _toastTimer=setTimeout(()=>t.classList.remove('on'), ms||2600);
+}
 
 // ---- 访问控制 ----
 const AUTH_KEY='ab_kb_auth_ts', AUTH_TTL=2*3600*1000; // 对齐 EdgeFn JWT TTL(2h)
@@ -889,47 +910,61 @@ $('#batchSelPage').onclick=()=>{
   renderArts();
 };
 
-// 单篇上线/下线切换
+// 单篇上线/下线切换（开关本就反映状态，点击即切到相反态；防重复点用 busy 锁）
+let _togglingIds=new Set();
 async function togglePub(id){
+  if(_togglingIds.has(id))return;               // 处理中，忽略重复点击
   const a=ARTS.find(x=>x.id===id);if(!a)return;
   const next=!isPub(a);
+  _togglingIds.add(id);
   const sw=$(`[data-toggle="${id}"]`); if(sw)sw.classList.add('busy');
   try{
     await apiSaveArticle({id, published:next});
     a.published=next; renderArts();
-    msg('#artMsg','ok', next
-      ? `《${a.title}》已上线，约 1 分钟后在公开网站显示。`
-      : `《${a.title}》已下线，约 1 分钟后从公开网站移除（后台仍保留）。`);
+    toast('ok', next?`《${a.title}》已上线`:`《${a.title}》已下线`);
   }catch(e){
     if(sw)sw.classList.remove('busy');
-    msg('#artMsg','err','操作失败：'+e.message+'（若提示缺 published 列，请先运行 supabase_published.sql）');
-  }
+    toast('err','操作失败：'+e.message);
+  }finally{ _togglingIds.delete(id); }
 }
 // 批量：上线/下线/删除
+let _bulkBusy=false;
 async function bulkAction(kind){
+  if(_bulkBusy)return;                            // 防重复触发
   const ids=[...SELECTED]; if(!ids.length)return;
-  const n=ids.length;
   const verb={on:'上线',off:'下线',del:'删除'}[kind];
+  // 幂等：上下线只对“状态确实要变”的文章下手，已是目标态的跳过，避免无谓写库+触发重建
+  let targets=ids;
+  if(kind==='on')  targets=ids.filter(id=>{const a=ARTS.find(x=>x.id===id);return a && !isPub(a);});
+  if(kind==='off') targets=ids.filter(id=>{const a=ARTS.find(x=>x.id===id);return a && isPub(a);});
+  if(kind!=='del' && !targets.length){
+    toast('ok',`选中的文章已全部是「${verb==='上线'?'上线':'下线'}」状态，无需操作`);
+    return;
+  }
+  const n=targets.length;
+  _bulkBusy=true;
   try{
     if(kind==='del'){
-      if(!await confirmBox({title:`删除选中的 ${n} 篇？`,okText:'删除',
-        html:`确定删除选中的 <b>${n}</b> 篇文章吗？`}))return;
-      msg('#artMsg','load',`正在删除 ${n} 篇…`);
+      if(!await confirmBox({title:`删除选中的 ${ids.length} 篇？`,okText:'删除',
+        html:`确定删除选中的 <b>${ids.length}</b> 篇文章吗？可在回收站恢复。`})){_bulkBusy=false;return;}
+      toast('load',`正在删除 ${ids.length} 篇…`);
       await apiDeleteArticle('in.('+ids.join(',')+')'); // 软删除→回收站
     }else{
-      msg('#artMsg','load',`正在${verb} ${n} 篇…`);
-      await Promise.all(ids.map(x=>apiSaveArticle({id:x, published:kind==='on'})));
+      toast('load',`正在${verb} ${n} 篇…`);
+      await Promise.all(targets.map(x=>apiSaveArticle({id:x, published:kind==='on'})));
     }
     SELECTED.clear();
     await loadPage();
     if(kind==='del'){
       const left=ids.filter(id=>ARTS.some(x=>x.id===id)).length;
-      if(left) msg('#artMsg','err',`删除未完全生效：还有 ${left} 篇仍在库中，请重试或检查权限。`);
-      else msg('#artMsg','ok',`已删除 ${n} 篇。`);
+      if(left) toast('err',`删除未完全生效：还有 ${left} 篇仍在库中`,4000);
+      else toast('ok',`已删除 ${ids.length} 篇`);
     }else{
-      msg('#artMsg','ok',`已${verb} ${n} 篇，约 1 分钟后在公开网站同步生效。`);
+      const skipped=ids.length-n;
+      toast('ok',`已${verb} ${n} 篇`+(skipped?`（${skipped} 篇本已是该状态，已跳过）`:'')+'，约 1 分钟后同步');
     }
-  }catch(e){msg('#artMsg','err','批量操作失败：'+e.message);}
+  }catch(e){toast('err','批量操作失败：'+e.message,4000);}
+  finally{ _bulkBusy=false; }
 }
 document.querySelectorAll('.batchbar [data-bulk]').forEach(b=>b.onclick=()=>bulkAction(b.dataset.bulk));
 
@@ -996,7 +1031,7 @@ $('#pubSave').onclick=async()=>{
     await loadPage();
     // 定位新文章（用返回的 id 或用标题匹配）
     const newId=(saved&&saved.id)||null;
-    setTimeout(()=>{ closeUpload(); if(newId)focusArt(newId); msg('#artMsg','ok','《'+title+'》已发布，正在同步…'); }, 900);
+    setTimeout(()=>{ closeUpload(); if(newId)focusArt(newId); toast('ok','《'+title+'》已发布，正在同步'); }, 900);
   }catch(e){msg('#pubMsg','err','✗ '+e.message);}
 };
 $('#edSave').onclick=async()=>{
@@ -1012,8 +1047,7 @@ $('#edSave').onclick=async()=>{
     msg('#edMsg','ok','✓ 已保存，约十几秒后线上同步');
     await loadPage();
     // 保存后关闭弹层，并把刚编辑的这篇滚动到可视区、短暂高亮，方便定位
-    setTimeout(()=>{ closeEdit(); focusArt(id); }, 700);
-    msg('#artMsg','ok',`《${title}》已保存。`);
+    setTimeout(()=>{ closeEdit(); focusArt(id); toast('ok',`《${title}》已保存`); }, 700);
   }catch(e){msg('#edMsg','err','✗ '+e.message);}
 };
 // 把指定文章滚到视野中并高亮，跨分页时自动翻到它所在页
@@ -1029,19 +1063,23 @@ function focusArt(id){
     setTimeout(()=>{tr.style.background='';},1200);
   }
 }
+let _delBusy=new Set();
 async function delArt(id){
+  if(_delBusy.has(id))return;
   const a=ARTS.find(x=>x.id===id);
   const title=a?a.title:'';
   if(!await confirmBox({title:'删除这篇文章？',okText:'删除',
-    html:`确定删除《<b>${esc(title)}</b>》吗？`}))return;
-  msg('#artMsg','load','正在删除…');
+    html:`确定删除《<b>${esc(title)}</b>》吗？可在回收站恢复。`}))return;
+  _delBusy.add(id);
+  toast('load','正在删除…');
   try{
     await apiDeleteArticle(String(id));
     await loadPage();
     // 删后校验：列表里还在 = 实际没删掉，明确报错而非静默
-    if(ARTS.some(x=>x.id===id)) msg('#artMsg','err',`删除未生效：《${title}》仍在库中，请重试或检查权限。`);
-    else msg('#artMsg','ok',`已删除《${title}》。`);
-  }catch(e){ msg('#artMsg','err','删除失败：'+e.message); }
+    if(ARTS.some(x=>x.id===id)) toast('err',`删除未生效：《${title}》仍在库中，请重试`,4000);
+    else toast('ok',`已删除《${title}》，可在回收站恢复`);
+  }catch(e){ toast('err','删除失败：'+e.message,4000); }
+  finally{ _delBusy.delete(id); }
 }
 
 // ================= 回收站 =================
