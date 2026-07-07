@@ -357,6 +357,8 @@
 <script>
 let KB=null, CUR="all", Q="", INDEX=[];
 let SEARCH={};   // id -> 全文检索文本（kb_search.json 异步加载后填充）
+// 数据文件基址：主站在根目录=''；文章静态页(a/<id>.html)里会被置为 '../' 以回到根目录取数据
+const DATA_BASE = (typeof window!=='undefined' && window.DATA_BASE) || '';
 const $=s=>document.querySelector(s);
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -419,7 +421,7 @@ async function boot(){
   // 纯静态：只读静态内容，不连数据库。静态文件由数据库变化触发 Action 重新生成。
   // 1) 首屏只下轻量列表 kb_index.json（无正文，几百KB → 快）；正文点开时按需拉
   try{
-    const r=await fetch('kb_index.json',{cache:'no-cache'});
+    const r=await fetch(DATA_BASE+'kb_index.json',{cache:'no-cache'});
     if(r.ok){
       const idx=await r.json();
       if(idx&&idx.docs&&idx.docs.length){ applyKB(idx); shown=true; }
@@ -428,7 +430,7 @@ async function boot(){
   // 2) 回退：完整 kb_cache.json（含正文）
   if(!shown){
     try{
-      const r=await fetch('kb_cache.json',{cache:'no-cache'});
+      const r=await fetch(DATA_BASE+'kb_cache.json',{cache:'no-cache'});
       if(r.ok){ const c=await r.json(); if(c&&c.docs&&c.docs.length){ applyKB(c); shown=true; } }
     }catch(e){}
   }
@@ -438,15 +440,16 @@ async function boot(){
       const embed=document.getElementById('kbdata');
       const raw=embed?embed.textContent.trim():'';
       if(raw && raw[0]==='{'){ applyKB(JSON.parse(raw)); shown=true; }
-      else{ const r=await fetch('kb.json'); applyKB(await r.json()); shown=true; }
+      else{ const r=await fetch(DATA_BASE+'kb.json'); applyKB(await r.json()); shown=true; }
     }catch(e){}
   }
   if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试'; return; }
   $('#loading').style.display='none'; $('#app').style.display='grid';
   setupSubmit();
-  // 支持 URL 直达某篇文章：#doc=<id>
+  // 直达某篇：文章静态页(a/<id>.html)会注入 window.INIT_DOC；否则看 URL #doc=<id>
   const m=/#doc=(\d+)/.exec(location.hash||'');
-  if(m){ const id=+m[1]; if(KB.docs.some(d=>d.id===id)) openDoc(id); }
+  const initId = (typeof window!=='undefined'&&window.INIT_DOC) ? +window.INIT_DOC : (m?+m[1]:0);
+  if(initId && KB.docs.some(d=>d.id===initId)) openDoc(initId);
   // 首屏已出。若走的是轻量列表(docs 无全文)，后台异步加载全文检索索引，
   // 加载完重建 INDEX——此后搜索从"标题+摘要"升级为"正文全文"。不阻塞首屏。
   loadSearchIndex();
@@ -455,7 +458,7 @@ async function boot(){
 async function loadSearchIndex(){
   if(KB && KB.docs && KB.docs[0] && KB.docs[0].text!==undefined) return; // 已含全文(cache/embed 路径)
   try{
-    const r=await fetch('kb_search.json',{cache:'no-cache'});
+    const r=await fetch(DATA_BASE+'kb_search.json',{cache:'no-cache'});
     if(!r.ok) return;
     SEARCH=await r.json();
     buildIndex();               // 用全文重建检索索引
@@ -636,7 +639,7 @@ async function getMd(id){
   const d=KB.docs.find(x=>x.id===id);
   if(d && d.md) return d.md;                    // 已有正文（内嵌/完整版）
   if(!DOCS_CACHE){
-    try{ const r=await fetch('kb_docs.json',{cache:'no-cache'}); if(r.ok) DOCS_CACHE=await r.json(); }
+    try{ const r=await fetch(DATA_BASE+'kb_docs.json',{cache:'no-cache'}); if(r.ok) DOCS_CACHE=await r.json(); }
     catch(e){ DOCS_CACHE={}; }
   }
   return (DOCS_CACHE&&DOCS_CACHE[String(id)])||'（正文加载失败，请刷新重试）';
