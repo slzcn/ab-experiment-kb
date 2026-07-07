@@ -91,12 +91,18 @@
   .tbl td.chk,.tbl th.chk{width:34px;text-align:center;padding-right:0}
   .tbl input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand);cursor:pointer;vertical-align:middle}
   .tbl tr.sel td{background:rgba(224,99,46,.05)}
-  /* 上线/下线状态标 */
-  .stat-pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;
-    padding:2px 9px;border-radius:20px;white-space:nowrap;cursor:pointer;user-select:none;border:1px solid transparent}
-  .stat-pill.on{color:#2f9e44;background:rgba(63,185,80,.12)}
-  .stat-pill.off{color:var(--dim);background:var(--panel);border-color:var(--line)}
-  .stat-pill:hover{filter:brightness(.97);border-color:currentColor}
+  /* 上线/下线开关：二元互斥，一眼看清开=上线/关=下线 */
+  .sw{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;white-space:nowrap}
+  .sw .track{position:relative;width:38px;height:22px;border-radius:22px;background:var(--line);
+    transition:background .18s;flex:0 0 auto}
+  .sw .track::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .18s}
+  .sw.on .track{background:#3fb950}
+  .sw.on .track::after{transform:translateX(16px)}
+  .sw .lbl{font-size:11.5px;font-weight:600}
+  .sw.on .lbl{color:#2f9e44}
+  .sw.off .lbl{color:var(--dim)}
+  .sw.busy{opacity:.5;pointer-events:none}
   /* 批量操作条：选中后出现 */
   .batchbar{display:none;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:10px 14px;
     background:rgba(224,99,46,.07);border:1px solid rgba(224,99,46,.25);border-radius:11px;font-size:13px}
@@ -243,7 +249,9 @@
         <button class="bb danger" data-bulk="del">🗑 删除</button>
         <button class="bb" id="batchClear">取消</button>
       </div>
+      <div class="msg" id="artMsg"></div>
       <div id="artWrap"><div class="empty">加载中…</div></div>
+      <div class="desc" style="margin-top:12px">上线/下线改动会写入数据库，公开网站约几分钟后（服务器重建静态页）同步生效；本页是实时的。</div>
     </div>
   </div>
 
@@ -482,7 +490,7 @@ function renderArts(){
     list.map(a=>{const c=catOf(a.cat);const pub=isPub(a);return `<tr class="${SELECTED.has(a.id)?'sel':''}">
       <td class="chk"><input type="checkbox" data-sel="${a.id}" ${SELECTED.has(a.id)?'checked':''}></td>
       <td><span class="tt">${esc(a.title)}</span>${a.is_internal?'<span class="badge">内部</span>':''}</td>
-      <td><span class="stat-pill ${pub?'on':'off'}" data-toggle="${a.id}" title="点击${pub?'下线':'上线'}">${pub?'● 上线':'○ 下线'}</span></td>
+      <td><span class="sw ${pub?'on':'off'}" data-toggle="${a.id}" title="${pub?'点击下线（从公开站移除）':'点击上线（公开站显示）'}"><span class="track"></span><span class="lbl">${pub?'上线':'下线'}</span></span></td>
       <td><span class="cat">${c.icon} ${esc(c.name)}</span></td>
       <td style="color:var(--dim);font-size:12px">${esc(a.updated||'—')}</td>
       <td class="acts">
@@ -516,25 +524,37 @@ $('#batchClear').onclick=()=>{SELECTED.clear();renderArts();};
 async function togglePub(id){
   const a=ARTS.find(x=>x.id===id);if(!a)return;
   const next=!isPub(a);
+  const sw=$(`[data-toggle="${id}"]`); if(sw)sw.classList.add('busy');
   try{
     await sbWrite('ab_articles?id=eq.'+id,'PATCH',{published:next});
     a.published=next; renderArts();
-  }catch(e){alert('操作失败：'+e.message+'（可能未运行 supabase_published.sql 加字段）');}
+    msg('#artMsg','ok', next
+      ? `《${a.title}》已上线，约几分钟后在公开网站显示。`
+      : `《${a.title}》已下线，约几分钟后从公开网站移除（后台仍保留）。`);
+  }catch(e){
+    if(sw)sw.classList.remove('busy');
+    msg('#artMsg','err','操作失败：'+e.message+'（若提示缺 published 列，请先运行 supabase_published.sql）');
+  }
 }
 // 批量：上线/下线/删除
 async function bulkAction(kind){
   const ids=[...SELECTED]; if(!ids.length)return;
   const inList='id=in.('+ids.join(',')+')';
+  const n=ids.length;
   try{
     if(kind==='del'){
-      if(!confirm(`确定删除选中的 ${ids.length} 篇？此操作不可撤销。`))return;
+      if(!confirm(`确定删除选中的 ${n} 篇？此操作不可撤销。`))return;
       await sbWrite('ab_articles?'+inList,'DELETE');
     }else{
       await sbWrite('ab_articles?'+inList,'PATCH',{published:kind==='on'});
     }
     SELECTED.clear();
     await loadData();
-  }catch(e){alert('批量操作失败：'+e.message);}
+    const verb={on:'上线',off:'下线',del:'删除'}[kind];
+    msg('#artMsg','ok', kind==='del'
+      ? `已删除 ${n} 篇。`
+      : `已${verb} ${n} 篇，约几分钟后在公开网站同步生效。`);
+  }catch(e){msg('#artMsg','err','批量操作失败：'+e.message);}
 }
 document.querySelectorAll('.batchbar [data-bulk]').forEach(b=>b.onclick=()=>bulkAction(b.dataset.bulk));
 
