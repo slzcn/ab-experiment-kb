@@ -359,7 +359,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <div id="catWrap"><div class="empty">加载中…</div></div>
       <div style="margin-top:16px;display:flex;gap:10px">
         <button class="btn ghost" id="catAdd">＋ 新增分类</button>
-        <button class="btn ghost" id="catRestore" title="把系统预设的默认分类补齐回来（不影响你现有分类）">↺ 恢复默认</button>
+        <button class="btn ghost" id="catRestore" title="清空当前分类，重置为系统预设的 12 个默认分类">↺ 恢复默认</button>
         <button class="btn" id="catSave">✓ 保存分类</button>
       </div>
       <div class="msg" id="catMsg"></div>
@@ -1093,16 +1093,13 @@ $('#trashEmpty').onclick=async()=>{
 
 // ================= 分类恢复默认（补齐缺失，保留自建）=================
 $('#catRestore').onclick=async()=>{
-  if(!await confirmBox({title:'恢复默认分类？',okText:'恢复默认',danger:false,
-    html:'将把系统预设的默认分类<b>补齐</b>回来（只补被删掉的默认分类）。<br>你现有的分类<b>不受影响</b>，不会被覆盖或删除。'}))return;
-  msg('#catMsg','load','正在恢复默认分类…');
+  if(!await confirmBox({title:'恢复默认分类？',okText:'清空并重置',
+    html:'将<b>清空当前全部分类</b>，重置为系统预设的 <b>12 个默认分类</b>。<br><br>⚠️ 你自己新增或改名的分类<b>会被覆盖丢失</b>，此操作不影响已发布的文章内容。'}))return;
+  msg('#catMsg','load','正在重置为默认分类…');
   try{
-    const d=await apiCall('/restore-categories?mode=missing','POST');
+    const d=await apiCall('/restore-categories?mode=reset','POST');
     await loadData();
-    const n=d.inserted||0;
-    msg('#catMsg','ok', n>0
-      ? `✓ 已补齐 ${n} 个默认分类，约十几秒后线上同步`
-      : '✓ 默认分类都在，无需补齐');
+    msg('#catMsg','ok','✓ 已重置为默认 12 个分类，约十几秒后线上同步');
   }catch(e){ msg('#catMsg','err','✗ '+e.message); }
 };
 
