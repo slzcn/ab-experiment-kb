@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>多变体可视化实验 · A/B 实验知识库</title>
+<meta name="description" content="多变体可视化实验（简称MVT，全称Multi\ variate Visual Test）是同时AB实验一个网页的两个或更多元素的变体，以查看哪个组合产生最好的结果。本文为您介绍多变体可视化实验的操作要点。 前置条件及限制">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/158896.html">
+<meta property="og:title" content="多变体可视化实验"><meta property="og:description" content="多变体可视化实验（简称MVT，全称Multi\ variate Visual Test）是同时AB实验一个网页的两个或更多元素的变体，以查看哪个组合产生最好的结果。本文为您介绍多变体可视化实验的操作要点。 前置条件及限制">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/158896.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>多变体可视化实验</h1>
+<div class="meta">📄 4,924 字 · 🕐 2026-01-07</div>
+<article class="md"><p>多变体可视化实验（简称MVT，全称Multi\-variate Visual Test）是同时AB实验一个网页的两个或更多元素的变体，以查看哪个组合产生最好的结果。本文为您介绍多变体可视化实验的操作要点。</p>
+<p>&lt;span id=&quot;9f465ae9&quot;&gt;&lt;/span&gt;</p>
+<h1><strong>前置条件及限制</strong></h1>
+<table><thead><tr><th>限制/前提条件</th><th>说明</th></tr></thead><tbody><tr><td>传输协议</td><td>页面传输协议需使用HTTPS（Hypertext Transfer Protocol Secure：超文本传输安全协议）。</td></tr><tr><td>浏览器建议</td><td>建议使用最新版Chrome及Windows Edge。主流的浏览器均可支持；iOS系统自带Safari浏览器支持iOS10及以上版本(若系统版本较低请升级到iOS10及以上)。</td></tr><tr><td>支持的实验类型</td><td>* MVT实验的实验类型为<strong>客户端</strong>实验。&lt;br&gt;&lt;br&gt;* 当前支持<strong>Web及H5页面</strong>。</td></tr><tr><td>前提条件</td><td>* 使用MVT实验前，需集成DataTester的数据接入SDK，详情请参见<a href="https://www.volcengine.com/docs/6287/96071" target="_blank" rel="noopener">Web/JS SDK集成</a>。</td></tr></tbody></table>
+<p>&lt;span id=&quot;2b16dc65&quot;&gt;&lt;/span&gt;</p>
+<h1><strong>基本概念</strong></h1>
+<ul><li><strong>元素（Element）</strong> ：页面中的元素，针对页面中的多个Element元素做实验。</li></ul>
+<ul><li><strong>变体（variant）</strong> ： 元素中的修改，元素进行修改内容和样式保存之后就是变体。</li></ul>
+<ul><li><strong>组合（combination）</strong> ： 组合即实验组，一个元素下有多个变体，一个变体下有同一个元素不同修改，元素中不同的变体相互交叉组成的一个版本。例如，如果正在对3个Element进行测试，每个Element分别有2，3，4个变体，每个变体下都有不同的元素修改内容和样式，则一共有24种组合 (2x3x4)。</li></ul>
+<p>&lt;span id=&quot;a8050d3e&quot;&gt;&lt;/span&gt;</p>
+<h1>应用场景</h1>
+<p>MVT比较适用于如下场景：</p>
+<ul><li>当web网站/H5/APP访问量较高时，运行多变体实验才比较有用且有效。</li></ul>
+<ul><li>当用户有一个策略假设可以通过多种方式实现变体，但无法决定该测试哪种组合时，建议使用多变体实验验证。</li></ul>
+<p>&lt;span id=&quot;ec86f07c&quot;&gt;&lt;/span&gt;</p>
+<h1>操作演示</h1>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5adc5428d80fd0a403ac55a65beaa6cb.gif" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;0ef77ad5&quot;&gt;&lt;/span&gt;</p>
+<h1>创建实验</h1>
+<p>在实验列表页点击“+创建实验”，选择多变体可视化实验，进入实验创建流程。</p>
+<p>&lt;span id=&quot;8ec8cca9&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>step1</strong> <strong>输入基本信息</strong></h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/24e161c8aadf417bbd1f7caccc374a65~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>实验名称&amp;实验描述</strong></td><td>* <strong>实验名称</strong>：建议设置为与实验内容相关的名称，如有实验版本迭代可以增加版本号后缀，让您的伙伴能够快速了解到实验是做什么的、在哪个迭代版本。&lt;br&gt;&lt;br&gt;* <strong>实验描述</strong> ：实验内容简述，可以让项目相关人员更清晰地知道到这个实验是如何做的，解决什么问题，同时也便于后期查看和管理历史实验时一目了然。</td></tr><tr><td><strong>实验标签</strong></td><td>您可以在下拉框中选择已存在的实验标签，也可直接输入新标签。&lt;br&gt;&lt;br&gt;一般采用业务线、优化方向等实验内容关键词作为标签，用于筛选、归类实验，后续实验创建完成后，在实验列表中可以通过实验标签快速搜索到相关实验。</td></tr><tr><td><strong>实验类型</strong></td><td>当前多变体可视化实验仅支持客户端实验。</td></tr><tr><td><strong>实验时长</strong></td><td>指实验开启的时长，一般为了避免不同时间段（工作日与周末）的用户行为差异，建议至少观察 2 个完整的实验周期。&lt;br&gt;&lt;br&gt;例如，考虑工作日与周末影响时，实验周期至少需要一周，那实验开启时长建议为14天。</td></tr><tr><td><strong>实验负责人</strong></td><td>默认为实验创建者。</td></tr></tbody></table>
+<p>&lt;span id=&quot;0f80cea0&quot;&gt;&lt;/span&gt;</p>
+<h2>step2 选择生效策略</h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/080cfc0607fb4f3d9c9151dc00c223d6~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>流量设置</strong></li></ul>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>是否互斥</strong></td><td>当您需要开展多个AB实验时，您需要根据实验情况配置当前创建的实验是否需要与其他实验互斥，来避免同一个用户被分配进入了两个会相互影响的实验，从而影响AB实验结果。&lt;br&gt;&lt;br&gt;例如，您要同时做按钮颜色和按钮形状的实验，这两个实验彼此影响，就需要将这两个实验加入到一个互斥组中。&lt;br&gt;&lt;br&gt;了解更多流量层相关内容及如何创建流量层可查看：<a href="https://www.volcengine.com/docs/6287/65834" target="_blank" rel="noopener">规划实验流量：流量层与互斥域</a>。</td></tr><tr><td><strong>实验流量</strong></td><td>生效实验的用户占满足用户受众用户比例。系统默认为100%流量，您可以通过建议工具（点击流量计算器）进行流量预估，看设置多少流量合适，详见：<a href="https://www.volcengine.com/docs/6287/65814" target="_blank" rel="noopener">预估实验流量：流量计算器</a>。&lt;br&gt;&lt;br&gt;启用受众规则后，系统将<strong>先筛选符合规则的用户</strong>，再按配置的<strong>实验流量比例</strong>生效。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;实验流量的预估时，通常需要结合实验的业务指标与&lt;strong&gt;MDE&lt;/strong&gt;（检验灵敏度）来进行估算，通常实验指标为提升/降低xx（某个业务指标值），那MDE建议以小于这个指标值来进行估算，尽量避免MDE取值较大，无法检测出真实的实验结果。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td><strong>流量生效方式</strong></td><td>支持「立即生效」和「平滑生效」两种生效方式。&lt;br&gt;&lt;br&gt;平滑生效会在设置的时间内把流量生效到设定的大小，例如实验流量设置成30%，平滑生效时间设置成30min，则会按照每分钟生效1%的进度线性生效。平滑生效更多说明可以查看文档：<a href="https://www.volcengine.com/docs/6287/1169339" target="_blank" rel="noopener">实验流量平滑生效</a>。</td></tr></tbody></table>
+<ul><li><strong>用户受众规则</strong></li></ul>
+<p>   您可以创建多个筛选组，筛选组间为“或”的逻辑关系；每个筛选组内可设置多个过滤条件，过滤条件间为“且”的逻辑关系。</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0a8befc6a6e940689429c3af0af65409~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>   每个筛选组的配置详细指导如下。</p>
+<table><thead><tr><th><strong>过滤条件</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>添加且条件</strong></td><td>对于客户端实验，单击<strong>添加过滤条件</strong>后，您可以使用<strong>用户属性</strong>作为用户受众的过滤条件，支持使用系统提供的<strong>预置属性</strong>，也可创建<strong>自定义属性</strong>进行过滤。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/98d440855a234df4b136c4b65e478e9b~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;您可以在<strong>数据管理</strong>\&gt;<strong>元数据管理</strong>\&gt;<strong>用户属性</strong>页面查看已有的预置属性和自定义属性，或您也可以创建新的自定义属性。&lt;br&gt;&lt;br&gt;<strong>场景示例：新用户实验</strong>&lt;br&gt;&lt;br&gt;在「选择目标受众」过滤器中，可以针对新用户添加“用户首次安装时间”过滤条件，使用首次安装时间识别新用户，即首次安装时间晚于实验开启时间的所有用户被划入“新用户”范畴。在实验开启期间，只有新用户进实验组中，其他存量用户不进组。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/d38d7cc9512f4d6fab76d25ba28afb30~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td><strong>添加分群</strong></td><td>对于客户端实验，单击<strong>添加分群</strong>后，您可以使用已创建的用户分群来过滤用户。创建用户分群的操作详情请参见<a href="https://www.volcengine.com/docs/6287/65827" target="_blank" rel="noopener">用户分群</a>。</td></tr></tbody></table>
+<ul><li><strong>体验一致性</strong></li></ul>
+<p>   开启后，实验期间用户生效版本不随流量、受众条件调整发生变化，可以保障在实验期间，同一个用户只进入一个实验版本。开启后，用户只要进过当前实验版本（除非暂停，关闭实验），就不再出实验。</p>
+<p>&lt;span id=&quot;4a32fc7b&quot;&gt;&lt;/span&gt;</p>
+<h2>step3 配置实验版本</h2>
+<ul><li><strong>测试用户命中条件</strong>：</li></ul>
+<p>   选择测试用户命中对应的实验版本时，是否需满足上一个步骤中设置的受众规则。由于测试用户主要用于实验正式开启前的调试验证，测试用户的选择可以与最终实验命中用户不一致，您可以根据实际需要进行配置。</p>
+<ul><li><strong>URL匹配规则</strong></li></ul>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_c9939725f2f4196d8d5ea515deb4a00c.jpg" loading="lazy"> &lt;/span&gt;</p>
+<p>   URL匹配规则只决定用户访问的url是否可以命中实验，可以匹配即表示可以命中实验，不匹配即表示无法命中实验。用户命中实验的具体哪个版本是分流服务来决定的。在不同的url匹配方式下，我们关注到访的url是否可以成功匹配实验版本的url即可。URL地址只支持https协议，不支持http协议。具体如下：</p>
+<p>   <strong>1）简单匹配</strong></p>
+<p>   在url进行匹配时，简单匹配会忽略url中的查询参数和锚点，在用户访问页面的url域名和路径匹配的情况即可命中实验。 例如，实验的目标url为https://app.test.com/path?param=a#frag1，则当用户访问以下url时，匹配情况如表中所示：</p>
+<p>   ```Plain Text    | | | | \    |序号 |到访url |是否匹配 |    |---|---|---|    | | | | \    |1 |<a href="http://app.test.com/?utm_source=5&amp;utm_medium=sembaidu&amp;userid=23" target="_blank" rel="noopener">https://app.test.com/path</a> |匹配 |    | | | | \    |2 |<a href="http://app.test.com/?param1=origina&amp;utm_mediue=sembaidu&amp;userid=23" target="_blank" rel="noopener">https://app.test.com/path?param=</a>a |匹配 |    | | | | \    |3 |<a href="https://app.test.com/path?param=a#frag1" target="_blank" rel="noopener">https://app.test.com/path?param=a#frag1</a> |匹配 |    | | | | \    |4 |<a href="https://app.test.com/path?param=b" target="_blank" rel="noopener">https://app.test.com/path?param=b</a> |匹配 |    | | | | \    |5 |<a href="https://app.test.com/path?param=b#frag2" target="_blank" rel="noopener">https://app.test.com/path?param=b#frag2</a> |匹配 |    | | | | \    |10 |<a href="https://test.com/" target="_blank" rel="noopener">https://test.com</a> |不匹配 |    | | | | \    |11 |<a href="https://app.test.com/path1" target="_blank" rel="noopener">https://app.test.com/path1</a> |不匹配 |    | | | | \    |12 |<a href="https://docs.test.com/path?param=a#frag1" target="_blank" rel="noopener">https://docs.test.com/path?param=a#frag1</a> |不匹配 |    | | | | \    |13 |<a href="https://docs.test.com/path/index.php" target="_blank" rel="noopener">https://docs.test.com/path/index.php</a> |不匹配 |</p>
+<p>   注释：</p>
+<ul><li><strong>匹配</strong> ：指的是用户所访问的url在「简单匹配」模式下，可以匹配上实验版本的url，即访问这个页面的用户可以命中MVT实验。</li><li><strong>不匹配</strong> ：指的是用户所访问的url在「简单匹配」模式下，不能匹配上实验版本的url，即访问这个页面的用户无法命中MVT实验。</li></ul>
+<p>   ```</p>
+<p>   <strong>2）精准匹配</strong></p>
+<p>   即完全匹配，只有用户访问页面的url完全匹配实验页面url时，才会命中实验。 例如实验的目标url为https://app.test.com/path?param=a#frag1，则在精准匹配下，只有用户访问https://app.test.com/path?param=a#frag1时，才会命中实验。适用于用户需要排除带参数的页面，且明确知道页面url的场景。</p>
+<ul><li><strong>配置实验URL并进入可视化编辑器</strong></li></ul>
+<p>   用户输入URL后点击「进入可视化编辑器」后，基于原页面打开可视化编辑器</p>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_6f600527fe5244a152c6559988e45ce0.jpg" loading="lazy"> &lt;/span&gt;</p>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_8b39d66298374bec20b91e860da82f69.png" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th></th><th>产品示例图</th><th>操作项说明</th></tr></thead><tbody><tr><td><strong>新增变体</strong></td><td>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_666aee35ad2a5a166d07998345e6a367.png" loading="lazy"> &lt;/span&gt;</td><td>元素配置入口在可视化编辑器的右上角，有Tooltip提示，可进行拖拽</td></tr><tr><td><strong>新增变体入口1</strong></td><td>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_28401067e0f5909bc64c635736587c4f.png" loading="lazy"> &lt;/span&gt;</td><td>入口1：选择元素（元素1） =\&gt; 修改字体颜色 =\&gt; 点击「新增变体」按钮 =\&gt; 展示选择的变体X =\&gt; 元素配置看板展示变体X</td></tr><tr><td><strong>新增变体入口2</strong></td><td>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_0a7178262269ee449f1c1063dc143797.png" loading="lazy"> &lt;/span&gt;</td><td>入口2：选择元素配置看板 =\&gt; 选择元素X或者原始变体 =\&gt; 编辑修改 =\&gt; 点击「新增变体」按钮 =\&gt; 展示选择的变体X =\&gt; 元素配置看板展示变体X</td></tr><tr><td><strong>修改变体</strong></td><td>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_aa35e9e118c0b82a5e2a782b4bdccdfc.png" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_dc389d878b555f1e9bad22f445376d8f.png" loading="lazy"> &lt;/span&gt;</td><td>选择变体的时候，左侧看板联动，显示当前对应的元素和变体，便于用户更直观的编辑。 <strong>修改入口：</strong>  已经创建了变体 =\&gt; 选择元素配置看板 =\&gt; 选择元素X或者元素X的原始变体 =\&gt; 编辑修改 =\&gt; 点击「保存修改」按钮 =\&gt; 展示选择的变体X =\&gt; 元素配置看板展示变体X&lt;br&gt;&lt;br&gt;&lt;br&gt;1. 对于同一个属性进行编辑修改，会更新之前的属性配置（如左图1）&lt;br&gt;&lt;br&gt;2. 对于不同属性进行编辑修改，会新增属性配置（如左图2）</td></tr><tr><td><strong>删除变体/重命名变体/复制变体</strong></td><td>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_35311501576a81c74f46e66c7e1a6679.png" loading="lazy"> &lt;/span&gt;</td><td>可进行删除变体/重命名变体/复制变体</td></tr><tr><td><strong>实验版本数量</strong></td><td>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_a52af7e2d5c5ee111ab74bb6091ef166.png" loading="lazy"> &lt;/span&gt;</td><td>* 一个元素，至少一个原始变体，然后可以有多个变体X，变体数量不做限制&lt;br&gt;&lt;br&gt;* 可以有多个元素，元素的数量不做限制。&lt;br&gt;&lt;br&gt;&lt;br&gt;实验版本的个数 = A \* B \* C \* ... \* N&lt;br&gt;&lt;br&gt;举个例子：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 选择修改了3个元素，第1个元素有3个变体，第2个元素有2个变体，第3个元素有2个变体。&lt;br&gt;&lt;br&gt;* 实验版本数 = 第1个元素有3个变体 \* 第2个元素有2个变体 \* 第3个元素有2个变体&lt;br&gt;&lt;br&gt;* 实验版本数 12 = 3 \* 2 \* 2</td></tr><tr><td><strong>生成版本</strong></td><td>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_f2ef7c97f80164f1efd255c46727c7a4.png" loading="lazy"> &lt;/span&gt;</td><td>点击「生成版本」之后，回到实验版本第三步。</td></tr></tbody></table>
+<ul><li><strong>配置实验版本信息：生成元素设置和版本组合</strong></li></ul>
+<p>   包括元素设置+版本组合的预览。</p>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_77af263a9e5d74aa275df252cafdb469.png" loading="lazy"> &lt;/span&gt;</p>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_217db463a0509a5b53ea2b5b76fa94d6.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;0547a1b5&quot;&gt;&lt;/span&gt;</p>
+<h2>step4 实验指标</h2>
+<p>实验指标可以衡量实验成功与否，实验开始后，在实验报告页面可以看到关注指标在实验版本和对照版本的对比，在这一步，需要选择实验关注指标。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/9f601056a5814d2da0f88ee4e7315512~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>实验核心指标配置</strong></td><td>* <strong>核心指标配置</strong>：&lt;br&gt;&lt;br&gt;   用来决策实验功能是否符合预期的「直接效果指标」或「成功指标」，您可以在下拉框中，在已有的指标组中选择指标作为实验的核心指标，建议合理的进行实验设计，谨慎选择，更多关于实验指标设置的经验指导请查看<a href="https://www.volcengine.com/docs/6287/65838#_1-%E7%A1%AE%E5%AE%9A%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87" target="_blank" rel="noopener">确定评估指标</a>。&lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;实验指标配置好后，后续实验创建完成后，如果如有特殊情况需要修改实验指标，请进入实验详情页进行修改。   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;* <strong>监控报警</strong>：可选择目标指标点击“监控报警”，填写具体需要的报警策略，选择是否勾选“效果显著”，以及选择报警策略的生效方式。&lt;br&gt;&lt;br&gt;* <strong>编辑指标</strong>：点击图例中3位置处可进入指标编辑页面，对可指标进行名称、指标类型、是否设为必看指标等进行编辑。</td></tr><tr><td><strong>实验关注指标配置</strong></td><td>对需要关注的指标进行配置。您可以在页面的下拉列表中选择需要关注的指标，也可以在页面单击<strong>新建指标</strong>或<strong>移除指标</strong>按钮，快速调整需要关注的指标。</td></tr><tr><td><strong>置信水平</strong></td><td>置信水平（也称置信度、置信系数、统计显著性），是指实验组与对照组之间存在真正性能差异的概率。&lt;br&gt;&lt;br&gt;例如在置信水平是95%的情况下，如果某个实验指标的置信度p值&lt;0.05，则说明这个指标相比对照组，是有显著(超过置信水平)差异的。 如需设置置信水平参数值，则需联系集团管理员或应用管理员，前往“<a href="https://www.volcengine.com/docs/6287/65828#_1-2-%E7%BD%AE%E4%BF%A1%E6%B0%B4%E5%B9%B3" target="_blank" rel="noopener">系统管理-置信水平设置</a>”进行设置。</td></tr></tbody></table>
+<p>&lt;span id=&quot;3e69dced&quot;&gt;&lt;/span&gt;</p>
+<h2>调试、开启、停止实验</h2>
+<p>实验创建完成后，您可以在A/B测试\&gt;实验列表中查看已创建的实验，并查看实验状态。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fad3f9d5a18e4a47a230b72ca7ce4a64~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>调试中</strong>：新创建完成的实验，实验状态为<strong>调试中</strong>，此阶段您可以邀请已添加为测试用户的用户进行实验测试，确认实验符合预期。</li></ul>
+<ul><li><strong>进行中</strong>：实验调试完毕后，您可以在实验列表页点击“启动”，即可开启实验。实验开始后，实验的状态变为<strong>进行中</strong>，此时进组用户可实时查看，指标置信度第二日产出。</li></ul>
+<ul><li><strong>已结束</strong>：实验开始后，当实验时长到达创建实验时配置的<strong>实验时长</strong>后，实验会自动停止；如果没有到达实验时长，您希望立即停止实验，也可在实验列表手动停止实验。停止实验后，实验状态变为<strong>已结束</strong>。</li></ul>
+<p>&lt;span id=&quot;b258b2d5&quot;&gt;&lt;/span&gt;</p>
+<h1>查看实验报告</h1>
+<p>实验开启后，您也可以在实验列表中，通过实验操作入口点击进入实验报告页面，查看实验报告，详情请参见<a href="https://www.volcengine.com/docs/6287/1130945" target="_blank" rel="noopener">实验报告概述</a>。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

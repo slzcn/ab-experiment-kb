@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Python SDK · A/B 实验知识库</title>
+<meta name="description" content="1. 安装SDK 1.1 下载SDK 当前sdk版本：v3.0.0 datatester_python_sdk 3.0.0 py3 none any.whl &amp;nbsp; 1.2 pip 支持的范围: Linux + p">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/444915.html">
+<meta property="og:title" content="Python SDK"><meta property="og:description" content="1. 安装SDK 1.1 下载SDK 当前sdk版本：v3.0.0 datatester_python_sdk 3.0.0 py3 none any.whl &amp;nbsp; 1.2 pip 支持的范围: Linux + p">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/444915.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>Python SDK</h1>
+<div class="meta">📄 2,276 字 · 🕐 2026-01-22</div>
+<article class="md"><p>&lt;span id=&quot;_1-安装sdk&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 安装SDK</h1>
+<p>&lt;span id=&quot;_1-1-下载sdk&quot;&gt;&lt;/span&gt;</p>
+<h2>1.1 下载SDK</h2>
+<p>当前sdk版本：v3.0.0</p>
+<p>&lt;Attachment link=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/9aa59ebed5d24ff2a428c01c6e15fc54~tplv-goo7wpa0wc-image.image&quot; name=&quot;datatester_python_sdk-3.0.0-py3-none-any.whl&quot;&gt;datatester_python_sdk-3.0.0-py3-none-any.whl&lt;/Attachment&gt;</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span id=&quot;_1-2-pip&quot;&gt;&lt;/span&gt;</p>
+<h2>1.2 pip</h2>
+<p>支持的范围: Linux + python ≥3.7，≤3.14</p>
+<pre><code>pip install datatester_python_sdk-3.0.0-py3-none-any.whl</code></pre>
+<p>&lt;span id=&quot;_2-代码示例&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 代码示例</h1>
+<p>&lt;span id=&quot;f04200e4&quot;&gt;&lt;/span&gt;</p>
+<h2>准备工作：获取数据上送地址</h2>
+<p>进行数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如果上报地址设置错误，后续会导致您无法查询到上报的数据。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请在上报数据前，务必确认您当前使用的环境类型，根据环境类型配置上报地址。查看当前的环境类型请参见&lt;a href=&quot;https://www.volcengine.com/docs/84129/1261497&quot;&gt;SaaS云原生/非云原生&amp;私有化环境&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果您使用的是SaaS\-云原生环境，您也需确认您的服务所在的地域，（通常您的服务会在华北2\-北京地域，部分用户可能会使用其他地域）。SaaS\-云原生用户查看服务所在地域请参见&lt;a href=&quot;https://www.volcengine.com/docs/84129/1527757&quot;&gt;支持的地域&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;b6f88a9e&quot;&gt;&lt;/span&gt;</p>
+<h3>SaaS\-云原生 &amp; SaaS\-非云原生</h3>
+<table><thead><tr><th>地址类型</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（国内：华北2\-北京）</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（海外：亚太东南\-柔佛）</th><th>SaaS\-非云原生环境 国内环境</th><th>SaaS\-非云原生 海外BytePlus环境&lt;br&gt;&lt;br&gt;（以下 SG 指新加坡）</th></tr></thead><tbody><tr><td>数据上报地址</td><td>* SaaS\-云原生（华北）：&lt;br&gt;&lt;br&gt;   https://gator.volces.com</td><td>https://gator.uba.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>https://mcs.tobsnssdk.com</td></tr><tr><td>分流地址&lt;br&gt;&lt;br&gt;（meta信息地址）</td><td>https://tab.volces.com</td><td>https://tab.ab.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>https://tab.abtest.bytepluses.com</td></tr></tbody></table>
+<p>&lt;span id=&quot;e5956254&quot;&gt;&lt;/span&gt;</p>
+<h3>私有化环境</h3>
+<p>私有化部署场景下，您需要获取部署私有化环境时，自行规划配置的数据上送地址。如您不清楚此地址，请联系您的项目经理或客户成功经理。</p>
+<p>&lt;span id=&quot;0663c2e3&quot;&gt;&lt;/span&gt;</p>
+<h2>2.1 初始化Client</h2>
+<p>&lt;span id=&quot;6a5b9817&quot;&gt;&lt;/span&gt;</p>
+<h3>2.1.1 SaaS\-云原生</h3>
+<pre><code>from datatester_python_sdk import AbClient
+
+# 初始化ABTest分流客户端，请注意修改token参数
+ab_client = AbClient(
+    token=&quot;YOUR_TOKEN&quot;, 
+    meta_host=&quot;META_HOST&quot;, 
+    track_host=&quot;TRACK_HOST&quot;
+)    
+&quot;&quot;&quot;
+参数:
+    token: 获取方式详见接口描述-AbClient
+    meta_host: 获取meta信息的地址，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节。
+    track_host: 事件上报地址，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节。
+    is_onpremise: 缺省值，sdk是否为私有化版本
+    user_info_handler: 缺省值，用户信息对象，进组不出组需要实现该handler
+    max_workers: 缺省值，事件上报线程数，默认为4
+&quot;&quot;&quot;
+</code></pre>
+<p>&lt;span id=&quot;77cce1c9&quot;&gt;&lt;/span&gt;</p>
+<h3>2.1.2 SaaS\-非云原生（老客）</h3>
+<p>与SaaS\-云原生使用方式，仅初始化client时不同。SaaS\-非云原生的老客户，无需指定meta_host与track_host</p>
+<pre><code>from datatester_python_sdk import AbClient
+
+# 初始化ABTest分流客户端，请注意修改token参数
+ab_client = AbClient(
+    token=&quot;YOUR_TOKEN&quot;, 
+    meta_host=&quot;META_HOST&quot;, 
+    track_host=&quot;TRACK_HOST&quot;
+)      
+&quot;&quot;&quot;
+参数:
+    token: 获取方式详见接口描述-AbClient
+    meta_host: 缺省值，获取meta信息的地址，默认值为SaaS-非云原生版本，私有化用户注意修改
+    track_host: 缺省值，事件上报地址，默认值为SaaS-非云原生版本，私有化用户注意修改
+    is_onpremise: 缺省值，sdk是否为私有化版本
+    user_info_handler: 缺省值，用户信息对象，进组不出组需要实现该handler
+    max_workers: 缺省值，事件上报线程数，默认为4
+&quot;&quot;&quot;</code></pre>
+<p>&lt;span id=&quot;7ffcf9ad&quot;&gt;&lt;/span&gt;</p>
+<h3>2.1.3 私有化</h3>
+<p>与SaaS版本使用方式，仅初始化client时不同。私有化客户需要指定meta_host和track_host为部署时配置的域名。同时指定is_onpremise为True</p>
+<pre><code>from datatester_python_sdk import AbClient
+
+# 初始化ABTest分流客户端，请注意修改token参数
+# meta_host和track_host请修改为部署时配置的域名
+ab_client = AbClient(
+    token=&quot;YOUR_TOKEN&quot;, 
+    meta_host=&quot;META_HOST&quot;,
+    track_host=&quot;TRACK_HOST&quot;
+    is_onpremise=True
+)
+&quot;&quot;&quot;
+参数:
+    token: 获取方式详见接口描述-AbClient
+    meta_host: 私有化部署时配置的域名
+    track_host: 私有化部署时配置的域名
+    is_onpremise: 私有化环境需要显示的配置为True
+    user_info_handler: 缺省值，用户信息对象，进组不出组需要实现该handler
+    max_workers: 缺省值，事件上报线程数，默认为4
+&quot;&quot;&quot;</code></pre>
+<p>&lt;span id=&quot;a1046bf5&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 请求分流并获取结果</h2>
+<pre><code>from datatester_python_sdk import AbClient
+
+# 具体参数可以查看2.1 初始化Client
+ab_client = AbClient(token=&quot;YOUR_TOKEN&quot;)  
+
+# 定义分流时请求中携带的参数
+attributes = {    
+    &quot;state&quot;: &quot;Nanjing&quot;,
+    &quot;likes_donuts&quot;: True,
+}
+
+# 推荐接口
+# 根据variant key 获取分流后的实验配置
+variable = ab_client.activate(
+        &quot;{variant_key}&quot;, 
+        &quot;{decision_id}&quot;, 
+        &quot;{track_id}&quot;, 
+        &quot;{default_value}&quot;, 
+        attributes
+        )
+&quot;&quot;&quot;
+参数:
+    variant_key: 变体的key    
+    decision_id: 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识    
+    track_id: 事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+    default_value: 当分流未命中时返回该值，根据业务需要使用，可传None
+    attributes: 用户属性，仅用于分流，不随埋点上报，可参考https://www.volcengine.com/docs/6287/65826
+&quot;&quot;&quot;       
+# 各类型参数使用示例
+# number
+# 对照组 = 123 实验组 = 456
+if variable == 123:
+    pass
+elif variable == 456:
+    pass
+else:
+    pass 
+# 对照组 = 111.23 实验组 = 444.56
+if variable == 111.23:
+    pass
+elif variable == 444.56:
+    pass
+else:
+    pass 
+
+# string
+# 对照组=&quot;aaa&quot; 实验组=&quot;bbb&quot;
+if variable == &quot;aaa&quot;:
+    pass
+elif variable == &quot;bbb&quot;:
+    pass
+else:
+    pass 
+
+# bool
+# 对照组=true 实验组=false
+if isinstance(variable, bool) and variable:
+    pass
+else:
+    pass
+
+# json
+# 对照组={&quot;key&quot;:&quot;value_a&quot;} 实验组={&quot;key&quot;:&quot;value_b&quot;}
+if not isinstance(variable, dict):
+    return
+if variable.get(&quot;key&quot;, None) == &quot;value_a&quot;:
+    pass
+elif variable.get(&quot;key&quot;, None) == &quot;value_b&quot;:
+    pass
+else:
+    pass</code></pre>
+<p>&lt;span id=&quot;_3-接口描述&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 接口描述</h1>
+<p>&lt;span id=&quot;_3-1-abclient&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 Abclient初始化方法</h2>
+<p>&lt;span id=&quot;描述：初始化abtest分流类&quot;&gt;&lt;/span&gt;</p>
+<h4>描述：初始化ABTest分流类</h4>
+<pre><code>def __init__(self, token=None, meta_host=None, track_host=None, is_onpremise=False, 
+            user_info_handler=None，max_workers=4):
+    &quot;&quot;&quot;
+    参数:
+        token: 表明您的Tester应用。出于安全考虑，此处使用的token=appKey，而非appId。
+        meta_host: 设置获取meta信息的地址，SaaS-云原生/私有化用户注意修改
+        track_host: 设置事件上报地址，SaaS-云原生/私有化用户注意修改     
+        is_onpremise: 缺省值，sdk是否为私有化版本        
+        user_info_handler: 缺省值，用户信息对象，进组不出组需要实现该handler
+        max_workers: 缺省值，事件上报线程数，默认为4
+    &quot;&quot;&quot;</code></pre>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1、请尽早初始化AbClient，以免影响您的分流服务和埋点上报服务。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;2、每个应用有且仅有一个分流类AbClient，请确保它在所有线程中的唯一性。&lt;/div&gt;</p>
+<p>在集团中接入一个应用后，您可以在集团相关页面查看应用的AppKey等信息，详情请参考：<a href="https://www.volcengine.com/docs/6287/66984" target="_blank" rel="noopener">如何创建应用</a>。</p>
+<ul><li>SaaS\-云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/eba094f44e174faea6c7cdcdc7447d2d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>SaaS\-非云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b55e61ee067544deaff4939685d1475c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-2-user-info-handler&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 user_info_handler</h2>
+<p>&lt;span id=&quot;描述：进组不出组用户分组信息存储&quot;&gt;&lt;/span&gt;</p>
+<h4>描述：进组不出组用户分组信息存储</h4>
+<p>使用方式：</p>
+<ol><li>初始化AbClient时不指定user_info_handler，则默认使用空实现，不启用“进组不出组”功能。</li></ol>
+<ol><li>实现如下UserInfoHandler类，自行实现持久化存储；初始化AbClient时通过user_info_handler参数传入UserInfoHandler对象。</li></ol>
+<pre><code>class UserInfoHandler:
+    def query(decision_id):
+        &quot;&quot;&quot;
+        参数:
+            decision_id: 本地分流用户标识
+        返回值:
+            用户进组信息, 同create_or_update 的入参abInfo
+        &quot;&quot;&quot;
+        
+    def create_or_update(decision_id, abInfo):
+        &quot;&quot;&quot;
+        参数:
+            decision_id: 本地分流用户标识
+            abInfo: 字符串类型，用户进组信息
+        返回值:
+            类型boolean，是否成功更新
+        &quot;&quot;&quot;</code></pre>
+<p>&lt;span id=&quot;_3-3-activate&quot;&gt;&lt;/span&gt;</p>
+<h2>3.3 activate</h2>
+<p>&lt;span id=&quot;描述：获取特定key的分流结果，并上报曝光事件&quot;&gt;&lt;/span&gt;</p>
+<h4>描述：获取特定key的分流结果，并上报曝光事件</h4>
+<pre><code>def activate(self, variant_key, decision_id, track_id, default_value, attributes):
+    &quot;&quot;&quot;
+    参数:
+        variant_key: 变体的key
+        decision_id: 本地分流用户标识
+        track_id: 事件上报用户标识
+        default_value: 变体默认值
+        attributes: 用户属性
+    
+    返回值:
+        该函数返回命中版本的参数值，未命中时返回默认值
+    &quot;&quot;&quot;</code></pre>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1、含有“with_impression”字样的接口均会自动上报曝光事件。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;2、事件上报接口请务必填写track_id字段，否则会导致上报失效。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;返回值示例：&quot;&gt;&lt;/span&gt;</p>
+<h4>返回值示例：</h4>
+<pre><code>参数类型为string，返回值为str &quot;a&quot;
+参数类型为number，返回值为int  123(也可能是float 444.56)
+参数类型为boolean，返回值为bool True
+参数类型为json，返回值为dict {&#x27;key&#x27;: 1}</code></pre>
+<p>&lt;span id=&quot;_3-4-get-experiment-variant-name&quot;&gt;&lt;/span&gt;</p>
+<h2>3.4 get_experiment_variant_name</h2>
+<p>&lt;span id=&quot;描述：获取用户命中的特定实验的版本名称&quot;&gt;&lt;/span&gt;</p>
+<h4>描述：获取用户命中的特定实验的版本名称</h4>
+<pre><code>def get_experiment_variant_name(self, experiment_id, decision_id, attributes):
+    &quot;&quot;&quot;
+    参数:
+        experiment_id: 指定分流的实验ID
+        decision_id: 本地分流用户标识
+        attributes: 用户属性
+    
+    返回值:
+        该函数返回用户命中的特定实验的版本名称，
+        如果用户不在实验中或者实验没有启动就返回None。
+    &quot;&quot;&quot;</code></pre>
+<p>&lt;span id=&quot;返回值示例：&quot;&gt;&lt;/span&gt;</p>
+<h4>返回值示例：</h4>
+<p>返回值为string &quot;对照版本&quot; / &quot;实验版本1&quot;</p>
+<p>&lt;span id=&quot;_3-5-get-experiment-configs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.5 get_experiment_configs</h2>
+<p>&lt;span id=&quot;描述：获取用户命中的特定实验的变体详情&quot;&gt;&lt;/span&gt;</p>
+<h4>描述：获取用户命中的特定实验的变体详情</h4>
+<pre><code>def get_experiment_configs(self, experiment_id, decision_id, attributes):
+    &quot;&quot;&quot;
+    参数:
+        experiment_id: 指定分流的实验ID
+        decision_id: 本地分流用户标识
+        attributes: 用户属性
+    
+    返回值:
+        该函数返回用户命中的某个实验的变体详情，通常仅能命中一个变体，
+        如果用户不在实验中或者实验没有启动就返回空的dict {}。
+    &quot;&quot;&quot;</code></pre>
+<p>&lt;span id=&quot;返回值示例：&quot;&gt;&lt;/span&gt;</p>
+<h4>返回值示例：</h4>
+<pre><code>// dict
+{&#x27;age&#x27;: {&#x27;val&#x27;: 12, &#x27;vid&#x27;: &#x27;160528&#x27;}, &#x27;configure&#x27;: {&#x27;val&#x27;: {&#x27;settings&#x27;: 1}, &#x27;vid&#x27;: &#x27;160528&#x27;}, &#x27;fromCN&#x27;: {&#x27;val&#x27;: True, &#x27;vid&#x27;: &#x27;160528&#x27;}, &#x27;name&#x27;: {&#x27;val&#x27;: &#x27;asd&#x27;, &#x27;vid&#x27;: &#x27;160528&#x27;}}</code></pre>
+<p>&lt;span id=&quot;_3-6-get-all-experiment-configs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.6 get_all_experiment_configs</h2>
+<p>&lt;span id=&quot;描述：获取用户命中的所有实验的变体详情&quot;&gt;&lt;/span&gt;</p>
+<h4>描述：获取用户命中的所有实验的变体详情</h4>
+<pre><code>def get_all_experiment_configs(self, decision_id, attributes):
+    &quot;&quot;&quot; 
+    参数:
+        decision_id: 本地分流用户标识
+        attributes: 用户属性
+    
+    Returns:
+        该函数返回用户命中的某个实验的变体详情，通常命多个变体，
+        如果用户不在实验中或者实验没有启动就返回空的dict {}。
+    &quot;&quot;&quot;</code></pre>
+<p>&lt;span id=&quot;返回值示例：&quot;&gt;&lt;/span&gt;</p>
+<h4>返回值示例：</h4>
+<p>与get_experiment_configs返回结构相同</p>
+<pre><code>{&#x27;go&#x27;: {&#x27;val&#x27;: &#x27;v1&#x27;, &#x27;vid&#x27;: &#x27;83580&#x27;}, &#x27;age&#x27;: {&#x27;val&#x27;: 12, &#x27;vid&#x27;: &#x27;160528&#x27;}, &#x27;configure&#x27;: {&#x27;val&#x27;: {&#x27;settings&#x27;: 1}, &#x27;vid&#x27;: &#x27;160528&#x27;}, &#x27;fromCN&#x27;: {&#x27;val&#x27;: True, &#x27;vid&#x27;: &#x27;160528&#x27;}, &#x27;name&#x27;: {&#x27;val&#x27;: &#x27;asd&#x27;, &#x27;vid&#x27;: &#x27;160528&#x27;}}</code></pre>
+<p>&lt;span id=&quot;_3-7-get-feature-configs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.7 get_feature_configs</h2>
+<p>&lt;span id=&quot;描述：获取用户命中的特定feature的变体详情&quot;&gt;&lt;/span&gt;</p>
+<h4>描述：获取用户命中的特定feature的变体详情</h4>
+<pre><code>def get_feature_configs(self, feature_id, decision_id, attributes):
+    &quot;&quot;&quot; 
+    参数:
+        feature_id: feature的ID
+        decision_id: 本地分流用户标识
+        attributes: 用户属性
+    
+    返回值:
+        该函数返回用户命中某个feature的变体详情，通常仅能命中一个变体，
+        如果用户不在feature中，或者feature不可用，就返回None。
+    &quot;&quot;&quot;</code></pre>
+<p>&lt;span id=&quot;返回值示例：&quot;&gt;&lt;/span&gt;</p>
+<h4>返回值示例：</h4>
+<pre><code>{&#x27;servergo&#x27;: {&#x27;val&#x27;: False, &#x27;vid&#x27;: &#x27;20100615&#x27;}}</code></pre>
+<p>&lt;span id=&quot;_3-8-get-all-feature-configs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.8 get_all_feature_configs</h2>
+<p>&lt;span id=&quot;描述：获取用户命中的所有feature的变体详情&quot;&gt;&lt;/span&gt;</p>
+<h4>描述：获取用户命中的所有feature的变体详情</h4>
+<pre><code>def get_all_feature_configs(self, decision_id, attributes):
+    &quot;&quot;&quot; 
+    参数:
+        decision_id: 本地分流用户标识
+        attributes: 用户属性
+
+    返回值:
+        该函数返回用户命中某个feature的变体详情，通常命中多个变体，
+        如果用户不在feature中，或者feature不可用，就返回None。
+    &quot;&quot;&quot;</code></pre>
+<p>&lt;span id=&quot;返回值示例：&quot;&gt;&lt;/span&gt;</p>
+<h4>返回值示例：</h4>
+<p>与get_feature_configs返回结构相同</p>
+<pre><code>{&#x27;servergo&#x27;: {&#x27;val&#x27;: False, &#x27;vid&#x27;: &#x27;20100615&#x27;}, &#x27;python_key&#x27;: {&#x27;val&#x27;: &#x27;bbb&#x27;, &#x27;vid&#x27;: &#x27;20108187&#x27;}}</code></pre>
+<p>&lt;span id=&quot;_3-9-get-experiment-variant-name-with-impression&quot;&gt;&lt;/span&gt;</p>
+<h2>3.9 get_experiment_variant_name_with_impression</h2>
+<p>同接口：&quot;get_experiment_variant_name&quot;（同时上报曝光事件，需要传入track_id）</p>
+<p>&lt;span id=&quot;_3-10-get-experiment-configs-with-impression&quot;&gt;&lt;/span&gt;</p>
+<h2>3.10 get_experiment_configs_with_impression</h2>
+<p>同接口：&quot;get_experiment_configs&quot;（同时上报曝光事件，需要传入track_id）</p>
+<p>&lt;span id=&quot;_3-11-get-feature-configs-with-impression&quot;&gt;&lt;/span&gt;</p>
+<h2>3.11 get_feature_configs_with_impression</h2>
+<p>同接口：&quot;get_feature_configs&quot;（同时上报曝光事件，需要传入track_id）</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

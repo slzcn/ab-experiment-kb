@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HTTP API · A/B 实验知识库</title>
+<meta name="description" content="注意 服务端上报的http接口默认开通，如果您接入的应用没有开通，请联系客户成功经理解决； 本文档部分内容对于SaaS、SaaS云原生、私有化不同环境会有差异，请注意区分； 1.请求接口 环境 Url Method Sa">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1149793.html">
+<meta property="og:title" content="HTTP API"><meta property="og:description" content="注意 服务端上报的http接口默认开通，如果您接入的应用没有开通，请联系客户成功经理解决； 本文档部分内容对于SaaS、SaaS云原生、私有化不同环境会有差异，请注意区分； 1.请求接口 环境 Url Method Sa">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1149793.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>HTTP API</h1>
+<div class="meta">📄 4,995 字 · 🕐 2025-07-28</div>
+<article class="md"><p>注意</p>
+<ul><li>服务端上报的http接口默认开通，如果您接入的应用没有开通，请联系客户成功经理解决；</li></ul>
+<ul><li>本文档部分内容对于SaaS、SaaS云原生、私有化不同环境会有差异，请注意区分；</li></ul>
+<p>&lt;span id=&quot;_1-请求接口&quot;&gt;&lt;/span&gt;</p>
+<h1>1.请求接口</h1>
+<table><thead><tr><th>环境</th><th>Url</th><th>Method</th></tr></thead><tbody><tr><td>SaaS\-云原生\-国内地域</td><td>* 单条数据上传：https://gator.volces.com/v2/event/json&lt;br&gt;&lt;br&gt;* 批量数据上传（每批次最多50条）：https://gator.volces.com/v2/event/list</td><td>POST</td></tr><tr><td>SaaS\-云原生\-海外地域（柔佛地域）</td><td>* 单条数据上传：https://gator.uba.ap\-southeast\-1.volces.com/v2/event/json&lt;br&gt;&lt;br&gt;* 批量数据上传（每批次最多50条）：https://gator.uba.ap\-southeast\-1.volces.com/v2/event/list</td></tr><tr><td>SaaS\-非云原生\-国内环境</td><td>* 单条数据上传：https://mcs.ctobsnssdk.com/v2/event/json&lt;br&gt;&lt;br&gt;* 批量数据上传（每批次最多50条）：https://mcs.ctobsnssdk.com/v2/event/list</td></tr><tr><td>SaaS\-非云原生\-海外环境（BytePlus）</td><td>* 单条数据上传：https://mcs.tobsnssdk.com/v2/event/json&lt;br&gt;&lt;br&gt;* 批量数据上传（每批次最多50条）：https://mcs.tobsnssdk.com/v2/event/list</td></tr><tr><td>私有化</td><td>* 单条数据上传：https://${host}/v2/event/json&lt;br&gt;&lt;br&gt;* 批量数据上传（每批次最多50条）：https://${host}/v2/event/list&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;${host}：私有化部署客户为埋点数据上报申请的域名，请根据实际的域名进行替换，客户域名更新后也需要同步更新上报的路径地址。&lt;/div&gt;&lt;br&gt;</td></tr></tbody></table>
+<p>&lt;span id=&quot;_2-请求规范&quot;&gt;&lt;/span&gt;</p>
+<h1>2.请求规范</h1>
+<ol><li>请求的header里带&quot;Content\-Type: application/json&quot;以及“X\-MCS\-AppKey”，作为app的标识。通过http api上报时，如果用代码及一些工具时，一般请求头上会自动带上User\-Agent字段，如果手动发送可能会提示User\-Agent is not allowed，则需要手动在请求头上加入User\-Agent字段；</li></ol>
+<ol><li>请求的body包含user，header，event三个部分，其中的header是埋点数据本身的header；</li></ol>
+<ol><li>单次上传events数建议控制在20条以内，超过50条会报413；</li></ol>
+<ol><li>上传如采用/v2/event/list接口，json数目建议控制在20条以内，超过50条会报413。</li></ol>
+<p>&lt;span id=&quot;_2-1-请求header&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2.1 请求header</strong></h2>
+<table><thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>Content\-Type</td><td>string</td><td>application/json</td></tr><tr><td>X\-MCS\-AppKey</td><td>string</td><td>您应用的APP Key</td></tr></tbody></table>
+<p>APP Key的获取位置请参考以下截图：</p>
+<p>在集团中接入一个应用后，您可以在集团相关页面查看应用的AppKey等信息，详情请参考：<a href="https://www.volcengine.com/docs/6287/66984" target="_blank" rel="noopener">如何创建应用</a>。</p>
+<ul><li>SaaS\-云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/eba094f44e174faea6c7cdcdc7447d2d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>SaaS\-非云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b55e61ee067544deaff4939685d1475c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-2-请求body&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2.2 请求body</strong></h2>
+<table><thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>user</td><td>object</td><td>user属性字典，详见 2.3。</td></tr><tr><td>header</td><td>object</td><td>header属性字典，详见 2.4。</td></tr><tr><td>events</td><td>[object]</td><td>events列表，每个元素为一个事件，详见 2.5。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_2-3-user格式&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2.3 user格式</strong></h2>
+<table><thead><tr><th>字段</th><th>类型</th><th>必选</th><th>说明</th></tr></thead><tbody><tr><td>user_unique_id</td><td>string</td><td>是</td><td>用户的唯一身份标识，需要保证同一个用户在本应用内全局唯一，即需要与客户端上报一致。</td></tr><tr><td>device_id</td><td>string</td><td>否</td><td>app端设备标识，注意必须为纯数字。</td></tr><tr><td>web_id</td><td>string</td><td>否</td><td>web端设备标识，注意必须为纯数字。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_2-4-header格式&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2.4 header格式</strong></h2>
+<table><thead><tr><th>字段</th><th>类型</th><th>必选</th><th>说明</th></tr></thead><tbody><tr><td>app_name</td><td>string</td><td>否</td><td>应用的英文名称</td></tr><tr><td>app_package</td><td>string</td><td>否</td><td>包名</td></tr><tr><td>app_channel</td><td>string</td><td>否</td><td>app分发渠道</td></tr><tr><td>app_version</td><td>string</td><td>否</td><td>app版本，三段分隔，如1.0.1</td></tr><tr><td>app_platform</td><td>string</td><td>否</td><td>应用的端，不支持自定义修改。</td></tr><tr><td>access</td><td>string</td><td>否</td><td>网络类型，落库为network_type。</td></tr><tr><td>carrier</td><td>string</td><td>否</td><td>运营商类型，落库为network_carrier。</td></tr><tr><td>platform</td><td>string</td><td>否</td><td>平台类型</td></tr><tr><td>os_name</td><td>string</td><td>否</td><td>客户端系统，只允许设置为 &quot;ios&quot;, &quot;android&quot;, &quot;web&quot;, &quot;wap&quot;, &quot;mac&quot;, &quot;windows&quot;, &quot;linux&quot;, &quot;ipad&quot;, &quot;iphone&quot;, 其他的值会解析成unknown。</td></tr><tr><td>os_version</td><td>string</td><td>否</td><td>客户端系统版本号</td></tr><tr><td>device_model</td><td>string</td><td>否</td><td>设备型号</td></tr><tr><td>ab_sdk_version</td><td>string</td><td>否</td><td>ab实验分组信息</td></tr><tr><td>traffic_type</td><td>string</td><td>否</td><td>流量类型</td></tr><tr><td>client_ip</td><td>string</td><td>否</td><td>客户端ip</td></tr><tr><td>custom</td><td>json object</td><td>否</td><td>自定义header字段,单层json map。上述字段都是保留字段不能使用。自定义事件公共属性放在这，会显示在any_event事件下。</td></tr><tr><td>region</td><td>string</td><td>否</td><td>所在区域国家(系统设置)，us等，(放在custom中)</td></tr><tr><td>language</td><td>string</td><td>否</td><td>语言(系统设置)，en等，(放在custom中)</td></tr><tr><td>app_region</td><td>string</td><td>否</td><td>国家(app设置)，us等，(放在custom中)</td></tr><tr><td>app_language</td><td>string</td><td>否</td><td>语言(app设置)，en等，(放在custom中)</td></tr><tr><td>timezone</td><td>string</td><td>否</td><td>时区，\-12~12，(放在custom中)</td></tr><tr><td>utm_source</td><td>string</td><td>否</td><td>推广来源</td></tr><tr><td>utm_campaign</td><td>string</td><td>否</td><td>推广活动</td></tr><tr><td>utm_medium</td><td>string</td><td>否</td><td>推广媒介</td></tr><tr><td>utm_content</td><td>string</td><td>否</td><td>推广内容</td></tr><tr><td>utm_term</td><td>string</td><td>否</td><td>推广关键词</td></tr></tbody></table>
+<p>&lt;span id=&quot;_2-5-event格式&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2.5 event格式</strong></h2>
+<table><thead><tr><th>字段</th><th>类型</th><th>必选</th><th>说明</th></tr></thead><tbody><tr><td>event</td><td>string</td><td>是</td><td>事件名</td></tr><tr><td>params</td><td>string</td><td>是</td><td>事件参数,单层json map</td></tr><tr><td>local_time_ms</td><td>long</td><td>是</td><td>unix_timestamp( 毫秒)</td></tr></tbody></table>
+<p>&lt;span id=&quot;_3-http-response-格式&quot;&gt;&lt;/span&gt;</p>
+<h1>3. HTTP Response 格式</h1>
+<table><thead><tr><th>状态码</th><th>返回信息</th><th>含义</th></tr></thead><tbody><tr><td>200</td><td>* SaaS\-非云原生：&lt;br&gt;&lt;br&gt;* SaaS\-云原生：</td><td>成功，其中：&lt;br&gt;&lt;br&gt;&lt;br&gt;* num：为上报成功event数。&lt;br&gt;&lt;br&gt;* e：为上报失败的event数，失败的查看events上报格式。&lt;br&gt;&lt;br&gt;* SaaS\-云原生环境中：&lt;br&gt;&lt;br&gt;   * 返回的Type取值，为请求到端的接口类型，无实际意义，您无需关注。&lt;br&gt;&lt;br&gt;   * 返回的server_time为上报数据的时间戳取值。</td></tr><tr><td>400</td><td>header/user/events empty error.&lt;br&gt;&lt;br&gt;get/invalid appid error.</td><td>请求格式错误, 查看X\-MCS\-AppKey与header，user的定义。</td></tr><tr><td>400</td><td>not found app_key and not found app_id</td><td>请求未带上X\-MCS\-AppKey，且header中未填写app_id。</td></tr><tr><td>400</td><td>parse POST request error! err: can not parse JSON:...</td><td>请求参数解析错误，无法解析json。</td></tr><tr><td>413</td><td>too many element in one request! length: xx , only allow 50</td><td>请求数组过长（只针对/json/list接口，限制50）</td></tr><tr><td>413</td><td>too many events in one request! length: 89 , only allow 50</td><td>请求中event数过多（限制50）</td></tr><tr><td>500</td><td>UserAgent is not allowed</td><td>HTTP请求头的User\-Agent不合法，包括msnbot、Sosospider、Sosoimagespider、Sogou web、spider、Googlebot、Baiduspider、360Spider、YoudaoBot、YandexBot、EasouSpider、Mediapartners\-Google、APIs\-Google、AdsBot\-Google、JikeSpider、MJ12bot、ia_archiver、Rogerbot、exabot、DOCOMO Sprider、python\-requests、HttpClient、Go\-http\-client、Python\-urllib、gohttp、curl/、Surf/、Scrapy</td></tr></tbody></table>
+<p>&lt;span id=&quot;_4-请求示例&quot;&gt;&lt;/span&gt;</p>
+<h1>4. 请求示例</h1>
+<p>&lt;span id=&quot;_4-1-v2-event-json接口&quot;&gt;&lt;/span&gt;</p>
+<h2>4.1 /v2/event/json接口</h2>
+<pre><code>curl -X POST -H &quot;Content-Type: application/json&quot; -H &quot;X-MCS-AppKey: 12345678key&quot; -d &#x27;{&quot;user&quot;: {...}, &quot;header&quot;:{...}, &quot;events&quot;:{...}}&#x27; https://gator.volces.com/v2/event/json</code></pre>
+<p>请求body：</p>
+<pre><code>{
+    &quot;user&quot;: {
+         // 建议先在客户端上报用户的user_unique_id，然后再在服务端使用
+        &quot;user_unique_id&quot;: &quot;74481585297&quot;   //用户唯一标示
+    },
+    &quot;header&quot;: {
+        &quot;ab_sdk_version&quot;: &quot;91223,83097&quot;,   //AB实验vid
+        &quot;app_channel&quot;: &quot;App Store&quot;,    //App渠道
+        &quot;app_name&quot;: &quot;news_article&quot;,    //App名称
+        &quot;app_package&quot;: &quot;com.ss.android.article.news&quot;,   //App包名
+        &quot;app_version&quot;: &quot;5.1.3&quot;,        //App版本
+        &quot;client_ip&quot;: &quot;10.100.1.1&quot;,     //客户端ip地址
+        &quot;device_model&quot;: &quot;SM-G9250&quot;,    //设备型号
+        &quot;os_name&quot;: &quot;Android&quot;,          //操作系统
+        &quot;os_version&quot;: &quot;6.0.1&quot;,         //操作系统版本
+        &quot;traffic_type&quot;: &quot;app&quot;,
+        &quot;custom&quot;:&quot;{\&quot;A\&quot;:\&quot;a\&quot;}&quot;         //事件公共属性
+    },
+    &quot;events&quot;: [
+        {
+            &quot;ab_sdk_version&quot;: &quot;91223,83097&quot;,   //AB实验vid
+            &quot;event&quot;: &quot;test_go_detail&quot;,    //事件名称
+            &quot;params&quot;: &quot;{\&quot;paramName\&quot;:\&quot;a\&quot;}&quot;,    //事件属性
+            &quot;local_time_ms&quot;: 1489573628001   //事件发生时刻的时间戳
+        }
+    ]
+}</code></pre>
+<p>说明</p>
+<p>local_time_ms ：这个是毫秒时间戳，标识这个事件发生的时刻。</p>
+<p>&lt;span id=&quot;_4-2-v2-event-list接口&quot;&gt;&lt;/span&gt;</p>
+<h2>4.2 /v2/event/list接口</h2>
+<pre><code>curl -X POST -H &quot;Content-Type: application/json&quot; -H &quot;X-MCS-AppKey: 12345678key&quot; -d &#x27;[{&quot;user&quot;: {...}, &quot;header&quot;:{...}, &quot;events&quot;:{...}}]  https://gator.volces.com/v2/event/list</code></pre>
+<p>请求body：</p>
+<pre><code>[{
+    &quot;user&quot;: {
+        &quot;user_unique_id&quot;: &quot;74481585297&quot;   //用户唯一标示
+    },
+    &quot;header&quot;: {
+        &quot;ab_sdk_version&quot;: &quot;91223,83097&quot;,   //AB实验vid
+        &quot;app_channel&quot;: &quot;App Store&quot;,    //App渠道
+        &quot;app_name&quot;: &quot;news_article&quot;,    //App名称
+        &quot;app_package&quot;: &quot;com.ss.android.article.news&quot;,   //App包名
+        &quot;app_version&quot;: &quot;5.1.3&quot;,        //App版本
+        &quot;client_ip&quot;: &quot;10.100.1.1&quot;,     //客户端ip地址
+        &quot;device_model&quot;: &quot;SM-G9250&quot;,    //设备型号
+        &quot;os_name&quot;: &quot;Android&quot;,          //操作系统
+        &quot;os_version&quot;: &quot;6.0.1&quot;,         //操作系统版本
+        &quot;traffic_type&quot;: &quot;app&quot;
+    },
+    &quot;events&quot;: [
+        {
+            &quot;event&quot;: &quot;test_go_detail&quot;,    //事件名称
+            &quot;params&quot;: &quot;{\&quot;paramName\&quot;:\&quot;a\&quot;}&quot;,    //事件属性
+            &quot;local_time_ms&quot;: 1489573628001   //事件发生时刻的时间戳
+        }
+    ]
+}]</code></pre>
+<p>说明</p>
+<p>local_time_ms ：这个是毫秒时间戳，标识这个事件发生的时刻。</p>
+<p>&lt;span id=&quot;_5-上报用户属性&quot;&gt;&lt;/span&gt;</p>
+<h1>5. 上报用户属性</h1>
+<p>注意</p>
+<p>本节仅适用于【SaaS云原生】、【私有化】版本，SaaS\-非云原生版本请参考<a href="https://www.volcengine.com/docs/84129/1261782" target="_blank" rel="noopener">User Profile API（SaaS）</a>。</p>
+<p>用户属性是通过特殊的事件进行上报，通过设置下面几个event可以修改用户属性：</p>
+<table><thead><tr><th>事件名</th><th>功能</th></tr></thead><tbody><tr><td>__profile_set</td><td>设置用户属性。</td></tr><tr><td>__profile_set_once</td><td>设置用户属性，属性为set_once，设置后不可更改。</td></tr><tr><td>__profile_increment</td><td>增加数值类用户属性的值。</td></tr><tr><td>__profile_unset</td><td>删除用户属性。</td></tr><tr><td>__profile_append</td><td>增加数组类用户属性的元素。</td></tr><tr><td>__profile_remove</td><td>删除数组类用户属性里的元素。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_5-1-上报用户属性&quot;&gt;&lt;/span&gt;</p>
+<h2>5.1 上报用户属性</h2>
+<p>用户属性放在<code>params</code>中 示例请求，作用为设置一个用户属性age，删除一个用户属性name，body：</p>
+<pre><code>{
+    &quot;user&quot;: {
+        &quot;user_unique_id&quot;: &quot;74481585297&quot;   //用户唯一标示
+    },
+    &quot;header&quot;: {
+        &quot;ab_sdk_version&quot;: &quot;91223,83097&quot;,   //AB实验vid
+        &quot;app_channel&quot;: &quot;App Store&quot;,    //App渠道
+        &quot;app_name&quot;: &quot;news_article&quot;,    //App名称
+        &quot;app_package&quot;: &quot;com.ss.android.article.news&quot;,   //App包名
+        &quot;app_version&quot;: &quot;5.1.3&quot;,        //App版本
+        &quot;client_ip&quot;: &quot;10.100.1.1&quot;,     //客户端ip地址
+        &quot;device_model&quot;: &quot;SM-G9250&quot;,    //设备型号
+        &quot;os_name&quot;: &quot;Android&quot;,          //操作系统
+        &quot;os_version&quot;: &quot;6.0.1&quot;,         //操作系统版本
+        &quot;traffic_type&quot;: &quot;app&quot;
+    },
+    &quot;events&quot;: [
+        {
+            &quot;event&quot;: &quot;__profile_set&quot;,    //操作名
+            &quot;params&quot;: &quot;{\&quot;age\&quot;: 10}&quot;,    //设置属性
+            &quot;local_time_ms&quot;: 1489573628001   //事件发生的时间戳
+        }，
+        {
+            &quot;event&quot;: &quot;__profile_unset&quot;,    //操作名
+            &quot;params&quot;: &quot;{\&quot;name\&quot;:\&quot;tom\&quot;}&quot;,    //设置属性
+            &quot;local_time_ms&quot;: 1489573628001   //事件发生的时间戳
+        }
+    ]
+}</code></pre>
+<p>&lt;span id=&quot;_5-2-批量上报用户属性&quot;&gt;&lt;/span&gt;</p>
+<h2>5.2 批量上报用户属性</h2>
+<p>当需要批量上报用户属性时，可以在params里加上一个特殊字段__uuid_list来实现，__uuid_list是一个user_unique_id的列表，params中除__uuid_list字段的其他字段作为这个__uuid_list中所有user_unique_id的属性，参考代码：</p>
+<pre><code>{
+    &quot;user&quot;: {
+        &quot;user_unique_id&quot;: &quot;user1&quot;
+    },
+    &quot;header&quot;:{&quot;app_name&quot;:&quot;init&quot;,&quot;app_id&quot;:&quot;10000000&quot;},
+    &quot;events&quot;: [
+        {
+            &quot;event&quot;: &quot;__profile_set&quot;,
+            &quot;params&quot;: {
+                &quot;__uuid_list&quot;: [&quot;user1&quot;, &quot;user2&quot;, &quot;user3&quot;, &quot;user4&quot;],
+                &quot;age&quot;:20
+            }
+        }
+    ]
+}
+matlab</code></pre>
+<p>注意</p>
+<p>这个列表每次上报限制1000个用户。</p>
+<p>&lt;span id=&quot;_5-3-验证上报的用户属性&quot;&gt;&lt;/span&gt;</p>
+<h2>5.3 验证上报的用户属性</h2>
+<p>可以在行为细查页面中查看特定用户的数据。</p>
+<p>&lt;span id=&quot;_6-导入历史数据&quot;&gt;&lt;/span&gt;</p>
+<h1>6. 导入历史数据</h1>
+<p>注意</p>
+<p>【SaaS版本】历史数据导入需要隔天才能查看，【SaaS云原生】、【私有化】版本可实时查看。</p>
+<p>如果数据的客户端时间超过七天，正常情况下无法导入。如需导入历史数据，需在<code>header</code>的<code>custom</code>字段中增加历史数据的标识<code>__is_history</code>，属性值设置为字符串<code>&quot;true&quot;</code>。 上报示例如下：</p>
+<pre><code>[{
+   &quot;user&quot;: {
+       &quot;user_unique_id&quot;: &quot;74481585297&quot;   //用户唯一标示
+   },
+   &quot;header&quot;: {
+
+       &quot;custom&quot;: {
+              &quot;__is_history&quot;: &quot;true&quot; //导入历史数据标识，默认为false;
+       }
+   },
+   &quot;events&quot;: [
+       {
+           &quot;event&quot;: &quot;test_go_detail&quot;,    //事件名称
+           &quot;params&quot;: &quot;{\&quot;paramName\&quot;:\&quot;a\&quot;}&quot;,    //事件属性
+           &quot;local_time_ms&quot;: 1489573628001   //事件发生时刻的时间戳
+       }
+   ]
+}]</code></pre>
+<p>说明</p>
+<p>local_time_ms: 这个是毫秒时间戳，标识这个事件发生的时刻，注意不是导数的时间。</p>
+<p>上报完成后，需要在界面上点击刷新数据，即可查询到上报的历史数据。</p>
+<p>&lt;span id=&quot;_7-上报数据限制&quot;&gt;&lt;/span&gt;</p>
+<h1>7. 上报数据限制</h1>
+<p>请参考文档：</p>
+<ul><li>数据格式文档中的数据上报限制：<a href="https://www.volcengine.com/docs/6287/1149795#_3-%E4%B8%8A%E6%8A%A5%E6%95%B0%E6%8D%AE%E9%99%90%E5%88%B6" target="_blank" rel="noopener">数据格式</a></li></ul>
+<p>&lt;span id=&quot;_8-验证数据上报成功&quot;&gt;&lt;/span&gt;</p>
+<h1>8. 验证数据上报成功</h1>
+<p>如果知道特定的user_unique_id，可以在行为细查里查询。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5d7ae9d3d6f2bc6da060cb864cb79857.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

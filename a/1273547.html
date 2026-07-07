@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iOS埋点与属性（实验指标） · A/B 实验知识库</title>
+<meta name="description" content="1. 用户与用户属性 注意： 上报事件和属性前，请先阅读数据格式（[数据格式](https://www.volcengine.com/docs/6287/1149795)）介绍。 1.1 登录态变化调用 6.13.0 之">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1273547.html">
+<meta property="og:title" content="iOS埋点与属性（实验指标）"><meta property="og:description" content="1. 用户与用户属性 注意： 上报事件和属性前，请先阅读数据格式（[数据格式](https://www.volcengine.com/docs/6287/1149795)）介绍。 1.1 登录态变化调用 6.13.0 之">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1273547.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>iOS埋点与属性（实验指标）</h1>
+<div class="meta">📄 7,964 字 · 🕐 2024-05-30</div>
+<article class="md"><p>&lt;span id=&quot;1c27bd00&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 用户与用户属性</h1>
+<p>注意：</p>
+<blockquote>上报事件和属性前，请先阅读数据格式（<a href="https://www.volcengine.com/docs/6287/1149795" target="_blank" rel="noopener">数据格式</a>）介绍。</blockquote>
+<p>&lt;span id=&quot;52e98f52&quot;&gt;&lt;/span&gt;</p>
+<h2>1.1 登录态变化调用</h2>
+<blockquote>6.13.0 之后的版本允许在 startTrack 之前调用，用于设置初始化的登录态。</blockquote>
+<blockquote>6.13.0 之前的版本只有在 SDK 启动完成之后调用生效。</blockquote>
+<p>&lt;span id=&quot;7c8490f2&quot;&gt;&lt;/span&gt;</p>
+<h3>1.1.1 账户登录</h3>
+<p>如您的产品中有账户体系，请在用户登录后立即设置uuid，以保证用户登录前后口径一致性。</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>#import &lt;RangersAppLog/RangersAppLog.h&gt;
+// 设置您账号体系的ID, 并保证其唯一性
+[BDAutoTrack setCurrentUserUniqueID:@&quot;{{USER_UNIQUE_ID}}&quot;];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>BDAutoTrack.setCurrentUserUniqueID(&quot;{{USER_UNIQUE_ID}}&quot;)</code></pre>
+<p>如您在初始化SDK时，已获取到可设置的uuid，例如已登录的用户，请在初始化时调用设置。初始化后无需再次调用重复设置。</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// 初始化时设置uuid
+config.initialUserUniqueID = @&quot;{{USER_UNIQUE_ID}}&quot;;</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 初始化时设置uuid
+config.initialUserUniqueID = &quot;{{USER_UNIQUE_ID}}&quot;</code></pre>
+<p>&lt;span id=&quot;df28b457&quot;&gt;&lt;/span&gt;</p>
+<h3>1.1.2 账户登出</h3>
+<p>在账户登出时调用。</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>[BDAutoTrack clearUserUniqueID];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>BDAutoTrack.clearUserUniqueID();</code></pre>
+<p>&lt;span id=&quot;870fd5c7&quot;&gt;&lt;/span&gt;</p>
+<h2>1.2 设置用户属性</h2>
+<p>&lt;span id=&quot;ad1c3df7&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.1 profileSet</h3>
+<p>设置用户属性，存在则覆盖，不存在则创建。</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为value
+NSDictionary *profileDict = @{@&quot;key&quot;: @(&quot;value&quot;)};
+[BDAutoTrack profileSet:profileDict];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为value
+let profileDict: [AnyHashable: Any] = [
+    &quot;key&quot;: &quot;value&quot;
+]
+BDAutoTrack.profileSet(profileDict)</code></pre>
+<p>&lt;span id=&quot;5a6235b4&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.2 profileSetOnce</h3>
+<p>设置用户属性，存在则不设置，不存在则创建，适合首次相关的用户属性，比如首次访问时间等。</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// 示例：设置用户属性，属性名为key_once，属性值为value_once
+NSDictionary *profileDict = @{@&quot;key_once&quot;: @(&quot;value_once&quot;)};
+[BDAutoTrack profileSetOnce:profileDict];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 示例：设置用户属性，属性名为key_once，属性值为value_once
+let profileDict: [AnyHashable: Any] = [
+    &quot;key_once&quot;: &quot;value_once&quot;
+]
+BDAutoTrack.profileSetOnce(profileDict)</code></pre>
+<p>&lt;span id=&quot;52e17fc4&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.3 profileIncrement</h3>
+<p>设置数值类型的属性，可进行累加。</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为1
+[BDAutoTrack profileIncrement:@{@&quot;key&quot;: @(1)}];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为1
+let profileDict: [AnyHashable: Number] = [
+    &quot;key&quot;: 1
+]
+BDAutoTrack.profileIncrement(profileDict)</code></pre>
+<p>&lt;span id=&quot;2b9bf516&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.4 profileAppend</h3>
+<p>设置List类型的用户属性，可持续向List内添加。</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// 示例：设置用户属性，属性名为key，原本已有属性值，现添加属性值为value_append
+[BDAutoTrack profileAppend:@{
+    @&quot;key&quot;: @[@&quot;value_append&quot;]
+}];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 示例：设置用户属性，属性名为key，原本已有属性值，现添加属性值为value_append
+BDAutoTrack.profileAppend([[&quot;key&quot;]:[&quot;value_append&quot;]])</code></pre>
+<p>&lt;span id=&quot;174194de&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.5 profileUnset</h3>
+<p>删除用户的属性。</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// 示例：删除用户属性，属性名为key
+[BDAutoTrack profileUnset:@&quot;key&quot;];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 示例：删除用户属性，属性名为key
+BDAutoTrack.profileUnset(&quot;key&quot;)</code></pre>
+<p>&lt;span id=&quot;e8d76522&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 获取实验参数</h1>
+<p>Tester 通常在SDK 初始化后会向分流服务发送一个分流请求（request），在获取到分流服务的响应（response）后，客户端开发可以根据分流的结果参数完成代码分支。</p>
+<ul><li>请注意此步骤的前置条件：已经根据实验的需求方创建好了实验及相关的参数，具体见“<a href="https://www.volcengine.com/docs/6287/65809#_4-1-%E5%88%9B%E5%BB%BA%E5%AE%9E%E9%AA%8C" target="_blank" rel="noopener">创建实验</a>”。</li></ul>
+<ul><li>请注意每次调用ABTestConfigValueForKey时,会默认上报一条曝光事件 abtest_exposure</li></ul>
+<p>ABTest的值需要在BDAutoTrackNotificationABTestSuccess通知之后才能获取正确的值，否则可能获取不到值。 注意：在初始化之前设置好回调，再调用初始化。</p>
+<p>成功拉取实验参数时的回调方法：</p>
+<pre><code>#import &lt;RangersApplog/BDAutoTrack.h&gt;
+#import &lt;RangersAppLog/BDAutoTrackNotifications.h&gt;
+
+// 设置监听
+[[NSNotificationCenter defaultCenter] addObserver:self
+                                        selector:@selector(onABTestSuccess:) 
+                                            name:BDAutoTrackNotificationABTestSuccess object:nil];
+                                            
+
+// 在回调成功后获取实验参数
+- (void)onABTestSuccess:(NSNotification *)noti {
+    NSLog(@&quot;%@&quot;,noti.userInfo);    
+    // 这里的意思是，回调成功后，可以开始获取值
+    NSNumber newColor = [BDAutoTrack ABTestConfigValueForKey:@&quot;btnColor&quot; defaultValue:@(0)];
+    if(newColor == 0){
+        // A 版本分支
+    } else {
+        // B 版本分支    
+    }
+}
+objective-c</code></pre>
+<p>Sync方法，是可以阻塞等待本地缓存文件的读取 此方法旨在便于业务在初始化后立即获取到已缓存的AB实验数据，可能耗时较长。</p>
+<pre><code>/*! @abstract 本地缓存已加载时同`ABTestConfigValueForKey:defaultValue:`。本地缓存未加载时将阻塞等待其加载完成。
+ @discussion 本地缓存一般在初始化后30-100ms内加载完成。
+ */
+- (nullable id)ABTestConfigValueSyncForKey:(NSString *)key defaultValue:(nullable id)defaultValue;
+- (nullable NSString *)abVidsSync;
+- (nullable NSString *)allAbVids;
+- (nullable NSDictionary *)allABTestConfigsSync;</code></pre>
+<p>如果想实时拉取实验分流结果，可以通过 pullABTestConfigs 方法手动触发实验配置更新  <strong>(10秒内多次调用只会触发一次请求)</strong> </p>
+<pre><code>[BDAutoTrack pullABTestConfigs];//此功能需要6.7.0以上版本
+// 获取成功后会发送 BDAutoTrackNotificationABTestSuccess 通知
+// A BDAutoTrackNotificationABTestSuccess notification will be received 
+// if the test configs are correctly pulled</code></pre>
+<p>&lt;span id=&quot;70782ffd&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 事件与事件属性（上报实验指标）</h1>
+<p>&lt;span id=&quot;1f7e9b40&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 上报代码埋点</h2>
+<p>用户行为日志采用事件event+属性params的形式，事件一般对应多个属性，也可以仅有事件没有属性。代码埋点方案一般由数据分析师或产品运营设计。</p>
+<p>仅上报事件的代码埋点，示例如下：</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// 示例：上报事件event，该事件不包含属性
+// 置于业务逻辑对应位置
+[BDAutoTrack eventV3:@&quot;event&quot; params: nil];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 示例：上报事件event，该事件不包含属性
+// 置于业务逻辑对应位置
+BDAutoTrack.eventV3(&quot;event&quot;, params: nil)</code></pre>
+<p>上报事件和对应属性的代码埋点，示例如下：</p>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// 示例：上报事件event，该事件包含两个属性
+//      一个string类型的属性，属性名为key_string，属性值为value_string
+//.     一个int类型的属性，属性名为key_int，属性值为10
+// 置于业务逻辑对应位置
+[BDAutoTrack eventV3:@&quot;event&quot; 
+             params:@{@&quot;key_string&quot;:@&quot;value_string&quot;,
+                      @&quot;key_int&quot;: @(10)}];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 示例：上报事件event，该事件包含两个属性
+//      一个string类型的属性，属性名为key_string，属性值为value_string
+//.     一个int类型的属性，属性名为key_int，属性值为10
+// 置于业务逻辑对应位置
+BDAutoTrack.eventV3(&quot;event&quot;, params: [&quot;key_string&quot;: &quot;value_string&quot;,
+                                      &quot;key_int&quot;: 10])</code></pre>
+<p>&lt;span id=&quot;ddd3e4e2&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 事件公共属性</h2>
+<p>如需在每个事件中都包括某属性，可通过公共属性设置，无需在每个事件中重复设置。公共属性只需设置一次，即可包括在所有代码埋点事件、预置事件和全埋点事件中。</p>
+<p>&lt;span id=&quot;e69f6b33&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.1 设置公共属性</h3>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>/* 
+ * 示例：设置自定义的公共属性，属性名为key_public，属性值为value_public
+ * 关于自定义 “公共属性” 请注意：
+ * 1. 上报机制是随着每一次日志发送进行提交，默认的日志发送频率是1分钟，
+ *    所以如果在一分钟内连续修改自定义公共属性，按照日志发送前的最后一次修改为准； 
+ * 2. 不推荐高频次修改，如每秒修改一次。
+ */
+[BDAutoTrack setCustomHeaderValue:@&quot;value_public&quot; forKey:@&quot;key_public&quot;];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>/* 
+ * 示例：设置自定义的公共属性，属性名为key_public，属性值为value_public
+ * 关于自定义 “公共属性” 请注意：
+ * 1. 上报机制是随着每一次日志发送进行提交，默认的日志发送频率是1分钟，
+ *    所以如果在一分钟内连续修改自定义公共属性，按照日志发送前的最后一次修改为准； 
+ * 2. 不推荐高频次修改，如每秒修改一次。
+ */
+BDAutoTrack.setCustomHeaderValue { () -&gt; [String : Any] in
+            return [&quot;key_public&quot;:&quot;value_public&quot;]
+}</code></pre>
+<p>&lt;span id=&quot;ac87738b&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.2 移除公共属性</h3>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// 示例：移除属性名为key_public的公共属性
+[BDAutoTrack removeCustomHeaderValueForKey:@&quot;key_public&quot;];</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 示例：移除属性名为key_public的公共属性
+BDAutoTrack.removeCustomHeaderValueForKey(&quot;key_public&quot;);</code></pre>
+<p>&lt;span id=&quot;08a4479a&quot;&gt;&lt;/span&gt;</p>
+<h1>4. 获取平台ID与通知</h1>
+<p>&lt;span id=&quot;d633aaee&quot;&gt;&lt;/span&gt;</p>
+<h2>4.1 获取平台生成ID</h2>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>#import &lt;RangersApplog/BDAutoTrackNotifications.h&gt;
+// 在初始化 sdk 之前设置监听
+ [[NSNotificationCenter defaultCenter] addObserver:self
+                                            selector:@selector(onRegisterSuccess:)
+                                                name:BDAutoTrackNotificationRegisterSuccess object:nil];
+//SDK 初始化代码部分
+//然后在 SDK 初始化之后设置回调
+- (void)onRegisterSuccess:(NSNotification *)noti  {
+    // 请在初始化完成的3秒后开始获取，否则可能返回为空
+    NSString *dids = [noti.userInfo objectForKey:kBDAutoTrackNotificationRangersDeviceID];
+    NSString *ssids = [noti.userInfo objectForKey:kBDAutoTrackNotificationSSID]; 
+    NSLog(@&quot;onRegisterSuccess.dids：%@&quot;, dids); // 获取设备bddid
+    NSLog(@&quot;onRegisterSuccess.ssids：%@&quot;, ssids); // 获取SSID
+}</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>// 请在初始化完成的3秒后开始获取，否则可能返回为空
+NotificationCenter.default.addObserver(self, selector: #selector(onRegisterSuccess), name: NSNotification.Name(rawValue: BDAutoTrackNotificationRegisterSuccess), object: nil)
+
+func onRegisterSuccess(noti: Notification) {
+    let did = noti.userInfo[kBDAutoTrackNotificationRangersDeviceID]
+    let ssid = noti.userInfo[kBDAutoTrackNotificationSSID]
+    print(&quot;onRegisterSuccess.dids：\(did)&quot;)
+    print(&quot;onRegisterSuccess.ssids：\(ssid)&quot;)
+}</code></pre>
+<p>&lt;span id=&quot;f8f586e6&quot;&gt;&lt;/span&gt;</p>
+<h2>4.2 获取SDK版本号</h2>
+<p><code>Objective-C</code>请参考：</p>
+<pre><code>// SDK版本号格式为X.X.X
+[BDAutoTrack sdkVersion]</code></pre>
+<p><code>Swift</code>请参考：</p>
+<pre><code>BDAutoTrack.sdkVersion()</code></pre>
+<p>&lt;span id=&quot;7cb6aa80&quot;&gt;&lt;/span&gt;</p>
+<h2>4.3 获取实验版本ID</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;开展AB实验必须调用获取实验参数的api（详情请参见 &lt;strong&gt;&lt;ins&gt;获取实验参数&lt;/ins&gt;&lt;/strong&gt; 章节）。如需获取用户所有曝光或命中实验的版本ID（vid）时，可使用此API，此API不会上报abtest_exposure曝光事件。&lt;/div&gt;</p>
+<pre><code>[BDAutoTrack.sharedTrack abExposedVids]; </code></pre>
+<p>&lt;span id=&quot;125f50c0&quot;&gt;&lt;/span&gt;</p>
+<h2>4.4 获取各类通知</h2>
+<p>SDK提供方法用以获取各类通知。各通知在<code>BDAutoTrackNotifications.h</code>头文件中均有描述。</p>
+<pre><code>// SDK 注册成功通知 
+BDAutoTrackNotificationRegisterSuccess
+//SDK 注册请求失败通知 
+BDAutoTrackNotificationRegisterFailure
+// 激活成功通知 
+BDAutoTrackNotificationActiveSuccess
+// SDK ABTest配置拉取成功通知 
+BDAutoTrackNotificationABTestSuccess
+// SDK ABTestVid发生变化时候的通知 
+BDAutoTrackNotificationABTestVidsChanged</code></pre>
+<p>&lt;span id=&quot;d848fc12&quot;&gt;&lt;/span&gt;</p>
+<h1>5. 默认公共属性字段</h1>
+<p>SDK 默认采集以下信息，并作为用户公共属性。</p>
+<table><thead><tr><th>字段名称</th><th>字段类型</th><th>参数名称</th></tr></thead><tbody><tr><td>os</td><td>string</td><td>设备系统，对应产品内属性为 os_name。</td></tr><tr><td>os_version</td><td>string</td><td>操作系统版本</td></tr><tr><td>app_version</td><td>string</td><td>App 版本</td></tr><tr><td>app_version_minor</td><td>string</td><td>次版本号，App四位版本号，设置[OKApplicationInfo sharedInstance].buildVersion = @&quot;1.2.3.4&quot;;</td></tr><tr><td>channel</td><td>string</td><td>下载渠道（设置后可覆盖），对应产品内属性为 app_channel。</td></tr><tr><td>device_model</td><td>string</td><td>设备型号</td></tr><tr><td>region</td><td>string</td><td>操作系统国家</td></tr><tr><td>language</td><td>string</td><td>系统语言</td></tr><tr><td>sdk_version</td><td>string</td><td>SDK版本</td></tr><tr><td>timezone</td><td>int</td><td>时区 例如 8</td></tr><tr><td>tz_offset</td><td>int</td><td>时区偏移量，对应产品内属性为 tz_offset，例如 28800。</td></tr><tr><td>tz_name</td><td>string</td><td>时区名称，例如 Asia/Shanghai。</td></tr><tr><td>carrier</td><td>string</td><td>运营商</td></tr><tr><td>resolution</td><td>string</td><td>分辨率</td></tr><tr><td>device_brand</td><td>string</td><td>设备品牌</td></tr><tr><td>access</td><td>string</td><td>网络类型</td></tr></tbody></table>
+<p>&lt;span id=&quot;a32cb5de&quot;&gt;&lt;/span&gt;</p>
+<h1>6.游戏数据埋点上报接口</h1>
+<p>如果您曾经使用火山引擎的游戏增长分析产品（该产品已经下架），为了提升您的埋点效率，SDK 提供了内置接口，您只需要根据提示传入指定的参数即可。</p>
+<pre><code>#import &quot;BDAutoTrack+GameTrack.h&quot; //请先引入正确的头文件
+
+/**
+ 广告按钮点击：gt_ad_button_click
+ ad_type           string  广告类型：激励视频、插屏、banner等，直接使用汉字或者英文进行标识
+ ad_position_type  string  广告点位类型：按照提供分类接入
+ ad_position       string  广告点位：复活、翻倍、试用、buff、奖励道具、新道具、减CD等，直接使用文字或者英文进行标识
+ 触发条件：用户点击app内各广告位button时。
+ */
+- (void)adButtonClickEventWithADType:(NSString *)adType
+                        positionType:(NSString *)positionType
+                            position:(NSString *)position
+                         otherParams:(nullable NSDictionary *)otherParams;
+
+/**
+ 广告开始展示：gt_ad_show
+ad_type            string  广告类型：激励视频、插屏、banner等，直接使用汉字或者英文进行标识
+ ad_position_type  string  广告点位类型：按照提供分类接入
+ ad_position       string  广告点位：复活、翻倍、试用、buff、奖励道具、新道具、减CD等，直接使用文字或者英文进行标识
+ 触发条件：用户点击并观看广告时。穿山甲广告有回调，可以直接获取。
+ */
+- (void)adShowEventWithADType:(NSString *)adType
+                 positionType:(NSString *)positionType
+                     position:(NSString *)position
+                  otherParams:(nullable NSDictionary *)otherParams;
+
+/**
+ 广告结束展示：gt_ad_show_end
+ ad_type           string  广告类型：激励视频、插屏、banner等，直接使用汉字或者英文进行标识
+ ad_position_type  string  广告点位类型：按照提供分类接入
+ ad_position       string  广告点位：复活、翻倍、试用、buff、奖励道具、新道具、减CD等，直接使用文字或者英文进行标识
+ result            string  广告观看结果：跳过、成功、失败等，使用英文进行标识.  跳过标记为skip, 成功标记为success，失败为fail
+ 触发条件：用户观看广告结束时。
+ */
+- (void)adShowEndEventWithADType:(NSString *)adType
+                    positionType:(NSString *)positionType
+                        position:(NSString *)position
+                          result:(NSString *)result
+                     otherParams:(nullable NSDictionary *)otherParams;
+
+/**
+ （总等级）升级和经验：gt_levelup
+ lev         int 当前玩家等级
+ get_exp     int 获得经验
+ method      string  获得经验途径：闯关成功、引导完成、领取奖励等，使用汉字或者英文进行标识
+ aflev       int 用户获得经验后等级，如获得经验未导致升级，则lev=aflev，如导致升级，则lev&lt;aflev
+ 触发条件：用户获得经验或者等级发生变化时。
+ */
+- (void)levelUpEventWithLevel:(NSInteger)level
+                          exp:(NSInteger)exp
+                       method:(NSString *)method
+                   afterLevel:(NSInteger)afterLevel
+                  otherParams:(nullable NSDictionary *)otherParams;
+
+/**
+ 开始玩法：gt_start_play
+ ectype_name  string  针对闯关性质玩法，标注关卡名称
+ 触发条件：用户开始玩法时。
+ */
+- (void)startPlayEventWithName:(NSString *)ecTypeName
+                   otherParams:(nullable NSDictionary *)otherParams;
+
+/**
+ 结束玩法：gt_end_play
+ ectype_name string  针对闯关性质玩法，标注关卡名称
+ result      string  玩法的结果：未完成、成功、失败等，使用英文进行标识.  未完成标记为uncompleted, 成功标记为success，失败为fail
+ duration    int 消耗时间，单位秒
+ 触发条件：用户结束玩法时，涵盖中途退出、完成但失败和完成且成功。
+ */
+- (void)endPlayEventWithName:(NSString *)ecTypeName
+                      result:(NSString *)result
+                     duration:(NSInteger)duration
+                  otherParams:(nullable NSDictionary *)otherParams;
+
+/**
+ 获得游戏币：gt_get_coins
+ coin_type   string    货币类型：元宝、绑元、金币、银币等，使用文字或者英文进行标识
+ method      string    获得途径：观看激励视频、闯关成功、活动奖励等，使用文字或者英文进行标识
+ coin_num    int       获得数量
+ 触发条件：用户获得游戏币，导致游戏币增加时
+ */
+- (void)getCoinsEventWitType:(NSString *)coinType
+                      method:(NSString *)method
+                  coinNumber:(NSInteger)number
+                 otherParams:(nullable NSDictionary *)otherParams;
+
+/**
+ 消耗游戏币：gt_cost_coins
+ coin_type   string    货币类型：元宝、绑元、金币、银币等，使用文字或者英文进行标识
+ method      string    消耗途径：复活、购买道具、解锁关卡等，使用文字或者英文进行标识
+ coin_num    int       消耗数量
+ 触发条件：用户消耗游戏币，导致游戏币减少时。
+ */
+- (void)costCoinsEventWitType:(NSString *)coinType
+                       method:(NSString *)method
+                   coinNumber:(NSInteger)number
+                  otherParams:(nullable NSDictionary *)otherParams;
+
+/**
+ 内购充值相关：purchase
+ content_type    string  内购充值内容类型
+ content_name    string  内购充值内容名称
+ content_id      string  内购充值内容id
+ content_num     int     内购充值内容的数量
+ payment_channel string  支付渠道：例如 支付宝，微信等
+ currency        string  支付货币类型
+ is_success      string  支付是否成功
+ currency_amount int     支付的金额，单位元
+ 触发条件：用户完成内购充值并获得对应的游戏内货币和道具时
+ */
+- (void)purchaseEventWithContentType:(NSString *)contentType
+                         contentName:(NSString *)contentName
+                           contentID:(NSString *)contentID
+                          contentNum:(NSInteger)contentNum
+                             channel:(NSString *)channel
+                            currency:(NSString *)currency
+                           isSuccess:(NSString *)isSuccess
+                      currencyAmount:(NSInteger)currencyAmount
+                         otherParams:(nullable NSDictionary *)otherParams;
+
+/**
+ 初始化信息：gt_init_info
+ lev         int     玩家等级
+ coin_type   string  获得货币的类型
+ coin_left   int     用户身上剩余的货币数量
+ role_id     string  玩家角色id-cp侧
+ 触发条件：用户启动游戏，初始化完成时上报
+ */
+- (void)gameInitInfoEventWithLevel:(NSInteger)level
+                          coinType:(NSString *)coinType
+                          coinLeft:(NSInteger)coinLeft
+                       otherParams:(nullable NSDictionary *)otherParams;</code></pre>
+<p>&lt;span id=&quot;71a7e81b&quot;&gt;&lt;/span&gt;</p>
+<h1>7.视图曝光事件采集</h1>
+<blockquote>本功能在6.10.0+后开始支持。</blockquote>
+<p>当组件出现在屏幕可视范围内会自动触发一个曝光事件。</p>
+<p>&lt;span id=&quot;9994730b&quot;&gt;&lt;/span&gt;</p>
+<h2>7.1 组件接入</h2>
+<p>&lt;span id=&quot;c2efd922&quot;&gt;&lt;/span&gt;</p>
+<h4>7.1.1 CocoaPod 引入 <code>Exposure</code></h4>
+<blockquote>文件方式集成需要引入对应的库文件。</blockquote>
+<pre><code>pod &#x27;RangersAppLog&#x27;, &#x27;SDK_VERSION&#x27;,
+    :subspecs =&gt; [
+    ...
+    &#x27;Exposure&#x27;,
+    ...
+]</code></pre>
+<p>&lt;span id=&quot;ab75ed7a&quot;&gt;&lt;/span&gt;</p>
+<h4>7.1.2 头文件引用</h4>
+<pre><code>//相关的功能设置引入头文件
+//modular方式集成 @import RangersAppLog;
+#import &lt;RangersAppLog/BDAutoTrackExposure.h&gt;</code></pre>
+<p>&lt;span id=&quot;4b73f62b&quot;&gt;&lt;/span&gt;</p>
+<h2>7.2 功能开关</h2>
+<ul><li><code>Objective-C</code> 请参考：</li></ul>
+<p>   ``<code>objectivec    config.exposureEnabled = YES; // 全局功能控制开关 YES|NO. 默认为开启    </code>``</p>
+<ul><li><code>Swift</code> 请参考：</li></ul>
+<p>   ``<code>swift    config.exposureEnabled = true    </code>``</p>
+<p>&lt;span id=&quot;3e48b061&quot;&gt;&lt;/span&gt;</p>
+<h2>7.3 曝光配置设置</h2>
+<p>设置组件触发曝光的最小进入主屏幕视图面积占比。</p>
+<p>默认为：</p>
+<ul><li>0：表示采用 1 pixel 进入屏幕触发曝光。</li></ul>
+<ul><li>(0~1]：浮点数表示占比 0～100% 会触发曝光。</li></ul>
+<p><code>Objective-C</code> 请参考：</p>
+<pre><code>// BDAutoTrackConfig 全局设置，组件独立的配置可以在 BDViewExposureData 设置
+[config.exposureConfig areaRatio:0.5];</code></pre>
+<p><code>Swift</code> 请参考：</p>
+<pre><code>config.exposureConfig.areaRatio(0.5)</code></pre>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;此功能仅基于主窗口判断曝光，暂未支持子视图遮挡的计算。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;c790c9f9&quot;&gt;&lt;/span&gt;</p>
+<h2>7.4 监控组件曝光</h2>
+<p>对组件实例进行曝光监控。</p>
+<ul><li><code>Objective-C</code> 请参考：</li></ul>
+<p>   ```objectivec    BDViewExposureData *opt = [BDViewExposureData new];    opt.eventName = @&quot;view_did_exposure&quot;; // 如果不设置，埋点采用bav2b_exposure    opt.properties = @{};   // 用户自定参数    opt.config = [[BDViewExposureConfig defaultConfig] areaRatio:0.5];</p>
+<p>   // 开启针对于视图的检测    // view 用户的视图对象实例    // opt 埋点数据以及配置    [[BDAutoTrack sharedTrack] observeViewExposure:YOUR_VIEW                                          withData:opt];</p>
+<p>   // 停止针对于视图的检测       [[BDAutoTrack sharedTrack] disposeViewExposure:YOUR_VIEW];    ```</p>
+<ul><li><code>Swift</code> 请参考：</li></ul>
+<p>   ```swift    let opt = BDViewExposureData()    opt.eventName = &quot;view_did_exposure&quot;    opt.properties = [:]    opt.config = BDViewExposureConfig.default().areaRatio(0.5)    BDAutoTrack.shared().observeViewExposure(YOUR_VIEW, with: opt)</p>
+<p>   BDAutoTrack.shared().disposeViewExposure(YOUR_VIEW)    ```</p>
+<p>&lt;span id=&quot;ddd79b38&quot;&gt;&lt;/span&gt;</p>
+<h2>7.5 功能调试</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;本开关仅限调试debug阶段使用，请勿在线上包开启。&lt;/div&gt;</p>
+<p>开启可视化调试功能后，对组件曝光功能进行调试。</p>
+<ul><li>开启监控曝光的组件，生成红色的边框。</li></ul>
+<ul><li>组件触发曝光，生成半透明的浮层。</li></ul>
+<p><code>Objective-C</code> 请参考：</p>
+<pre><code>[config.exposureConfig enableVisualDiagnosis:YES];</code></pre>
+<p><code>Swift</code> 请参考：</p>
+<pre><code>config.exposureConfig.enableVisualDiagnosis(true)</code></pre>
+<p>&lt;span id=&quot;ec9e9158&quot;&gt;&lt;/span&gt;</p>
+<h1>8.全埋点事件</h1>
+<p>开启全埋点事件采集开关后，会默认采集页面事件和 View 点击事件等。</p>
+<p>&lt;span id=&quot;63799261&quot;&gt;&lt;/span&gt;</p>
+<h2>8.1 功能开启</h2>
+<p>根据集成方式的差异，在项目中引入对应的 subspec 模块或者静态库文件。</p>
+<ul><li><code>Objective-C</code> 请参考：</li></ul>
+<p>   ``<code>objectivec    // 开启全埋点采集，默认为YES    config.autoTrackEnabled = YES;    // 开启WebView全埋点采集，默认为YES    config.H5AutoTrackEnabled = YES;    </code>``</p>
+<ul><li><code>Swift</code> 请参考：</li></ul>
+<p>   ``<code>swift    config.autoTrackEnabled = true    config.H5AutoTrackEnabled = true    </code>``</p>
+<p>&lt;span id=&quot;60be6e8d&quot;&gt;&lt;/span&gt;</p>
+<h3>8.1.1 基于事件类型功能开关</h3>
+<blockquote>本小节功能于 6.11.0+ 版本起支持。</blockquote>
+<p>允许全埋点事件类型的配置，具体定义见 <code>&lt;BDCommonEnumDefine.h&gt;</code>。</p>
+<ul><li>BDAutoTrackDataTypePage \- 页面浏览事件</li></ul>
+<ul><li>BDAutoTrackDataTypeClick \- 用户点击事件</li></ul>
+<ul><li>BDAutoTrackDataTypePageLeave \- 页面浏览结束事件</li></ul>
+<p><code>Objective-C</code> 请参考：</p>
+<pre><code>config.autoTrackEventType = BDAutoTrackDataTypeAll;</code></pre>
+<p><code>Swift</code> 请参考：</p>
+<pre><code>config.autoTrackEventType = BDAutoTrackDataType.all</code></pre>
+<p>&lt;span id=&quot;e5f51cc2&quot;&gt;&lt;/span&gt;</p>
+<h2>8.2 自定义页面浏览事件属性</h2>
+<blockquote>请在 init 方法中设置参数值，否则首次触发页面浏览事件时，参数值可能为空。</blockquote>
+<p>通过 <code>UIViewController</code> 扩展 API 自定义页面浏览事件的参数。</p>
+<pre><code>/*! @abstract 手动设置的PageTitle
+ @discussion 如果设置，页面切换的时候会采集
+ @discussion 如果设置，该VC里面的View被点击的时候会采集
+ */
+@property (nonatomic, copy) NSString *bdAutoTrackPageTitle;
+ /*! @abstract 手动设置的PageID
+ @discussion 如果设置，页面切换的时候会采集
+ @discussion 如果设置，该VC里面的View被点击的时候会采集
+ */
+@property (nonatomic, copy) NSString *bdAutoTrackPageID;
+ /*! @abstract 手动设置的PagePath
+ @discussion 如果设置，页面切换的时候会采集
+ @discussion 如果设置，该VC里面的View被点击的时候会采集
+ */
+@property (nonatomic, copy) NSString *bdAutoTrackPagePath;
+ /*! @abstract 手动设置的extra信息
+ @discussion 如果设置，页面切换的时候会采集
+ @discussion 如果设置，该VC里面的View被点击的时候会采集
+ */
+@property (nonatomic, copy) NSDictionary&lt;NSString*, NSString *&gt; *bdAutoTrackExtraInfos;
+ /*! @abstract 自定义采集属性，相同 key 会覆盖默认采集的 params
+ @discussion 如果设置，页面切换的时候会采集
+ @discussion 如果设置，该VC里面的View被点击的时候会采集
+ */
+@property (nonatomic, copy) NSDictionary&lt;NSString*, NSObject *&gt; *bdAutoTrackPageProperties;</code></pre>
+<p>&lt;span id=&quot;50f67fbc&quot;&gt;&lt;/span&gt;</p>
+<h2>8.3 自定义点击事件属性</h2>
+<p>通过 <code>UIView</code>、<code>UIBarButtonItem</code> 扩展 API 自定义点击事件的参数。</p>
+<pre><code>/*! @abstract 这个对应新增的 element_id 字段，bdAutoTrackViewID 对应的是 element_manual_key 字段
+ @discussion 如果设置，被点击的时候会采集
+ */
+@property (nonatomic, copy) NSString *bdAutoTrackElementID;
+ 
+/*! @abstract 手动设置的ViewID
+ @discussion 如果设置，被点击的时候会采集，可以唯一标志该View
+ */
+@property (nonatomic, copy) NSString *bdAutoTrackViewID;
+ 
+/*! @abstract 手动设置的ViewContent
+ @discussion如果设置，被点击的时候会采集
+ */
+@property (nonatomic, copy) NSString *bdAutoTrackViewContent;
+ 
+/*! @abstract 手动设置的extra信息
+ @discussion 如果设置，被点击的时候会采集
+ */
+@property (nonatomic, copy) NSDictionary&lt;NSString*, NSString *&gt; *bdAutoTrackExtraInfos;
+ 
+/*! @abstract 自定义采集属性，相同 key 会覆盖默认采集的 params
+ @discussion 如果设置，被点击的时候会采集
+ */
+@property (nonatomic, copy) NSDictionary&lt;NSString*, NSObject *&gt; *bdAutoTrackViewProperties;
+ 
+/*! @abstract 自定义采集开发
+ @discussion 如果设置 YES，被点击的时候埋点会被忽略
+ */
+@property (nonatomic, assign) BOOL bdAutoTrackIgnoreClick;</code></pre>
+<p>&lt;span id=&quot;992d62a8&quot;&gt;&lt;/span&gt;</p>
+<h2>8.4 忽略特定全埋点事件</h2>
+<p>&lt;span id=&quot;bfd74112&quot;&gt;&lt;/span&gt;</p>
+<h3>8.4.1 忽略特定页面浏览事件</h3>
+<pre><code>/*! @abstract 忽略UIViewController中自动采集的浏览埋点
+    @discussion 忽略范围作用域为自身类，并不影响继承关系，例如 BViewController 继承于 AViewController， 如果都忽略需要传入@[[AViewController class],[BViewController class]]
+    @param controllerClasses 传入需要忽略的类名 @[[TestViewController class], [UserViewController class]]
+ */
+- (void)ignoreAutoTrackPage:(NSArray&lt;Class&gt; *)controllerClasses;</code></pre>
+<ul><li><code>Objective-C</code> 请参考：</li></ul>
+<p>   ``<code>objectivec    [[BDAutoTrack sharedTrack] ignoreAutoTrackPage:@[YOUR_ViewController.class]];    </code>``</p>
+<ul><li><code>Swift</code> 请参考：</li></ul>
+<p>   ``<code>swift    BDAutoTrack.shared().ignorePage([YOUR_ViewController.classForCoder()])    </code>``</p>
+<p>&lt;span id=&quot;dd47ac5d&quot;&gt;&lt;/span&gt;</p>
+<h3>8.4.2 忽略特定控件点击事件</h3>
+<pre><code>/*! @abstract 忽略控件中自动采集的点击埋点
+    @discussion 忽略范围作用域为自身类
+    @param viewClasses 传入需要忽略的类名 @[[AButton class], [ALabel class]]
+ */
+- (void)ignoreAutoTrackClick:(NSArray&lt;Class&gt; *)viewClasses;</code></pre>
+<ul><li><code>Objective-C</code> 请参考：</li></ul>
+<p>   ``<code>objectivec    [[BDAutoTrack sharedTrack] ignoreAutoTrackClick:@[YOUR_VIEW.class]];    </code>``</p>
+<ul><li><code>Swift</code> 请参考：</li></ul>
+<p>   ``<code>swift    BDAutoTrack.shared().ignoreClick([YOUR_VIEW.classForCoder()])    </code>``</p>
+<p>&lt;span id=&quot;d49816bd&quot;&gt;&lt;/span&gt;</p>
+<h2>8.5 手动触发全埋点事件采集</h2>
+<p>&lt;span id=&quot;0f3d67b9&quot;&gt;&lt;/span&gt;</p>
+<h3>8.5.1 手动触发页面浏览事件</h3>
+<pre><code>/*!
+ *  @abstract 代码触发页面浏览埋点上报
+ *  @param controller 可以传递 UIViewController 以及实现了 BDAutoTrackable协议的对象
+ *  @result 是否成功
+ */
+- (BOOL)trackPage:(id&lt;BDAutoTrackable&gt;)controller;
+
+/*!
+ *  @abstract 代码触发页面浏览埋点上报
+ *  @param controller 可以传递 UIViewController
+ *  @param params 用户自定义参数，进行 [NSJSONSerialization isValidJSONObject:] 验证
+ *  @result 是否成功
+ */
+- (BOOL)trackPage:(id)controller withParameters:(nullable NSDictionary&lt;NSString *,id&gt; *)params;</code></pre>
+<ul><li><code>Objective-C</code>请参考：</li></ul>
+<p>   ``<code>objectivec    [[BDAutoTrack sharedTrack] trackPage:YOUR_VIEWCONTROLLER_INSTANCE];    </code>``</p>
+<ul><li><code>Swift</code>请参考：</li></ul>
+<p>   ``<code>swift    BDAutoTrack.shared().trackPage(YOUR_VIEWCONTROLLER_INSTANCE)    </code>``</p>
+<p>&lt;span id=&quot;5b1050c3&quot;&gt;&lt;/span&gt;</p>
+<h3>8.5.2 手动触发点击事件</h3>
+<pre><code>/*!
+ *  @abstract 代码触发点击埋点上报
+ *  @param view 可以传递 UIView 等控件对象 以及实现了 BDAutoTrackable协议的对象
+ *  @result 是否成功
+ */
+- (BOOL)trackClick:(id&lt;BDAutoTrackable&gt;)view;
+ 
+/*!
+ *  @abstract 代码触发点击埋点上报
+ *  @param view 可以传递 UIView 等控件对象 以及实现了 BDAutoTrackable协议的对象
+ *  @param params 用户自定义参数，进行 [NSJSONSerialization isValidJSONObject:] 验证
+ *  @result 是否成功
+ */
+- (BOOL)trackClick:(id&lt;BDAutoTrackable&gt;)view withParameters:(nullable NSDictionary&lt;NSString *,id&gt; *)params;</code></pre>
+<ul><li><code>Objective-C</code>请参考：</li></ul>
+<p>   ``<code>objectivec    [[BDAutoTrack sharedTrack] trackClick:YOUR_COMPONENT];    </code>``</p>
+<ul><li><code>Swift</code> 请参考：</li></ul>
+<p>   ``<code>swift    BDAutoTrack.shared().trackClick(YOUR_COMPONENT)    </code>``</p>
+<p>&lt;span id=&quot;2d43f3bc&quot;&gt;&lt;/span&gt;</p>
+<h1>9. 采集时长事件</h1>
+<blockquote>本小节功能在6.10.2+后开始支持。</blockquote>
+<p>带有时间属性的事件可以使用时长事件采集接口，例如采集视频播放时长事件等。示例：</p>
+<pre><code>// 在视频开始播放时调用
+[[BDAutoTrack sharedTrack] startDurationEvent:@&quot;play&quot;];
+ 
+// 在视频暂停播放时调用
+[[BDAutoTrack sharedTrack] pauseDurationEvent:@&quot;play&quot;];
+ 
+ // 在视频继续播放时调用
+[[BDAutoTrack sharedTrack] resumeDurationEvent:@&quot;play&quot;];
+ 
+// 在结束播放时调用，此时会上报一个play事件，且带有$event_duration属性（记录了播放时长，单位毫秒）
+[[BDAutoTrack sharedTrack] stopDurationEvent:@&quot;play&quot; properties:@{@&quot;moive_name&quot;:@&quot;xxx&quot;}];</code></pre></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

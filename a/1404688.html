@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实验看板 · A/B 实验知识库</title>
+<meta name="description" content="DataTester为您提供实验看板功能页面，可以在多个实验×指标的粒度看数，实现在一个表格里跟进关键指标在多个实验策略的数据效果。例如：某个业务方向的重要实验监控、产品各方向大反转实验的长期监控等，本文为您介绍实验看板">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1404688.html">
+<meta property="og:title" content="实验看板"><meta property="og:description" content="DataTester为您提供实验看板功能页面，可以在多个实验×指标的粒度看数，实现在一个表格里跟进关键指标在多个实验策略的数据效果。例如：某个业务方向的重要实验监控、产品各方向大反转实验的长期监控等，本文为您介绍实验看板">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1404688.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📊 实验报告与分析</span></div>
+<h1>实验看板</h1>
+<div class="meta">📄 1,522 字 · 🕐 2024-12-30</div>
+<article class="md"><p>DataTester为您提供实验看板功能页面，可以在多个实验×指标的粒度看数，实现在一个表格里跟进关键指标在多个实验策略的数据效果。例如：某个业务方向的重要实验监控、产品各方向大反转实验的长期监控等，本文为您介绍实验看板的使用流程和注意事项。</p>
+<p>&lt;span id=&quot;f69b7538&quot;&gt;&lt;/span&gt;</p>
+<h1>功能入口</h1>
+<p>登录并进入DataTester控制台后，单击左侧导航栏 <strong>实验经营</strong>\&gt;<strong>实验看板</strong>，进入实验看板页面。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/e52cb7fbdcd042089d7b1b3fd8089abe~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;2a1d1019&quot;&gt;&lt;/span&gt;</p>
+<h1>创建看板</h1>
+<p>进入实验看板页面后，单击页面中的<strong>新建看板</strong>按钮，在弹窗中配置看板参数，完成后单击<strong>确定</strong>。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/98984294409b422e81e583efc836f28a~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>参数</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>看板名称</strong> &amp; <strong>看板描述</strong></td><td>自定义看板名称和描述，用于后续标识、查找对应的看板。</td></tr><tr><td><strong>owner</strong></td><td>默认是当前看板创建人。</td></tr><tr><td><strong>看板类型</strong></td><td>类型分为「个人看板」和「公共看板」，默认为「个人看板」&lt;br&gt;&lt;br&gt;&lt;br&gt;* 个人看板：仅<strong>owner</strong>及<strong>被授权的用户</strong>可查阅&lt;br&gt;&lt;br&gt;* 公共看板：看板全公开。</td></tr><tr><td><strong>选择归属文件夹</strong></td><td>可将看板归类到某个文件夹下（支持新建新的文件夹）</td></tr></tbody></table>
+<p>创建看板后，页面会自动跳转至看板编辑页面，您需要为看板添加数据源、添加监控的实验数据图表，将图表保存为固定看板，后续即可直接使用看板来查看监控对应实验数据。</p>
+<p>&lt;span id=&quot;8a2dcdac&quot;&gt;&lt;/span&gt;</p>
+<h1>编辑看板</h1>
+<p>看板中的元素由<strong>数据源</strong>模块和<strong>文本</strong>模块组成，数据源指定了要展示的实验组和指标。编辑看板时，主要操作包括：添加/编辑数据源模块、文本模块，也可调整各模块的顺序等，详细操作指导如下。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;仅看板owner可编辑配置看板内容。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;d1a4025a&quot;&gt;&lt;/span&gt;</p>
+<h2>添加/编辑数据源</h2>
+<ol><li>进入看板编辑页面后，单击顶部<strong>添加数据源</strong>按钮可新增一个数据源，或单击已创建数据源的编辑按钮，可对已创建的数据源进行修改编辑。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/3176805316164b1996162fa336421001~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>在弹出的页面中配置数据源参数。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/50bdc3ba5a8543b9bbf59c5446030fd8~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>   您可根据界面提示完成参数配置，核心参数配置指导如下：</p>
+<table><thead><tr><th>参数</th><th>配置说明</th></tr></thead><tbody><tr><td>添加实验</td><td>单击添加实验按钮后，可在弹窗中选择待监控的实验，并选择监控的实验版本。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;一个数据源最多添加20个实验。&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/8e62065c80c94cd897fea1d98d6b169f~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;您也可根据实验业务需要选择是否将选择的实验标注为反转实验，标注后续选择反转组。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;选中的实验如果是反转实验，或者选择的是普通实验但是手动标记为反转实验，在看板数据源配置\-选择实验分组处，会默认开启反转实验开关。&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;普通实验组diff（相对差）计算逻辑：（实验组\-基准组）/基准组&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;反转实验组diff（相对差）计算逻辑：（基准组\-实验组）/实验组&lt;/div&gt;&lt;br&gt;</td></tr><tr><td>添加指标</td><td>单击添加指标按钮，在弹窗中选择指标。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;当前仅支持选择事件指标。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td>展示视图</td><td>添加指标完成后，您可勾选展示视图的类型：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 默认展示数据源汇总表。&lt;br&gt;&lt;br&gt;* 您也可根据分析需要选择是否要展示各个指标的单独图表。</td></tr></tbody></table>
+<ol><li>编辑数据源过滤条件、图表样式等。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/49083a8fef8345d5b89fcfe85bcdd436~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>您可单击数据源右上方的属性过滤，为数据源图表配置整体的过滤条件。</li></ul>
+<ul><li>单击数据源图表后，可在右侧侧边栏配置图表类型、转置等样式设置。</li></ul>
+<p>&lt;span id=&quot;c0e1eb45&quot;&gt;&lt;/span&gt;</p>
+<h2>添加富文本</h2>
+<p>在看板编辑页顶部单击<strong>添加文本</strong>，即可在看板中新增一个文本框，您可在其中编辑看板文本。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/68d1a4462ea040d9bc56c1dee89daf2a~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>单击文本框区域后，您可以在右侧侧边栏中修改文本区域标题，或选择隐藏头部区域。</p>
+<p>&lt;span id=&quot;a10edc29&quot;&gt;&lt;/span&gt;</p>
+<h2>调整元素顺序</h2>
+<p>单击看板顶部的元素排序，可对已创建的数据源或文本框等多个元素进行拖动排序。</p>
+<p>&lt;span id=&quot;0a7090e3&quot;&gt;&lt;/span&gt;</p>
+<h2>配置看板图表的默认时间</h2>
+<p>单击看板顶部的时间配置后，可勾选设置为看板默认时间，设置默认时间后，下次进入看板会以自定义的默认时间进行数据获取和展示。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/60d4f0fba8af40a6ae21d8f3a7fdb376~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;a59e3da1&quot;&gt;&lt;/span&gt;</p>
+<h1>看板授权与链接分享</h1>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/6d8480f67a964b84b123417a4671b97a~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>看板创建完成后，您可单击右上角的<strong>授权</strong>按钮，将看板授权给指定用户。</li></ul>
+<ul><li>授权完成后，您可以单击右上角的<strong>复制链接</strong>，将看板链接分享给有权限的用户。</li></ul>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;获取看板链接后，如果用户没有权限，可根据界面引导主动申请看板权限，申请后，后续权限审批流程会触发至看板owner，看板owner审批通过后，对应用户也可查看看板。&lt;/div&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

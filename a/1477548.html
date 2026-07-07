@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>敏感人群洞察 · A/B 实验知识库</title>
+<meta name="description" content="一、功能概述 敏感人群洞察功能是基于Uplift Model模型实现的一套智能洞察敏感人群的功能。是一种在营销、广告等诸多领域发挥独特作用的数据分析工具。与传统预测模型专注于预测事件是否发生（比如用户是否购买产品、病人病">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1477548.html">
+<meta property="og:title" content="敏感人群洞察"><meta property="og:description" content="一、功能概述 敏感人群洞察功能是基于Uplift Model模型实现的一套智能洞察敏感人群的功能。是一种在营销、广告等诸多领域发挥独特作用的数据分析工具。与传统预测模型专注于预测事件是否发生（比如用户是否购买产品、病人病">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1477548.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📊 实验报告与分析</span></div>
+<h1>敏感人群洞察</h1>
+<div class="meta">📄 3,045 字 · 🕐 2025-05-12</div>
+<article class="md"><p>&lt;span id=&quot;d81ff145&quot;&gt;&lt;/span&gt;</p>
+<h2>一、功能概述</h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/4a9ff32908804840ac0419b5556204a2~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>敏感人群洞察功能是基于Uplift Model模型实现的一套智能洞察敏感人群的功能。是一种在营销、广告等诸多领域发挥独特作用的数据分析工具。与传统预测模型专注于预测事件是否发生（比如用户是否购买产品、病人病情是否好转）不同，它聚焦于预估某个干预行为对结果带来的 “额外提升” 效果。</p>
+<p>比如某个实验整体下单转化率提升了8.04%，但希望提升转化的ROI，找到里面对活动更敏感的用户。通过敏感人群洞察分析，得到年龄和活跃度是对转化影响最大，并分析得到子人群年龄在21\-30岁，活跃度在中高活跃的的用户在转化率指标上有15.23%的显著提升。该子人群为敏感子人群，可以作为活动的主要对象，提升ROI。</p>
+<p>&lt;div style=&quot;text-align: right&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7200401a686342f08a504f4d565bf5f8~tplv-goo7wpa0wc-image.image&quot; width=&quot;1080px&quot; /&gt;&lt;/div&gt;</p>
+<p>以营销派券场景为例，我们计划给用户发10元券来提升商品的购买率。我们希望针对哪些客户来发券呢？我们可以把客户分为四类：</p>
+<ul><li>Persuadables：不发送优惠券则不买，发送优惠券则购买；</li></ul>
+<ul><li>Sure things：不论是否发送优惠券均会购买；</li></ul>
+<ul><li>Lost causes:不论是否发送优惠券均不会购买；</li></ul>
+<ul><li>Sleeping Dogs:不发送优惠券会购买，发送优惠券反而不买。</li></ul>
+<p>我们希望只针对那些不派券就不转化，派券就转化的客户（对应：Persuadables类客户）进行策略干预。敏感人群分析能力就是通过Uplift建模预测的方法精准找到对于此类干预动作更为<strong>敏感的人群</strong>，使我们可以把精力、资源精准投放在刀刃上，实现效益最大化。</p>
+<p>&lt;span id=&quot;61f81ae6&quot;&gt;&lt;/span&gt;</p>
+<h2>二、典型应用场景</h2>
+<table><thead><tr><th><strong>场景</strong></th><th><strong>案例</strong></th></tr></thead><tbody><tr><td><strong>营销推广类</strong></td><td><strong>电商零售</strong>：&lt;br&gt;&lt;br&gt;大型商超连锁欲提升自有品牌商品销量，以往普发折扣券，成本高且部分发给了本来就会购买的顾客。Uplift Model 登场后，整合线上线下消费数据（购买品类跨度、购买频率、客单价、线上搜索记录等），锁定那些徘徊于竞品和自有品牌间、高频浏览但未下单的“摇摆顾客”，针对性发放优惠券，不仅销售额提升显著，还因精准投放节约了超 x%的营销预算，实现投入产出比飞跃</td></tr><tr><td><strong>在线旅游平台</strong>&lt;br&gt;&lt;br&gt;旅游旺季前，平台计划推广热门目的地旅游套餐。借助 Uplift Model 深挖用户过往出行数据（出行时间偏好、住宿档次选择、游玩项目兴趣）、站内搜索收藏行为，识别出对特定目的地有潜在兴趣、近期多次关注但未预订的用户，推送专属优惠与个性化行程推荐，转化率相比随机推广提高近两倍，酒店、机票预订量大幅攀升，盘活旅游资源</td></tr><tr><td><strong>金融服务类</strong></td><td><strong>银行信贷业务</strong>：&lt;br&gt;&lt;br&gt;在拓展信用卡新用户及提升活跃度上，银行运用 Uplift Model 综合考量用户收入稳定性、消费习惯、已有金融产品持有情况等多维度信息，精准找出给予开卡礼、消费返现优惠后，会从低频使用储蓄账户转为高频用卡消费、按时还款的优质潜在客户，有效管控风险同时，新用户开卡量季度增长 x%，刷卡交易额同步上扬。</td></tr><tr><td><strong>互联网科技类</strong></td><td><strong>内容平台用户留存</strong>：&lt;br&gt;&lt;br&gt;视频流媒体平台为提升用户粘性、减少流失，通过 Uplift Model 剖析用户观看历史（题材偏好、观看时长分布）、互动行为（点赞、评论、收藏频率）、登录时段等数据，针对有流失迹象（观看频次骤减、长时间未登录）但推送个性化内容推荐、专属会员权益后有望回归且延长观看时长的用户及时干预，月活用户留存率提升超 x%，内容传播深度广度拓展。</td></tr></tbody></table>
+<p>&lt;span id=&quot;17083aa0&quot;&gt;&lt;/span&gt;</p>
+<h2>三、功能入口</h2>
+<p><strong>路径：AB实验列表选择某实验\-数据指标TAB\-敏感人群洞察</strong></p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/9c2dcda7f05441d0b46900f96848d442~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>说明：分析任务需要一定的进组数据和指标转化才可以分析。实验创建当日不支持分析任务创建。</p>
+<p>&lt;span id=&quot;6570a01e&quot;&gt;&lt;/span&gt;</p>
+<h2>三、各模块介绍</h2>
+<p>&lt;span id=&quot;eebae02c&quot;&gt;&lt;/span&gt;</p>
+<h3>3.1 创建任务</h3>
+<p>任务是对一个实验中“一个指标、一个实验组、一个对照组”进行分析</p>
+<p>确定要分析的指标和挖掘方向，根据业务经验选择可能对指标有影响的用户属性后，即可提交分析任务。</p>
+<table><thead><tr><th><strong>字段名称</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td><strong>任务名称</strong></td><td>符合名称字段输入规范，支持中英文，特殊符号及长度上限需确认。空，从实验报告进，默认填写实验名称</td></tr><tr><td><strong>实验</strong></td><td>从实验报告进，默认带入实验信息</td></tr><tr><td><strong>对照组</strong></td><td>分析任务的对照组</td></tr><tr><td><strong>实验组</strong></td><td>分析任务的实验组，施加了希望分析的策略</td></tr><tr><td><strong>分析指标</strong></td><td>一次分析只针对一个指标&lt;br&gt;&lt;br&gt;指标支持类型：人均类指标。</td></tr><tr><td><strong>挖掘方向</strong></td><td><strong>挖掘方向</strong>中正向挖掘是指找到那些对指标提升更有作用的人群，比如找到更可能购买的客户（购买转化率提升）；负向挖掘是指找到对指标下降更有作用的人群，比如找到更不可能流失的客户（流失率下降）</td></tr><tr><td><strong>时间范围</strong></td><td>时间范围是指利用哪一段时间的进入实验的用户作为样本进行训练和建模。</td></tr><tr><td><strong>用户属性</strong></td><td>分析哪些维度对识别敏感人群有显著作用，并挖掘这些维度交叉下的敏感人群</td></tr></tbody></table>
+<p>备注说明：模型需要一些数据积累，才能更好的建模和分析。建议分析任务进组人数大于20,000，分析维度大于4维</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/48eda541e37f4e9eb584c6d5211f7917~tplv-goo7wpa0wc-image.image&quot; width=&quot;2402px&quot; /&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;69cf5682&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2 任务状态</h3>
+<p>任务头部页签，查看任务状态。分为运行中、已完成、出错等状态。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/f35452a80c8a4dca95cf206374e59fab~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>对运行中的状态，可以通过任务面板，查看任务运行状态。</p>
+<p>任务运行过程中会分为：数据准备、模型训练、模型预测和结果输出四个阶段</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/105508cf62154d1e92cdcd7f30c38bad~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;83481a1d&quot;&gt;&lt;/span&gt;</p>
+<h2>四、分析报告</h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/344f2c9abccc4d3dae89588060b49bbb~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;8c305cb7&quot;&gt;&lt;/span&gt;</p>
+<h3>4.1 报告总览</h3>
+<p><strong>TOP敏感人群是指，在重要特征交叉子人群中，与挖掘方向一致的提升，且显著的子人群的集合</strong>。</p>
+<blockquote>备注：相对差贡献可能为负数，主要出现在实验整齐是负向，但是挖掘方向是正向，且存在正向敏感子人群的情况下（反之亦然）。比如实验整体点击率实验组与对照组相比表现为负向，但是能够找到点击率实验组比对照组好的子人群。</blockquote>
+<table><thead><tr><th><strong>描述</strong></th><th><strong>截图</strong></th></tr></thead><tbody><tr><td>本次任务是否可得到敏感人群，并分析敏感子人群的提升效果。&lt;br&gt;&lt;br&gt;同时输出特征重要性，帮助业务挖掘人群的核心差异维度，并提供可解释性。&lt;br&gt;&lt;br&gt;总体是指分析任务所选择分析版本以及时间段下所有实验进组用户。&lt;br&gt;&lt;br&gt;<strong>敏感人群</strong>是指在总体人群中，重要特征两维交叉子人群总与挖掘方向一致，有显著指标表现子人群的集合。例：交叉子人群1，交叉子人群2的显著性是显著，敏感人群 = 交叉子人群1和交叉子人群2的人群集合，人数相加，重新计算相对差、绝对差与相对差贡献。</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/1269f0099b17400abb4ab49a68a2e83d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr></tbody></table>
+<p>&lt;span id=&quot;bba1fcea&quot;&gt;&lt;/span&gt;</p>
+<h3>4.2 重要特征交叉子人群</h3>
+<p>重要特征交叉子人群指的是基于模型分析出的特征中，取TOP 3重要度的特征，做2维交叉下钻分析。</p>
+<table><thead><tr><th><strong>描述</strong></th><th><strong>截图</strong></th></tr></thead><tbody><tr><td>展示信息：&lt;br&gt;&lt;br&gt;&lt;br&gt;1. 人群占比：该子人群（包括实验组和对照组）占整体实验进组人数的占比&lt;br&gt;&lt;br&gt;2. 绝对差：该子人群中实验组的指标均值与对照组的指标均值的差&lt;br&gt;&lt;br&gt;3. 相对差：该子人群中实验组的指标均值与对照组的指标均值的差/对照组的指标均值&lt;br&gt;&lt;br&gt;4. 相对差贡献：该子人群中实验组的指标均值与对照组的指标均值的差/整体实验组的指标均与对照组的指标均值的差&lt;br&gt;&lt;br&gt;5. p \- value：p值，当原假设为真时所得到的统计数据（如两组样本数据平均值差）会大于或等于实际观察到的结果的概率</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/6663fa31f69f41f384d4f33171079cd3~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr></tbody></table>
+<p>&lt;span id=&quot;5a39e753&quot;&gt;&lt;/span&gt;</p>
+<h3>4.3 子人群下载</h3>
+<p>通过右上方人群下载按钮，客户获取用户的明细数据，包括以下信息：</p>
+<table><thead><tr><th><strong>字段</strong></th><th>含义</th></tr></thead><tbody><tr><td>treatment</td><td>1表示任务中选择的实验组，0表示任务中选择的对照组</td></tr><tr><td>uid</td><td>DataTester平台中定义的用户id</td></tr><tr><td>app_id</td><td>火山引擎平台中定义的app_id</td></tr><tr><td>activation_channel，activation_type，p_version等</td><td>任务分析中选择的属性</td></tr><tr><td>ite</td><td>是 \*\*\*\* Individual Treatment Effect（个体处理效应）的缩写，表示某个特定个体在受到某种干预（Treatment）与未受干预时的结果差异。该值为模型预测值。</td></tr><tr><td>bins</td><td>基于ITE值排序，将ITE值分成10个区间，每个区间对应一个bins值</td></tr><tr><td>uc2</td><td>客户系统中定义的用户id（客户可使用该id识别）</td></tr></tbody></table>
+<p>示例：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/faa6d1566d51457ea88fb4f39a0764f4~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

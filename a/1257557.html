@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iOS 接入隐私配置 PrivacyInfo.xcprivacy · A/B 实验知识库</title>
+<meta name="description" content="应苹果公司App Store更新/上架APP最新隐私保护政策要求，使用了DataTester的iOS SDK进行数据采集的话，需同时提供APP与SDK相关的隐私配置文件（PrivacyInfo.xcprivacy），说明">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1257557.html">
+<meta property="og:title" content="iOS 接入隐私配置 PrivacyInfo.xcprivacy"><meta property="og:description" content="应苹果公司App Store更新/上架APP最新隐私保护政策要求，使用了DataTester的iOS SDK进行数据采集的话，需同时提供APP与SDK相关的隐私配置文件（PrivacyInfo.xcprivacy），说明">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1257557.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>iOS 接入隐私配置 PrivacyInfo.xcprivacy</h1>
+<div class="meta">📄 2,713 字 · 🕐 2024-04-24</div>
+<article class="md"><p>应苹果公司App Store更新/上架APP最新隐私保护政策要求，使用了DataTester的iOS SDK进行数据采集的话，需同时提供APP与SDK相关的隐私配置文件（PrivacyInfo.xcprivacy），说明App 如何处理用户数据。本文为您提供DataTester的iOS SDK的隐私配置文件说明，您需要根据实际使用到的子库情况，将SDK的隐私配置文件说明合入您的APP中。</p>
+<p>&lt;span id=&quot;2641a125&quot;&gt;&lt;/span&gt;</p>
+<h1>获取PrivacyInfo.xcprivacy</h1>
+<p>单击下方附件链接，下载DataTester的iOS SDK的PrivacyInfo.xcprivacy附件。</p>
+<p>&lt;Attachment link=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0639ad6970e04398b4f1f67416697aaa~tplv-goo7wpa0wc-image.image&quot; name=&quot;PrivacyInfo.xcprivacy&quot;&gt;PrivacyInfo.xcprivacy&lt;/Attachment&gt;</p>
+<p>&amp;nbsp;</p>
+<p>下载至您本地后，您可打开查看PrivacyInfo.xcprivacy配置详情，其中将一些非所有用户都会使用的部分子库相关配置注释掉了，您需要根据实际使用情况，如果有使用一些特殊子库，需手动修去掉其中的注释，详情可参见下文<strong>查看并修改PrivacyInfo.xcprivacy</strong>。</p>
+<p>&lt;span id=&quot;702fbc66&quot;&gt;&lt;/span&gt;</p>
+<h1>查看并修改PrivacyInfo.xcprivacy</h1>
+<p>DataTester的PrivacyInfo.xcprivacy中罗列了iOS SDK 采集的隐私数据及使用的隐私 API，其中默认为生效了所有用户均涉及的最小子库集。</p>
+<pre><code>pod &#x27;RangersAppLog&#x27;, &#x27;SDK-VERSION&#x27;, 
+    :subspecs =&gt; [
+        &#x27;Core&#x27;
+    ]</code></pre>
+<p>使用了UITracker子库、Exception子库、Unique子库时，您需要手动去掉PrivacyInfo.xcprivacy 中对应子库内容的注释。</p>
+<p>&lt;span id=&quot;a77e0113&quot;&gt;&lt;/span&gt;</p>
+<h2>UITracker 子库</h2>
+<p>该子库一般用于全埋点功能，如果使用了该子库，需要在 NSPrivacyCollectedDataTypes 中增加如下内容（DataTester的PrivacyInfo.xcprivacy文件中默认将此部分内容注释掉了，您手动放开相关注释即可）。</p>
+<pre><code>&lt;!--    如果使用了 UITracker 子库，请放开 NSPrivacyCollectedDataTypeProductInteraction   --&gt;
+&lt;dict&gt;
+    &lt;key&gt;NSPrivacyCollectedDataType&lt;/key&gt;
+    &lt;string&gt;NSPrivacyCollectedDataTypeProductInteraction&lt;/string&gt;
+    &lt;key&gt;NSPrivacyCollectedDataTypeLinked&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;NSPrivacyCollectedDataTypeTracking&lt;/key&gt;
+    &lt;false/&gt;
+    &lt;key&gt;NSPrivacyCollectedDataTypePurposes&lt;/key&gt;
+    &lt;array&gt;
+        &lt;string&gt;NSPrivacyCollectedDataTypePurposeAnalytics&lt;/string&gt;
+    &lt;/array&gt;
+&lt;/dict&gt;</code></pre>
+<p>&lt;span id=&quot;cedfd106&quot;&gt;&lt;/span&gt;</p>
+<h2>Exception 子库</h2>
+<p>该子库一般用于异常采集功能，如果使用了该子库，需要在 NSPrivacyCollectedDataTypes 中增加如下内容（DataTester的PrivacyInfo.xcprivacy文件中默认将此部分内容注释掉了，您手动放开相关注释即可）。</p>
+<pre><code>&lt;!--    如果使用了 Exception 子库，请放开 NSPrivacyCollectedDataTypeCrashData   --&gt;
+&lt;dict&gt;
+    &lt;key&gt;NSPrivacyCollectedDataType&lt;/key&gt;
+    &lt;string&gt;NSPrivacyCollectedDataTypeCrashData&lt;/string&gt;
+    &lt;key&gt;NSPrivacyCollectedDataTypeLinked&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;NSPrivacyCollectedDataTypeTracking&lt;/key&gt;
+    &lt;false/&gt;
+    &lt;key&gt;NSPrivacyCollectedDataTypePurposes&lt;/key&gt;
+    &lt;array&gt;
+        &lt;string&gt;NSPrivacyCollectedDataTypePurposeAnalytics&lt;/string&gt;
+    &lt;/array&gt;
+&lt;/dict&gt;</code></pre>
+<p>&lt;span id=&quot;2600a9d3&quot;&gt;&lt;/span&gt;</p>
+<h2>Unique 子库</h2>
+<p>该子库一般用于 idfa 数据采集，如果使用了该子库，需要开启 NSPrivacyTracking 并设置 TrackingDomains，默认 NSPrivacyTracking 属性是关闭的。</p>
+<p>请在 PrivacyInfo.xcprivacy 文件做如下操作</p>
+<ol><li>移除掉DataTester默认的 NSPrivacyTracking 和 NSPrivacyTrackingDomains 配置（注释掉相关内容即可）。</li></ol>
+<p>   ``<code>XML    &lt;!--  如果使用了 Unique 子库，请注释掉以下配置 NSPrivacyTracking，NSPrivacyTrackingDomains  --&gt;    &lt;key&gt;NSPrivacyTracking&lt;/key&gt;    &lt;false/&gt;    &lt;key&gt;NSPrivacyTrackingDomains&lt;/key&gt;    &lt;array/&gt;    </code>``</p>
+<ol><li>重新配置 NSPrivacyTracking 如下（DataTester的PrivacyInfo.xcprivacy文件中默认将此部分内容注释掉了，您手动放开相关注释即可）。</li></ol>
+<p>   ``<code>XML    &lt;!--  如果使用了 Unique 子库，请放开下面的 NSPrivacyTracking，NSPrivacyTrackingDomains  --&gt;    &lt;key&gt;NSPrivacyTracking&lt;/key&gt;    &lt;true/&gt;    </code>``</p>
+<ol><li>重新配置 NSPrivacyTrackingDomains（DataTester的PrivacyInfo.xcprivacy文件中默认将此部分内容注释掉了，您手动放开相关注释即可）。</li></ol>
+<table><thead><tr><th><strong>DataTester环境类型</strong></th><th><strong>修改示例</strong></th></tr></thead><tbody><tr><td>SaaS\-非云原生环境</td><td>* CN环境&lt;br&gt;&lt;br&gt;   ``<code>XML</code>`<code>&lt;br&gt;</code>`<code>   &lt;key&gt;NSPrivacyTrackingDomains&lt;/key&gt;</code>`<code>&lt;br&gt;</code>`<code>   &lt;!--   SaaS 版本 CN 环境，请使用这段     --&gt;</code>`<code>&lt;br&gt;</code>`<code>   &lt;array&gt;</code>`<code>&lt;br&gt;</code>`<code>       &lt;string&gt;klink-tracking.volceapplog.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>       &lt;string&gt;toblog-tracking.volceapplog.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>       &lt;string&gt;alink-tracking.volceapplog.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>       &lt;string&gt;abtest-tracking.volceapplog.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>       &lt;string&gt;tobapplog-tracking.volceapplog.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>   &lt;/array&gt;</code>`<code>&lt;br&gt;</code>`<code>   </code>`<code>&lt;br&gt;   &lt;br&gt;&lt;br&gt;* SG环境/海外&lt;br&gt;&lt;br&gt;   </code>`<code>XML</code>`<code>&lt;br&gt;</code>`<code>   &lt;key&gt;NSPrivacyTrackingDomains&lt;/key&gt;</code>`<code>&lt;br&gt;</code>`<code>   &lt;!--   SaaS 版本 SG 环境，请使用这段     --&gt;</code>`<code>&lt;br&gt;</code>`<code>   &lt;array&gt;</code>`<code>&lt;br&gt;</code>`<code>       &lt;string&gt;toblog-tracking.tobsnssdk.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>       &lt;string&gt;tobapplog-tracking.tobsnssdk.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>       &lt;string&gt;toblog-alink-tracking.tobsnssdk.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>   &lt;/array&gt;</code>`<code>&lt;br&gt;</code>`<code>   </code>``&lt;br&gt;</td></tr><tr><td>SaaS\-云原生环境</td><td>``<code>XML</code>`<code>&lt;br&gt;</code>`<code>&lt;key&gt;NSPrivacyTrackingDomains&lt;/key&gt;</code>`<code>&lt;br&gt;</code>`<code>&lt;!--   云原生版本，请使用这段     --&gt;</code>`<code>&lt;br&gt;</code>`<code>&lt;array&gt;</code>`<code>&lt;br&gt;</code>`<code>    &lt;string&gt;gator-tracking.datafinder.volces.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>    &lt;string&gt;tab-tracking.abtest.volces.com&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>&lt;/array&gt;</code>``&lt;br&gt;</td></tr><tr><td>私有化环境</td><td>``<code>XML</code>`<code>&lt;br&gt;</code>`<code>&lt;key&gt;NSPrivacyTrackingDomains&lt;/key&gt;</code>`<code>&lt;br&gt;</code>`<code>&lt;!--   私有化版本，请在此配置自己的 idfa 请求域名     --&gt;</code>`<code>&lt;br&gt;</code>`<code>&lt;array&gt;</code>`<code>&lt;br&gt;</code>`<code>    &lt;string&gt;your tracking domain&lt;/string&gt;</code>`<code>&lt;br&gt;</code>`<code>&lt;/array&gt;</code>`<code>&lt;br&gt;&lt;br&gt;&lt;br&gt;其中 </code>your tracking domain` 需要换成您的 idfa 专用请求域名。</td></tr></tbody></table>
+<p>&lt;span id=&quot;cf380b5a&quot;&gt;&lt;/span&gt;</p>
+<h1>接入 PrivacyInfo.xcprivacy 配置至APP</h1>
+<p>将符合您的APP业务场景的SDK PrivacyInfo.xcprivacy文件接入您的APP中，以下为您提供两种接入方式，您可按需参考。</p>
+<p>如果需要在 SDK 中单独配置 PrivacyInfo.xcprivacy 文件，则可以跳过这一节，直接查看下一小节。</p>
+<p>&lt;span id=&quot;326a16fa&quot;&gt;&lt;/span&gt;</p>
+<h2>接入方式1：合并至 App 的隐私配置（推荐）</h2>
+<p>在大部分场景下，建议您直接将SDK 的隐私配置合并至 App 的隐私配置中。即直接将SDK 的 PrivacyInfo.xcprivacy 文件合并至 App 的 PrivacyInfo.xcprivacy 文件中。操作参考如下。</p>
+<ol><li>单击右键，选择 Open AS \-\-\&gt; Source Code 打开SDK的 PrivacyInfo.xcprivacy 文件.</li></ol>
+<p>   &lt;div style=&quot;text-align: center&quot;&gt;    &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/15bd5a39941c437b947c0047d553fe90~tplv-goo7wpa0wc-image.image&quot; width=&quot;566px&quot; /&gt;   &lt;/div&gt;</p>
+<ol><li>将 NSPrivacyAccessedAPITypes 和 NSPrivacyCollectedDataTypes 下的内容拷贝至 App 的 PrivacyInfo.xcprivacy 文件中对应的位置即可。</li></ol>
+<table><thead><tr><th>NSPrivacyAccessedAPITypes位置示例</th><th>NSPrivacyCollectedDataTypes位置示例</th></tr></thead><tbody><tr><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/d09ebb8d6db846a7a214696304d26444~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/459415f4f5cd4544861ccc3503a6f1df~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr></tbody></table>
+<ol><li>如果用到了 idfa 数据，则还需要拷贝 NSPrivacyTrackingDomains 下的内容。</li></ol>
+<p>   &lt;div style=&quot;text-align: center&quot;&gt;    &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/d5d0bf8b62564aaa991d9a3f3e935c9b~tplv-goo7wpa0wc-image.image&quot; width=&quot;686px&quot; /&gt;   &lt;/div&gt;</p>
+<ol><li>PrivacyInfo.xcprivacy 文件配置完成后，请确保在 Build Phases \-\-\&gt; Copy Bundle Resources 中引入了该文件.</li></ol>
+<p>   &lt;div style=&quot;text-align: center&quot;&gt;    &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/79770a870dbe47ccad1aebcbd8aa5b4f~tplv-goo7wpa0wc-image.image&quot; width=&quot;580px&quot; /&gt;   &lt;/div&gt;</p>
+<p>&lt;span id=&quot;2c85274c&quot;&gt;&lt;/span&gt;</p>
+<h2>接入方式2：使用单独的 SDK 隐私配置</h2>
+<p>如果您是手动引入我们的离线安装包时，将安装包二次封装为 framework 或者 pod 依赖，则建议使用该方式配置。</p>
+<ul><li>若是将我们的 SDK 二次封装为 framework，则将 PrivacyInfo.xcprivacy 文件直接放在 framework 目录下即可。</li></ul>
+<ul><li>若是将我们的 SDK 二次封装为 pod 依赖，则将 PrivacyInfo.xcprivacy 文件配置在 pod 的 resource_bundles 中即可。</li></ul>
+<p>&lt;span id=&quot;642a796a&quot;&gt;&lt;/span&gt;</p>
+<h1>修改SDK集成代码，配置隐私域名</h1>
+<p>如果使用了 idfa 数据，且用到了 Unique 子库，则需要修改SDK集成配置，按以下步骤配置 idfa 的请求域名。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;支持隐私域名配置的 SDK 最低版本为 6.16.6。&lt;/strong&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;eff96443&quot;&gt;&lt;/span&gt;</p>
+<h3>SaaS 版本</h3>
+<p>升级 SDK 至 6.16.6 版本即可，不需要额外的配置。</p>
+<p>&lt;span id=&quot;17882145&quot;&gt;&lt;/span&gt;</p>
+<h3>云原生版本</h3>
+<p>在 Podfile 中引入依赖</p>
+<pre><code>pod &#x27;RangersAppLog&#x27;, &#x27;SDK-VERSION&#x27;, 
+    :subspecs =&gt; [
+        &#x27;Unique&#x27;,
+    ]</code></pre>
+<p>引入 IDFA 头文件</p>
+<pre><code>#import &lt;RangersAppLog/BDAutoTrack+IDFA.h&gt;</code></pre>
+<p>在 sdk 初始化之后，配置 idfa 专用域名</p>
+<pre><code>// 云原生模式
+config.serviceVendor = BDAutoTrackServiceVendorPrivate;
+[BDAutoTrack setRequestHostBlock:^NSString * _Nullable(BDAutoTrackServiceVendor  _Nonnull vendor, BDAutoTrackRequestURLType requestURLType) {
+    if (requestURLType == BDAutoTrackRequestURLABTest) {
+        return @&quot;https://tab.volces.com&quot;;
+    }
+     return @&quot;https://gator.volces.com&quot;;
+}];
+
+// 初始化 sdk
+[BDAutoTrack sharedTrackWithConfig:config];
+
+// 配置 idfa 专用域名
+[BDAutoTrack.sharedTrack setRequestIDFAHostBlock:^NSString * _Nullable(BDAutoTrackServiceVendor  _Nonnull vendor, BDAutoTrackRequestURLType requestURLType) {
+    if (requestURLType == BDAutoTrackRequestURLABTest) {
+        return @&quot;https://tab-tracking.abtest.volces.com&quot;;
+    }
+    return @&quot;https://gator-tracking.datafinder.volces.com&quot;;
+}];
+
+// 启动 sdk
+[BDAutoTrack.sharedTrack startTrack];</code></pre>
+<p>&lt;span id=&quot;d8ef894b&quot;&gt;&lt;/span&gt;</p>
+<h3>私有化版本</h3>
+<p>私有化场景下，idfa 的专用域名由用户提供，域名规则上只需要与原先上报的域名不同即可。</p>
+<ul><li>idfa 的专用域名与原域名指向的 IP 可以相同</li></ul>
+<ul><li>idfa 的专用域名与原域名可以使用同一个主域</li></ul>
+<p>在 Podfile 中引入依赖</p>
+<pre><code>pod &#x27;RangersAppLog&#x27;, &#x27;SDK-VERSION&#x27;, 
+    :subspecs =&gt; [
+        &#x27;Unique&#x27;,
+    ]</code></pre>
+<p>引入 IDFA 头文件</p>
+<pre><code>#import &lt;RangersAppLog/BDAutoTrack+IDFA.h&gt;</code></pre>
+<p>在 sdk 初始化之后，配置 idfa 专用域名</p>
+<pre><code>// 私有化模式
+config.serviceVendor = BDAutoTrackServiceVendorPrivate;
+[BDAutoTrack setRequestHostBlock:^NSString * _Nullable(BDAutoTrackServiceVendor  _Nonnull vendor, BDAutoTrackRequestURLType requestURLType) {
+    return @&quot;{{REPORT_URL}}&quot;;
+}];
+
+// 初始化 sdk
+[BDAutoTrack sharedTrackWithConfig:config];
+
+// 配置 idfa 专用域名
+[BDAutoTrack.sharedTrack setRequestIDFAHostBlock:^NSString * _Nullable(BDAutoTrackServiceVendor  _Nonnull vendor, BDAutoTrackRequestURLType requestURLType) {
+    return @&quot;{{IDFA_REPORT_URL}}&quot;;
+}];
+
+// 启动 sdk
+[BDAutoTrack.sharedTrack startTrack];</code></pre></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>常见问题 · A/B 实验知识库</title>
+<meta name="description" content="「A/B 测试」为大规模在线 A/B Testing 平台，曾用名「DataTester」。 基础概念与实验咨询问题 多少量级的产品可以开A/B实验？ 建议日活在1000以上。 如何针对目标用户做A/B实验？ 在创建实验">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65498.html">
+<meta property="og:title" content="常见问题"><meta property="og:description" content="「A/B 测试」为大规模在线 A/B Testing 平台，曾用名「DataTester」。 基础概念与实验咨询问题 多少量级的产品可以开A/B实验？ 建议日活在1000以上。 如何针对目标用户做A/B实验？ 在创建实验">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65498.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📎 上手·协议·其他</span></div>
+<h1>常见问题</h1>
+<div class="meta">📄 3,852 字 · 🕐 2025-07-28</div>
+<article class="md"><p>「A/B 测试」为大规模在线 A/B Testing 平台，曾用名「DataTester」。</p>
+<p>&lt;span id=&quot;e7eb4424&quot;&gt;&lt;/span&gt;</p>
+<h1>基础概念与实验咨询问题</h1>
+<p>&lt;span id=&quot;88fecf03&quot;&gt;&lt;/span&gt;</p>
+<h2>多少量级的产品可以开A/B实验？</h2>
+<p>建议日活在1000以上。</p>
+<p>&lt;span id=&quot;60799f36&quot;&gt;&lt;/span&gt;</p>
+<h2>如何针对目标用户做A/B实验？</h2>
+<p>在创建实验时，可以配置过滤条件，如只针对新用户开实验。</p>
+<p>&lt;span id=&quot;e8061395&quot;&gt;&lt;/span&gt;</p>
+<h2>互斥组是什么意思？</h2>
+<p><strong>互斥组，也称互斥层、实验层。</strong>   <strong>“实验层”技术是为了让多个实验能够并行不相互干扰，且都获得足够的流量而研发的流量分层技术。</strong> </p>
+<blockquote>举个例子，假如我现在有4个实验要进行，每一个实验要取用30%的流量才能够得出可信的实验结果。此时为了同时运行这4个实验就需要4\*30%=120%的流量，这意味着100%的流量不够同时分配给这4个实验。</blockquote>
+<blockquote>那么此时我们只能选择给实验排序，让几个实验先后完成。但这会造成实验效率低下。实验层技术就可以完美解决这个问题。</blockquote>
+<p>我们把总体流量“复制”无数遍，形成无数个流量层，让总体流量可以被无数次复用，从而提高实验效率。各层之间的流量是正交的，你可以简单理解为：在流量层选择正确的前提下，流量经过科学的分配，可以保证各实验的结果不会受到其他层实验的干扰。</p>
+<p>&lt;span id=&quot;0d594925&quot;&gt;&lt;/span&gt;</p>
+<h2>vid是什么？</h2>
+<p>版本ID</p>
+<p>&lt;span id=&quot;4bda593c&quot;&gt;&lt;/span&gt;</p>
+<h2>如何保证流量比例准确（如何控制10%，就是真实流量的10%）</h2>
+<p>互斥组=互斥层=实验层</p>
+<p>分流服务在分配流量时，会先把每一层的流量平均分配为固定的份数，比如100份，每一份被称为一个“哈希桶（bucket）”。经过分流服务的处理，我们把所有用户都扔进了桶里，那么这100个桶里，每桶都有1%的流量。同一层的不同实验在调用流量时，就会按照实验所需的流量的百分比，随机领取到不同数量的桶（且桶不重合）。</p>
+<p>分流原理请参考：<a href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/36500.pdf" target="_blank" rel="noopener">此处</a>。</p>
+<p>&lt;span id=&quot;cc0d04e0&quot;&gt;&lt;/span&gt;</p>
+<h2>如何保证人群没有特殊性？</h2>
+<p>哈希函数在对用户进行分组的时候，由于只用到了用户标识，而且能把有规律的id集合散列的很均，所以在其他属性（比如机型、地域、年纪、性别等）上能分得很均匀。</p>
+<p>&lt;span id=&quot;7a12e22b&quot;&gt;&lt;/span&gt;</p>
+<h2>如何保证用户不会跳组？（比如保证不会出现：上午在A版本，下午在B版本）</h2>
+<p>在分流服务中，承担这项重任的还是「哈希函数」。「哈希函数」之所以能够担此重任，源于它的一个特性：如果输入值是固定的，那么哈希函数的输出值也是固定的。</p>
+<p>&lt;span id=&quot;81197909&quot;&gt;&lt;/span&gt;</p>
+<h1>实验开启等操作咨询</h1>
+<p>&lt;span id=&quot;d62b46fd&quot;&gt;&lt;/span&gt;</p>
+<h2>停止的试验是否能重新开始？</h2>
+<p>不能。因为在实验停止的时间内，用户群体可能会发生变化，再开实验时不能保证数据的准确性。</p>
+<p>&lt;span id=&quot;84e75f13&quot;&gt;&lt;/span&gt;</p>
+<h2>如何实现灰度发布的功能？</h2>
+<p>可以将实验固化至Feature，详见：<a href="https://www.volcengine.com/docs/6287/65813" target="_blank" rel="noopener">实验固化至Feature</a></p>
+<p>&lt;span id=&quot;faa7e3b4&quot;&gt;&lt;/span&gt;</p>
+<h1>实验指标与实验报告相关</h1>
+<p>&lt;span id=&quot;6174b799&quot;&gt;&lt;/span&gt;</p>
+<h2>开实验后，多久才能看到实验指标数据？</h2>
+<p>开始实验后，进组用户可实时查看，指标置信度第二日产出。</p>
+<p>&lt;span id=&quot;c91225c4&quot;&gt;&lt;/span&gt;</p>
+<h2>哪些指标支持计算置信度？</h2>
+<p><strong>单一指标：</strong> </p>
+<ul><li>进组人均次数：触发当前事件的进组用户人均发生数量。pv/au，进组用户当前事件总发生次数/进组用户数。</li></ul>
+<ul><li>转化率：触发当前事件的进组用户比例。uv/au，某事件发生的总进组用户数/进组用户数。</li></ul>
+<ul><li>按…求进组人均值：sum/au，某属性值求和/进组用户数。</li></ul>
+<ul><li>人均次数：事件的人均触发数。pv/uv，进组用户当前事件的总发生次数/进组用户上报当前事件的人数。</li></ul>
+<ul><li>按…求人均值：sum/uv，某属性值求和/事件触发进组人数。</li></ul>
+<ul><li>按…求平均值：sum/pv，某属性值求和/事件发生次数。</li></ul>
+<p><strong>组合指标：</strong> </p>
+<ul><li>分子为uv类型，分母为uv类型。</li></ul>
+<ul><li>分子为pv类型，分母为pv类型。</li></ul>
+<ul><li>分子为pv类型，分母为uv类型。</li></ul>
+<ul><li>分子为pv类型，分母为sum类型。</li></ul>
+<ul><li>分子为sum类型，分母为sum类型。</li></ul>
+<ul><li>分子为sum类型，分母为uv类型。</li></ul>
+<ul><li>分子为sum类型，分母为pv类型。</li></ul>
+<p>&lt;span id=&quot;9beff792&quot;&gt;&lt;/span&gt;</p>
+<h2>为什么埋点上报后，无法在Tester中配置指标？</h2>
+<p>埋点上报后，需要6个小时构建数据，6个小时后可以在Tester配置该指标。</p>
+<p>&lt;span id=&quot;d3663c5c&quot;&gt;&lt;/span&gt;</p>
+<h2>如果获取AB参数失败，那么有没有重发的机制？如果有重发机制，那么AB参数下发的时间点是哪些？</h2>
+<p>获取AB参数失败后，如果app在前台，每10分钟会重新获取，或是app下次启动时也会重新获取。</p>
+<p>&lt;span id=&quot;3e85d8d9&quot;&gt;&lt;/span&gt;</p>
+<h2>sum(dau)的数据口径是什么？</h2>
+<p>sum(dau)是每天dau的直接相加，表达dau纯数值求和，求和时不对dau做“人”维度的去重。</p>
+<p>&lt;span id=&quot;63d53716&quot;&gt;&lt;/span&gt;</p>
+<h2>埋点有正常上报的记录，但是实验报告里面又没有任何进组记录数据，是什么原因？</h2>
+<p>对于实验报告中的指标数据，需要对应的用户先触发实验曝光事件后，再触发对应的指标事件后，才可以在实验报告中统计到。</p>
+<p>&lt;span id=&quot;767e77e3&quot;&gt;&lt;/span&gt;</p>
+<h2>实验报告里，“从头累计”和“灵活累计”数据统计区别？</h2>
+<table><thead><tr><th>对比项</th><th>从头累计</th><th>灵活累计</th></tr></thead><tbody><tr><td>进组用户数</td><td>从实验开始第一天累计到当前日期</td><td>从筛选日期的开始时间\-截止时间之间的累计</td></tr><tr><td>其他指标</td><td>* 从筛选日期的开始时间\-截止时间之间的累计；&lt;br&gt;&lt;br&gt;* 若组合指标中有进组用户数，进组用户数是从实验开始第一天累计到当前日期</td><td>* 从筛选日期的开始时间\-截止时间之间的累计；&lt;br&gt;&lt;br&gt;* 若组合指标中有进组用户数，进组用户数是从筛选日期的开始时间\-截止时间之间的累计</td></tr></tbody></table>
+<p>&lt;span id=&quot;a7923ee7&quot;&gt;&lt;/span&gt;</p>
+<h2>实验报告的筛选为什么不能选事件属性？</h2>
+<p>实验报告只支持基于用户属性和事件公共属性进行筛选，因筛选是作用于下方所有指标的，只能选择通用的属性，比如事件公共属性和用户属性，对于想针对单一事件的属性，需要对该指标增加属性筛选，即按照需求编辑指标。</p>
+<p>&lt;span id=&quot;ff4769ab&quot;&gt;&lt;/span&gt;</p>
+<h1>实验SDK集成相关</h1>
+<p>&lt;span id=&quot;_1-tester提供哪些语言的sdk&quot;&gt;&lt;/span&gt;</p>
+<h2>Tester提供哪些语言的SDK</h2>
+<ul><li>客户端：iOS、Android、Web/H5/WAP、微信小程序</li></ul>
+<ul><li>服务端：Java、Python、Go、Node.js</li></ul>
+<p>&lt;span id=&quot;_16-客户端是否支持采集页面停留时长，如何实现的？&quot;&gt;&lt;/span&gt;</p>
+<h2>客户端是否支持采集页面停留时长，如何实现的？</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;iOS、Android、Web、Mp SDK 均支持页面停留时长的采集&lt;/div&gt;</p>
+<p>&lt;span id=&quot;ios&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS</h3>
+<ol><li>开启全埋点，并设置采集离开页面的事件。6.11.0+ 版本起支持。应用退出时所在的页面采集不到。</li></ol>
+<pre><code>//开启全埋点
+config.autoTrackEnabled = YES；
+//BDAutoTrackDataTypePageLeave为采集$bav2b_page_leave事件的枚举，包含$page_duration页面时长参数,单位是毫秒
+//默认值为BDAutoTrackDataTypePage | BDAutoTrackDataTypeClick
+config.autoTrackEventType = BDAutoTrackDataTypePage | BDAutoTrackDataTypeClick | BDAutoTrackDataTypePageLeave；</code></pre>
+<ol><li>用户细查看，通过 $bav2b_page_leave 事件的 $page_duration 参数。</li></ol>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_4f75e55c733f3144878e6451c640823d.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>事件分析查看，可以根据页面浏览时长求和、求人均值等</li></ol>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_b65ed0b8578baa9eb7a3b32d296c049b.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;android&quot;&gt;&lt;/span&gt;</p>
+<h3>Android</h3>
+<ol><li>开启全埋点即可采集，并设置采集离开页面的事件。6.11.0+ 版本起支持。应用退出时所在的页面采集不到。</li></ol>
+<pre><code>config.setTrackPageLeaveEnabled(true);
+// 默认值：AutoTrackEventType.PAGE | AutoTrackEventType.CLICK//// AutoTrackEventType.ALL: 全埋点所有事件// AutoTrackEventType.PAGE: 全埋点页面事件 默认开启// AutoTrackEventType.CLICK: 全埋点点击事件 默认开启// AutoTrackEventType.PAGE_LEAVE: 全埋点页面时长事件 默认关闭// 本功能仅支持6.11.0及以上版本
+config.setAutoTrackEventType(AutoTrackEventType.PAGE | AutoTrackEventType.CLICK | AutoTrackEventType.PAGE_LEAVE);</code></pre>
+<ol><li>用户细查看，通过 $bav2b_page_leave 事件的 $page_duration 参数。同 iOS。</li></ol>
+<ol><li>事件分析查看同 iOS。</li></ol>
+<p>应用退出时所在的页面采集不到。</p>
+<p>&lt;span id=&quot;小程序&quot;&gt;&lt;/span&gt;</p>
+<h3>小程序</h3>
+<ol><li>开启预置事件predefine_pageview_hide（页面隐藏）的采集，包含duration参数，单位毫秒。</li></ol>
+<pre><code>//auto_report设置为true
+$$Rangers.init({
+    auto_report: true, // 开启后会上报一些预定义事件，如app_launch、app_terminate等
+});
+
+//或者设置auto_report为对象
+$$Rangers.init({
+    auto_report: {
+        //上报predefine_pageview_hide事件，false时不上报，或者pageShow为false时该事件也不会上报
+        pageShow?: true;
+        pageHide?: true;  
+}
+});</code></pre>
+<ol><li>用户细查看</li></ol>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_19b87d51e34f3593661379178091c853.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>事件分析查看</li></ol>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_718c9aff6a476d4154e752dc2859aaac.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;web-js&quot;&gt;&lt;/span&gt;</p>
+<h3>Web/JS</h3>
+<ol><li>初始化时开启页面停留时长</li></ol>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+    // ...... 其他初始化配置
+    enable_stay_duration: true // true：开启停留时长
+});</code></pre>
+<ol><li>开始后上报事件介绍</li></ol>
+<ul><li>predefine_page_alive 采集时长时推荐使用</li></ul>
+<ul><li>开启功能之后，predefine_page_alive事件会在页面活跃状态下，每分钟定时上报一次，或者在切换为非活跃状态时上报一次。 <strong>活跃状态：页面处于可视，或者可操作的状态。</strong>  <strong>非活跃状态：页面处于后台，隐藏，最小化等不可视状态。</strong> </li></ul>
+<table><thead><tr><th>event</th><th>含义</th><th>params</th><th>说明</th></tr></thead><tbody><tr><td>predefine_page_alive</td><td>页面活跃</td><td>title</td><td>string</td></tr><tr><td>url</td><td>string</td></tr><tr><td>url_path</td><td>string</td></tr><tr><td>duration</td><td>int，ms，毫秒，一般是60s，在切换为非活跃状态时小于等于60</td></tr><tr><td>tea_event_index</td><td>当前事件触发的时间戳的变体</td></tr><tr><td>is_support_visibility_change</td><td>int，浏览器是否支持visibility_change</td></tr></tbody></table>
+<ul><li><strong>分析方式：</strong> </li></ul>
+<ul><li>人均使用时长=sum（duration）/uv</li></ul>
+<ul><li>次均使用时长=sum（duration）/pv</li></ul>
+<ul><li>predefine_page_close</li></ul>
+<ul><li>开启功能之后，会记录用户每次【进入页面，切换状态，离开页面】的时间戳，然后在离开或者关闭页面的时候上报predefine_page_close事件，将每一段【活跃状态】的时长相加作为整体的使用时长。</li></ul>
+<table><thead><tr><th>event</th><th>含义</th><th>params</th><th>说明</th></tr></thead><tbody><tr><td>predefine_page_close</td><td>页面关闭</td><td>title</td><td>string</td></tr><tr><td>url</td><td>string</td></tr><tr><td>url_path</td><td>string</td></tr><tr><td>duration</td><td>int，ms，毫秒</td></tr><tr><td>active_times</td><td>页面活跃的次数</td></tr><tr><td>total_duration</td><td>int, ms, 毫秒，页面打开到关闭的总时长</td></tr><tr><td>is_support_visibility_change</td><td>int，浏览器是否支持visibility_change</td></tr></tbody></table>
+<ul><li><strong>分析方式：</strong> </li></ul>
+<ul><li>人均使用时长=sum（duration）/uv</li></ul>
+<ul><li>次均使用时长=sum（duration）/pv</li></ul>
+<ul><li>每次活跃平均使用时长=sum（duration）/sum（active_times）</li></ul>
+<ul><li>使用时长分布</li></ul>
+<p>&lt;span id=&quot;eed583fc&quot;&gt;&lt;/span&gt;</p>
+<h2>DataTester的服务端SDK可以上报自定义事件/事件公共属性吗？</h2>
+<ul><li>DataTester的服务端SDK主要用于实现A/B实验分流，因此基于服务端SDK上报的事件、属性都是固定的，因此DataTester的服务端SDK不支持上报自定义事件/事件公共属性。</li></ul>
+<ul><li>如果您需要上报自定义事件/事件公共属性，可以通过HTTP API或客户端SDK进行上报。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Unity SDK 集成开发指南 · A/B 实验知识库</title>
+<meta name="description" content="插件下载 RangersPlugin_v0.0.1.unitypackage 一、导入插件 二、Unity场景开发 1. 新建场景，添加按钮 2. 绑定脚本 3. 绑定Onclick方法 三、Build Setting">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/107713.html">
+<meta property="og:title" content="Unity SDK 集成开发指南"><meta property="og:description" content="插件下载 RangersPlugin_v0.0.1.unitypackage 一、导入插件 二、Unity场景开发 1. 新建场景，添加按钮 2. 绑定脚本 3. 绑定Onclick方法 三、Build Setting">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/107713.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>Unity SDK 集成开发指南</h1>
+<div class="meta">📄 744 字 · 🕐 2024-07-18</div>
+<article class="md"><p>&lt;span id=&quot;插件下载&quot;&gt;&lt;/span&gt;</p>
+<h1>插件下载</h1>
+<p>&lt;Attachment link=&quot;https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_36e81f4feeb74516e0c0d8245be723f6.unitypackage&quot; name=&quot;RangersPlugin_v0.0.1.unitypackage&quot;&gt;RangersPlugin_v0.0.1.unitypackage&lt;/Attachment&gt;</p>
+<p>&lt;span id=&quot;一、导入插件&quot;&gt;&lt;/span&gt;</p>
+<h2>一、导入插件</h2>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_0bd340a08dabbadb14b954b27ce7ad5e.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_c1d5d8b0d89ac1ac0b78d7caab20c722.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;二、unity场景开发&quot;&gt;&lt;/span&gt;</p>
+<h2>二、Unity场景开发</h2>
+<p>&lt;span id=&quot;_1-新建场景，添加按钮&quot;&gt;&lt;/span&gt;</p>
+<h3>1. 新建场景，添加按钮</h3>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_aa64c6eca39b8bfe6de0a82b82a499d8.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-绑定脚本&quot;&gt;&lt;/span&gt;</p>
+<h3>2. 绑定脚本</h3>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_8e951ab20bcf718ff67ea908ee69ef80.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-绑定onclick方法&quot;&gt;&lt;/span&gt;</p>
+<h3>3. 绑定Onclick方法</h3>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_756401d310520545d4fab14d0ee31bdd.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;三、build-setting&quot;&gt;&lt;/span&gt;</p>
+<h2>三、Build Setting</h2>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5103c3d897bb66f1540f43e982909cea.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;四、playersettings&quot;&gt;&lt;/span&gt;</p>
+<h2>四、PlayerSettings</h2>
+<ul><li>Other Settings设置包名和版本号</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_791a6757a399fc01a0190e4349669486.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>Publish Settings设置mainfest、base gradle和Main gradle</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_d4566097c2ddcf995f4757aad95dcb95.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;五、android配置&quot;&gt;&lt;/span&gt;</p>
+<h2>五、Android配置</h2>
+<p>&lt;span id=&quot;_1-mainfest文件配置&quot;&gt;&lt;/span&gt;</p>
+<h3>1. mainfest文件配置</h3>
+<p>修改生成好的AndroidMainfest.xml文件，添加自定义的application</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;!-- GENERATED BY UNITY. REMOVE THIS COMMENT TO PREVENT OVERWRITING WHEN EXPORTING AGAIN--&gt;
+&lt;manifest
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    package=&quot;com.unity3d.player&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;&gt;
+    &lt;application android:name=&quot;.TheApplication&quot;&gt;
+        &lt;activity android:name=&quot;com.unity3d.player.UnityPlayerActivity&quot;
+                  android:theme=&quot;@style/UnityThemeSelector&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+            &lt;/intent-filter&gt;
+            &lt;meta-data android:name=&quot;unityplayer.UnityActivity&quot; android:value=&quot;true&quot; /&gt;
+        &lt;/activity&gt;
+    &lt;/application&gt;
+&lt;/manifest&gt;</code></pre>
+<p>&lt;span id=&quot;_2-base-gradle文件配置仓库&quot;&gt;&lt;/span&gt;</p>
+<h3>2. Base Gradle文件配置仓库</h3>
+<pre><code>// GENERATED BY UNITY. REMOVE THIS COMMENT TO PREVENT OVERWRITING WHEN EXPORTING AGAIN
+
+allprojects {
+    buildscript {
+        repositories {**ARTIFACTORYREPOSITORY**
+            maven {
+                url &#x27;https://artifact.bytedance.com/repository/Volcengine/&#x27;
+            }
+            google()
+            jcenter()
+
+        }
+
+        dependencies {
+            // If you are changing the Android Gradle Plugin version, make sure it is compatible with the Gradle version preinstalled with Unity
+                        // See which Gradle version is preinstalled with Unity here https://docs.unity3d.com/Manual/android-gradle-overview.html
+                        // See official Gradle and Android Gradle Plugin compatibility table here https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
+                        // To specify a custom Gradle version in Unity, go do &quot;Preferences &gt; External Tools&quot;, uncheck &quot;Gradle Installed with Unity (recommended)&quot; and specify a path to a custom Gradle version
+            classpath &#x27;com.android.tools.build:gradle:3.4.0&#x27;
+            **BUILD_SCRIPT_DEPS**
+        }
+    }
+
+    repositories {**ARTIFACTORYREPOSITORY**
+        maven {
+    url &#x27;https://artifact.bytedance.com/repository/Volcengine/&#x27;
+                    }
+        google()
+        jcenter()
+        flatDir {
+            dirs &quot;${project(&#x27;:unityLibrary&#x27;).projectDir}/libs&quot;
+                }
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}</code></pre>
+<p>&lt;span id=&quot;_3-mian-gradle文件配置依赖&quot;&gt;&lt;/span&gt;</p>
+<h3>3. Mian gradle文件配置依赖</h3>
+<pre><code>// GENERATED BY UNITY. REMOVE THIS COMMENT TO PREVENT OVERWRITING WHEN EXPORTING AGAIN
+buildscript {
+   repositories {
+        mavenCentral()
+      google()
+      jcenter()
+
+      }
+
+   dependencies {
+            classpath &#x27;com.android.tools.build:gradle:3.4.0&#x27;
+      }
+}
+
+allprojects {
+   repositories {
+        mavenCentral()
+
+      google()
+      jcenter()
+      flatDir {
+        dirs &#x27;libs&#x27;
+            }
+      }
+}
+
+apply plugin: &#x27;com.android.library&#x27;
+
+dependencies {
+   implementation fileTree(dir: &#x27;libs&#x27;, include: [&#x27;*.jar&#x27;])
+   implementation &#x27;org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61&#x27;
+   implementation &#x27;com.bytedance.frameworks.baselib:utility:2.0.11&#x27;
+   implementation &#x27;com.bytedance.frameworks:encryptor:0.0.9-rc.2-private&#x27;
+   implementation &#x27;com.bytedance.applog:RangersAppLog-Lite-cn:6.3.0&#x27;
+
+   **DEPS**}
+
+android {
+   compileSdkVersion **APIVERSION**
+   buildToolsVersion &#x27;**BUILDTOOLS**&#x27;
+
+   defaultConfig {
+consumerProguardFiles &#x27;proguard-unity.txt&#x27;**USER_PROGUARD**
+      minSdkVersion **MINSDKVERSION**
+      targetSdkVersion **TARGETSDKVERSION**
+
+      ndk {
+            abiFilters **ABIFILTERS**
+        }
+      versionCode    **VERSIONCODE**
+      versionName    &#x27;**VERSIONNAME**&#x27;
+   }
+
+   lintOptions {
+      abortOnError false
+      }
+
+   aaptOptions {
+      noCompress &#x27;.unity3d&#x27;, &#x27;.ress&#x27;, &#x27;.resource&#x27;, &#x27;.obb&#x27;**STREAMING_ASSETS**
+   }
+
+**SIGN**
+   buildTypes {
+      debug {
+         minifyEnabled **MINIFY_DEBUG**
+         useProguard **PROGUARD_DEBUG**
+         proguardFiles getDefaultProguardFile(&#x27;proguard-android.txt&#x27;), &#x27;proguard-unity.txt&#x27;**USER_PROGUARD**
+         jniDebuggable true
+            }
+      release {
+         minifyEnabled **MINIFY_RELEASE**
+         useProguard **PROGUARD_RELEASE**
+         proguardFiles getDefaultProguardFile(&#x27;proguard-android.txt&#x27;), &#x27;proguard-unity.txt&#x27;**USER_PROGUARD**
+         **SIGNCONFIG**
+      }
+   }
+**PACKAGING_OPTIONS**
+
+}
+
+**SOURCE_BUILD_SETUP**</code></pre>
+<p>&lt;span id=&quot;_4-the-application代码&quot;&gt;&lt;/span&gt;</p>
+<h3>4. The Application代码</h3>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5b334290027ea8cfe1095dc43b93e41d.png" loading="lazy"> &lt;/span&gt;</p>
+<pre><code>/* 初始化开始 */
+final  InitConfig config = new  InitConfig(&quot;175128&quot;, &quot;cuckoo&quot;); // appid和渠道，appid如不清楚请联系客户成功经理，注意第二个参数 channel 不能为空
+
+config.setUriConfig(UriConstants.DEFAULT);//上报地址
+config.setAbEnable(true); // 开启 AB 测试
+
+// 是否在控制台输出日志，可用于观察用户行为日志上报情况，上线之前可去掉
+config.setLogger(new  ILogger() {
+    @Override
+    public void  log(String s, Throwable throwable) {
+        Log.d(&quot;AppLog-------&gt;: &quot;, &quot;&quot;  + s);
+    }
+});
+
+// 加密开关，SDK 5.5.1 及以上版本支持，false 为关闭加密，上线前建议设置为 true
+AppLog.setEncryptAndCompress(false);
+config.setAutoStart(true);
+AppLog.init(this, config);
+/* 初始化结束 */</code></pre>
+<p>&lt;span id=&quot;六、ios配置&quot;&gt;&lt;/span&gt;</p>
+<h2>六、iOS配置</h2>
+<p>在Build Setting 平台切换到iOS，在导出工程中找到UnityAppController.mm文件，在didFinishLaunchingWithOptions函数，加入初始化代码</p>
+<ul><li>使用xcode打开工程，执行cocopods相关命令：</li></ul>
+<pre><code>pod setup
+pod init</code></pre>
+<ul><li>Podfile配置：</li></ul>
+<pre><code># Uncomment the next line to define a global platform for your project
+ platform :ios, &#x27;9.0&#x27;
+source &#x27;https://github.com/volcengine/volcengine-specs.git&#x27;
+target &#x27;Unity-iPhone&#x27; do
+ # Comment the next line if you don&#x27;t want to use dynamic frameworks
+ use_frameworks!
+
+ # Pods for Unity-iPhone
+
+ target &#x27;Unity-iPhone Tests&#x27; do
+  inherit! :search_paths
+  # Pods for testing
+ end
+
+end
+
+target &#x27;UnityFramework&#x27; do
+ # Comment the next line if you don&#x27;t want to use dynamic frameworks
+ use_frameworks!
+ # applog的版本
+ pod &#x27;RangersAppLog&#x27;, &#x27;6.2.3&#x27;,
+   :subspecs =&gt; [
+    &#x27;Host/CN&#x27;,
+    &#x27;Core&#x27;,
+    &#x27;Unique&#x27;,
+    &#x27;Log&#x27;,
+    &#x27;CBridge&#x27;
+   ]
+end</code></pre>
+<ul><li>安装依赖</li></ul>
+<pre><code>pod install --repo-update</code></pre>
+<ul><li>初始化代码,框架默认在UnityAppController.mm文件中，找到didFinishLaunchingWithOptions方法，在return YES的代码前面添加初始化代码</li></ul>
+<pre><code>#import &lt;RangersAppLog/BDAutoTrack.h&gt;
+
+- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
+{
+//Init RangersAppLog
+ BDAutoTrackConfig *config = [BDAutoTrackConfig configWithAppID:@&quot;123456&quot; launchOptions:launchOptions];
+ //debug日志开关，正式版本修改修改为NO
+ config.showDebugLog = YES;
+ config.logger = ^(NSString * _Nullable log) {
+ NSLog(@&quot;%@&quot;, log);
+ };
+ config.appName = @&quot;Unity test app&quot;;
+ //加密开关，正式版本修改修改为YES
+ config.logNeedEncrypt = NO;
+ [BDAutoTrack startTrackWithConfig:config];
+ return YES;
+}</code></pre>
+<p>&lt;span id=&quot;七、日志查看&quot;&gt;&lt;/span&gt;</p>
+<h2>七、日志查看</h2>
+<p>&lt;span id=&quot;_1-android&quot;&gt;&lt;/span&gt;</p>
+<h3>1. Android</h3>
+<ul><li>安装插件，右击package，选择view in Package Manager</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_f12574389f874edd740aac75d9e04647.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>选择unity_registry，选择按照Android Logcat</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_61c1f355c58bcafce58439f5f3f2fe0b.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>插上 手机，在Build Seting正确的情况下，cmd+B就可以编译并运行工程了</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_0ef09966814233c972de0bd3cfa8a715.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-ios&quot;&gt;&lt;/span&gt;</p>
+<h3>2. iOS</h3>
+<p>在xCode中查看</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_71f483b653616f8a5bd53ce5d519fb8b.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;八、插件代码示例&quot;&gt;&lt;/span&gt;</p>
+<h2>八、插件代码示例</h2>
+<pre><code>using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+public class lay_playGame : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    public void EventV3()
+    {
+            Dictionary&lt;string, object&gt; param = new Dictionary&lt;string, object&gt;();
+            param.Add(&quot;aaa&quot;, &quot;111&quot;);
+            param.Add(&quot;bbb&quot;, &quot;222&quot;);
+            RangersAppLog.Wrapper.RangersAppLog.EventV3(&quot;test&quot;, param);
+            print(&quot;事件上报&quot;);
+    }
+
+    public void SetCustomHeaderInfo()
+    {
+            RangersAppLog.Wrapper.RangersAppLog.SetCustomHeaderInfo(&quot;u_h_name&quot;, &quot;my_first_unity&quot;);
+            print(&quot;设置消息头&quot;);
+    }
+
+    public void RemoveCustomHeaderInfo()
+    {
+            RangersAppLog.Wrapper.RangersAppLog.RemoveCustomHeaderInfo(&quot;u_h_name&quot;);
+            print(&quot;移除消息头&quot;);
+    }
+
+    public void ProfileSet()
+    {
+            Dictionary&lt;string, object&gt; param = new Dictionary&lt;string, object&gt;();
+            param.Add(&quot;u_p_age&quot;, 100);
+
+            RangersAppLog.Wrapper.RangersAppLog.ProfileSet(param);
+            print(&quot;调用ProfileSet&quot;);
+    }
+
+    public void ProfileSetOnce()
+    {
+            Dictionary&lt;string, object&gt; param = new Dictionary&lt;string, object&gt;();
+            param.Add(&quot;u_p_name&quot;, &quot;i am a unity project&quot;);
+
+            RangersAppLog.Wrapper.RangersAppLog.ProfileSetOnce(param);
+            print(&quot;调用ProfileSetOnce&quot;);
+
+    }
+
+    public void ProfileUnset()
+    {
+            RangersAppLog.Wrapper.RangersAppLog.ProfileUnset(&quot;u_p_name&quot;);
+            RangersAppLog.Wrapper.RangersAppLog.ProfileUnset(&quot;u_p_age&quot;);
+
+    }
+
+    public void ProfileIncrement()
+    {
+            Dictionary&lt;string, object&gt; param = new Dictionary&lt;string, object&gt;();
+            param.Add(&quot;u_p_age&quot;, 1);
+
+            RangersAppLog.Wrapper.RangersAppLog.ProfileIncrement(param);
+    }
+
+    public void ProfileAppend()
+    {
+            Dictionary&lt;string, object&gt; param = new Dictionary&lt;string, object&gt;();
+            param.Add(&quot;u_p_fav&quot;, &quot;游泳&quot;);
+            RangersAppLog.Wrapper.RangersAppLog.ProfileAppend(param);
+            print(&quot;调用ProfileAppend&quot;);
+
+    }
+    public void GetAllABConfig()
+    {
+            Dictionary&lt;string, object&gt; config = RangersAppLog.Wrapper.RangersAppLog.GetAllAbTestConfig();
+            foreach (var item in config)
+            {
+
+                    print(&quot;abtest,key is &quot; + item.Key + &quot; value is &quot; + ((Dictionary&lt;string, object&gt;)item.Value)[&quot;val&quot;]);
+
+                    object value = RangersAppLog.Wrapper.RangersAppLog.GetABTestConfigValueForKey(item.Key, &quot;default&quot;);
+                    Type type = value.GetType();
+
+                    print(&quot;type is&quot; + type.Name);
+
+                    print(&quot;abtest,曝光&quot; + item.Key + &quot;value is &quot; + (string)value);
+
+            }
+            print(&quot;调用GetAllAbTestConfigs&quot;);
+
+    }
+    public void GetAbSdkVersion()
+    {
+            string version = RangersAppLog.Wrapper.RangersAppLog.GetAbSdkVersion();
+            print(&quot;版本号:&quot; + version);
+    }
+
+    public void SetExternalVersion()
+    {
+            RangersAppLog.Wrapper.RangersAppLog.SetExternalAbVersion(&quot;100,101&quot;);
+            print(&quot;设置SetExternalAbVersion&quot;);
+    }
+
+    public void ChangeUser()
+    {
+            string[] malePetNames = { &quot;Rufus&quot;, &quot;Bear&quot;, &quot;Dakota&quot;, &quot;Fido&quot;,
+                                              &quot;Vanya&quot;, &quot;Samuel&quot;, &quot;Koani&quot;, &quot;Volodya&quot;,
+                                              &quot;Prince&quot;, &quot;Yiska&quot; };
+
+            System.Random rnd = new System.Random();
+
+            int index = rnd.Next(malePetNames.Length);
+            string user = malePetNames[index];
+            RangersAppLog.Wrapper.RangersAppLog.SetUserUniqueID(user);
+            print(&quot;切换用户&quot; + user);
+
+    }
+
+    public void Flush()
+    {
+            RangersAppLog.Wrapper.RangersAppLog.Flush();
+            print(&quot;立即推送&quot;);
+    }
+    public void GetSDKLogInfo()
+    {
+            string aid = RangersAppLog.Wrapper.RangersAppLog.GetAid();
+            string did = RangersAppLog.Wrapper.RangersAppLog.GetDeviceId();
+            string iid = RangersAppLog.Wrapper.RangersAppLog.GetInstallId();
+            string uuid = RangersAppLog.Wrapper.RangersAppLog.GetUserUniqueID();
+
+            print(String.Format(&quot;aid is {0},did is {1},iid is {2},uuid is {3}&quot;, aid, did, iid, uuid));
+    }
+}</code></pre></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

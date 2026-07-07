@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>支持的数据格式（自定义事件/属性） · A/B 实验知识库</title>
+<meta name="description" content="DataTester支持多种语言的SDK，这些SDK接口上报的数据，在底层数据模型中需要使用统一的数据格式，系统为您提供的预置事件/属性已遵循此统一的数据格式，如果您需要自定义事件/属性，需严格按照支持的数据格式来定义自">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1149795.html">
+<meta property="og:title" content="支持的数据格式（自定义事件/属性）"><meta property="og:description" content="DataTester支持多种语言的SDK，这些SDK接口上报的数据，在底层数据模型中需要使用统一的数据格式，系统为您提供的预置事件/属性已遵循此统一的数据格式，如果您需要自定义事件/属性，需严格按照支持的数据格式来定义自">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1149795.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>支持的数据格式（自定义事件/属性）</h1>
+<div class="meta">📄 5,469 字 · 🕐 2024-08-07</div>
+<article class="md"><p>DataTester支持多种语言的SDK，这些SDK接口上报的数据，在底层数据模型中需要使用统一的数据格式，系统为您提供的预置事件/属性已遵循此统一的数据格式，如果您需要自定义事件/属性，需严格按照支持的数据格式来定义自定义事件/属性的数据格式。本文为您介绍详细的数据格式要求。</p>
+<p>&lt;span id=&quot;c2936b36&quot;&gt;&lt;/span&gt;</p>
+<h1>背景信息</h1>
+<p>使用各类型SDK采集上报数据时：</p>
+<ul><li>需要先在各端中集成对应的SDK。</li></ul>
+<ul><li>后续SDK会将采集的数据通过JSON格式进行上报。</li></ul>
+<ul><li>收到上报数据后，系统会对JSON数据进行处理并落库，落库后的数据类型与上报的JSON中的数据类型有对应关系。</li></ul>
+<p>&lt;img src=&quot;data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHdpZHRoPSI1MTlweCIgaGVpZ2h0PSI5NXB4IiB2aWV3Qm94PSItMC41IC0wLjUgNTE5IDk1Ij48ZGVmcy8+PGc+PHBhdGggZD0iTSAzMTIgNjIgTCAzODUuNjMgNjIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0ic3Ryb2tlIi8+PHBhdGggZD0iTSAzOTAuODggNjIgTCAzODMuODggNjUuNSBMIDM4NS42MyA2MiBMIDM4My44OCA1OC41IFoiIGZpbGw9IiMwMDAwMDAiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PHJlY3QgeD0iMTkyIiB5PSIzMiIgd2lkdGg9IjEyMCIgaGVpZ2h0PSI2MCIgcng9IjkiIHJ5PSI5IiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiMwMDAwMDAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC41IC0wLjUpIj48Zm9yZWlnbk9iamVjdCBzdHlsZT0ib3ZlcmZsb3c6IHZpc2libGU7IHRleHQtYWxpZ246IGxlZnQ7IiBwb2ludGVyLWV2ZW50cz0ibm9uZSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSI+PGRpdiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCIgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGFsaWduLWl0ZW1zOiB1bnNhZmUgY2VudGVyOyBqdXN0aWZ5LWNvbnRlbnQ6IHVuc2FmZSBjZW50ZXI7IHdpZHRoOiAxMThweDsgaGVpZ2h0OiAxcHg7IHBhZGRpbmctdG9wOiA2MnB4OyBtYXJnaW4tbGVmdDogMTkzcHg7Ij48ZGl2IHN0eWxlPSJib3gtc2l6aW5nOiBib3JkZXItYm94OyBmb250LXNpemU6IDA7IHRleHQtYWxpZ246IGNlbnRlcjsgIj48ZGl2IHN0eWxlPSJkaXNwbGF5OiBpbmxpbmUtYmxvY2s7IGZvbnQtc2l6ZTogMTJweDsgZm9udC1mYW1pbHk6IEhlbHZldGljYTsgY29sb3I6ICMwMDAwMDA7IGxpbmUtaGVpZ2h0OiAxLjI7IHBvaW50ZXItZXZlbnRzOiBhbGw7IHdoaXRlLXNwYWNlOiBub3JtYWw7IHdvcmQtd3JhcDogbm9ybWFsOyAiPkpTT048L2Rpdj48L2Rpdj48L2Rpdj48L2ZvcmVpZ25PYmplY3Q+PC9nPjxyZWN0IHg9IjIxMiIgeT0iMiIgd2lkdGg9IjgwIiBoZWlnaHQ9IjIwIiBmaWxsPSJub25lIiBzdHJva2U9Im5vbmUiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC41IC0wLjUpIj48Zm9yZWlnbk9iamVjdCBzdHlsZT0ib3ZlcmZsb3c6IHZpc2libGU7IHRleHQtYWxpZ246IGxlZnQ7IiBwb2ludGVyLWV2ZW50cz0ibm9uZSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSI+PGRpdiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCIgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGFsaWduLWl0ZW1zOiB1bnNhZmUgY2VudGVyOyBqdXN0aWZ5LWNvbnRlbnQ6IHVuc2FmZSBjZW50ZXI7IHdpZHRoOiA3OHB4OyBoZWlnaHQ6IDFweDsgcGFkZGluZy10b3A6IDEycHg7IG1hcmdpbi1sZWZ0OiAyMTNweDsiPjxkaXYgc3R5bGU9ImJveC1zaXppbmc6IGJvcmRlci1ib3g7IGZvbnQtc2l6ZTogMDsgdGV4dC1hbGlnbjogY2VudGVyOyAiPjxkaXYgc3R5bGU9ImRpc3BsYXk6IGlubGluZS1ibG9jazsgZm9udC1zaXplOiAxMnB4OyBmb250LWZhbWlseTogSGVsdmV0aWNhOyBjb2xvcjogIzAwMDAwMDsgbGluZS1oZWlnaHQ6IDEuMjsgcG9pbnRlci1ldmVudHM6IGFsbDsgd2hpdGUtc3BhY2U6IG5vcm1hbDsgd29yZC13cmFwOiBub3JtYWw7ICI+U0RL6YeH6ZuG5LiK5oqlPC9kaXY+PC9kaXY+PC9kaXY+PC9mb3JlaWduT2JqZWN0PjwvZz48cmVjdCB4PSI0MTIiIHk9IjIiIHdpZHRoPSI5MCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJub25lIiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTAuNSAtMC41KSI+PGZvcmVpZ25PYmplY3Qgc3R5bGU9Im92ZXJmbG93OiB2aXNpYmxlOyB0ZXh0LWFsaWduOiBsZWZ0OyIgcG9pbnRlci1ldmVudHM9Im5vbmUiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkaXYgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0bWwiIHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogdW5zYWZlIGNlbnRlcjsganVzdGlmeS1jb250ZW50OiB1bnNhZmUgY2VudGVyOyB3aWR0aDogODhweDsgaGVpZ2h0OiAxcHg7IHBhZGRpbmctdG9wOiAxMnB4OyBtYXJnaW4tbGVmdDogNDEzcHg7Ij48ZGl2IHN0eWxlPSJib3gtc2l6aW5nOiBib3JkZXItYm94OyBmb250LXNpemU6IDA7IHRleHQtYWxpZ246IGNlbnRlcjsgIj48ZGl2IHN0eWxlPSJkaXNwbGF5OiBpbmxpbmUtYmxvY2s7IGZvbnQtc2l6ZTogMTJweDsgZm9udC1mYW1pbHk6IEhlbHZldGljYTsgY29sb3I6ICMwMDAwMDA7IGxpbmUtaGVpZ2h0OiAxLjI7IHBvaW50ZXItZXZlbnRzOiBhbGw7IHdoaXRlLXNwYWNlOiBub3JtYWw7IHdvcmQtd3JhcDogbm9ybWFsOyAiPuaVsOaNruWkhOeQhiZhbXA76JC95bqTPC9kaXY+PC9kaXY+PC9kaXY+PC9mb3JlaWduT2JqZWN0PjwvZz48cmVjdCB4PSIzOTYiIHk9IjMyIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjYwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iIzAwMDAwMCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0wLjUgLTAuNSkiPjxmb3JlaWduT2JqZWN0IHN0eWxlPSJvdmVyZmxvdzogdmlzaWJsZTsgdGV4dC1hbGlnbjogbGVmdDsiIHBvaW50ZXItZXZlbnRzPSJub25lIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj48ZGl2IHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IHVuc2FmZSBjZW50ZXI7IGp1c3RpZnktY29udGVudDogdW5zYWZlIGNlbnRlcjsgd2lkdGg6IDExOHB4OyBoZWlnaHQ6IDFweDsgcGFkZGluZy10b3A6IDYycHg7IG1hcmdpbi1sZWZ0OiAzOTdweDsiPjxkaXYgc3R5bGU9ImJveC1zaXppbmc6IGJvcmRlci1ib3g7IGZvbnQtc2l6ZTogMDsgdGV4dC1hbGlnbjogY2VudGVyOyAiPjxkaXYgc3R5bGU9ImRpc3BsYXk6IGlubGluZS1ibG9jazsgZm9udC1zaXplOiAxMnB4OyBmb250LWZhbWlseTogSGVsdmV0aWNhOyBjb2xvcjogIzAwMDAwMDsgbGluZS1oZWlnaHQ6IDEuMjsgcG9pbnRlci1ldmVudHM6IGFsbDsgd2hpdGUtc3BhY2U6IG5vcm1hbDsgd29yZC13cmFwOiBub3JtYWw7ICI+5pWw5o2u5bqT5pWw5o2uPC9kaXY+PC9kaXY+PC9kaXY+PC9mb3JlaWduT2JqZWN0PjwvZz48cGF0aCBkPSJNIDExMiA2MiBMIDE4NS42MyA2MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJzdHJva2UiLz48cGF0aCBkPSJNIDE5MC44OCA2MiBMIDE4My44OCA2NS41IEwgMTg1LjYzIDYyIEwgMTgzLjg4IDU4LjUgWiIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48cmVjdCB4PSIyIiB5PSIzMiIgd2lkdGg9IjExMCIgaGVpZ2h0PSI2MCIgcng9IjkiIHJ5PSI5IiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiMwMDAwMDAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC41IC0wLjUpIj48Zm9yZWlnbk9iamVjdCBzdHlsZT0ib3ZlcmZsb3c6IHZpc2libGU7IHRleHQtYWxpZ246IGxlZnQ7IiBwb2ludGVyLWV2ZW50cz0ibm9uZSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSI+PGRpdiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCIgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGFsaWduLWl0ZW1zOiB1bnNhZmUgY2VudGVyOyBqdXN0aWZ5LWNvbnRlbnQ6IHVuc2FmZSBjZW50ZXI7IHdpZHRoOiAxMDhweDsgaGVpZ2h0OiAxcHg7IHBhZGRpbmctdG9wOiA2MnB4OyBtYXJnaW4tbGVmdDogM3B4OyI+PGRpdiBzdHlsZT0iYm94LXNpemluZzogYm9yZGVyLWJveDsgZm9udC1zaXplOiAwOyB0ZXh0LWFsaWduOiBjZW50ZXI7ICI+PGRpdiBzdHlsZT0iZGlzcGxheTogaW5saW5lLWJsb2NrOyBmb250LXNpemU6IDEycHg7IGZvbnQtZmFtaWx5OiBIZWx2ZXRpY2E7IGNvbG9yOiAjMDAwMDAwOyBsaW5lLWhlaWdodDogMS4yOyBwb2ludGVyLWV2ZW50czogYWxsOyB3aGl0ZS1zcGFjZTogbm9ybWFsOyB3b3JkLXdyYXA6IG5vcm1hbDsgIj7lkITnq6/ku6PnoIHpm4bmiJBTREs8L2Rpdj48L2Rpdj48L2Rpdj48L2ZvcmVpZ25PYmplY3Q+PC9nPjwvZz48L3N2Zz4=&quot; /&gt;</p>
+<p>其中：</p>
+<ul><li>各端集成SDK时，部分系统预置事件/属性支持在代码中配置是否需要采集上报，也支持定义自定义事件/属性。</li></ul>
+<ul><li>支持采集上报的JSON数据类型，以及与落库后的数据库数据类型的对应关系详情请参见下文的<strong>属性数据类型</strong>章节；上报的JSON示例可参见下文的<strong>日志结构</strong>章节。</li></ul>
+<ul><li>数据采集上报后，系统对上报数据进行处理落库时，不同类型的数据可进行计算生成不同的指标数据，便于后续的分析使用，支持的计算应用详情请参见下文的<strong>不同数据类型应用</strong>章节。</li></ul>
+<ul><li>数据采集上报时，采集上报的限制条件详情请参见下文的<strong>上报数据的限制</strong>章节。</li></ul>
+<p>&lt;span id=&quot;1a3b1443&quot;&gt;&lt;/span&gt;</p>
+<h1>事件/属性分类</h1>
+<p>根据增长分析的业务数据分析场景，Finder为您将事件和属性进行了以下业务层面的定义分类，后续您在SDK集成与埋点配置时，可根据业务需要配置对应的事件/属性。</p>
+<table><thead><tr><th><strong>事件/属性分类</strong></th><th></th><th><strong>业务含义说明</strong></th></tr></thead><tbody><tr><td>系统预置</td><td>预置事件公共属性</td><td>系统预置的每一个事件都会上报的通用属性。比如Finder SDK上报的设备信息类字段。</td></tr><tr><td>预置事件及事件属性</td><td>系统预置的埋点事件以及事件属性。</td></tr><tr><td>预置用户属性</td><td>系统预置的用于描述用户自身状态的属性。</td></tr><tr><td>自定义</td><td>自定义事件公共属性</td><td>客户在预置事件公共属性以外自定义的事件公共属性。</td></tr><tr><td>自定义事件及事件属性</td><td>客户在预置事件及事件属性以外自定义的事件及事件属性。</td></tr><tr><td>自定义用户属性</td><td>客户在预置用户属性以外自定义的用户属性。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_1-属性数据类型&quot;&gt;&lt;/span&gt;</p>
+<h1>1.属性数据类型</h1>
+<p>&lt;span id=&quot;b8b41b92&quot;&gt;&lt;/span&gt;</p>
+<h2>注意事项</h2>
+<ul><li><strong>自定义事件/属性时，取值不要包含转义字符。</strong> </li></ul>
+<p>   创建自定义事件或属性时，需保障对应事件及属性的格式符合本文的格式要求，且自定义属性的取值不要包含例如转义字符类的特殊字符，例如“\n”。如果包含这类特殊字符，可能会导致后续数据能上报成功，但是查询分析时会导致查询结果不正确，您需要删除其中的特殊字符或使用虚拟属性。</p>
+<ul><li><strong>一个属性的数据类型由首次落库时的数据类型决定。</strong> </li></ul>
+<p>   例如，您在控制台界面新增了一个事件属性，此事件属性的数据类型为string。新建完成后此属性即已落库，后续在进行数据上报时，如果上报的属性数据类型又变为number，则不影响已落库的属性数据类型，只会导致上报的属性数据类型与已落库的属性数据类型不一致而导致可能出现上报错误等问题。</p>
+<ul><li>您可以在产品界面应用管理\-数据管理中，可查看现有环境中属性的数据类型。</li></ul>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_f511c02b1ee01c96fe2082f139e9ca61.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;b1779cb5&quot;&gt;&lt;/span&gt;</p>
+<h2>属性数据类型对应关系</h2>
+<p>数据类型有以下几种：</p>
+<table><thead><tr><th><strong>采集数据类型\-中文名</strong></th><th><strong>采集数据类型\-JSON</strong></th><th><strong>数据库类型</strong></th><th><strong>额外说明</strong></th><th><strong>示例数据</strong></th></tr></thead><tbody><tr><td><strong>整数</strong></td><td>number</td><td>int64</td><td>取值范围：[\-9223372036854775808, 9223372036854775807]</td><td>1024</td></tr><tr><td><strong>浮点数</strong></td><td>number</td><td>float64</td><td>8字节，最大精度16位</td><td>10.24</td></tr><tr><td><strong>字符串</strong></td><td>string</td><td>string</td><td>长度不超过 1024 字符，utf\-8编码</td><td>&quot;1024&quot;</td></tr><tr><td><strong>数组</strong></td><td>array</td><td>list</td><td>最多支持500个元素，元素数据类型支持 string，一个数组中所有元素类型需保持一致。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;数据落库时，会对 list 的元素进行去重，例如 [5,5,5] ，变成[5] ； [5,5,6] ，变成[5,6] ； [5,6,5] ，变成[5,6] 。&lt;/div&gt;&lt;br&gt;</td><td>[&quot;10&quot;, &quot;24&quot;]</td></tr><tr><td><strong>日期时间</strong></td><td>string</td><td>datetime</td><td>上报格式：&lt;br&gt;&lt;br&gt;&lt;br&gt;* &quot;yyyy\-MM\-dd HH:mm:ss&quot;&lt;br&gt;&lt;br&gt;* &quot;yyyy\-MM\-dd HH:mm:ss+Offset&quot;（其中 +Offset 为时区偏移）&lt;br&gt;&lt;br&gt;* &quot;yyyy\-MM\-dd HH:mm:ss.SSS&quot;（其中 SSS 为毫秒）&lt;br&gt;&lt;br&gt;* &quot;yyyy\-MM\-dd HH:mm:ss.SSS+Offset&quot;（同前）&lt;br&gt;&lt;br&gt;&lt;br&gt;日期的取值范围：[1970, 2099]&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;如果是形如 &quot;2020\-07\-07 01:22:33&quot; 的 datetime 上报，默认按应用级的时区；&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;如果您需要指定 timezone，需要上报 “2020\-07\-07T13:46:08.342+08:00” 格式的方式。&lt;/div&gt;&lt;br&gt;</td><td>&quot;2020\-10\-24 23:47:12&quot;&lt;br&gt;&lt;br&gt;&quot;2020\-10\-24 23:47:12+08:00&quot;&lt;br&gt;&lt;br&gt;&quot;2020\-10\-24 23:47:12.102&quot;&lt;br&gt;&lt;br&gt;&quot;2020\-10\-24 23:47:12.102+08:00&quot;</td></tr><tr><td><strong>版本</strong></td><td>string</td><td>string</td><td>版本类数据的上报格式为：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 2段~6段&lt;br&gt;&lt;br&gt;* 英文句点分隔&lt;br&gt;&lt;br&gt;* 每段最长5位数字。&lt;br&gt;&lt;br&gt;&lt;br&gt;系统发现上报数据的取值的格式匹配时，会自动将数据类型设置为版本类型。版本类型可按数值排序规则进行排序，也可进行大于及小于的运算符进行筛选。&lt;br&gt;&lt;br&gt;对应格式要求的正则表达式为：^[0\-9]{1,5}(.[0\-9]{1,5}){1,5}$&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;版本类型的数据在入库存储时，数据格式为string，在后续查询分析时会进一步处理为version类的数据，查询时支持的过滤条件为version类型数据支持的过滤条件。&lt;/div&gt;&lt;br&gt;</td><td>&quot;10.2&quot;&lt;br&gt;&lt;br&gt;&quot;1.02.4&quot;&lt;br&gt;&lt;br&gt;&quot;1.02.4.12345.22345.32345&quot;</td></tr><tr><td><strong>其他类型</strong></td><td>object/boolean</td><td>string</td><td>支持上报 object 和 boolean （bool：是/否）数据类型的数据，但会被转化成 string 进行存储。</td><td>\-\-</td></tr></tbody></table>
+<p>&lt;span id=&quot;_2-不同数据类型应用&quot;&gt;&lt;/span&gt;</p>
+<h1>2.不同数据类型应用</h1>
+<ul><li><strong>不同属性数据类型，可计算的指标</strong></li></ul>
+<table><thead><tr><th>类别</th><th>分析功能</th><th>数据类型</th><th>计算方法</th></tr></thead><tbody><tr><td>事件</td><td>实验报告</td><td>\-（全部）</td><td>总次数&lt;br&gt;&lt;br&gt;总人数&lt;br&gt;&lt;br&gt;人均次数</td></tr><tr><td>事件</td><td>实验报告</td><td>\-（全部）</td><td>总次数&lt;br&gt;&lt;br&gt;天数&lt;br&gt;&lt;br&gt;小时数</td></tr><tr><td>事件属性</td><td>通用</td><td>int&lt;br&gt;&lt;br&gt;float</td><td>按……求和&lt;br&gt;&lt;br&gt;按……求平均值&lt;br&gt;&lt;br&gt;按……求人均值&lt;br&gt;&lt;br&gt;按……求分位数</td></tr><tr><td>事件属性</td><td>通用</td><td>Int&lt;br&gt;&lt;br&gt;float&lt;br&gt;&lt;br&gt;string&lt;br&gt;&lt;br&gt;list&lt;br&gt;&lt;br&gt;datetime</td><td>按……求去重数&lt;br&gt;&lt;br&gt;按……和用户去重</td></tr></tbody></table>
+<ul><li><strong>不同属性数据类型，作为筛选条件可用的操作符</strong></li></ul>
+<table><thead><tr><th>类型</th><th>为空</th><th>不为空</th><th>=</th><th>≠</th><th>大于</th><th>小于</th><th>大于等于</th><th>小于等于</th><th>包含</th><th>不包含</th><th>正则匹配</th></tr></thead><tbody><tr><td>字符串</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td></td><td></td><td></td><td></td><td>✓</td><td>✓</td><td>✓</td></tr><tr><td>整型</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td></td><td></td><td></td></tr><tr><td>浮点型</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td></td><td></td><td></td></tr><tr><td>数组</td><td>✓</td><td>✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td>✓</td><td>✓</td><td></td></tr><tr><td>日期时间</td><td>✓</td><td>✓</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>版本</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr></tbody></table>
+<ul><li>字符串类型可以选择“为空”和“不为空”用于匹配 null 或非 null。</li></ul>
+<ul><li>日期类型属性有一个单独的筛选规则（如下表）：</li></ul>
+<table><thead><tr><th><strong>操作符名称</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td><strong>固定范围</strong></td><td>所选属性的时间在一个固定的时间范围内，可以是过去365天到未来365天内的任何一天或多天。</td></tr><tr><td><strong>在当前时间</strong></td><td>所选属性的时间位于查询发起的时刻到用户所设定的相对时段之间。&lt;br&gt;&lt;br&gt;可选条件：&lt;br&gt;&lt;br&gt;&lt;br&gt;1. 过去 {N} 小时 {之前,之内,至 {M} 天之间}（取值范围：1&lt;= N &lt;= 365，N 须大于 M，365 \&gt;= N \&gt; M \&gt;0）&lt;br&gt;&lt;br&gt;2. 未来 {N} 小时 {之前,之内,至 {M} 天之间}（取值范围：1&lt;= N &lt;= 365，N 须小于 M，365 \&gt;= N \&gt; M \&gt;0）</td></tr><tr><td><strong>在今天和</strong></td><td>所选属性的时间位于查询发起的当天（自然天）到用户所设定的相对天数（自然天）范围之间。&lt;br&gt;&lt;br&gt;可选条件：&lt;br&gt;&lt;br&gt;&lt;br&gt;1. 过去 {N} 天 {之前,之内,至 {M} 天之间}（取值范围：1&lt;= N &lt;= 365，N 须大于 M，365 \&gt;= N \&gt; M \&gt;0）&lt;br&gt;&lt;br&gt;2. 未来 {N} 天 {之前,之内,至 {M} 天之间}（取值范围：1&lt;= N &lt;= 365，N 须小于 M，365 \&gt;= N \&gt; M \&gt;0）</td></tr><tr><td><strong>在事件发生</strong></td><td>所选属性的时间位于相对当前事件的发生时间的一段时间内。由于用到了事件的发生时间，所以仅当作为事件的过滤条件时才会出现这种操作符。&lt;br&gt;&lt;br&gt;可选条件：&lt;br&gt;&lt;br&gt;&lt;br&gt;1. 当天、当周和当月：事件发生时所在的自然天、周或月&lt;br&gt;&lt;br&gt;2. 之前 {N} {天,秒,分,小时,周} 内（此时的天、周计算时不是自然天、自然周，而是相对事件发生时刻推算出的时刻）&lt;br&gt;&lt;br&gt;3. 之后 {N} {天 , 秒,分,小时,周} 内（同前）&lt;br&gt;&lt;br&gt;&lt;br&gt;N 的取值范围：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 天：1 &lt;= N &lt;= 365（当前都按天级的限制执行）&lt;br&gt;&lt;br&gt;* 秒：1 &lt;= N &lt;= 365&lt;br&gt;&lt;br&gt;* 分：1 &lt;= N &lt;= 365&lt;br&gt;&lt;br&gt;* 小时：1 &lt;= N &lt;= 168&lt;br&gt;&lt;br&gt;* 周：1 &lt;= N &lt;= 52</td></tr></tbody></table>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;选择不同数据格式注意事项：&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;需要求和、平均值、按照区间范围筛选的必须要用int、float数值类型。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;需要时间筛选条件的必须定义数据类型为datetime格式。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;_3-上报数据限制&quot;&gt;&lt;/span&gt;</p>
+<h1>3.上报数据限制</h1>
+<p>&lt;span id=&quot;_3-1-一般限制&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>3.1 一般限制</strong></h2>
+<ul><li>单个应用的上报的事件数总量不限制；</li></ul>
+<ul><li>单个应用支持元事件种类不超过1000个（不同应用之间互不影响，不含虚拟事件）；</li></ul>
+<ul><li>单个事件的属性数量推荐300个以内，最多不超过500个（不同事件之间互不影响）；</li></ul>
+<ul><li>用户属性的属性数量最多不超过 500个；</li></ul>
+<ul><li>单个应用自定义事件公共属性数量不超过100个；</li></ul>
+<ul><li>事件名建议不超过64个字符，最长不超过255个字符；</li></ul>
+<ul><li>事件属性名和用户属性名称最长不超过64个字符；</li></ul>
+<ul><li>属性值长度建议不超过255字符，特殊情况如url等最大支持1024字符；</li></ul>
+<ul><li>事件属性名称禁止命名为user_unique_id、ssid、event_id；</li></ul>
+<ul><li>属性名不允许和预置属性名称相同；预置属性文档可查看<a href="https://www.volcengine.com/docs/6287/169885" target="_blank" rel="noopener">预置属性</a>。</li></ul>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;超过上述限制时，超过的事件、属性数据可能会被系统自动丢弃。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;_3-2-事件时间限制&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>3.2 事件时间限制</strong></h2>
+<p>使用客户端 SDK （iOS、Android）导入的数据，服务端默认只接收事件发生时间在接收时间向前 7 天内和向后24小时内数据。</p>
+<p>&lt;span id=&quot;_3-3-命名限制&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>3.3 命名限制</strong></h2>
+<ol><li>events表中，同一个属性名，不允许存在多个属性类型，只有一种属性类型。</li></ol>
+<ol><li>users表中，同一个属性名，不允许存在多个属性类型，只有一种属性类型。</li></ol>
+<ol><li>同一个属性名，如果在events和users表中同时存在，在两表中数据类型可以相同，也可以不同。</li></ol>
+<p>&lt;span id=&quot;_3-4-属性长度和范围的限制&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>3.4 属性长度和范围的限制</strong></h2>
+<table><thead><tr><th>中文名</th><th>数据库类型</th><th>额外说明</th></tr></thead><tbody><tr><td>整数</td><td>int64</td><td>取值范围：[\-9223372036854775808, 9223372036854775807]</td></tr><tr><td>浮点数</td><td>float64</td><td>8字节，最大精度16位</td></tr><tr><td>字符串</td><td>string</td><td>最大支持 1024 字符。</td></tr><tr><td>版本(字符串)</td><td>version(string)</td><td>格式：1. 2段~6段 2. 英文句点分隔 3. 每段最长5位&lt;br&gt;&lt;br&gt;示例：1.1.2.4321</td></tr><tr><td>数组</td><td>list</td><td>最多支持500个元素，元素数据类型支持 string，一个数组中所有元素类型需保持一致。</td></tr><tr><td>日期时间</td><td>datetime</td><td>日期取值范围：[1900, 2099]</td></tr></tbody></table>
+<p>&lt;span id=&quot;_4-日志结构&quot;&gt;&lt;/span&gt;</p>
+<h1>4.日志结构</h1>
+<p>入库后可看到的数据格式分别如下：</p>
+<ul><li><strong>私有化</strong></li></ul>
+<pre><code>{
+    &quot;time&quot;: 1606301031,
+    &quot;server_time&quot;: 1606249381,
+    &quot;local_time_ms&quot;: 1606301031000,
+    &quot;device_id&quot;: &quot;6912716898461553676&quot;,
+    &quot;os&quot;: &quot;ios&quot;,
+    &quot;params&quot;: {
+        &quot;package&quot;: &quot;package&quot;,
+        &quot;app_version&quot;: &quot;1.0.6&quot;,
+        &quot;device_model&quot;: &quot;iphone 6s plus&quot;,
+        &quot;timezone&quot;: &quot;8.0&quot;,
+        &quot;os_version&quot;: &quot;10.3.2&quot;,
+        &quot;session_depth_range&quot;: &quot;5&quot;,
+        &quot;session_id&quot;: &quot;762891435873043&quot;,
+        &quot;network_carrier&quot;: &quot;TELCEL&quot;,
+        &quot;language&quot;: &quot;zh&quot;,
+        &quot;exit_page&quot;: &quot;http://datarangers.com.cn/pages/index/3&quot;,
+        &quot;product_name&quot;: &quot;default_to_b&quot;,
+        &quot;resolution&quot;: &quot;375x667&quot;,
+        &quot;platform&quot;: &quot;ios&quot;,
+        &quot;loc_country_id&quot;: &quot;1814991&quot;,
+        &quot;app_channel&quot;: &quot;线下扫码下载&quot;,
+        &quot;device_brand&quot;: &quot;苹果&quot;,
+        &quot;browser&quot;: &quot;chrome&quot;,
+        &quot;os_name&quot;: &quot;ios&quot;,
+        &quot;loc_province_id&quot;: &quot;1280239&quot;,
+        &quot;session_duration_range&quot;: &quot;100-200&quot;,
+        &quot;client_ip&quot;: &quot;118.213.201.135&quot;,
+        &quot;loc_city_id&quot;: &quot;1279540&quot;,
+        &quot;browser_version&quot;: &quot;68.0.3440&quot;,
+        &quot;network_type&quot;: &quot;mobile&quot;,
+        &quot;duration&quot;: 117,
+        &quot;session_depth&quot;: 5,
+        &quot;screen_width&quot;: 375,
+        &quot;localtime_ms&quot;: 1606301031000,
+        &quot;screen_height&quot;: 667,
+        &quot;session_duration&quot;: 117,
+        &quot;is_login&quot;: 1
+    }
+}</code></pre>
+<ul><li><strong>SaaS</strong></li></ul>
+<pre><code>{
+        &quot;user&quot;: {
+            &quot;ssid&quot;: &quot;&quot;,                // SSID
+            &quot;user_unique_id&quot;: &quot;&quot;,      // user_unique_id，存储于 string_profiles{&#x27;uuid&#x27;}
+            &quot;web_id&quot;: 0,               // 网页端的匿名ID，存储于 string_profiles{&#x27;web_id&#x27;}
+            &quot;device_id&quot;: 0,            // 移动端,小程序端的匿名ID
+            &quot;user_register_time&quot;: &quot;&quot;   // 用户首次事件触发时间
+        },
+        &quot;params&quot;: {
+            &quot;language&quot;: &quot;zh-CN&quot;,
+            &quot;region&quot;: &quot;&quot;,
+            &quot;app_version&quot;: &quot;unknown&quot;,
+            &quot;app_region&quot;: &quot;&quot;,
+            &quot;app_channel&quot;: &quot;&quot;,
+            &quot;app_language&quot;: &quot;&quot;,
+            &quot;os_version&quot;: &quot;10&quot;,
+            &quot;os_name&quot;: &quot;10&quot;,
+            &quot;device_model&quot;: &quot;Windows NT 10.0&quot;,
+            &quot;device_brand&quot;: &quot;&quot;,
+            &quot;network_type&quot;: &quot;&quot;,
+            &quot;network_carrier&quot;: &quot;&quot;
+        },
+        &quot;items&quot;:{
+            &quot;sku&quot;: [{
+                &quot;id&quot;: &quot;&quot;,
+                &quot;property_1&quot;: &quot;&quot;,     // 当前item定义的属性1
+                &quot;property_1&quot;: &quot;&quot;,     // 当前item定义的属性2
+            }]
+        },
+        &quot;event_name&quot;: &quot;predefine_pageview&quot;,
+        &quot;app_id&quot;: &quot;2174&quot;,             // string, rangers 中的应用id
+        &quot;app_name&quot;: &quot;数据发现者&quot;,       // string, rangers 中的应用名
+        &quot;server_time&quot;: 1606783082,    // int(timestamp), 服务端收到事件的时间, 精确到 ms
+        &quot;time&quot;: 1606783080,           // int(timestamp), time = local_time_ms/1000，单位为秒。
+        &quot;event_date&quot;: 1606783080      // date, 基于 time 计算，但只精确到天
+}</code></pre>
+<p>&lt;span id=&quot;_5-faq&quot;&gt;&lt;/span&gt;</p>
+<h1>5.FAQ</h1>
+<p>&lt;span id=&quot;q1：-各端数据类型传输不一致，系统如何处理？如何修改？&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>Q1： 各端数据类型传输不一致，系统如何处理？如何修改？</strong> </h3>
+<p>描述：例如IOS端先传入A属性的格式为数值类型，安卓端后传入A属性的格式为字符串类型，此时系统如何处理，结果会如何？</p>
+<p><strong>A2</strong>：一个属性的类型由首次导入的数据类型决定，如果后续传入不同数据类型的数据，系统会尝试做转换，如果转换成功，则入库。如果转换失败，则属性信息值为‘0’入库，相当于属性信息丢失，但事件正常上报。</p>
+<p>具体转换成功信息如下表：</p>
+<table><thead><tr><th>原数据类型</th><th>新数据类型</th><th>是否转换成功</th><th>其他说明</th></tr></thead><tbody><tr><td>int、float、datetime、list</td><td>string</td><td>是</td><td></td></tr><tr><td>数值型string，例如‘1’，‘0.1’</td><td>int、float</td><td>是</td><td>原数据类型虽为string，但是值为数字123456</td></tr><tr><td>float</td><td>int</td><td>是</td><td>但是会丢失小数点后面的数据。</td></tr><tr><td>int</td><td>float</td><td>是</td><td></td></tr><tr><td>其余数据类型均转换失败。</td><td></td><td></td><td></td></tr></tbody></table>
+<p>注意</p>
+<p>需要在数据校验侧规避这一问题，如果发生，请错误端及时调整数据格式，否则会引发数据丢失。</p>
+<p>&lt;span id=&quot;q2：-是否接受时间戳string的上报，会自动解析成datetime格式吗？&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>Q2： 是否接受时间戳string的上报，会自动解析成datetime格式吗？</strong> </h3>
+<p><strong>A3</strong>：时间戳不支持，只支持日期时间的格式。</p>
+<p>&lt;span id=&quot;q3：datetime是否接受按天级别格式的数据，-yyyy-mm-dd&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>Q3：datetime是否接受按天级别格式的数据，&quot;yyyy\-MM\-dd&quot;</strong> </h3>
+<p><strong>A4</strong>：支持。（上报格式：&quot;yyyy\-MM\-dd&quot;）</p>
+<p>&lt;span id=&quot;q4：-埋点设计时，如何选择正确的数据类型？&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>Q4： 埋点设计时，如何选择正确的数据类型？</strong> </h3>
+<table><thead><tr><th>中文名</th><th>数据库类型</th><th>应用场景</th></tr></thead><tbody><tr><td>整数</td><td>int64</td><td>需要数值求和，平均值等计算，并且不会出现小数的情况。例如：年龄，整数金额。</td></tr><tr><td>浮点数</td><td>float64</td><td>需要数值求和，平均值等计算，并且会出现小数的情况。例如：折扣金额，时长。</td></tr><tr><td>字符串</td><td>string</td><td>常用的文本类属性，例如：页面标题，按钮名称，商品分类。不需要计算的ID类型，例如：内容ID，商品ID。</td></tr><tr><td>数组</td><td>list</td><td>集合，一个属性有多个值，但筛选又需要按单个筛选的。例如：一篇娱乐新闻属于多个内容标签,{‘热门’，‘娱乐’，‘新闻’}例如：一个商品属于多个商品标签</td></tr><tr><td>日期时间</td><td>datetime</td><td>需要按照日期范围筛选的</td></tr><tr><td>版本</td><td>string</td><td>需要对版本进行排序时</td></tr></tbody></table>
+<p>&lt;span id=&quot;q5：为什么会一段的版本值？不是版本格式要求至少两段么？&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>Q5：为什么会一段的版本值？不是版本格式要求至少两段么？</strong> </h3>
+<p>默认情况下，系统在遇到被“.”切割为至少两段的数据时（例如 2.0），会自动判断其为版本类型。而对于已知的版本类型的字段，我们会将这个限制放开，允许没有“.”，例如：2 这样的值上报。因为在一些情况下，版本号只有一段。当然对于这种情况，你也可以选择将版本号作为 int 类型上报。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

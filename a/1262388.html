@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>埋点实时验证 · A/B 实验知识库</title>
+<meta name="description" content="实时埋点检测是可以实时检测、快速验证埋点是否正确及数据上传情况的功能，常用于研发或测试人员debug验证，支持移动端App(Android、iOS)、微信小程序、网页端、服务端（Java）。 当使用埋点检测功能，成功建立">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1262388.html">
+<meta property="og:title" content="埋点实时验证"><meta property="og:description" content="实时埋点检测是可以实时检测、快速验证埋点是否正确及数据上传情况的功能，常用于研发或测试人员debug验证，支持移动端App(Android、iOS)、微信小程序、网页端、服务端（Java）。 当使用埋点检测功能，成功建立">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1262388.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>埋点实时验证</h1>
+<div class="meta">📄 1,354 字 · 🕐 2024-07-03</div>
+<article class="md"><p>实时埋点检测是可以实时检测、快速验证埋点是否正确及数据上传情况的功能，常用于研发或测试人员debug验证，支持移动端App(Android、iOS)、微信小程序、网页端、服务端（Java）。 当使用埋点检测功能，成功建立埋点检测连接后，进入埋点验证页面，每一次事件触发都会实时显示在埋点验证的页面内。</p>
+<p>&lt;span id=&quot;48f66d63&quot;&gt;&lt;/span&gt;</p>
+<h1>功能入口</h1>
+<p>登录DataTester控制台后，单击左侧导航栏<strong>指标管理</strong>\&gt;<strong>元数据管理</strong>\&gt;<strong>埋点实时验证</strong>，进入埋点实时验证页面。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/25195f52ac4c4838b962ece4149f2e4e~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;5a17b8db&quot;&gt;&lt;/span&gt;</p>
+<h1>建立埋点实时验证连接</h1>
+<p>&lt;span id=&quot;7d15dcdd&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>移动端App</strong></h2>
+<ol><li>点击&quot;验证埋点&quot;页面上方的&quot;<strong>移动端App</strong>&quot;页签。</li></ol>
+<ol><li>选择后，启动实时检测，建立实时验证连接。</li></ol>
+<ol><li>第一步：扫描二维码。</li></ol>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/797e92788c7d4491990deb71bf2a0dd3~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>      &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;2&quot;&gt;注意      &lt;/div&gt;</p>
+<p>      &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-wrapper-indent=&quot;2&quot;&gt;确保手机已安装App的正确版本(应用名称、App_name、App_id)，且设置了正确的唤起Scheme，并在手机端已打开。      &lt;/div&gt;</p>
+<ol><li>第二步：在手机浏览器中打开。</li></ol>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/65260f4d57aa4a47ba2d2b0786666dab~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>第三步：在手机端，点击&quot;开始检测埋点&quot;，连接建立成功，开始检测。</li></ol>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/38361d1ce3294a278381c3f3a00665bf~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;9e333457&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>微信小程序</strong></h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;SaaS\-云原生环境暂不支持小程序埋点验证功能。&lt;/div&gt;</p>
+<ol><li>点击&quot;验证埋点&quot;页面上方的&quot;<strong>微信小程序</strong>&quot;页签。</li></ol>
+<ol><li>选择后，启动实时检测，建立实时验证连接。</li></ol>
+<ol><li>如果没有上传小程序二维码，则进入上传页面。</li></ol>
+<p>      &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_74d8556135e85c475e47335e23be1147.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>点击&quot;上传小程序码&quot;进入上传小程序码弹窗页面；根据提供的参数生成小程序码并上传，上传成功后，点击&quot;完成&quot;，即上传小程序码完成。</li></ol>
+<p>      &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_aa4268f5d7c55957d79a842f53538f17.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>页面展示生成上传的小程序二维码，二维码参数中带有启动埋点验证的相关参数。</li></ol>
+<ol><li>扫描小程序码。</li></ol>
+<ol><li>扫码进入小程序后，SDK根据埋点检测参数，启动实时检测的连接。</li></ol>
+<ol><li>扫码成功后，自动进入埋点检测页面。</li></ol>
+<p>         &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7484cbfb755c40c6a370bdf56b7a6ec6~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>         如果多个用户都扫码且没有开始检测，则根据列出扫码的用户及相关信息（按扫码时间倒序排列），可以从中选择自己的手机进行扫码，成功后自动进入埋点检测页面。</p>
+<p>         &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/ca4e88a5dab84a808e91f7cc194d7001~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;6ca54157&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>网页端应用</strong></h2>
+<ol><li>点击&quot;验证埋点&quot;页面上方的&quot;<strong>网页端应用</strong>&quot;页签。</li></ol>
+<ol><li>选择后，启动实时检测，建立实时验证连接。</li></ol>
+<ol><li>输入网页端埋点检测网页地址(注：网页集成的JS SDK版本需要5.1.2及以上版本)</li></ol>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/050d744b398a4933b0fcd335eaae522b~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>生成二维码及访问URL地址(注：该页面需要集成Web端的SDK)</li></ol>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/1c25e1c0cc404c52b517ae36c7f1c9fa~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>可通过以下方式打开页面。</li></ol>
+<ul><li>可在手机端扫码，扫码后建立链接。</li></ul>
+<ul><li>可根据生成的访问URL，复制后在浏览器打开访问页面，也可以直接在电脑浏览器打开。</li></ul>
+<p>&lt;span id=&quot;9ab0eec8&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>服务端埋点</strong></h2>
+<ol><li>点击&quot;验证埋点&quot;页面上方的&quot;<strong>服务端埋点</strong>&quot;页签。</li></ol>
+<ol><li>启动实时检测，建立实时验证连接。</li></ol>
+<ol><li>第一步：输入验证账号的user_unique_id。</li></ol>
+<ol><li>第二步：获取url并根据页面提示将url设置到SDK初始化指定位置。</li></ol>
+<ol><li>第三步：开始上报埋点并查看实时检测数据，连接建立后页面将自动跳转。</li></ol>
+<p>      &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_502d0ada435caba90b43023984d0058e.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;bc998c08&quot;&gt;&lt;/span&gt;</p>
+<h1>查看实时埋点检测</h1>
+<p>启动实时检测，成功建立实时验证连接后，自动进入实时验证页面，可以查看每一次的事件触发。 以移动端App为例，在手机端应用中触发上传注册事件(register)时，可进行以下操作：</p>
+<ol><li>在实时验证页面左侧的事件轴中可以看到register事件的触发；在页面右侧代码块中可以看到register事件实时上报的数据。</li></ol>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_d97544b7c9fca567c35ae727c59128ec.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>点击&quot;完成检测&quot;，断开连接，并跳转到埋点管理页面。</li></ol>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_a545d58e0ca0ded26098cb7824687ad7.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

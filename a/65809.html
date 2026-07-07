@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>编程实验 · A/B 实验知识库</title>
+<meta name="description" content="编程实验 指的是通过在 服务端 或 客户端 代码中嵌入AB实验版本逻辑，通过代码编程进行AB实验的方式，可广泛应用于前端优化、策略优化和后端算法优化多种实验场景。本文为您介绍编程实验的应用场景和创建操作指导。 实验细分类">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65809.html">
+<meta property="og:title" content="编程实验"><meta property="og:description" content="编程实验 指的是通过在 服务端 或 客户端 代码中嵌入AB实验版本逻辑，通过代码编程进行AB实验的方式，可广泛应用于前端优化、策略优化和后端算法优化多种实验场景。本文为您介绍编程实验的应用场景和创建操作指导。 实验细分类">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65809.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>编程实验</h1>
+<div class="meta">📄 7,351 字 · 🕐 2026-01-07</div>
+<article class="md"><p><strong>编程实验</strong>指的是通过在<strong>服务端</strong>或<strong>客户端</strong>代码中嵌入AB实验版本逻辑，通过代码编程进行AB实验的方式，可广泛应用于前端优化、策略优化和后端算法优化多种实验场景。本文为您介绍编程实验的应用场景和创建操作指导。</p>
+<p>&lt;span id=&quot;248c35eb&quot;&gt;&lt;/span&gt;</p>
+<h1>实验细分类型与适用场景</h1>
+<ul><li>编程实验适用于有一定代码开发能力的实验人员，可适用几乎常见的所有需要进行AB实验的场景。</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;A/B实验还为您提供可视化实验、MAB实验等多种实验类型，可满足无需代码可视化开展实验、智能实验等场景。   &lt;/div&gt;</p>
+<ul><li>根据代码嵌入类型，编程实验可进一步细分为<strong>服务端实验</strong>和<strong>客户端实验</strong>两种，两种实验的对比说明和适用场景如下。</li></ul>
+<table><thead><tr><th><strong>实验类型</strong></th><th><strong>实验对比说明</strong></th><th><strong>适用场景</strong></th></tr></thead><tbody><tr><td><strong>客户端实验</strong></td><td>指将实验逻辑嵌入客户端实验代码中，通过客户端获取实验分组信息并控制配置生效的实验。</td><td>* 适用于只能由客户端控制的功能进行AB实验的场景。&lt;br&gt;&lt;br&gt;   比如客户端的UI样式、交互功能设计等。&lt;br&gt;&lt;br&gt;* 适用于APP唤起时，AB实验配置即需生效的场景。&lt;br&gt;&lt;br&gt;   比如需要针对APP的开屏页面进行A/B实验，用户刚刚打开APP，客户端就需要向用户展示开屏界面了，这种情况下客户端可能来不及向服务端请求实验配置参数。</td></tr><tr><td><strong>服务端实验</strong></td><td>指将实验逻辑嵌入服务端代码中，通过服务端获取实验分组信息并控制配置生效或下发的实验。</td><td>* 适用于只能由服务端控制的功能进行AB实验的场景。&lt;br&gt;&lt;br&gt;   比如内容分发算法（如用户打开今日头条以后在feed流中会看见什么内容）、由服务端逻辑控制的产品功能（如推送）等。&lt;br&gt;&lt;br&gt;* 适用于不要求唤起APP就需要AB实验配置生效的场景。此场景下，客户端有通常充分时间向服务端发起请求，获得实验配置后再向用户展示实验策略。</td></tr></tbody></table>
+<p>&lt;span id=&quot;1f4a607d&quot;&gt;&lt;/span&gt;</p>
+<h1><strong>前提条件</strong></h1>
+<p>开始创建实验前，需先根据实验设计，先完成实验所需数据埋点接入，您根据实验类型通过客户端SDK或服务端SDK进行数据接入，详见：<a href="https://www.volcengine.com/docs/6287/101762" target="_blank" rel="noopener">实验SDK集成概述</a>。</p>
+<p>&lt;span id=&quot;50121593&quot;&gt;&lt;/span&gt;</p>
+<h1>操作演示</h1>
+<p>以下动图便于您快速了解编程实验的创建流程，详细的操作步骤请参见下文的<strong>创建实验</strong>章节。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_4d879174172dbbd8129932ab56f58602.gif" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;2304ccce&quot;&gt;&lt;/span&gt;</p>
+<h1>创建实验</h1>
+<p>在实验列表页点击“ <strong>+创建实验</strong>”，选择编程实验，进入实验创建流程，参考以下步骤配置实验的详细信息。</p>
+<p>&lt;span id=&quot;bd627bd2&quot;&gt;&lt;/span&gt;</p>
+<h2>step1 输入基本信息</h2>
+<p><strong>实验基本信息</strong>相关参数主要用于标识实验、明确实验类型等，配置详情如下。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/2b2ab65a007b4a33951e435a0e876496~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>实验名称&amp;实验描述</strong></td><td>* <strong>实验名称</strong>：建议设置为与实验内容相关的名称，如有实验版本迭代可以增加版本号后缀，让您的伙伴能够快速了解到实验是做什么的、在哪个迭代版本。&lt;br&gt;&lt;br&gt;* <strong>实验描述</strong> ：实验内容简述，可以让项目相关人员更清晰地知道到这个实验是如何做的，解决什么问题，同时也便于后期查看和管理历史实验时一目了然。</td></tr><tr><td><strong>实验标签</strong></td><td>您可以在下拉框中选择已存在的实验标签，也可直接输入新标签。&lt;br&gt;&lt;br&gt;一般采用业务线、优化方向等实验内容关键词作为标签，用于筛选、归类实验，后续实验创建完成后，在实验列表中可以通过实验标签快速搜索到相关实验。</td></tr><tr><td><strong>实验类型</strong></td><td>根据实验规划选择创建的实验为客户端实验还是服务端实验。</td></tr><tr><td><strong>实验时长</strong></td><td>指实验开启的时长，一般为了避免不同时间段（工作日与周末）的用户行为差异，建议至少观察 2 个完整的实验周期。&lt;br&gt;&lt;br&gt;例如，考虑工作日与周末影响时，实验周期至少需要一周，那实验开启时长建议为14天。</td></tr><tr><td><strong>实验负责人</strong></td><td>默认为实验创建者。</td></tr></tbody></table>
+<p>&lt;span id=&quot;af75ea3b&quot;&gt;&lt;/span&gt;</p>
+<h2>step2 设置生效策略</h2>
+<p><strong>生效策略</strong>相关参数主要用于设置后续开启AB实验后，哪些用户会进入A实验、哪些用户会进入B实验，通过科学的实验流量分配，实现参与实验的用户量充足，且实验间彼此间不干扰效果可信。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;进行实验流量设置前，您需要先了解实验流量的一些基本概念：&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;流量&lt;/strong&gt;&amp;&lt;strong&gt;受众用户&lt;/strong&gt;&amp;&lt;strong&gt;实验流量&lt;/strong&gt;：&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;流量：指产品所拥有的总体用户数量。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;受众用户：在总体用户中，通过一些过滤条件圈选出来的用于参与AB实验的所有用户。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;实验流量：在受众用户中，参与某个AB实验的用户数占比。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;流量层&lt;/strong&gt;/&lt;strong&gt;实验层&lt;/strong&gt;/&lt;strong&gt;互斥组&lt;/strong&gt;/&lt;strong&gt;互斥层&amp;互斥实验&lt;/strong&gt;：&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;流量层，也称互斥组，也称互斥层、实验层。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;互斥实验&lt;/strong&gt;，即处在&lt;strong&gt;同一流量层&lt;/strong&gt;中的实验。互斥实验之间流量是互斥的，即互斥组中的所有实验都不会共享用户：如果一个用户命中了互斥组中的实验1，就不会命中该互斥组中的其他实验。&lt;/div&gt;</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/addaca444c1b451b8b0b4e0ce85723ef~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>流量设置</strong></li></ul>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>是否互斥</strong></td><td>当您需要开展多个AB实验时，您需要根据实验情况配置当前创建的实验是否需要与其他实验互斥，来避免同一个用户被分配进入了两个会相互影响的实验，从而影响AB实验结果。&lt;br&gt;&lt;br&gt;例如，您要同时做按钮颜色和按钮形状的实验，这两个实验彼此影响，就需要将这两个实验加入到一个互斥组中。&lt;br&gt;&lt;br&gt;了解更多流量层相关内容及如何创建流量层可查看：<a href="https://www.volcengine.com/docs/6287/65834" target="_blank" rel="noopener">规划实验流量：流量层与互斥域</a>。</td></tr><tr><td><strong>实验流量</strong></td><td>生效实验的用户占满足用户受众用户比例。系统默认为100%流量，您可以通过建议工具（点击流量计算器）进行流量预估，看设置多少流量合适，详见：<a href="https://www.volcengine.com/docs/6287/65814" target="_blank" rel="noopener">预估实验流量：流量计算器</a>。&lt;br&gt;&lt;br&gt;启用受众规则后，系统将<strong>先筛选符合规则的用户</strong>，再按配置的<strong>实验流量比例</strong>生效。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;实验流量的预估时，通常需要结合实验的业务指标与&lt;strong&gt;MDE&lt;/strong&gt;（检验灵敏度）来进行估算，通常实验指标为提升/降低xx（某个业务指标值），那MDE建议以小于这个指标值来进行估算，尽量避免MDE取值较大，无法检测出真实的实验结果。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td><strong>增强分流均匀性</strong></td><td>配置是否打开增强分流均匀性开关，打开开关后：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 您可设置针对哪些实验指标进行均匀分流，并设置均匀分流的时间范围和重随机停止条件。&lt;br&gt;&lt;br&gt;* 配置完成后，后续实验开启后，实验各版本分配的实验流量即会根据配置结果满足以下前置条件：&lt;br&gt;&lt;br&gt;   * 此处配置的实验指标在实验开始前，在各个实验版本中没有显著差异。&lt;br&gt;&lt;br&gt;   * 此处配置的人群在各个实验版本中平均分布。&lt;br&gt;&lt;br&gt;      通过满足实验前的流量均匀性条件，避免在实验开始前就存在差异性，从而让实验结果更有可信度。&lt;br&gt;&lt;br&gt;&lt;br&gt;更多关于增强分流均匀性的介绍和配置详情请参见<a href="https://www.volcengine.com/docs/6287/1851200" target="_blank" rel="noopener">增强分流均匀性</a>。</td></tr><tr><td><strong>流量生效方式</strong>（仅私有化）</td><td>支持「立即生效」和「平滑生效」平滑生效会在设置的时间内把流量生效到设定的大小，例如实验流量设置成30%，平滑生效时间设置成30min，则会按照每分钟生效1%的进度线性生效。平滑生效更多说明可以查看文档：<a href="https://www.volcengine.com/docs/6287/1169339" target="_blank" rel="noopener">实验流量平滑生效</a>。</td></tr></tbody></table>
+<ul><li><strong>用户受众规则</strong></li></ul>
+<p>   您可以创建多个筛选组，筛选组间为“或”的逻辑关系；每个筛选组内可设置多个过滤条件，过滤条件间为“且”的逻辑关系。</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0a8befc6a6e940689429c3af0af65409~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>   针对客户端实验和服务端实验，可进行过滤的能力不一致，对比介绍如下。</p>
+<table><thead><tr><th><strong>过滤条件</strong></th><th><strong>客户端实验</strong></th><th><strong>服务端实验</strong></th></tr></thead><tbody><tr><td><strong>添加过滤条件</strong></td><td>对于客户端实验，单击<strong>添加过滤条件</strong>后，您可以使用<strong>用户属性</strong>作为用户受众的过滤条件，支持使用系统提供的<strong>预置属性</strong>，也可创建<strong>自定义属性</strong>进行过滤。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/98d440855a234df4b136c4b65e478e9b~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;您可以在<strong>指标管理</strong>\&gt;<strong>元数据管理</strong>\&gt;<strong>用户属性</strong>页面查看已有的预置属性和自定义属性，或您也可以创建新的自定义属性。&lt;br&gt;&lt;br&gt;<strong>场景示例：新用户实验</strong>&lt;br&gt;&lt;br&gt;在「选择目标受众」过滤器中，可以针对新用户添加“用户首次安装时间”过滤条件，使用首次安装时间识别新用户，即首次安装时间晚于实验开启时间的所有用户被划入“新用户”范畴。在实验开启期间，只有新用户进实验组中，其他存量用户不进组。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/d38d7cc9512f4d6fab76d25ba28afb30~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td><td>对于服务端实验，单击<strong>添加过滤条件</strong>后，您可以使用已创建的<strong>服务端请求参数</strong>作为用户受众的过滤条件。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/481b05b7a69a4802bb3dd26ac489b5f5~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;创建服务端请求参数的操作详情请参见<a href="https://www.volcengine.com/docs/6287/65826" target="_blank" rel="noopener">服务端请求参数</a>。</td></tr><tr><td><strong>添加分群</strong></td><td>对于客户端实验，单击<strong>添加分群</strong>后，您可以使用已创建的用户分群来过滤用户。创建用户分群的操作详情请参见<a href="https://www.volcengine.com/docs/6287/65827" target="_blank" rel="noopener">用户分群</a>。</td><td>不支持</td></tr></tbody></table>
+<ul><li><strong>体验一致性</strong></li></ul>
+<p>   开启后，实验期间用户生效版本不随流量、受众条件调整发生变化，可以保障在实验期间，同一个用户只进入一个实验版本。开启后，用户只要进过当前实验版本(除非暂停，关闭实验)，就不再出实验。</p>
+<p>&lt;span id=&quot;322b3b13&quot;&gt;&lt;/span&gt;</p>
+<h2>step3 配置实验版本</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;在配置实验版本前，您需要先了解实验版本的一些基本概念：&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;实验版本&lt;/strong&gt;&amp;&lt;strong&gt;实验组&lt;/strong&gt;&amp;&lt;strong&gt;对照组&lt;/strong&gt;&lt;/div&gt;</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;AB实验通常为一组对照实验：&lt;strong&gt;实验版本&lt;/strong&gt;、&lt;strong&gt;对照版本&lt;/strong&gt;。通过对实验版本和对照版本分别设置不同的逻辑策略，保持其他条件稳定的情况下验证哪种策略更优。&lt;strong&gt;对照版本&lt;/strong&gt;一般是当前的策略，&lt;strong&gt;实验版本&lt;/strong&gt;一般是我们想要尝试的新策略。   &lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;测试用户&lt;/strong&gt;&amp;&lt;strong&gt;用户标识&lt;/strong&gt;：&lt;strong&gt;SSID&lt;/strong&gt;和&lt;strong&gt;UUID&lt;/strong&gt;&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;测试用户&lt;/strong&gt;：在实验正式开启之前，通常需要先选择几名用户来进行测试，观察实验是否能够正常获取想要收集的数据、测试加入实验逻辑后业务功能是否有bug等。参与测试的测试用户也被称为“白名单用户”。在配置实验版本时您需要为实验组和对照组分别添加测试用户。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;SSID&lt;/strong&gt;：即标准化服务ID（Standardized Service Id），是火山引擎增长营销套件系列产品用来标记和识别用户而提供的用户标识。SSID由系统自动生成和维护，您可以根据需要使用。为实验版本添加测试用户时，通过系统生成的SSID来标识参与测试的用户。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;UUID&lt;/strong&gt;：即User Unique Id，通常是产品业务中使用的用户标识，一般与用户的登录id（如手机号、email等）一一对应，UUID由您来维护。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;Feature：&lt;/div&gt;</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;Feature可以理解成某个功能特性，例如，您想做个实验看看按钮的新形状是不是能提高按钮的点击率，实验完成后发现确实是可以的，那把这个新形状上线就可以视为这个Feature上线/固化。   &lt;/div&gt;</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0e922e7a867947499c4e026a018b90b0~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>测试用户命中条件</strong></li></ul>
+<p>   选择测试用户命中对应的实验版本时，是否需满足上一个步骤中设置的受众规则。由于测试用户主要用于实验正式开启前的调试验证，测试用户的选择可以与最终实验命中用户不一致，您可以根据实际需要进行配置。</p>
+<ul><li><strong>是否关联Feature</strong></li></ul>
+<p>   如果您此前有创建好的Feature，可以将实验关联到Feature。选择关联后，可以将实验与 Feature 版本进行绑定，关联后，后续实验正常运行时，可以更加方便的管理和排查问题，如线上崩溃、进组用户不符合预期（用户反馈没有体验到功能）等，均可以排查配置在哪里发布了，方便后续全量管理。</p>
+<p>   更多Feature介绍和创建操作请参见<a href="https://www.volcengine.com/docs/6287/65813" target="_blank" rel="noopener">实验固化至Feature</a>。</p>
+<ul><li><strong>实验版本</strong></li></ul>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>版本类型&amp;版本描述</strong></td><td>AB实验通常为一组对照实验：<strong>实验版本、对照版本</strong>。通过对实验版本和对照版本分别设置不同的逻辑策略，保持其他条件稳定的情况下验证哪种策略更优。<strong>对照版本</strong>一般是当前的策略，<strong>实验版本</strong>一般是我们想要尝试的新策略。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 您可以选择好对应的<strong>版本类型</strong>，在<strong>版本描述</strong>中写明当前的版本策略是什么，可以单击左上角的<strong>版本1</strong>/<strong>版本2</strong>修改版本名称，便于后续快速了解当前是哪个实验版本。&lt;br&gt;&lt;br&gt;* 如果您有多个新策略需要进行实验，可单击下方的<strong>添加实验版本</strong>，继续添加新的实验组版本。</td></tr><tr><td><strong>测试用户</strong></td><td>为对应的实验版本添加测试用户，后续实验创建完成后，添加的测试用户将会进入对应的实验版本，可测试实验逻辑是否生效、功能是否有bug等。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果一个用户是某个版本的白名单用户，那么实验分流对该用户是没有影响的，会固定在该版本。白名单的用户，实验开启后的数据也会被计算到实验报告里。&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;更多关于白名单的说明，可参考&lt;a href=&quot;https://www.volcengine.com/docs/6287/65824&quot;&gt;文档&lt;/a&gt;。&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* 您可以手动输入用户的SSID，将用户添加为当前实验版本的测试用户，多个用户使用回车分隔。&lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;您可以在「全局设置\-用户细查」中输入UUID，查询对应用户的SSID。   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;* 如果您的实验为移动端APP类的实验，您也可以单击输入框后的二维码标识，通过扫码的方式，高效添加测试用户的SSID，更多关于扫码录入SSID的介绍请参见<a href="https://www.volcengine.com/docs/6287/67232" target="_blank" rel="noopener">扫码录入ID</a>。&lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;扫码方式添加测试用户SSID时，需确保扫码的手机已安装待进行实验的APP。   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;* 如果您在<strong>全局设置</strong>\&gt;<strong>受众管理</strong>中的<strong>用户测试白名单</strong>页面已添加了测试白名单用户，您也可以在下拉框中选择测试用户组。&lt;br&gt;&lt;br&gt;   添加白名单用户的操作详情请参见<a href="https://www.volcengine.com/docs/6287/65824" target="_blank" rel="noopener">用户测试白名单</a>。</td></tr><tr><td><strong>参数配置</strong>&amp;<strong>SDK代码示例</strong></td><td>* <strong>实验参数配置</strong>：是对实验版本的补充，一般是一个功能控制配置项，用来区分对照组和实验组。您可在对应实验版本界面配置实验参数名称、格式、和参数取值。&lt;br&gt;&lt;br&gt;   例如，为验证商品卡片的展示时机对用户对视频的消费时长的影响，可以设计实验为：&lt;br&gt;&lt;br&gt;   * 对照组：视频开始播放时立即展示商品卡片。&lt;br&gt;&lt;br&gt;   * 实验组1：视频播放5秒后展示商品卡片。&lt;br&gt;&lt;br&gt;   * 实验组2：视频播放10秒后展示商品卡片。&lt;br&gt;&lt;br&gt;      借助实验参数配置功能，首先在代码中解析goods_card_show_time参数并实现视频播放{goods_card_show_time}秒后展示商品卡片，然后在创建实验时，对照组/实验组1/实验组2分别配置实验参数goods_card_show_time=0/5/10，即可完成实验的灵活高效上线。&lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;创建实验时通过配置实验参数，不仅可以实现实验分流，同时好的实验参数设计，也能帮助实验创建者在不增加开发工作量的前提下，进行更灵活的实验。更多实验参数的介绍请参见&lt;a href=&quot;https://www.volcengine.com/docs/6287/67082&quot;&gt;如何配置实验参数&lt;/a&gt;。   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;* <strong>SDK代码示例</strong>：&lt;br&gt;&lt;br&gt;   创建完成实验参数后，需要开发人员获取包含实验参数的SDK代码，并合入客户端或服务端代码，解析后实验参数才能生效。&lt;br&gt;&lt;br&gt;   您可以单击页面右上角的SDK示例代码按钮，获取系统根据当前的实验参数配置结果自动生成的SDK示例代码，便于后续研发嵌入业务代码，通过编程实现AB实验的逻辑。&lt;br&gt;&lt;br&gt;   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/d283926599e24732baa753d9d42a60f8~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td><strong>流量分配</strong></td><td>后续实验开启后，所有参与AB实验的实验流量中，不同实验版本之间分配的实验流量比例。&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>流量均匀分配\-开启</strong>：默认为开启状态，开启状态下为强制各实验版本流量均匀分配。&lt;br&gt;&lt;br&gt;* <strong>流量均匀分配\-关闭</strong>：关闭后可调配对照版本和实验版本的流量相对占比。 可通过输入数值，来控制每个实验版本命中的用户比例。&lt;br&gt;&lt;br&gt;   例如，当关闭均匀分配后，三个实验版本，可配置对照版本占比20%，实验版本1占比为50%，实验版本2占比为30%，整体总和为100%，实验版本3即自动分20%流量。&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;各实验版本流量权重变更后，历史进组用户不会受到影响，只会影响已分配但未进组的用户，以及未分配的用户。&lt;/div&gt;&lt;br&gt;</td></tr></tbody></table>
+<p>&lt;span id=&quot;589a9bae&quot;&gt;&lt;/span&gt;</p>
+<h2>step4 实验指标</h2>
+<p>实验指标用于评估各实验版本的策略效果，辅助决策进行AB实验的功能是否能符合业务预期。通过配置实验核心指标和实验关注指标，后续实验完成后，会根据您配置的指标为您自动输出指标相关的实验报告，辅助您分析实验结果。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e207aed5fd4ac347150029236d181cc4.png" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>实验核心指标配置</strong></td><td>* <strong>核心指标配置</strong>：&lt;br&gt;&lt;br&gt;   用来决策实验功能是否符合预期的「直接效果指标」或「成功指标」，您可以在下拉框中，在已有的指标组中选择指标作为实验的核心指标，建议合理的进行实验设计，谨慎选择，更多关于实验指标设置的经验指导请查看<a href="https://www.volcengine.com/docs/6287/65838#_1-%E7%A1%AE%E5%AE%9A%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87" target="_blank" rel="noopener">确定评估指标</a>。&lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;实验指标配置好后，后续实验创建完成后，如果如有特殊情况需要修改实验指标，请进入实验详情页进行修改。   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;* <strong>监控报警</strong>：可选择目标指标点击“监控报警”，填写具体需要的报警策略，选择是否勾选“效果显著”，以及选择报警策略的生效方式。&lt;br&gt;&lt;br&gt;* <strong>编辑指标</strong>：点击图例中3位置处可进入指标编辑页面，对可指标进行名称、指标类型、是否设为必看指标等进行编辑。</td></tr><tr><td><strong>实验关注指标配置</strong></td><td>对需要关注的指标进行配置。您可以在页面的下拉列表中选择需要关注的指标，也可以在页面单击<strong>新建指标</strong>或<strong>移除指标</strong>按钮，快速调整需要关注的指标。</td></tr><tr><td><strong>置信水平</strong></td><td>置信水平（也称置信度、置信系数、统计显著性），是指实验组与对照组之间存在真正性能差异的概率。&lt;br&gt;&lt;br&gt;例如在置信水平是95%的情况下，如果某个实验指标的置信度p值&lt;0.05，则说明这个指标相比对照组，是有显著(超过置信水平)差异的。 如需设置置信水平参数值，则需联系集团管理员或应用管理员，前往“<a href="https://www.volcengine.com/docs/6287/65828#_1-2-%E7%BD%AE%E4%BF%A1%E6%B0%B4%E5%B9%B3" target="_blank" rel="noopener">系统管理-置信水平设置</a>”进行设置。</td></tr></tbody></table>
+<p>&lt;span id=&quot;ad5800a5&quot;&gt;&lt;/span&gt;</p>
+<h1>调试、开启、停止实验</h1>
+<p>实验创建完成后，您可以在A/B测试\&gt;实验列表中查看已创建的实验，并查看实验状态。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fad3f9d5a18e4a47a230b72ca7ce4a64~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>调试中</strong>：新创建完成的实验，实验状态为<strong>调试中</strong>，此阶段您可以邀请已添加为测试用户的用户进行实验测试，确认实验符合预期。</li></ul>
+<ul><li><strong>进行中</strong>：实验调试完毕后，您可以在实验列表页点击“启动”，即可开启实验。实验开始后，实验的状态变为<strong>进行中</strong>，此时进组用户可实时查看，指标置信度第二日产出。</li></ul>
+<ul><li><strong>已结束</strong>：实验开始后，当实验时长到达创建实验时配置的<strong>实验时长</strong>后，实验会自动停止；如果没有到达实验时长，您希望立即停止实验，也可在实验列表手动停止实验。停止实验后，实验状态变为<strong>已结束</strong>。</li></ul>
+<p>&lt;span id=&quot;87e41924&quot;&gt;&lt;/span&gt;</p>
+<h1>查看实验报告</h1>
+<p>实验开启后，您也可以在实验列表中，通过实验操作入口点击进入实验报告页面，查看实验报告，详情请参见<a href="https://www.volcengine.com/docs/6287/1130945" target="_blank" rel="noopener">实验报告概述</a>。</p>
+<p>&lt;span id=&quot;904c2caf&quot;&gt;&lt;/span&gt;</p>
+<h1>后续步骤</h1>
+<ul><li>实验分享与权限管理：</li></ul>
+<p>   实验创建完成后，您还可以对实验进行权限管理，设置实验为公共可见还是私有实验，详情请参见<a href="https://www.volcengine.com/docs/6287/65833" target="_blank" rel="noopener">实验权限管理</a>。</p>
+<ul><li>实验诊断：</li></ul>
+<p>   实验创建完成后，如果您发现实验不符合预期，您可以进入实验详情页面后，对实验进行诊断，详情请参见<a href="https://www.volcengine.com/docs/6287/65832" target="_blank" rel="noopener">实验命中诊断工具</a>。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

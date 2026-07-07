@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Node.js SDK · A/B 实验知识库</title>
+<meta name="description" content="下载SDK 您可以单击[下载地址](https://www.npmjs.com/package/@datatester/node sdk)，进入Node.js SDK详情页面，在页面中可查看当前最新的SDK版本，并下载使">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1355610.html">
+<meta property="og:title" content="Node.js SDK"><meta property="og:description" content="下载SDK 您可以单击[下载地址](https://www.npmjs.com/package/@datatester/node sdk)，进入Node.js SDK详情页面，在页面中可查看当前最新的SDK版本，并下载使">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1355610.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>Node.js SDK</h1>
+<div class="meta">📄 2,913 字 · 🕐 2025-12-17</div>
+<article class="md"><p>&lt;span id=&quot;c3a7bf9b&quot;&gt;&lt;/span&gt;</p>
+<h1>下载SDK</h1>
+<p>您可以单击<a href="https://www.npmjs.com/package/@datatester/node-sdk" target="_blank" rel="noopener">下载地址</a>，进入Node.js SDK详情页面，在页面中可查看当前最新的SDK版本，并下载使用对应版本的SDK。</p>
+<p>&lt;span id=&quot;da634e79&quot;&gt;&lt;/span&gt;</p>
+<h1>使用及说明</h1>
+<p>&lt;span id=&quot;7705aec4&quot;&gt;&lt;/span&gt;</p>
+<h2>使用示例</h2>
+<p>以下以1.2.1版本为例，为您介绍Node.js SDK的使用说明。</p>
+<pre><code>import AbClient from &quot;@datatester/node-sdk&quot;;
+// const AbClient = require(&#x27;@datatester/node-sdk&#x27;).default
+
+  // 在rangers应用管理中查询token信息
+  const abClient = new AbClient(&quot;token&quot;);
+
+(async () =&gt; {
+  // 因为返回的是promise，业务使用上需要自行处理reject行为
+  try {
+    const conf = await abClient.activate(
+      &quot;key&quot;,
+      &quot;decisionId&quot;,
+      &quot;trackId&quot;,
+      new Map(),
+      &quot;&quot;
+    );
+    // 获取key版本配置
+    const config = conf.val;
+  } catch (e) {
+    console.error(e);
+  }
+})();</code></pre>
+<p>&lt;span id=&quot;2c8d5618&quot;&gt;&lt;/span&gt;</p>
+<h2>初始化参数</h2>
+<table><thead><tr><th><strong>名词</strong></th><th><strong>类型</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td>token</td><td>string</td><td>必填，app 级别的 token，即应用中的App Key，可以在DataTester控制台应用列表中查看。&lt;br&gt;&lt;br&gt;&lt;br&gt;* SaaS\-云原生&lt;br&gt;&lt;br&gt;   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7f186b68302f40ae8822331615ea0e71~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;* SaaS\-非云原生&lt;br&gt;&lt;br&gt;   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/bd8f8c10d8bd427cbf16fac242976aa4~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td>metaHost</td><td>string</td><td>获取 meta 数据服务 host，默认为 AbClient.metaHost.cn。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;私有化场景需手动按需修改。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td>trackHost</td><td>string</td><td>上报实验曝光数据，默认为 AbClient.trackHost.cn</td></tr><tr><td>interval</td><td>number</td><td>元数据更新间隔时间，单位秒，默认 60s</td></tr><tr><td>metaType</td><td>string</td><td>分流元数据的来源类型，可选值：&#x27;server&#x27;，&#x27;cdn&#x27;, &#x27;file&#x27;&lt;br&gt;&lt;br&gt;&lt;br&gt;* server：默认值，由DataTester提供的分流服务&lt;br&gt;&lt;br&gt;* &#x27;cdn&#x27;, &#x27;file&#x27;：如果需要使用自建的分流服务，可按需修改为对应类型&lt;br&gt;&lt;br&gt;* 配置成‘file’时，仅初始化时对文件读取一次，不会按照 interval 去更新数据</td></tr><tr><td>metaFilePath</td><td>string</td><td>metaType===&#x27;file&#x27;时候才生效，元数据文件本地路径，使用前确保应用对文件有可读权限</td></tr><tr><td>metaPath</td><td>string</td><td>metaType===&#x27;cdn&#x27;或‘server’时候才生效，默认值：/abmeta/v2/get_abtest_info&lt;br&gt;&lt;br&gt;最终的上报地址通过metaHost+metaPath拼接而成，metaType为‘server’时可保持默认值，为‘cdn’时可按需修改。</td></tr><tr><td>enableFile</td><td>boolean</td><td>开启日志文件保存</td></tr><tr><td>dir</td><td>string</td><td>enableFile=true时，日志写入的文件路径，默认为当前应用启动的根路径，需确保应用对路径有写权限。</td></tr><tr><td>maxSize</td><td>string</td><td>日志文件最大值，<a href="https://github.com/iccicci/rotating-file-stream#size" target="_blank" rel="noopener">配置示例</a>。</td></tr><tr><td>level</td><td>string</td><td>需要记录的日志等级 可选值：&#x27;console&#x27;,&#x27;info&#x27;, &#x27;warn&#x27;, &#x27;error&#x27;</td></tr><tr><td>formatter</td><td>function</td><td>对日志做自定义格式化输出，可配置参数请参照 下载的Node.js SDK包中types/plugins/logger/index.d.ts文件，参考其中TLog相关参数。</td></tr><tr><td>trackMaxNum</td><td>number</td><td>一次上报的事件量个数，可选值 1\-50，默认每 10 秒会自动上报一次，一次上报 50 条。</td></tr><tr><td>UserAbInfoHandler</td><td>object</td><td>命中数据（用户的标识ID数据、实验命中版本信息数据）的存储，如果您需要缓存这些数据到本地，以实现实验用户进组不出组的逻辑，需实现此对象，包含查询和保存两个方法：&lt;br&gt;&lt;br&gt;``<code>JavaScript</code>`<code>&lt;br&gt;</code>`<code>{</code>`<code>&lt;br&gt;</code>`<code>query: (decisionId: string) =&gt; Promise&lt;string&gt;;</code>`<code>&lt;br&gt;</code>`<code>createOrUpdate: (decisionId: string, flight2VersionStr: string) =&gt; Promise;</code>`<code>&lt;br&gt;</code>`<code> }</code>``&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* decisionId：用户的标识ID，例如用户的uid。&lt;br&gt;&lt;br&gt;* flight2VersionStr：实验ID和版本ID的Map结构序列化后的字符串。</td></tr></tbody></table>
+<p>&lt;span id=&quot;459ab787&quot;&gt;&lt;/span&gt;</p>
+<h1>接口说明</h1>
+<blockquote>接口类型参照nodejs代码中 types/type.d.ts文件。</blockquote>
+<p>&lt;span id=&quot;25270116&quot;&gt;&lt;/span&gt;</p>
+<h2>接口列表</h2>
+<p>&lt;span id=&quot;0d97f3b3&quot;&gt;&lt;/span&gt;</p>
+<h3>1. 动态调整获取元数据的间隔时间</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    setInterval(interval: number)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>void</code></li></ul>
+<p>&lt;span id=&quot;7ea728b9&quot;&gt;&lt;/span&gt;</p>
+<h3>2. 命中分流结果名称</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    getExperimentVariantName(experimentId: string, decisionId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;string&gt;</code></li></ul>
+<p>&lt;span id=&quot;8c60145d&quot;&gt;&lt;/span&gt;</p>
+<h3>3. 命中分流结果名称并曝光实验信息</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    getExperimentVariantNameWithImpression(experimentId: string, decisionId: string, trackId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;string&gt;</code></li></ul>
+<p>&lt;span id=&quot;81589514&quot;&gt;&lt;/span&gt;</p>
+<h3>4. 命中分流结果配置信息</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    getExperimentConfigs(experimentId: string, decisionId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;TConfig&gt;</code>，详情请参见下文的返回值(TConfig)章节。</li></ul>
+<p>&lt;span id=&quot;f360a8a0&quot;&gt;&lt;/span&gt;</p>
+<h3>5. 命中分流结果配置信息并曝光信息</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    getExperimentConfigsWithImpression(experimentId: string, decisionId: string, trackId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;TConfig&gt;</code>，详情请参见下文的返回值(TConfig)章节。</li></ul>
+<p>&lt;span id=&quot;54e7a769&quot;&gt;&lt;/span&gt;</p>
+<h3>6. 获取 app 下所有实验命中分流结果配置</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    getAllExperimentConfigs(decisionId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;TConfig&gt;</code>，详情请参见下文的返回值(TConfig)章节。</li></ul>
+<p>&lt;span id=&quot;0399b217&quot;&gt;&lt;/span&gt;</p>
+<h3>7. 检验 feature flag 是否命中</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    verifyFeatureEnabled(featureId: string, decisionId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;boolean&gt;</code></li></ul>
+<p>&lt;span id=&quot;314a2c6c&quot;&gt;&lt;/span&gt;</p>
+<h3>8. feature flag 分流结果配置</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    getFeatureConfigs(featureId: string, decisionId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;TConfig&gt;</code>，详情请参见下文的返回值(TConfig)章节。</li></ul>
+<p>&lt;span id=&quot;07f10af8&quot;&gt;&lt;/span&gt;</p>
+<h3>9. feature flag 分流结果配置并曝光信息</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    getFeatureConfigsWithImpression(featureId: string, decisionId: string, trackId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;TConfig&gt;</code>，详情请参见下文的返回值(TConfig)章节。</li></ul>
+<p>&lt;span id=&quot;37f3ace6&quot;&gt;&lt;/span&gt;</p>
+<h3>10. 命中的所有 feature flag 版本信息</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    getAllFeatureConfigs(decisionId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;TConfig&gt;</code>，详情请参见下文的返回值(TConfig)章节。</li></ul>
+<p>&lt;span id=&quot;243a8cc2&quot;&gt;&lt;/span&gt;</p>
+<h3>11. 获取所有命中的 feature flag id</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    getEnabledFeatureIds(decisionId: string, attributes: Map&lt;string, any&gt;, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;string[]&gt;</code></li></ul>
+<p>&lt;span id=&quot;fe8561a5&quot;&gt;&lt;/span&gt;</p>
+<h3>12. 根据 key 做分流，并上报实验信息</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    activate(variantKey: string, decisionId: string, trackId: string, attributes: Map&lt;string, any&gt;, defaultValue: unkown, options?: TOptions)    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>Promise&lt;{val: any}&gt;</code></li></ul>
+<p>   返回逻辑：命中的实验信息 \-\&gt; 命中的 feature flag 信息 \-\&gt; 传入的默认值</p>
+<p>&lt;span id=&quot;db6e8bd7&quot;&gt;&lt;/span&gt;</p>
+<h3>13. 主动关闭所有元数据服务的 schedule job</h3>
+<ul><li>接口示例：</li></ul>
+<p>   ``<code>JavaScript    close()    </code>``</p>
+<ul><li>请求参数：参见下文的请求参数章节。</li></ul>
+<ul><li>返回参数：<code>void</code></li></ul>
+<p>&lt;span id=&quot;760418e6&quot;&gt;&lt;/span&gt;</p>
+<h2>请求入参</h2>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>类型</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td>interval</td><td>number</td><td>元数据获取时间间隔</td></tr><tr><td>experimentId</td><td>string</td><td>实验 id</td></tr><tr><td>decisionId</td><td>string</td><td>决策 ID, 分流口径，和系统中设置的白名单数据行为一致</td></tr><tr><td>featureId</td><td>string</td><td>feature flag id</td></tr><tr><td>trackId</td><td>string</td><td>上报数据唯一标识，事件上报用户标识，用于事件上报，请替换为客户的真实用户标识</td></tr><tr><td>attributes</td><td>Map&lt;string, any\&gt;</td><td>用户自身的属性，用于和创建实验时设置的目标受众的用户属性做比对比</td></tr></tbody></table>
+<p>&lt;span id=&quot;03f3b6a4&quot;&gt;&lt;/span&gt;</p>
+<h2>返回值(TConfig)</h2>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>类型</strong></th><th><strong>说明</strong></th></tr></thead><tbody><tr><td>val</td><td>string</td><td>版本变量</td></tr><tr><td>vid</td><td>string</td><td>实验版本 id</td></tr><tr><td>entity_id</td><td>string</td><td>决策 ID，分流口径</td></tr></tbody></table>
+<p>&lt;span id=&quot;d6aaca53&quot;&gt;&lt;/span&gt;</p>
+<h2>不同场景使用说明</h2>
+<p>&lt;span id=&quot;f36ca652&quot;&gt;&lt;/span&gt;</p>
+<h3>自定义获取元数据和实验信息曝光地址</h3>
+<ul><li>SaaS\-云原生、SaaS\-非云原生 服务不同区域的配置</li></ul>
+<pre><code>import AbClient from &#x27;@datatester/node-sdk&#x27;
+
+// metaHost
+// cn: AbClient.metaHost.cn
+// sg: AbClient.metaHost.sg
+// va: AbClient.metaHost.va
+
+// trackHost
+// cn: AbClient.trackHost.cn
+// sg: AbClient.trackHost.sg
+// va: AbClient.trackHost.va
+
+const abSdk = new AbClient(&#x27;token&#x27;, {
+    trackHost: AbClient.trackHost.sg
+    metaHost: AbClient.metaHost.sg
+})</code></pre>
+<ul><li>私有化服务</li></ul>
+<pre><code>import AbClient from &#x27;@datatester/node-sdk&#x27;
+const abSdk = new AbClient(&#x27;token&#x27;, {
+    trackHost: &#x27;&#x27; // 可访问到的上报http接口的host
+    metaHost: &#x27;&#x27;// 可访问到的获取元数据http接口的host
+})</code></pre>
+<ul><li>监听内部日志</li></ul>
+<blockquote>sdk 对外暴露了一个 EventEmitter 的实现，可以对 sdk 内部一些日志进行监听</blockquote>
+<pre><code>// meta获取成功
+abSdk.on(&quot;meta.success&quot;, (data) =&gt; {});
+// meta获取失败
+abSdk.on(&quot;meta.failure&quot;, (error) =&gt; {});
+// ...</code></pre>
+<p>&lt;span id=&quot;b101d364&quot;&gt;&lt;/span&gt;</p>
+<h3>使用SDK进行分流</h3>
+<ul><li>服务端项目工程中，本地调取分流代码示例如下：</li></ul>
+<pre><code>const abClient = new AbClient(&quot;token&quot;)
+const attrs = new Map()
+attrs.set(&quot;key&quot;, &quot;value&quot;)
+
+const config = testerClient.activate(&quot;key&quot;, &quot;decisionId&quot;, &quot;trackId&quot;, attrs, {val: &quot;defaultValue&quot;})
+const value = config.val
+if (value === &#x27;xx&#x27;) {
+   // 命中xx
+} else if (value === &#x27;yy&#x27;) {
+    // 命中yy
+} else {
+    // 兜底
+}
+
+// json类型
+const jsonValue = JSON.parse(value)
+if (jsonValue[&#x27;key&#x27;]) {
+ // 
+}</code></pre></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>创建与管理推送任务 · A/B 实验知识库</title>
+<meta name="description" content="1. 界面组成 搜索推送任务：可输入任务ID、推送任务名称、创建日期进行搜索 新建推送任务 新建推送实验：仅DataTester支持，点击后可跳转至创建推送实验流程 列表包含：任务ID、推送任务名称、任务类型（可筛选）、">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/71441.html">
+<meta property="og:title" content="创建与管理推送任务"><meta property="og:description" content="1. 界面组成 搜索推送任务：可输入任务ID、推送任务名称、创建日期进行搜索 新建推送任务 新建推送实验：仅DataTester支持，点击后可跳转至创建推送实验流程 列表包含：任务ID、推送任务名称、任务类型（可筛选）、">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/71441.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📎 上手·协议·其他</span></div>
+<h1>创建与管理推送任务</h1>
+<div class="meta">📄 5,031 字 · 🕐 2023-05-26</div>
+<article class="md"><p>&lt;span id=&quot;_1-界面组成&quot;&gt;&lt;/span&gt;</p>
+<h2>1. 界面组成</h2>
+<ul><li>搜索推送任务：可输入任务ID、推送任务名称、创建日期进行搜索</li></ul>
+<ul><li>新建推送任务</li></ul>
+<ul><li>新建推送实验：仅DataTester支持，点击后可跳转至创建推送实验流程</li></ul>
+<ul><li>列表包含：任务ID、推送任务名称、任务类型（可筛选）、创建时间、更新时间、创建人（可筛选）、发送范围、任务状态（可筛选）、操作</li></ul>
+<ul><li>以创建时间从近到远排序展示</li></ul>
+<ul><li>任务类型：包含单次推送、例行推送、自动推送</li></ul>
+<ul><li>任务状态：包含待审批、被驳回、运行中、暂停中、已结束</li></ul>
+<ul><li>发送范围：包含测试、正式两种，选择测试范围，将只会对「通用设置\-测试白名单」中的用户进行推送；选择正式范围，任务正常进行推送；<strong>注意先选择「发送范围」，再「审批」任务，发送范围的设置才能正常生效</strong></li></ul>
+<ul><li>操作：包含审批、驳回、修改、复制、删除、暂停、数据报表、激活</li></ul>
+<ul><li>不同任务状态，可操作项不同</li></ul>
+<ul><li>不同操作项，创建人、管理员、集团管理员的权限不同</li></ul>
+<ul><li>支持翻页</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_97b5079d7ba86cefb3eeda729f36b0e8" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-新建推送任务&quot;&gt;&lt;/span&gt;</p>
+<h2>2. 新建推送任务</h2>
+<p>推送任务分为手动推送和自动推送，其中手动推送分为单次推送和例行推送，各推送模式的含义如下，按需进行选择即可</p>
+<ul><li>单次推送：对圈选的目标用户进行「立即推送」或「定时推送」</li></ul>
+<ul><li>例行推送：对圈选的目标用户进行「定时循环推送」</li></ul>
+<ul><li>自动推送：基于事件、时间设置推送时机，对满足推送时机的人群进行推送</li></ul>
+<p>&lt;span id=&quot;_2-1-推送目标&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>2.1 推送目标</strong></h3>
+<p>点击上图界面的“+新建推送任务”，选择手动推送或自动推送</p>
+<ul><li>推送任务名称：设置任务名称，同一应用内不可重复</li></ul>
+<ul><li>推送人群：</li></ul>
+<ul><li>全部用户：最近90天活跃的用户（活跃用户定义为主动触发任意事件的用户）</li></ul>
+<ul><li>用户分群：仅「手动推送」支持，已经保存好的用户分群，默认会与「最近90天活跃的用户」取交集</li></ul>
+<ul><li>细分用户：根据时间、事件、属性圈选用户，逻辑同「用户分群」模块，默认会与「最近90天活跃的用户」取交集</li></ul>
+<ul><li>推送平台：仅「手动推送」支持，支持设置推送平台为全部、Android、iOS</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_9ab67c1e4c166deb9ffb69680ec34393" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-2-推送时机，仅「自动推送」支持&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>2.2 推送时机，仅「自动推送」支持</strong></h3>
+<p>推送时机设置分为两阶段，一阶段为用户触发某些行为，二阶段为用户的后续动作，满足两阶段条件的用户会运行推送动作，其中，</p>
+<ul><li>一阶段：用户触发某些行为可分为三类，细分如下，</li></ul>
+<ul><li>触发单个行为：用户发生某个行为即为满足条件</li></ul>
+<ul><li>触发多个行为：用户在「设置时间」内，按任意顺序完成「设置行为」达到「设置次数」，即为满足条件</li></ul>
+<ul><li>按顺序触发多个行为：用户在「设置时间」内，按顺序完成「设置行为」，即为满足条件</li></ul>
+<ul><li>二阶段：用户的后续动作也可分为分类，细分如下，</li></ul>
+<ul><li>等待一段时间：满足一阶段条件后，等待「设置时间」，即为满足条件</li></ul>
+<ul><li>未触发特定行为：满足一阶段条件后，在「设置时间」内未触发「设置行为」，即为满足条件</li></ul>
+<ul><li>触发特定行为：满足一阶段条件后，在「设置时间」内触发「设置行为」，即为满足条件</li></ul>
+<p>您可设置自动推送任务的截止时间，不选择则默认从创建任务时间开始，365天后截止</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_3f17ee0a1757c1c8ae726190cf2863db" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-3-推送动作&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>2.3 推送动作</strong></h3>
+<p>分为设置推送内容和任务设置，其中推送内容会区分AppPush和Webhook；</p>
+<p>&lt;span id=&quot;_2-3-1-apppush推送内容&quot;&gt;&lt;/span&gt;</p>
+<h4>2.3.1 AppPush推送内容</h4>
+<p>主要包含选择通道、所选通道的推送配置、测试用户预览。其中，</p>
+<ul><li>选择通道：支持极光、个推、友盟三种通道，需要您在「推送通道管理」处正确配置相应通道才可进行推送</li></ul>
+<ul><li>通道的推送配置</li></ul>
+<ul><li><strong>极光</strong></li></ul>
+<ul><li>推送标题：消息的标题</li></ul>
+<ul><li>推送内容：消息的内容</li></ul>
+<ul><li>角标数字增加：角标数字增加值，此字段目前仅针对华为 EMUI 8.0 及以上、小米 MIUI 6 及以上设备生效； 此字段如果不填，表示不改变角标数字（小米设备由于系统控制，不论推送走极光通道下发还是厂商通道下发，即使不传递依旧是默认+1的效果。）；建议配置为1； 举例：此字段设置为1，应用之前角标数为2，发送此角标消息后，应用角标数显示为3。</li></ul>
+<ul><li>Android应用入口：桌面图标对应的应用入口Activity类，比如“com.test.badge.MainActivity”，<strong>仅Android推送需要配置且生效，需配合角标数字一起使用</strong></li></ul>
+<ul><li>后续动作</li></ul>
+<ul><li>启动应用：将会以<strong>通知消息</strong>（包含消息标题和内容）下发</li></ul>
+<ul><li>自定义行为：将会以<strong>通知消息</strong>（包含消息标题、消息内容和自定义key、value）+<strong>透传消息</strong>（包含消息标题、消息内容和自定义key、value）下发。<strong>透传消息不会展示到通知栏上，消息内容会透传给 App，需要 App 自行处理</strong></li></ul>
+<ul><li>透传消息：可设置自定义key、value，消息推送至客户端后，可通过极光SDK获取该部分消息</li></ul>
+<ul><li>转厂商通知：自定义消息转厂商通知下发，针对 Android 设备，如果 APP 长连接不在线，则消息没法及时的下发，可通过厂商通道下发以<strong>厂商通知</strong>形式展示，及时提醒到用户。<strong>仅支持Android系统，需要极光VIP账号</strong></li></ul>
+<ul><li>uri_activity：指定跳转页面；该字段用于指定开发者想要打开的 activity，值为 activity 节点的 “android:name”属性值；适配华为、小米、vivo厂商通道跳转</li></ul>
+<ul><li>uri_action：指定跳转页面；该字段用于指定开发者想要打开的 activity，值为 &quot;activity&quot;\-&quot;intent\-filter&quot;\-&quot;action&quot; 节点的 &quot;android:name&quot; 属性值；适配 oppo、fcm跳转</li></ul>
+<ul><li>更多选项</li></ul>
+<ul><li>Android</li></ul>
+<ul><li>提醒：通知提醒方式</li></ul>
+<ul><li>优先级：通知栏展示优先级</li></ul>
+<ul><li>可设置APP在前台时依然展示提醒</li></ul>
+<ul><li>iOS：支持选择生产环境或开发环境，默认推送生产环境；可在极光控制台配置APNs生产和开发证书，消息将使用所选环境进行推送</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_78b7f08b0a0212083dcbaa98d7908a6e" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>个推</strong></li></ul>
+<ul><li>后续动作：</li></ul>
+<ul><li>打开应用首页：<strong>点击通知打开应用模板，支持通知消息</strong></li></ul>
+<ul><li>推送标题：消息的标题</li></ul>
+<ul><li>推送内容：消息的内容</li></ul>
+<ul><li>更多选项</li></ul>
+<ul><li>Android</li></ul>
+<ul><li>提醒：通知提醒方式</li></ul>
+<ul><li>通知渠道重要性：不同重要性具有不同的展示形式</li></ul>
+<ul><li>通知可清除</li></ul>
+<ul><li>iOS</li></ul>
+<ul><li>角标数字增加：下发消息后，角标数字增加值，建议设置为1</li></ul>
+<ul><li>自定义动作：<strong>自定义消息模板，支持通知消息 + 透传消息</strong></li></ul>
+<ul><li>描述</li></ul>
+<ul><li>透传消息：设置透传消息key、value，<strong>透传消息不会展示到通知栏上，消息内容会透传给 App，需要 App 自行处理</strong></li></ul>
+<ul><li>更多选项</li></ul>
+<ul><li>推送标题：通知消息的标题\*\*（该通知消息将从厂商通道下发）\*\*</li></ul>
+<ul><li>推送内容：通知消息的内容</li></ul>
+<ul><li>Android</li></ul>
+<ul><li>厂商通知类型</li></ul>
+<ul><li>Intent：点击通知打开应用特定页面，intent格式必须正确且不能为空，长度 ≤ 4096；示例：intent:#Intent;component=你的包名/你要打开的 activity 全路径;S.parm1=value1;S.parm2=value2;end 参考：<a href="https://docs.getui.com/getui/mobile/vendor/androidstudio/?id=doc-title-5" target="_blank" rel="noopener">个推文档中心</a></li></ul>
+<ul><li>url：点击通知打开链接，长度 ≤ 1024</li></ul>
+<ul><li>iOS</li></ul>
+<ul><li>角标数字增加：下发消息后，角标数字增加值，建议设置为1</li></ul>
+<ul><li>保持离线消息：设置离线是否也进行推送</li></ul>
+<ul><li>保持离线消息过期时间：消息离线存储有效期</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_978c2d3b9e461ccafac62579e2a80677" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>友盟</strong></li></ul>
+<ul><li>后续动作</li></ul>
+<ul><li>打开应用：<strong>通知消息模板，支持通知消息</strong></li></ul>
+<ul><li>推送标题：消息的标题</li></ul>
+<ul><li>推送内容：消息的内容</li></ul>
+<ul><li>更多选项</li></ul>
+<ul><li>Android</li></ul>
+<ul><li>提醒：通知提醒方式</li></ul>
+<ul><li>iOS</li></ul>
+<ul><li>提醒：通知提醒方式</li></ul>
+<ul><li>角标数字增加：下发消息后，角标数字增加值，建议设置为1</li></ul>
+<ul><li>静默推送</li></ul>
+<ul><li>自定义动作：<strong>自定义消息模板，Android支持透传消息，iOS支持通知消息+透传消息</strong></li></ul>
+<ul><li>描述</li></ul>
+<ul><li>透传消息：设置透传消息key、value，<strong>透传消息不会展示到通知栏上，消息内容会透传给 App，需要 App 自行处理</strong></li></ul>
+<ul><li>更多选项</li></ul>
+<ul><li>iOS</li></ul>
+<ul><li>提醒：通知提醒方式</li></ul>
+<ul><li>角标数字增加：下发消息后，角标数字增加值，建议设置为1</li></ul>
+<ul><li>推送标题：通知消息的标题\*\*（该通知消息将从APNs通道下发）\*\*</li></ul>
+<ul><li>推送内容：通知消息的内容</li></ul>
+<ul><li>静默推送</li></ul>
+<ul><li>保持离线消息：是否设置消息过期时间</li></ul>
+<ul><li>保持离线消息过期时间：设置消息过期时间，默认72小时</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_630780af28a8fc1f4787e955a053f4e1" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>测试用户预览：填入测试用户的口径id（webhook通道输入uuid），发送预览消息</li></ul>
+<p>&lt;span id=&quot;_2-3-2-webhook推送内容&quot;&gt;&lt;/span&gt;</p>
+<h4>2.3.2 Webhook推送内容</h4>
+<p>主要包含选择通道、参数配置、测试用户预览，其中参数配置项与所选通道在「推送通道管理」中的设置一一对应</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_1771a279f0175094c0521df893a82377" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-3-3-任务设置&quot;&gt;&lt;/span&gt;</p>
+<h4>2.3.3 任务设置</h4>
+<ul><li>任务类型：<strong>仅手动推送支持</strong></li></ul>
+<ul><li>单次推送</li></ul>
+<ul><li>推送时间：立即推送、定时推送（可设置日期、小时、分钟，到时间开始推送）</li></ul>
+<ul><li>例行推送</li></ul>
+<ul><li>循环周期：可设置每日、每周、每月的固定时间，以及周期的起止时间</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_77ee1c2ebffb006f356b777d012d9507" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>频控规则：</li></ul>
+<ul><li>全局频控：默认频控是每个用户1天内，最多接收20条Push，且每小时最多1条，可在「通用设置」页面修改</li></ul>
+<ul><li>不受频控：1个用户在1天内可能会收到多条Push</li></ul>
+<ul><li>任务参与限制：<strong>仅自动推送支持</strong>，设置是否允许用户在完成该任务后再次进入。如果开启该项，则可能会多次触达同一用户</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_123967cb25d2f0e4a5ca32ca04ab2cfc" loading="lazy"> &lt;/span&gt;</p>
+<p>以上内容填写完毕，即可点击“提交”，跳转到推送任务管理页，任务进入待审批状态，不会进行推送，<strong>选择正确的发送范围</strong>，在管理员审批后，任务将会进入运行状态，正常推送</p>
+<p>&lt;span id=&quot;_3-任务操作&quot;&gt;&lt;/span&gt;</p>
+<h2>3. 任务操作</h2>
+<ul><li><strong>查看</strong></li></ul>
+<p>可点击“操作\-查看”查看推送任务的配置内容</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_e5b6aac1f0fa1dfe039f396a4b2eb20d" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>复制</strong></li></ul>
+<p>可点击“操作\-复制”复制对应推送任务</p>
+<ul><li>复制任务名称会添加“（复制）”后缀</li></ul>
+<ul><li>复制任务为待审批状态</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_01c266d7967d40c9e6a6038c49ca8f0c" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>修改</strong></li></ul>
+<p><strong>状态为「已结束」的任务不支持修改，其他状态的任务均可以修改</strong>\*\*，运行中的任务需先暂停再修改\*\*\*\*；\*\*可点击“操作\-修改”进行推送任务的修改</p>
+<ul><li>可对之前的任务配置进行修改</li></ul>
+<ul><li>修改并提交后，任务重新进入待审批状态，不会进行推送，在管理员审批后，任务将会进入运行状态，正常推送</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_79ce63821376d8c8ac3402f104945dd2" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>删除</strong></li></ul>
+<p>\*\*只有创建人、管理员、集团管理员可以删除任务，任务删除后无法恢复；\*\*可点击“操作\-删除”，删除推送任务；</p>
+<ul><li>删除后，推送任务停止工作，后续将不再进行推送；正在进行的推送也将停止，停止过程将持续几分钟。</li></ul>
+<ul><li>任务被清理，后续任务列表不再展示该任务</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_8815ad6e282c44d44417c74d09f127df" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>暂停、激活</strong></li></ul>
+<p>\*\*只有创建人、管理员、集团管理员可以激活任务；\*\*可点击“操作\-暂停/激活”，即可暂停或激活推送任务。</p>
+<ul><li>暂停：暂停后，当前任务正在进行的推送以及后续推送全部停止，任务状态变更为暂停中</li></ul>
+<ul><li>激活：激活后，当前任务正常运行，任务状态变更为运行中</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_2e809960dcafd3d075206a2eec4ff4ad" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>审批、驳回</strong></li></ul>
+<p><strong>只有管理员、集团管理员可以审批或驳回任务，</strong>  可点击“操作\-审批/驳回”，即可审批或者驳回推送任务。</p>
+<ul><li>审批：审批后，任务状态变成运行中</li></ul>
+<ul><li>驳回：驳回后，任务状态变成被驳回，被驳回的任务可进行任务查看、修改后发起下一次审批</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_fbfe036fd0034d55ba1a1a47e21f2531" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_4-不同任务状态说明&quot;&gt;&lt;/span&gt;</p>
+<h2>4. 不同任务状态说明</h2>
+<ul><li>待审批：任务设置/修改完成，但不运行，需要审批后任务运行并进行推送</li></ul>
+<ul><li>被驳回：任务不运行，需对任务配置进行修改，重新发起审批</li></ul>
+<ul><li>运行中：任务运行中，根据任务配置进行推送，并统计数据</li></ul>
+<ul><li>暂停中：任务暂不运行，需“激活”后重新开启运行并推送</li></ul>
+<ul><li>已结束：任务不再继续运行并推送，统计数据正常进行</li></ul>
+<p>&lt;span id=&quot;_5-数据报表&quot;&gt;&lt;/span&gt;</p>
+<h2>5. 数据报表</h2>
+<ul><li>可点击“操作\-数据报表”，即可进入数据报表页面</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_c4e68671cac78d96533315f752b42321" loading="lazy"> &lt;/span&gt;</p>
+<p>推送数据报表如下：</p>
+<ul><li>数据统计范围：时间支持选择「启动后」至今/7天/30天、最近x天、选择时间范围。数据按天级展示。</li></ul>
+<ul><li>分析图：推送效果的数据概览，以柱状图/折线图展示；图上方的卡片展示最近一天的指标</li></ul>
+<ul><li>详细数据：以表格展示统计数据，支持下载</li></ul>
+<ul><li>报表指标说明：</li></ul>
+<ul><li>计划触发人次：计划发送的推送数量</li></ul>
+<ul><li>实际触达人次：实际送达的推送数量</li></ul>
+<ul><li>点击人次：用户点击的推送数量</li></ul>
+<ul><li>成功发送人次：成功发送的推送数量</li></ul>
+<ul><li>到达率：实际触达人次/成功发送人次</li></ul>
+<ul><li>点击率：点击人次/实际触达人次</li></ul>
+<p>注：计划触发人次和成功发送人次之间有时会存在折损，其原因一是调用通道接口进行实际发送之前，可能被各种原因过滤掉：如触发频控、推送用户信息校验不通过等；二是被通道拦截、调用通道接口返回失败而未被发送。</p>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_7fac64b3ebd9c7b172a9c055e0980822" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>Webhook数据报表（webhook报表与其他通道报表有所不同：展示了成功发送人次指标，未展示到达和点击等指标，后续会进行支持）</li></ul>
+<ul><li>计划触发人次：计划发送的推送数量</li></ul>
+<ul><li>成功发送人次：成功发送的推送数量</li></ul>
+<ul><li>成功发送率：成功发送人次/计划触发人次</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_a407c884287cccd3ab9a333db4a3bccf" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>多任务分流/任务赛马数据报表</li></ul>
+<ul><li>任务1、任务2...对应推送任务中设置的实验组1、实验组2...</li></ul>
+<ul><li>下拉框中支持选择不同指标：「计划触发人次、实际触达人次、点击人次」，以及「到达率和点击率」，指标含义同上</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_a1341651f3e2dda49f256135ae80e2e7" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

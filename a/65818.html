@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>新建事件指标 · A/B 实验知识库</title>
+<meta name="description" content="创建指标组时，支持创建的指标组类型包含事件指标、留存指标、漏斗指标，同类型的指标可创建并分组到同一个指标组中，便于后续创建实验时选择使用。本文为您介绍创建事件指标的详细操作步骤。 使用限制 当前一个事件指标组最多支持添加">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65818.html">
+<meta property="og:title" content="新建事件指标"><meta property="og:description" content="创建指标组时，支持创建的指标组类型包含事件指标、留存指标、漏斗指标，同类型的指标可创建并分组到同一个指标组中，便于后续创建实验时选择使用。本文为您介绍创建事件指标的详细操作步骤。 使用限制 当前一个事件指标组最多支持添加">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65818.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🎯 指标体系</span></div>
+<h1>新建事件指标</h1>
+<div class="meta">📄 3,171 字 · 🕐 2025-12-03</div>
+<article class="md"><p>创建指标组时，支持创建的指标组类型包含事件指标、留存指标、漏斗指标，同类型的指标可创建并分组到同一个指标组中，便于后续创建实验时选择使用。本文为您介绍创建事件指标的详细操作步骤。</p>
+<p>&lt;span id=&quot;922df39f&quot;&gt;&lt;/span&gt;</p>
+<h1>使用限制</h1>
+<p>当前一个事件指标组最多支持添加100个事件指标。</p>
+<p>&lt;span id=&quot;一、新建事件指标&quot;&gt;&lt;/span&gt;</p>
+<h1>操作步骤</h1>
+<ol><li>登录DataTester产品控制台后，单击左侧导航栏的<strong>指标管理</strong>\&gt;<strong>指标组列表</strong>，进入指标组列表页面后单击右上角的「创建指标组」进入指标组创建页面。</li></ol>
+<ol><li>配置基本信息。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b641c26b0df24d18b31a3fda596418c8~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>选择<strong>指标组类型</strong>为<strong>事件指标</strong>，并选择指标所属的分组。</li></ul>
+<ul><li>如果您希望新建一个指标分组，可以在分组下拉框的右下角单击<strong>新建指标组</strong>，根据界面提示，先创建一个指标分组。</li></ul>
+<ol><li>配置指标。为当前指标组添加指标。</li></ol>
+<p>   您可单击<strong>添加指标</strong>按钮，添加多个指标，每个指标的配置方式一致，以下为您介绍添加的指标的配置说明。</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/e1b232fd58724377b9e9d814eb43d565~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>参数</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>指标名称</strong> &amp; <strong>指标描述</strong></td><td>* <strong>指标名称</strong>：必填，建议取与事件内容相关的名称，如“点击登录按钮人均次数”，便于快速知道是关于哪个事件的指标；名称指标组内唯一，最长不超过50个字符。&lt;br&gt;&lt;br&gt;* <strong>指标描述</strong>：选填，简述指标代表的含义、计算逻辑、用途等，可以让业务相关人员更加合理的使用指标。</td></tr><tr><td><strong>指标类型</strong></td><td>对于事件指标，从指标计算逻辑上，又可分为两种类型：&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>单一指标</strong>：指针对某一个事件建立的指标。&lt;br&gt;&lt;br&gt;* <strong>组合指标</strong>：指针对多个事件建立的组合指标，如A/B类型的组合指标CTR、CVR、PV/SUM等，可支持置信度计算。置信度介绍详情请参见<a href="https://www.volcengine.com/docs/6287/65818#%E4%B8%89%E3%80%81%E4%BA%8B%E4%BB%B6%E6%8C%87%E6%A0%87%E7%BD%AE%E4%BF%A1%E5%BA%A6" target="_blank" rel="noopener">事件指标置信度</a>。&lt;br&gt;&lt;br&gt;   选择<strong>组合指标</strong>时，需添加多个事件并配置事件的计算逻辑，作为组合指标的指标结果。</td></tr><tr><td><strong>计算口径</strong></td><td>由「事件」和「事件的计算方式」组成。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 选择指标事件：可以选择一般事件、虚拟事件、圈选事件，如下：&lt;br&gt;&lt;br&gt;   * <strong>一般事件</strong>：指的是通过埋点上报的事件，和您在代码中添加的事件上报名称相同。&lt;br&gt;&lt;br&gt;   * <strong>虚拟事件</strong>：指的是对多个原始事件（如一般事件、圈选事件）通过「或」的关系进行组合，组合后的事件称为“虚拟事件”。用户点击虚拟事件里面的任意一个原始事件，则表明符合条件，会被触发。&lt;br&gt;&lt;br&gt;   * <strong>圈选事件</strong>：指的是选定某个元素创建事件。&lt;br&gt;&lt;br&gt;* 配置事件的计算方式：常见的指标计算方式可查看<a href="https://www.volcengine.com/docs/6287/65818#%E4%BA%8C%E3%80%81%E4%BA%8B%E4%BB%B6%E6%8C%87%E6%A0%87%E7%9A%84%E8%AE%A1%E7%AE%97%E6%96%B9%E5%BC%8F-%EF%BC%88%E7%AE%97%E5%AD%90%EF%BC%89" target="_blank" rel="noopener">事件指标的计算方式 （算子）</a>。&lt;br&gt;&lt;br&gt;* 添加过滤条件：&lt;br&gt;&lt;br&gt;   * 支持把事件属性、公共属性作为事件的过滤条件。&lt;br&gt;&lt;br&gt;   * 支持指标属性聚合函数过滤能力，即当用户选择的事件定义口径包括「UV」、「PV/UV」、「PV/AU」、「UV/AU」、「SUM/UV」，事件属性为数值型的时候，可以按照「人」、「事件属性」、「公共属性」（包含「自定义属性」）这些聚合维度进行聚合，默认值是「人」。&lt;br&gt;&lt;br&gt;* 高级设置：配置灵活属性。详情请参见<a href="https://www.volcengine.com/docs/6287/1253449" target="_blank" rel="noopener">高级功能：指标灵活属性</a>。</td></tr><tr><td><strong>指标关系</strong></td><td>组合指标需要填写，指组合指标的计算公式，允许事件编号大写字母、支持一层括号()、加号+、减号\-、乘号\*、除号/计算公式可任意组合。</td></tr><tr><td><strong>数字格式</strong></td><td>可选择数字/百分比格式，并设置小数位数</td></tr><tr><td><strong>必看指标</strong></td><td>开启“设为必看指标”，则每个实验都会自动添加该指标。</td></tr></tbody></table>
+<ol><li>以上信息填写/设置完毕，一个指标就添加好了，您可以单击\*\*「添加指标」\*\* 按钮在当前指标组一次性创建多个指标。</li></ol>
+<ol><li>完成指标添加后，单击右上角的「保存」，完成指标组创建。</li></ol>
+<p>&lt;span id=&quot;二、事件指标的计算方式-（算子）&quot;&gt;&lt;/span&gt;</p>
+<h1>事件指标的计算方式 （算子）</h1>
+<table><thead><tr><th>序号</th><th>指标计算方式</th><th>含义</th><th>示例（以“<strong>支付”事件及其属性“支付金额”举例：</strong>  ）</th></tr></thead><tbody><tr><td>1</td><td>进组人均次数</td><td>触发当前事件的进组用户人均发生数量。pv/au，进组用户当前事件总发生次数/进组用户数。</td><td>pv/au，支付活跃均次=支付事件的点击次数/进入支付实验组的样本数</td></tr><tr><td>2</td><td>转化率</td><td>触发当前事件的进组用户比例。uv/au，某事件发生的总进组用户数/进组用户数。</td><td>uv/au，支付转化率=支付事件的点击人数/进入支付实验组的样本数（au表示进入实验组的活跃用户）</td></tr><tr><td>3</td><td>按…求进组人均值</td><td>sum/au，某属性值求和/进组用户数。</td><td>sum/au，按支付金额求实验活跃均值（选择pay_amount属性）</td></tr><tr><td>4</td><td>按...求每日活跃均值（失效）</td><td>sum/sum(dau)，某属性值求和/用户活跃天数。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;当前此算子已下线。历史已包含这种算子的指标会保留，新增指标不再支持此算子。&lt;/div&gt;&lt;br&gt;</td><td>sum/sum(dau)，按支付金额求每日活跃均值（选择pay_amount属性）</td></tr><tr><td>5</td><td>每日活跃均次（失效）</td><td>pv/sum(dau)，事件发生的总次数/用户活跃天数。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;当前此算子已下线。历史已包含这种算子的指标会保留，新增指标不再支持此算子。&lt;/div&gt;&lt;br&gt;</td><td>pv/sum(dau)，支付每日活跃均次=支付事件总次数/用户活跃天数</td></tr><tr><td>6</td><td>人均次数</td><td>事件的人均触发数。pv/uv，进组用户当前事件的总发生次数/进组用户上报当前事件的人数。</td><td>pv/uv，支付人均次数=支付次数/支付人数</td></tr><tr><td>7</td><td>按…求人均值</td><td>sum/uv，某属性值求和/事件触发进组人数。</td><td>sum/uv，按支付金额求人均值（选择pay_amount属性）</td></tr><tr><td>8</td><td>按…求平均值</td><td>sum/pv，某属性值求和/事件发生次数。</td><td>sum/pv，按支付金额求平均值（选择pay_amount属性）</td></tr><tr><td>9</td><td>总次数</td><td>pv，事件发生的次数。</td><td>pv，支付次数=支付事件触发次数</td></tr><tr><td>10</td><td>总人数</td><td>uv，事件的总触发进组人数。</td><td>uv，支付人数=支付事件触发人数</td></tr><tr><td>11</td><td>按…求和</td><td>sum，某属性值之和（仅支持数值类型的求和，不支持string类型求和）。</td><td>sum，按支付金额求和（选择pay_amount属性）</td></tr><tr><td>12</td><td>按…求去重数</td><td>某属性值的去重数</td><td>如事件[应用退出]按[会话id]求去重数，即发生应用退出的会话id个数（count distinct session_id)</td></tr></tbody></table>
+<p>&lt;span id=&quot;三、事件指标置信度&quot;&gt;&lt;/span&gt;</p>
+<h1>事件指标置信度</h1>
+<p>&lt;span id=&quot;_1-哪些指标支持计算置信度？&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>1. 哪些指标支持计算置信度？</strong> </h3>
+<p>&lt;span id=&quot;以下算子的单一指标：&quot;&gt;&lt;/span&gt;</p>
+<h4><strong>以下算子的单一指标：</strong> </h4>
+<ul><li>进组人均次数：触发当前事件的进组用户人均发生数量。pv/au，进组用户当前事件总发生次数/进组用户数。</li></ul>
+<ul><li>转化率：触发当前事件的进组用户比例。uv/au，某事件发生的总进组用户数/进组用户数。</li></ul>
+<ul><li>按…求进组人均值：sum/au，某属性值求和/进组用户数。</li></ul>
+<ul><li>人均次数：事件的人均触发数。pv/uv，进组用户当前事件的总发生次数/进组用户上报当前事件的人数。</li></ul>
+<ul><li>按…求人均值：sum/uv，某属性值求和/事件触发进组人数。</li></ul>
+<ul><li>按…求平均值：sum/pv，某属性值求和/事件发生次数。</li></ul>
+<p>&lt;span id=&quot;组合指标：&quot;&gt;&lt;/span&gt;</p>
+<h4><strong>组合指标：</strong> </h4>
+<ul><li>分子为uv类型，分母为uv类型。</li></ul>
+<ul><li>分子为pv类型，分母为pv类型。</li></ul>
+<ul><li>分子为pv类型，分母为uv类型。</li></ul>
+<ul><li>分子为pv类型，分母为sum类型。</li></ul>
+<ul><li>分子为sum类型，分母为sum类型。</li></ul>
+<ul><li>分子为sum类型，分母为uv类型。</li></ul>
+<ul><li>分子为sum类型，分母为pv类型。</li></ul>
+<p>&lt;span id=&quot;_2-哪些指标不支持计算置信度？&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>2. 哪些指标不支持计算置信度？</strong> </h3>
+<p>&lt;span id=&quot;以下算子的单一指标：&quot;&gt;&lt;/span&gt;</p>
+<h4>以下算子的单一指标：</h4>
+<ul><li>总次数：事件发生的次数。</li></ul>
+<ul><li>总人数：事件的总触发进组人数。</li></ul>
+<ul><li>按…求和：某属性值之和。</li></ul>
+<ul><li>按…求去重数：某属性值的去重数。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

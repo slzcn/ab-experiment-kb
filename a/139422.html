@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>用户细查 · A/B 实验知识库</title>
+<meta name="description" content="DataTester的 用户细查 功能，为您提供单个用户详细信息及行为流的查询。 背景信息 基本概念 术语 详细说明 UUID、SSID UUID和SSID都是用户的唯一标识，主要区别在于UUID由您和团队为用户分配管理">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/139422.html">
+<meta property="og:title" content="用户细查"><meta property="og:description" content="DataTester的 用户细查 功能，为您提供单个用户详细信息及行为流的查询。 背景信息 基本概念 术语 详细说明 UUID、SSID UUID和SSID都是用户的唯一标识，主要区别在于UUID由您和团队为用户分配管理">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/139422.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📊 实验报告与分析</span></div>
+<h1>用户细查</h1>
+<div class="meta">📄 1,407 字 · 🕐 2024-08-15</div>
+<article class="md"><p>DataTester的 <strong>用户细查</strong> 功能，为您提供单个用户详细信息及行为流的查询。</p>
+<p>&lt;span id=&quot;_1-概念介绍&quot;&gt;&lt;/span&gt;</p>
+<h1>背景信息</h1>
+<p>&lt;span id=&quot;4e30716b&quot;&gt;&lt;/span&gt;</p>
+<h2>基本概念</h2>
+<table><thead><tr><th>术语</th><th>详细说明</th></tr></thead><tbody><tr><td>UUID、SSID</td><td>UUID和SSID都是用户的唯一标识，主要区别在于UUID由您和团队为用户分配管理，SSID由DataRanges分配管理。&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>UUID</strong> ：即User Unique Id，一般与用户的登录id（如手机号、email）一一对应，UUID由您和团队来维护；&lt;br&gt;&lt;br&gt;* <strong>SSID</strong> ：即标准化服务ID（Standardized Service Id），是火山引擎增长分析产品用来标记和识别用户而提供的用户标识。SSID由火山引擎增长分析生成和维护，您和团队可以根据需要使用。&lt;br&gt;&lt;br&gt;&lt;br&gt;更多关于uuid、ssid的说明请参见<a href="https://www.volcengine.com/docs/6287/65800" target="_blank" rel="noopener">支持的用户唯一标识</a>。</td></tr><tr><td>行为流</td><td>行为流，即按事件在客户端发生的时间顺序展示的单个用户的详细行为轨迹。</td></tr></tbody></table>
+<p>&lt;span id=&quot;c84a0959&quot;&gt;&lt;/span&gt;</p>
+<h2>应用场景</h2>
+<p>行为细查是研究用户和用户行为极为高效的工具。典型使用场景包括（但不限于）：</p>
+<ul><li>产品&amp;用户体验团队：了解用户使用产品的过程，及制作persona；</li></ul>
+<ul><li>运营&amp;增长团队：了解用户的转化路径，发现影响转化的问题和提升点；</li></ul>
+<ul><li>服务团队：回放用户遇到问题前的行为流，了解所服务用户的产品使用过程；</li></ul>
+<ul><li>研发团队：回放用户的Crash或异常使用的行为流，还原问题场景。</li></ul>
+<p>&lt;span id=&quot;_2-快速入门&quot;&gt;&lt;/span&gt;</p>
+<h1>操作步骤</h1>
+<p>登录DataTester产品控制台后，在左侧部导航单击<strong>全局设置</strong>\&gt;<strong>受众管理</strong>\&gt;<strong>用户细查</strong>，进入用户细查页面，这里展示了最近的100个当天发生了事件的用户，页面默认单页展示20个。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/429064eec4d84917a7ac48a16162b31d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>您可在页面顶部的过滤条件中配置用户查询的过滤条件，包括设置查询时间范围、查询模板、参与分析的事件范围（默认为全部）。</li></ul>
+<p>   其中，查询模版保存的范围包括查询条件和查询结果的配置，您可以设置埋点排查、反馈分析、异常复现等场景化的细查配置模板，后续仅需变更查询ID即可场景复用，模版也将同步于项目其他成员可见，用于经验沉淀。</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/50fbf4c088f14c378de697d91e3fe07a~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>您也可以直接通过用户标识ID来查询具体的用户，当前支持按UUID或SSID来过滤查找用户。</li></ul>
+<ul><li>单击用户列表中的用户名，即可跳转至用户信息和行为流详情页面，查看对应的详细信息。</li></ul>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;如开启多应用，用户细查默认查询的该项目下多个应用的指定用户的行为数据串联。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;_3-2-查看用户信息和行为流&quot;&gt;&lt;/span&gt;</p>
+<h2>查看用户信息和行为流</h2>
+<p>查看用户信息</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/83ef582d4df24896adfd74d8811c09b6~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>包括：</p>
+<ul><li>用户的UUID/SSID、Device ID等其他ID类型、首次事件时间、最近使用、城市等基本信息。</li></ul>
+<ul><li>用户最近使用设备的信息，如操作系统、设备型号、分辨率等。</li></ul>
+<ul><li>最近个体画像，即用户属性、用户标签（如存在）等与该用户相关的信息补充。可自由增减展示。</li></ul>
+<p>&lt;span id=&quot;14742710&quot;&gt;&lt;/span&gt;</p>
+<h2>查看用户行为流</h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/4a1dbe0be94b415d87f87e1724f96b92~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>您可以：</p>
+<ul><li>按应用、端/设备、事件、属性筛选行为流，还可选择重要的事件和属性以高亮显示。</li></ul>
+<ul><li>按时间顺序查看用户的行为事件，默认以事件发生时间倒序查看。</li></ul>
+<ul><li>支持下载为csv，您可以通过时间组件控制下载数据的时间段，下载最长时间周期为30天，数据范围是页面已经加载的行为数据，您可以通过下拉以加载更多/更早的数据。</li></ul>
+<ul><li>快速锚定用于切换当前行为流的区域内展示的首个行为所在时间，时间范围为整体配置区设置的时间范围子集。</li></ul>
+<ul><li>点击查看单个事件的详细数据，目前支持列表和json两种展现形式。其中，时间类型属性默认经过当前所在时区换算，如需查看时间戳可切换至json类型查看原始值。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

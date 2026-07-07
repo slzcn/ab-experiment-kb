@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAB实验SDK集成：支持进组出组（关闭体验一致性） · A/B 实验知识库</title>
+<meta name="description" content="MAB实验的APP/小程序优化场景支持关闭体验一致性，即允许用户进组/出组；关闭后，调优会针对实验的配置参数来进行调优，而未关闭场景下会针对实验组版本（VID）进行调优，两个场景下的实验SDK集成方式有差异。本文以客户端">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1903200.html">
+<meta property="og:title" content="MAB实验SDK集成：支持进组出组（关闭体验一致性）"><meta property="og:description" content="MAB实验的APP/小程序优化场景支持关闭体验一致性，即允许用户进组/出组；关闭后，调优会针对实验的配置参数来进行调优，而未关闭场景下会针对实验组版本（VID）进行调优，两个场景下的实验SDK集成方式有差异。本文以客户端">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1903200.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>MAB实验SDK集成：支持进组出组（关闭体验一致性）</h1>
+<div class="meta">📄 1,654 字 · 🕐 2025-10-27</div>
+<article class="md"><p>MAB实验的APP/小程序优化场景支持关闭体验一致性，即允许用户进组/出组；关闭后，调优会针对实验的配置参数来进行调优，而未关闭场景下会针对实验组版本（VID）进行调优，两个场景下的实验SDK集成方式有差异。本文以客户端实验为例，为您介绍关闭体验一致性后的实验集成思路与操作要点。</p>
+<p>&lt;span id=&quot;b573f351&quot;&gt;&lt;/span&gt;</p>
+<h1>背景信息</h1>
+<table><thead><tr><th>对比项</th><th>MAB实验未关闭“体验一致性”</th><th>MAB实验关闭“体验一致性”</th></tr></thead><tbody><tr><td>调优基准</td><td>调优会针对实验的实验组版本（VID）来进行调优</td><td>调优会针对实验的配置参数来进行调优</td></tr><tr><td>实验SDK集成思路</td><td>MAB实验SDK集成方式与普通A/B实验类似，没有特殊逻辑。</td><td>为了获取MAB实验的配置参数，并计算对应进组与转化指标，您需要客在使用该功能时，同步上报MAB实验配置参数对应的维度值到事件公共属性<code>mab_arm</code>中，确保用户后续行为事件能关联到对应的实验分组，无需手动在每个事件中添加该属性。</td></tr></tbody></table>
+<p>下文为您介绍关闭“体验一致性”后，实验SDK集成的操作要点。</p>
+<p>&lt;span id=&quot;9b910ba5&quot;&gt;&lt;/span&gt;</p>
+<h1>准备工作</h1>
+<p>您需要先手动创建一个自定义的“事件公共属性”，用于后续上报MAB实验配置参数的维度值。事件公共属性的配置要求如下：</p>
+<ul><li>事件公共属性名称：<code>mab_arm</code>。</li></ul>
+<ul><li>属性类型：必须为<code>string</code>。</li></ul>
+<p>配置示例如下。</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/ca9e8c03209949d981f91a2879eb0eb4~tplv-goo7wpa0wc-image.image&quot; width=&quot;2870px&quot; /&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;a4cfc7ab&quot;&gt;&lt;/span&gt;</p>
+<h1>SDK集成</h1>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;当前支持两种方式进行实验SDK集成，详细介绍参见下文的 &lt;strong&gt;集成方案说明&lt;/strong&gt; 章节。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;以下以客户端为例为您介绍示例代码，服务端的操作类似。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;74572dda&quot;&gt;&lt;/span&gt;</p>
+<h2>方式一：通过<code>getVar</code>获取配置val</h2>
+<p>&lt;span id=&quot;f40ea328&quot;&gt;&lt;/span&gt;</p>
+<h2>集成方案说明</h2>
+<p>此种方式进行客户端集成时，需要调用两次<code>getVar</code>方法：</p>
+<ul><li>在实际获取分流结果的时机，首先调用一次<code>getVar</code>，拿到分流结果值后将该分流结果值以事件公共属性<code>mab_arm</code>的方式进行设置。</li></ul>
+<ul><li>再紧接着调用一次<code>getVar</code>，保障第二次调用<code>getVar</code>时，能将<code>mab_arm</code>的属性值给带过来。</li></ul>
+<p>建议您可以在调用第二次<code>getVar</code>时，再做业务逻辑判断。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;通过两次调用&lt;code&gt;getVar&lt;/code&gt;方法，先获取分流结果并设置为公共属性，再二次调用确保属性生效，实现后续事件自动携带&lt;code&gt;mab_arm&lt;/code&gt;。&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;优点：设置公共属性后，后续所有曝光事件及行为事件会自动携带&lt;code&gt;mab_arm&lt;/code&gt;，无需手动处理。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;缺点：会触发两次曝光事件上报，若客户按事件量计费，需注意由此产生的成本。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;31745bec&quot;&gt;&lt;/span&gt;</p>
+<h3>操作步骤</h3>
+<ol><li>首次调用<code>getVar</code>，获取实验分流结果；</li></ol>
+<ol><li>将结果通过<code>config</code>方法设置为事件公共属性<code>mab_arm</code>；</li></ol>
+<ol><li>二次调用<code>getVar</code>，确保请求携带已设置的<code>mab_arm</code>属性，再在此回调中处理业务逻辑。</li></ol>
+<p>参考代码：</p>
+<pre><code>window.collectEvent(&#x27;getVar&#x27;, &#x27;ab-key&#x27;, &#x27;ab-default-value&#x27;, (res) =&gt; {
+    console.log(res)
+    if(res){
+
+        window.collectEvent(&#x27;config&#x27;,{
+            mab_arm: res, // 用户实验配置value
+        });
+        
+        window.collectEvent(&#x27;getVar&#x27;, &#x27;ab-key&#x27;, &#x27;ab-default-value&#x27;, (res) =&gt; {
+            // 业务逻辑处理
+            // XXX
+        })
+    }
+});</code></pre>
+<p>&lt;span id=&quot;1d34c7ec&quot;&gt;&lt;/span&gt;</p>
+<h2>方式二：使用getAllVars先获取vid和配置</h2>
+<p>&lt;span id=&quot;294c6794&quot;&gt;&lt;/span&gt;</p>
+<h2>集成方案说明</h2>
+<p>此种方式进行客户端集成时，建议在实验SDK接入时，先通过getAllVar获取所有的配置，遍历拿到指定配置后，设置公共属性后，然后再正常调用getVar方法并处理逻辑。</p>
+<ul><li>您需要先调用<code>getAllVars</code>获取所有实验配置，提取目标配置值并设置为公共属性。</li></ul>
+<ul><li>再调用<code>getVar</code>处理业务逻辑，减少曝光事件上报次数。</li></ul>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;事件属性的方式：&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;优点：仅触发一次曝光事件上报，降低事件量成本。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;缺点：当实验配置较多时，加载全量配置可能造成一定资源消耗，客户端内存可能会有额外占用的情况。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;61783975&quot;&gt;&lt;/span&gt;</p>
+<h3>操作步骤</h3>
+<ol><li>调用<code>getAllVars</code>获取所有实验配置；</li></ol>
+<ol><li>从全量配置中提取目标实验的<code>val</code>（配置值），通过<code>config</code>方法设置为公共属性<code>mab_arm</code>；</li></ol>
+<ol><li>正常调用<code>getVar</code>处理业务逻辑（此时请求已携带<code>mab_arm</code>）。</li></ol>
+<p>参考代码：</p>
+<pre><code>window.collectEvent(&#x27;getAllVars&#x27;, (res) =&gt; {
+    console.log(res);
+    config_val = res[&#x27;test_key&#x27;]
+    if(config_val) {
+        vid = config_val[&#x27;vid&#x27;]
+        val = config_val[&#x27;val&#x27;]
+        console.log(vid, val)
+        window.collectEvent(&#x27;config&#x27;,{
+            mab_arm: val, // 用户实验配置value
+        });
+    }
+});
+ window.collectEvent(&#x27;getVar&#x27;, &#x27;ab-key&#x27;, &#x27;ab-default-value&#x27;, (res) =&gt; {
+    // 业务逻辑处理
+    // XXX
+});</code></pre>
+<p>&lt;span id=&quot;0dc45b51&quot;&gt;&lt;/span&gt;</p>
+<h1>参考：实验SDK调试</h1>
+<p>完成实验SDK集成配置后，您可进行SDK调试，验证接入的结果，各端的调试操作可参考对应端的SDK调试文档。以Web/Js SDK为例，调试的详细操作可参考：<a href="https://www.volcengine.com/docs/6287/159260" target="_blank" rel="noopener">Web/JS SDK 调试及数据验证</a>。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

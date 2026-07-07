@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SDK更新日志 · A/B 实验知识库</title>
+<meta name="description" content="2023年及后续的更新日志可前往[SDK发版记录](https://www.volcengine.com/docs/6285/69616)页面查看详情。 2022年12月21日 Android: V6.14.2 1. 支">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/158895.html">
+<meta property="og:title" content="SDK更新日志"><meta property="og:description" content="2023年及后续的更新日志可前往[SDK发版记录](https://www.volcengine.com/docs/6285/69616)页面查看详情。 2022年12月21日 Android: V6.14.2 1. 支">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/158895.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>SDK更新日志</h1>
+<div class="meta">📄 5,098 字 · 🕐 2024-09-12</div>
+<article class="md"><p>2023年及后续的更新日志可前往<a href="https://www.volcengine.com/docs/6285/69616" target="_blank" rel="noopener">SDK发版记录</a>页面查看详情。</p>
+<p>&lt;span id=&quot;_2022年12月21日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年12月21日</h2>
+<p>&lt;span id=&quot;android-v6-14-2&quot;&gt;&lt;/span&gt;</p>
+<h3>Android: V6.14.2</h3>
+<ol><li>支持 RN 圈选；</li></ol>
+<ol><li>支持用户多口径绑定 OneID；</li></ol>
+<ol><li>扩展埋点API、支持事件级 A/B Testing 曝光设置；</li></ol>
+<ol><li>内嵌 H5 ABTest 分流打通；</li></ol>
+<ol><li>上报策略调整：切后台默认上报一次(和手动调用flush共享10s频控)；</li></ol>
+<ol><li>支持商业化 IPID 需求；</li></ol>
+<ol><li>修复已知问题；</li></ol>
+<p>&lt;span id=&quot;ios-v6-14-1&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS: V6.14.1</h3>
+<ol><li>支持用户多口径绑定 OneID；</li></ol>
+<ol><li>支持新用户模式；</li></ol>
+<ol><li>Tester H5 功能打通；</li></ol>
+<ol><li>扩展埋点API、支持事件级 A/BTesting 曝光设置；</li></ol>
+<ol><li>修复已知问题；</li></ol>
+<p>&lt;span id=&quot;reactnative-v0-2-4&quot;&gt;&lt;/span&gt;</p>
+<h3>ReactNative: V0.2.4</h3>
+<ol><li>支持 RN 圈选；</li></ol>
+<ol><li>element_path 增加元素所属的 pagename，增加每一级元素相对于父节点的 index；</li></ol>
+<ol><li>极大的缩短了 reactnavigation 页面元素的路径长度；</li></ol>
+<ol><li>对抗 js 压缩，常用的点击组件名字在 js 压缩后不再是乱码；</li></ol>
+<ol><li>修复已知问题；</li></ol>
+<p>&lt;span id=&quot;_2022年11月18日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年11月18日</h2>
+<p>&lt;span id=&quot;web-v5-1-4&quot;&gt;&lt;/span&gt;</p>
+<h3>web: V5.1.4</h3>
+<ol><li>新增了埋点调试工具；</li></ol>
+<ol><li>客户端打通支持了AB API的调用</li></ol>
+<ol><li>新增了disable_ab_rest参数，用于禁止切换uuid时的AB重置</li></ol>
+<p>&lt;span id=&quot;_2022年10月18日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年10月18日</h2>
+<p>&lt;span id=&quot;web-v5-1-3&quot;&gt;&lt;/span&gt;</p>
+<h3>web: V5.1.3</h3>
+<ol><li>新增hash路由监听；</li></ol>
+<ol><li>支持AB多链接实验回退；</li></ol>
+<ol><li>支持AB跨域名存储数据；</li></ol>
+<ol><li>客户端打通参数由Native变更为enable_native；</li></ol>
+<p>&lt;span id=&quot;_2022年10月14日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年10月14日</h2>
+<p>&lt;span id=&quot;ios-v6-13-1&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS: V6.13.1</h3>
+<ol><li>新增拉取DataTester实验方法，支持设置超时时间以及响应回调函数；</li></ol>
+<ol><li>埋点实时验证提示优化；</li></ol>
+<ol><li>允许用户自定义SDK请求的部分HTTPHeader；</li></ol>
+<ol><li>支持SDK初始化前设置用户uuid；</li></ol>
+<ol><li>修复已知问题。</li></ol>
+<p>&lt;span id=&quot;android-v6-13-3&quot;&gt;&lt;/span&gt;</p>
+<h3>Android: V6.13.3</h3>
+<ol><li>新增应用崩溃事件采集；</li></ol>
+<ol><li>新增禁用事件配置；</li></ol>
+<ol><li>新增采集Google AID配置开关；</li></ol>
+<ol><li>新增获取多实例接口；</li></ol>
+<ol><li>新增可设置超时和回调的拉取AB实验配置接口；</li></ol>
+<ol><li>实时埋点验证新增页面访问事件验证；</li></ol>
+<ol><li>支持SDK初始化前设置用户uuid；</li></ol>
+<ol><li>优化Fragment全埋点采集；</li></ol>
+<ol><li>修复已知问题。</li></ol>
+<p>&lt;span id=&quot;_2022年9月5日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年9月5日</h2>
+<p>&lt;span id=&quot;ios-v6-12-5&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS: V6.12.5</h3>
+<ol><li>新增支持激活服务自定义参数 ；</li></ol>
+<ol><li>删除 CoreLocation 的强依赖；</li></ol>
+<ol><li>新增对调试工具的支持；</li></ol>
+<ol><li>修复已知问题。</li></ol>
+<p>&lt;span id=&quot;android-v6-12-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android: V6.12.0</h3>
+<ol><li>新增多实例单独配置调试日志开关和自定义打印；</li></ol>
+<ol><li>新增对调试工具的支持；</li></ol>
+<ol><li>修复已知问题。</li></ol>
+<p>&lt;span id=&quot;_2022年07月20日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年07月20日</h2>
+<p>&lt;span id=&quot;web-v5-1-2&quot;&gt;&lt;/span&gt;</p>
+<h3>web: V5.1.2</h3>
+<ul><li>新增H5页面的埋点验证功能；</li></ul>
+<p>&lt;span id=&quot;_2022年07月14日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年07月14日</h2>
+<p>&lt;span id=&quot;ios-v6-11-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS: V6.11.0</h3>
+<ol><li>新增支持配置全埋点事件类型；</li></ol>
+<ol><li>新增事件名称和属性的合法性校验日志提示；</li></ol>
+<ol><li>新增反作弊模块手动上报；</li></ol>
+<ol><li>修复已知问题。</li></ol>
+<p>&lt;span id=&quot;android-v6-11-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android: V6.11.0</h3>
+<ol><li>新增支持配置全埋点事件类型；</li></ol>
+<ol><li>新增事件名称和属性的合法性校验日志提示；</li></ol>
+<ol><li>修复已知问题。</li></ol>
+<p>&lt;span id=&quot;_2022年06月2日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年06月2日</h2>
+<p>&lt;span id=&quot;web-v5-1-1&quot;&gt;&lt;/span&gt;</p>
+<h3>web: V5.1.1</h3>
+<ul><li>新增曝光事件采集；</li></ul>
+<ul><li>新增追踪事件采集；</li></ul>
+<ul><li>新增事件&amp;属性合法性校验；</li></ul>
+<ul><li>新增user_unique_id_type属性；</li></ul>
+<ul><li>新增全埋点事件单事件开关。</li></ul>
+<p>&lt;span id=&quot;_2022年05月23日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年05月23日</h2>
+<p>&lt;span id=&quot;ios-v6-10-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS: V6.10.0</h3>
+<ul><li>新增采集屏幕方向、GPS坐标；</li></ul>
+<ul><li>新增时长事件、离开页面事件时长；</li></ul>
+<ul><li>新增曝光事件采集；</li></ul>
+<ul><li>支持设置用户ID类型；</li></ul>
+<ul><li>支持清理缓存事件。</li></ul>
+<p>&lt;span id=&quot;android-v6-10-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android: V6.10.0</h3>
+<ul><li>新增采集屏幕方向、GPS坐标；</li></ul>
+<ul><li>新增时长事件、离开页面事件时长；</li></ul>
+<ul><li>新增曝光事件采集；</li></ul>
+<ul><li>支持设置用户ID类型。</li></ul>
+<p>&lt;span id=&quot;_2022年03月29日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年03月29日</h2>
+<p>&lt;span id=&quot;ios-v6-8-1&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS: V6.8.1</h3>
+<ul><li>新增事件采集回调，支持自定义修改参数；</li></ul>
+<ul><li>新增实时埋点验证能力的国际化支持；</li></ul>
+<ul><li>修复已知问题。</li></ul>
+<p>&lt;span id=&quot;android-v6-9-6&quot;&gt;&lt;/span&gt;</p>
+<h3>Android: V6.9.6</h3>
+<ul><li>适配鸿蒙系统；</li></ul>
+<ul><li>适配x5webview、支持自定义webview；</li></ul>
+<ul><li>新增忽略、手动采集页面和点击事件的能力 ；</li></ul>
+<ul><li>新增事件采集回调，支持自定义修改参数；</li></ul>
+<ul><li>新增Fragment全埋点事件开关；</li></ul>
+<ul><li>新增实时埋点验证能力的国际化支持；</li></ul>
+<ul><li>新增设置当前进程为主进程的配置；</li></ul>
+<ul><li>适配支持ASM9；</li></ul>
+<ul><li>新增OAID和Androidid的采集开关；</li></ul>
+<ul><li>剥离不必要的依赖包；</li></ul>
+<ul><li>修复已知问题。</li></ul>
+<p>&lt;span id=&quot;_2022年02月11日&quot;&gt;&lt;/span&gt;</p>
+<h2>2022年02月11日</h2>
+<p>&lt;span id=&quot;ios：v6-7-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v6.7.0</h3>
+<ul><li>SDK支持多实例；</li></ul>
+<ul><li>Alink接口attribute_data和alink_data增加加密；</li></ul>
+<ul><li>全埋点支持自定义属性；</li></ul>
+<ul><li>修复已知问题。</li></ul>
+<p>&lt;span id=&quot;android：v6-8-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v6.8.0</h3>
+<ul><li>SDK支持多实例；</li></ul>
+<ul><li>Alink接口attribute_data和alink_data增加加密；</li></ul>
+<ul><li>alink短链重复唤起app时都上报$invoke事件；</li></ul>
+<ul><li>支持Activity、View设置自定义埋点属性；</li></ul>
+<ul><li>增加plugin黑名单配置埋点采集；</li></ul>
+<ul><li>优化了vivo、酷派手机获取oaid的适配性；</li></ul>
+<ul><li>修复已知问题。</li></ul>
+<p>&lt;span id=&quot;_2021年12月13日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年12月13日</h2>
+<p>&lt;span id=&quot;ios：v6-6-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v6.6.0</h3>
+<ul><li>新增autoTrackEnabled开关；</li></ul>
+<ul><li>优化后台与被动启动；</li></ul>
+<ul><li>新增手动拉取AB实验配置的接口；</li></ul>
+<ul><li>优化Alink功能。</li></ul>
+<p>&lt;span id=&quot;android：v6-7-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v6.7.0</h3>
+<ul><li>增加启动、推出预置事件属性；</li></ul>
+<ul><li>优化imei、meid获取，适配隐私合规；</li></ul>
+<ul><li>新增手动拉取AB实验配置的接口；</li></ul>
+<ul><li>修复已知问题。</li></ul>
+<p>&lt;span id=&quot;_2021年11月15日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年11月15日</h2>
+<p>&lt;span id=&quot;ios：v6-5-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v6.5.0</h3>
+<ul><li>新增全埋点事件属性；</li></ul>
+<ul><li>ALink去除is_retargeting回调限制；</li></ul>
+<ul><li>新增初始化trackEventEnabled开关，关闭所有事件上报。</li></ul>
+<p>&lt;span id=&quot;android：v6-6-2&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v6.6.2</h3>
+<ul><li>新增全埋点事件属性；</li></ul>
+<ul><li>新增初始化配置字段：上报事件开关；</li></ul>
+<ul><li>取消再营销的上报条件限制；</li></ul>
+<ul><li>修复已知问题。</li></ul>
+<p>&lt;span id=&quot;_2021年10月20日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年10月20日</h2>
+<p>&lt;span id=&quot;ios：v6-4-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v6.4.0</h3>
+<ul><li>新增app_launch和invoke事件支持$deeplink_url预置属性；</li></ul>
+<ul><li>支持事件params中增加uuid上送；</li></ul>
+<ul><li>修复已知问题。</li></ul>
+<p>&lt;span id=&quot;_2021年10月15日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年10月15日</h2>
+<p>&lt;span id=&quot;android：v6-5-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v6.5.0</h3>
+<ul><li>新增支持多实例；</li></ul>
+<ul><li>新增app_launch和invoke事件支持$deeplink_url预置属性；</li></ul>
+<ul><li>插件plugin适配ASM7；</li></ul>
+<ul><li>修复已知问题。</li></ul>
+<p>&lt;span id=&quot;_2021年9月08日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年9月08日</h2>
+<p>&lt;span id=&quot;ios：v6-3-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v6.3.0</h3>
+<ul><li>新增自定义加密方式（私有化部署可用）；</li></ul>
+<ul><li>修复BDAutoTrackDefaults类文件锁crash问题；</li></ul>
+<ul><li>新增isNewUser是否为新用户。</li></ul>
+<p>&lt;span id=&quot;android：v6-4-1&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v6.4.1</h3>
+<ul><li>修复launch中的uuid和ssid对应关系错误问题；</li></ul>
+<ul><li>支持oaid1.0.26版本。</li></ul>
+<p>&lt;span id=&quot;_2021年8月04日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年8月04日</h2>
+<p>&lt;span id=&quot;ios：v6-2-3&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v6.2.3</h3>
+<ul><li>支持Apple Search Ads；</li></ul>
+<ul><li>支持Alink相关数据采集。</li></ul>
+<p>&lt;span id=&quot;_2021年8月03日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年8月03日</h2>
+<p>&lt;span id=&quot;android：v6-3-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v6.3.0</h3>
+<ul><li>增加切换用户时，设置数据发送方式；</li></ul>
+<ul><li>增加Debug模式下关闭日志；</li></ul>
+<ul><li>支持Alink相关数据采集。</li></ul>
+<p>&lt;span id=&quot;_2021年7月21日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年7月21日</h2>
+<p>&lt;span id=&quot;小程序：v1-7-0&quot;&gt;&lt;/span&gt;</p>
+<h3>小程序：v1.7.0</h3>
+<ul><li>增加自定义WebID；</li></ul>
+<ul><li>增加默认从接口获取utms相关数据；</li></ul>
+<p>&lt;span id=&quot;_2021年6月18日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年6月18日</h2>
+<p>&lt;span id=&quot;android：v6-2-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v6.2.0</h3>
+<ul><li>增加获取applog版本号接口；</li></ul>
+<ul><li>修复埋点检测中断问题；</li></ul>
+<ul><li>切换用户支持清除A/B配置缓存信息开关，默认为true；</li></ul>
+<p>&lt;span id=&quot;_2021年6月15日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年6月15日</h2>
+<p>&lt;span id=&quot;ios：v6-2-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v6.2.0</h3>
+<ul><li>支持四位版本号上报接口；</li></ul>
+<ul><li>支持内嵌H5关闭全埋点事件采集；</li></ul>
+<ul><li>切换用户支持清除A/B配置缓存信息开关，默认为true；</li></ul>
+<p>&lt;span id=&quot;_2021年5月15日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年5月15日</h2>
+<p>&lt;span id=&quot;android：v6-1-2&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v6.1.2</h3>
+<ul><li>把scheme拆成单独模块，可不设置scehem参数；</li></ul>
+<ul><li>初始化时增加开关控制是否采集内嵌H5数据；</li></ul>
+<ul><li>发送事件之前更新access字段；</li></ul>
+<ul><li>切换用户时清除vid缓存。</li></ul>
+<p>&lt;span id=&quot;_2021年4月15日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年4月15日</h2>
+<p>&lt;span id=&quot;android：v6-0-2&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v6.0.2</h3>
+<ul><li>支持profile用户属性上报；</li></ul>
+<ul><li>支持内嵌H5从Native上报埋点；</li></ul>
+<ul><li>修复客户端时间上报问题。</li></ul>
+<p>&lt;span id=&quot;ios：v6-0-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v6.0.0</h3>
+<ul><li>支持profile用户属性上报；</li></ul>
+<ul><li>支持内嵌H5从Native上报埋点；</li></ul>
+<ul><li>优化切换用户时AB数据更新策略。</li></ul>
+<p>&lt;span id=&quot;_2021年02月08日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年02月08日</h2>
+<p>&lt;span id=&quot;android：v5-5-6&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.5.6</h3>
+<ul><li>支持首次触发事件标记$is_fisrt_time上报；</li></ul>
+<ul><li>增加游戏侧埋点模版接口；</li></ul>
+<ul><li>修复playesession计算时长问题。</li></ul>
+<p>&lt;span id=&quot;ios：v5-6-5&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.6.5</h3>
+<ul><li>支持首次触发事件标记$is_fisrt_time上报；</li></ul>
+<ul><li>增加游戏侧埋点模版接口；</li></ul>
+<ul><li>优化获取AB配置时机,SDK初始化后立即获取。</li></ul>
+<p>&lt;span id=&quot;_2021年01月06日&quot;&gt;&lt;/span&gt;</p>
+<h2>2021年01月06日</h2>
+<p>&lt;span id=&quot;ios：v5-6-4&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.6.4</h3>
+<ul><li>支持bitcode；</li></ul>
+<ul><li>支持platform端属性；</li></ul>
+<ul><li>提供类方法单独初始化和单独启动SDK的接口。</li></ul>
+<p>   +[BDAutoTrack sharedTrackWithConfig:]</p>
+<p>   +[BDAutoTrack startTrack]</p>
+<p>&lt;span id=&quot;_2020年12月30日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年12月30日</h2>
+<p>&lt;span id=&quot;android：v5-5-5&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.5.5</h3>
+<ul><li>增加platform属性，作为端；</li></ul>
+<ul><li>AB配置客户端缓存机制变化；</li></ul>
+<ul><li>特殊情况webview刷新的问题。</li></ul>
+<p>&lt;span id=&quot;_2020年12月04日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年12月04日</h2>
+<p>&lt;span id=&quot;微信小程序：v1-3-11&quot;&gt;&lt;/span&gt;</p>
+<h3>微信小程序：v1.3.11</h3>
+<ul><li>新增enable_filter_crawler参数，开启后过滤爬虫场景(scene:1129，目前只有微信小程序有此场景)。</li></ul>
+<p>&lt;span id=&quot;_2020年11月25日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年11月25日</h2>
+<p>&lt;span id=&quot;android：v5-5-1&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.5.1</h3>
+<ul><li>新增车机圈选数据采集；</li></ul>
+<ul><li>适配信通院1.0.23SDK。</li></ul>
+<p>&lt;span id=&quot;ios：v5-6-3&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.6.3</h3>
+<ul><li>优化GlobalDID算法。</li></ul>
+<p>&lt;span id=&quot;_2020年11月20日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年11月20日</h2>
+<p>&lt;span id=&quot;微信小程序：v1-3-6&quot;&gt;&lt;/span&gt;</p>
+<h3>微信小程序：v1.3.6</h3>
+<ul><li>优化mp_platform字段类型为string。</li></ul>
+<p>&lt;span id=&quot;_2020年10月20日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年10月20日</h2>
+<p>&lt;span id=&quot;android：v5-4-1&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.4.1</h3>
+<ul><li>新增profile接口(私有化环境支持)；</li></ul>
+<ul><li>新增vue支持\-Cordova。vue打包App；</li></ul>
+<ul><li>修复埋点检测相关问题。</li></ul>
+<p>&lt;span id=&quot;_2020年10月19日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年10月19日</h2>
+<p>&lt;span id=&quot;微信小程序：v1-3-6&quot;&gt;&lt;/span&gt;</p>
+<h3>微信小程序：v1.3.6</h3>
+<ul><li>新增utm参数处理；</li></ul>
+<ul><li>优化profile数据类型检测(私有化V3.X版本)。</li></ul>
+<p>&lt;span id=&quot;_2020年09月22日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年09月22日</h2>
+<p>&lt;span id=&quot;微信小程序：v1-3-0&quot;&gt;&lt;/span&gt;</p>
+<h3>微信小程序：v1.3.0</h3>
+<ul><li>新增自动上报predefine_pageview_hide(页面退出)事件。</li></ul>
+<p>&lt;span id=&quot;_2020年09月11日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年09月11日</h2>
+<p>&lt;span id=&quot;微信小程序：v1-2-0&quot;&gt;&lt;/span&gt;</p>
+<h3>微信小程序：v1.2.0</h3>
+<ul><li>新增profile功能，提供profileSet、profileUnset等方法(私有化V3.X版本)。</li></ul>
+<p>&lt;span id=&quot;_2020年08月29日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年08月29日</h2>
+<p>&lt;span id=&quot;android：v5-3-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.3.0</h3>
+<ul><li>新增全埋点开关；</li></ul>
+<ul><li>修复无法自定义消息头；</li></ul>
+<ul><li>听云集成兼容。</li></ul>
+<p>&lt;span id=&quot;_2020年08月20日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年08月20日</h2>
+<p>&lt;span id=&quot;ios：v5-4-1&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.4.1</h3>
+<ul><li>新增query加密；</li></ul>
+<ul><li>修复私有化环境下，服务端回包解析失败问题。</li></ul>
+<p>&lt;span id=&quot;_2020年07月29日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年07月29日</h2>
+<p>&lt;span id=&quot;ios：v5-4-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.4.0</h3>
+<ul><li>优化IDFA采集策略，提供单独采集。</li></ul>
+<p>&lt;span id=&quot;_2020年07月28日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年07月28日</h2>
+<p>&lt;span id=&quot;android：v5-2-6&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.2.6</h3>
+<ul><li>修复切换uuid时机导致崩溃问题。</li></ul>
+<p>&lt;span id=&quot;_2020年07月13日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年07月13日</h2>
+<p>&lt;span id=&quot;android：v5-2-4&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.2.4</h3>
+<ul><li>修复oaid；</li></ul>
+<ul><li>修复启动崩溃问题。</li></ul>
+<p>&lt;span id=&quot;_2020年06月19日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年06月19日</h2>
+<p>&lt;span id=&quot;ios：v5-3-1&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.3.1</h3>
+<ul><li>新增自定义公共属性Custom header接口；</li></ul>
+<ul><li>新增立即上报数据flush接口。</li></ul>
+<p>&lt;span id=&quot;_2020年06月17日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年06月17日</h2>
+<p>&lt;span id=&quot;android：v5-2-1&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.2.1</h3>
+<ul><li>优化uuid切换后，origin_session_id策略；</li></ul>
+<ul><li>修复了bug。</li></ul>
+<p>&lt;span id=&quot;_2020年06月15日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年06月15日</h2>
+<p>&lt;span id=&quot;ios：v5-3-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.3.0</h3>
+<ul><li>优化uuid切换缓存策略；</li></ul>
+<ul><li>修复了bug。</li></ul>
+<p>&lt;span id=&quot;_2020年06月09日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年06月09日</h2>
+<p>&lt;span id=&quot;android：v5-2-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.2.0</h3>
+<ul><li>新增实时埋点检测上报接口；</li></ul>
+<ul><li>优化uuid切换用户后，增加session策略。</li></ul>
+<p>&lt;span id=&quot;ios：v5-2-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.2.0</h3>
+<ul><li>新增实时埋点检测上报接口；</li></ul>
+<ul><li>修复了bug。</li></ul>
+<p>&lt;span id=&quot;_2020年04月28日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年04月28日</h2>
+<p>&lt;span id=&quot;android：v5-1-2&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.1.2</h3>
+<ul><li>优化弹窗模拟功能；</li></ul>
+<ul><li>修复bug。</li></ul>
+<p>&lt;span id=&quot;ios：v5-1-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.1.0</h3>
+<ul><li>优化setAbEnable接口；</li></ul>
+<ul><li>修复了bug。</li></ul>
+<p>&lt;span id=&quot;_2020年04月12日&quot;&gt;&lt;/span&gt;</p>
+<h2>2020年04月12日</h2>
+<p>&lt;span id=&quot;android：v5-0-0&quot;&gt;&lt;/span&gt;</p>
+<h3>Android：v5.0.0</h3>
+<ul><li>优化圈选数据采集能力；</li></ul>
+<ul><li>支持私有化A/B请求。</li></ul>
+<p>&lt;span id=&quot;ios：v5-0-0&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS：v5.0.0</h3>
+<ul><li>优化ABTestConfigValueForKey接口defaultValue问题。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>你所做的A/B实验，可能是错的 · A/B 实验知识库</title>
+<meta name="description" content="在A/B实验不断走红的今天，越来越多的企业开始意识到A/B实验的重要意义，并试图通过A/B实验，前置性地量化决策收益，从而实现增长。然而，当你和其他业务伙伴谈及A/B实验时，你总能听到这样的论调： “这事儿很简单，做个实">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/75643.html">
+<meta property="og:title" content="你所做的A/B实验，可能是错的"><meta property="og:description" content="在A/B实验不断走红的今天，越来越多的企业开始意识到A/B实验的重要意义，并试图通过A/B实验，前置性地量化决策收益，从而实现增长。然而，当你和其他业务伙伴谈及A/B实验时，你总能听到这样的论调： “这事儿很简单，做个实">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/75643.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">💡 AB通识科普</span></div>
+<h1>你所做的A/B实验，可能是错的</h1>
+<div class="meta">📄 3,819 字 · 🕐 2023-07-24</div>
+<article class="md"><p>在A/B实验不断走红的今天，越来越多的企业开始意识到A/B实验的重要意义，并试图通过A/B实验，前置性地量化决策收益，从而实现增长。然而，当你和其他业务伙伴谈及A/B实验时，你总能听到这样的论调：</p>
+<p>“这事儿很简单，做个实验就行了。准备两个版本，在不同渠道里发版，然后看看数据。”</p>
+<p>“把用户按照did（device_id)尾号奇偶分流进实验组和对照组，然后看看数据表现。”</p>
+<p>不可否认，这部分企业的确走在前沿，初步拥有了A/B实验的思维。然而令人遗憾的是，他们操作的所谓“A/B实验”，其实并不具备A/B实验应有的功效。</p>
+<p>更令人遗憾的是，他们似乎对此并不知晓。</p>
+<p>对于A/B实验原理认知的缺失，致使许多企业在业务增长的道路上始终在操作一批“错误的A/B实验”。这些实验并不能指导产品的优化和迭代，甚至有可能与我们的初衷背道而驰，导致“负增长”。</p>
+<p>因此，为了能够更好地明白什么是A/B实验，我们不妨先来了解几种错误的A/B实验。</p>
+<p>&lt;span id=&quot;no1：用户抽样不科学&quot;&gt;&lt;/span&gt;</p>
+<h1><strong>No1：用户抽样不科学</strong></h1>
+<p>&lt;span id=&quot;丨-典型表现&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>丨 典型表现</strong></h3>
+<p>“用户抽样不科学”是错误A/B实验的第一宗罪。操作这种错误A/B实验的企业常采取以下做法：</p>
+<ul><li>实验中，在不同的渠道/应用市场中，发布不同版本的APP/页面，并把用户数据进行对比；</li></ul>
+<ul><li>简单地从总体流量中抽取n%用于实验，不考虑流量分布，不做分流处理（例如：简单地从总体流量中任意取出n%，按照ID尾号单双号把用户分成两组）。</li></ul>
+<p>&lt;span id=&quot;丨-错在哪儿&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>丨</strong> <strong>错在哪儿</strong></h3>
+<p>不同应用市场/渠道的用户常常带有自己的典型特征，用户分布具有明显区别。对总流量进行“简单粗暴”地抽样也有着同样的问题——分流到实验组和对照组的流量可能存在很大的分布差异。</p>
+<p>实际上，A/B实验要求我们，尽可能地保持实验组和对照组流量分布一致（与总体流量也需保持分布一致），否则得出的实验数据并不具有可信性。</p>
+<p>为什么要保持分布一致呢？我们不妨来看一个问题。</p>
+<blockquote>某大学由两个学院组成。1号学院的男生录取率是75%，女生录取率49%，男生录取率高于女生；2号学院男生录取率10%，女生录取率5%，男生录取率同样高于女生。问：综合两个学院来看，这所大学的总体录取率是否男生高于女生？</blockquote>
+<p>直觉上来说，许多人会觉得，男生录取率总体上会高于女生。然而事实并不是这样，让我们来看看实际数字：</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/09fddfbd2cdf43e49d74f69c6e26cafe.png" loading="lazy"> &lt;/span&gt;</p>
+<p>从上表可以看出，尽管两个学院男生录取率都高于女生，但综合考虑两个学院的情况时，男生的总体录取率却要低于女生。这种现象在统计学中被称为辛普森悖论。</p>
+<blockquote>辛普森悖论由英国统计学家E.H辛普森于1951年提出。其主要内容是：几组不同的数据中均存在一种趋势，但当这些数据组合在一起后，这种趋势消失或反转。其产生的原因主要是数据中存在多个变量。这些变量通常难以识别，被称为“潜伏变量”。潜伏变量可能是由于采样错误造成的。</blockquote>
+<p>在A/B实验中，如果实验组和对照组的样本流量分布不一致，就可能产生辛普森悖论，得到不可靠的实验结果。</p>
+<p>分流是A/B实验成功与否的关键点，在早期企业还不具备过硬研发能力情况下，想要真正做对A/B实验，最佳方法是借助第三方实验工具中成熟的分流服务。</p>
+<p>在前一篇《<a href="http://mp.weixin.qq.com/s?__biz=MzI0NzU1NzI5NQ==&amp;mid=2247483814&amp;idx=1&amp;sn=b6ab7dbaddf445999569123659a00463&amp;chksm=e9af7c66ded8f570d7db226661974907f6684a9de69ec3ec4e361fa3fc8d3871b79c0a71eec8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">火山引擎A/B测试</a>》中，我们曾提到火山引擎A/B测试长期服务于抖音、今日头条等头部互联网产品，分流服务科学可靠，并且能够支撑亿级DAU产品进行Push实验，在高并发场景下保持稳定，帮助我们从总体流量中更加均匀地分流样本，使实验更科学。</p>
+<p>&lt;span id=&quot;no2：互斥层选择错误&quot;&gt;&lt;/span&gt;</p>
+<h1><strong>No2：互斥层选择错误</strong></h1>
+<p>&lt;span id=&quot;丨-典型表现&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>丨</strong> <strong>典型表现</strong></h3>
+<p>接入了实验工具，A/B实验就能做对了吗？也不尽然。许多实验者在进行实验操作时，将有关联性的实验放置在不同的实验互斥层上，导致实验结果不可信。</p>
+<p>何谓“互斥层”？在火山引擎A/B测试中，“互斥层”技术是为了让多个实验能够并行，不相互干扰，且都获得足够的流量而研发的流量分层技术。</p>
+<p>假设我现在有4个实验要进行，每一个实验要取用30%的流量才能够得出可信的实验结果。此时为了同时运行这4个实验就需要4\*30%=120%的流量，这意味着100%的流量不够同时分配给这4个实验。那么此时我只能选择给实验排序，让几个实验先后完成。但这会造成实验效率低下。试想一下，抖音每天有上千个实验要进行，如果只能排队挨号，抖音的实验schedule恐怕要排个10年。</p>
+<p>那么有没有办法可以解决这个问题呢？</p>
+<p>有，就是使用互斥层技术，把总体流量“复制”无数遍，形成无数个互斥层，让总体流量可以被无数次复用，从而提高实验效率。</p>
+<p>各互斥层之间的流量是正交的，你可以简单理解为：在互斥层选择正确的前提下，流量经过科学的分配，可保证各实验的结果不会受到其他互斥层的干扰。</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/764f03cf597c4610a8dea7eacb29e657.png" loading="lazy"> &lt;/span&gt;</p>
+<p>在选择互斥层的时候，实验者应当要遵循的规则是：假如实验之间有相关性，那么实验必须置于同一互斥层；假如实验之间没有相关性，那么实验可以置于不同互斥层。如果不遵循这一原则，那么A/B实验就会出问题。</p>
+<p>&lt;span id=&quot;丨-错在哪儿&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>丨</strong> <strong>错在哪儿</strong></h3>
+<p>那么，问题究竟是出在了哪儿呢？</p>
+<p>对于实验需求旺盛的企业来说，互斥层技术完美解决了多个实验并行时流量不够用的问题。然而，乱选互斥层会导致实验结果不可信。为什么？举个例子，现在我们想对购买页面的购买按钮进行实验。我们作出两个假设：</p>
+<ul><li>假设1：将购买按钮的颜色从蓝色改为红色，用户购买率可以提高3%；</li></ul>
+<ul><li>假设2：将购买按钮的形状从方形改为圆形，用户购买率可以提高1.5%。</li></ul>
+<p>针对上述两个假设，我们需要开设两个实验：一个针对按钮颜色，一个针对按钮形状。两个实验均与购买按钮有关系，具有明显的关联性。这两组实验是否可以放在不同互斥层上呢？</p>
+<p>&lt;span id=&quot;丨-情况1：相关实验置于不同层&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>丨</strong> <strong>情况1：相关实验置于不同层</strong></h3>
+<p>如下图，我们把两个实验分别放置在两层上，同时开启两个实验。</p>
+<p>此时用户A打开了我们的购买页面，进入到总体流量之中。在互斥层1里，用户被测试按钮颜色的实验命中，进入实验组Red；在互斥层2里，用户被测试按钮形状的实验命中，进入实验组Round。</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/326b65b29c6848e7962fbd9e813d6bc2.png" loading="lazy"> &lt;/span&gt;</p>
+<p>由图可知，用户A将受到“按钮颜色Red”以及“按钮形状Round”两个策略影响，我们无法判断究竟是哪个策略影响了该用户的行为。换句话说，由于两个实验存在关联，用户重复被实验命中，实验结果实际受到了多个策略的影响。这种情况下，两个实验的结果便不再可信了。</p>
+<p>&lt;span id=&quot;丨-情况2-相关实验置于同一层&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>丨</strong> <strong>情况2:相关实验置于同一层</strong></h3>
+<p>换个思路，如果将上面的两个实验放置在同一层上，那么用户在进入实验后便只会被一个实验命中。两个实验组均只受到一个策略影响，实验结果可信。</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/63675a352fc0447ca2e5a809fea40720.png" loading="lazy"> &lt;/span&gt;</p>
+<p>企业在进行A/B实验时，工具是基础设施，在实际业务，我们还需要结合具体的实验场景，进行正确的实验设计。</p>
+<p>&lt;span id=&quot;no3：不考虑是否显著&quot;&gt;&lt;/span&gt;</p>
+<h1><strong>No3：不考虑是否显著</strong></h1>
+<p>&lt;span id=&quot;丨-典型表现&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>丨</strong> <strong>典型表现</strong></h3>
+<p>实验结束后，只简单地观测实验数据的涨跌，不考虑实验结果是否显著。</p>
+<p>&lt;span id=&quot;丨-错在哪儿&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>丨</strong> <strong>错在哪儿</strong></h3>
+<p>“显著”是一个统计学用词，为什么我们需要在评估实验结果时引入统计学呢？</p>
+<p>我们已经知道，A/B实验是一种小流量实验，我们需要从总体流量中抽取一定量的样本来验证新策略是否有效。然而抽样过程中，样本并不能完全代表整体，虽然我们竭尽全力地进行随机抽样，但最终仍无法避免样本和总体之间的差异。</p>
+<p>了解了这一前提我们就能明白，在A/B实验中，如果只对数据进行简单的计算，我们对于实验结果的判断很可能会“出错”（毕竟我们通过实验观测得到的是样本数据，而不是整体数据）。</p>
+<p>那么，有什么办法去量化样本与总体之间的差异对数据指标造成的影响呢？这就需要结合统计学的方法，在评估实验结果时加入相应的统计学指标，如置信度、置信区间、统计功效等。</p>
+<p>原则上，如果实验结果不显著（或说不置信），我们便不能判断数据的涨/跌，是否是由实验中采取的策略造成的（可能由抽样误差造成），我们也不能盲目地全量发布新策略/否定新策略。</p>
+<p>A/B实验中的统计学原理是一个较为庞大复杂的课题，介于篇幅，我们在此暂不做展开解释。对这部分内容感兴趣的读者也可关注本公众号，我们在后期会推出相应内容来为大家进行讲解。需要明确的一点是：评估A/B实验，绝不仅仅是比较下实验组和对照组的数据高低这么简单。</p>
+<p>在实验结果评估方面，好的实验平台需要具备两个特点：第一是可靠的统计策略，第二是清晰、完善的实验报告。相较于市面上其他实验工具，这两个特点正是火山引擎A/B测试的优势所在。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_6d204df8cb78b385b4192a2f99cb2cda.png" loading="lazy"> &lt;/span&gt;</p>
+<p>在统计策略方面，火山引擎A/B测试的统计策略长期服务于抖音、今日头条等产品，历经打磨，科学可靠；在实验报告方面，从概览至指标详情，火山引擎A/B测试依托于经典统计学的假设检验方法，结合置信度、置信区间，帮助实验者全方位的判断实验策略收益。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_a1c920c473479f9f3191de16b934e53e.png" loading="lazy"> &lt;/span&gt;</p>
+<p>作为互联网公司的新宠，A/B实验确有其独到之处，但浅显的实验认知、错误的实验方法，可能会致使企业在增长的道路上“反向前行”。此处让我们借用一句经典的影视台词吧：“发生这种事，大家都不想的。”</p>
+<p>事实上，本文中所提及的“错误的A/B实验”，只是最浅显的3种，在产品增长的道路上，潜伏在一旁埋伏着实验者的“大坑”还有很多，我们也会在本博客中陆续教给大家如何“避坑”。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

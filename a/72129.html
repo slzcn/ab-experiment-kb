@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>报警任务 · A/B 实验知识库</title>
+<meta name="description" content="Feature 和 实验发布之后，即等同于发布了新版本，即使是小流量实验，也意味着可能对线上业务产生影响。DataTester的指标监控模块提供了报警监控的能力，可以对上线之后的功能进行监控，当业务指标或技术指标出现变动">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/72129.html">
+<meta property="og:title" content="报警任务"><meta property="og:description" content="Feature 和 实验发布之后，即等同于发布了新版本，即使是小流量实验，也意味着可能对线上业务产生影响。DataTester的指标监控模块提供了报警监控的能力，可以对上线之后的功能进行监控，当业务指标或技术指标出现变动">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/72129.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>报警任务</h1>
+<div class="meta">📄 1,264 字 · 🕐 2024-12-03</div>
+<article class="md"><p>Feature 和 实验发布之后，即等同于发布了新版本，即使是小流量实验，也意味着可能对线上业务产生影响。DataTester的指标监控模块提供了报警监控的能力，可以对上线之后的功能进行监控，当业务指标或技术指标出现变动时，报警任务会及时触达到对应的负责人。本文为您介绍创建报警任务的操作指导。</p>
+<p>&lt;span id=&quot;0433b607&quot;&gt;&lt;/span&gt;</p>
+<h1>创建报警</h1>
+<p>&lt;span id=&quot;_1-新建报警任务&quot;&gt;&lt;/span&gt;</p>
+<h2>1. <strong>新建报警任务</strong></h2>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_baf57f1b93865d386ad9fcf0178f23ce.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-选择报警类型&quot;&gt;&lt;/span&gt;</p>
+<h2>2. <strong>选择报警类型</strong></h2>
+<p>总共有两种报警类型：大盘报警和实验报警</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_548dbcea6953e5cf859e28e6c5be3859.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>大盘报警：系统会根据整体大盘数据触发报警</li></ul>
+<ul><li>实验报警：系统会将关联实验关联的数据整合成指标，按照指标定制报警</li></ul>
+<p>&lt;span id=&quot;_3-报警任务-基本配置&quot;&gt;&lt;/span&gt;</p>
+<h2>3. <strong>报警任务\-基本配置</strong></h2>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_44426889bc076ae5cee937a98ffaadab.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>基本信息：填写任务名称、任务说明等</li></ul>
+<ul><li>报警等级：可以选择对应的报警等级（注意、警告、危急）</li></ul>
+<ul><li>任务间隔：1小时、24小时，每隔所选间隔时间就会完成一次报警策略的计算，以判断是否要报警</li></ul>
+<ul><li>关联场景：对应所选的报警场景</li></ul>
+<p>&lt;span id=&quot;_4-报警任务-设置报警策略&quot;&gt;&lt;/span&gt;</p>
+<h2>4. 报警任务\-设置报警策略</h2>
+<table><thead><tr><th>配置参数</th><th>大盘报警配置说明</th><th>实验报警配置说明</th></tr></thead><tbody><tr><td>界面示例</td><td>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_697bc794c6fdc56240a6605bcdc08f07.png" loading="lazy"> &lt;/span&gt;</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7b61a776d2724416b8508c6d357de884~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td>报警规则</td><td>选择报警规则：&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>同时满足以下规则</strong>：代表只有满足所有报警策略的情况下才会触发报警。&lt;br&gt;&lt;br&gt;* <strong>满足下述一条规则</strong>：代表只要满足其中一个报警策略就会触发报警。</td></tr><tr><td>报警策略</td><td>* 指标名称：选择需要监控的指标。&lt;br&gt;&lt;br&gt;* 报警策略：支持绝对数值、同比、环比的报警策略。&lt;br&gt;&lt;br&gt;* 支持添加多条报警策略，多个报警策略对最终报警触发的影响由上述报警规则的配置结果决定。</td><td>* 指标名称：选择需要监控的指标。&lt;br&gt;&lt;br&gt;* 报警策略：仅支持对比对照组的报警策略。&lt;br&gt;&lt;br&gt;   * 您需要根据业务监控需要配置对比对照组的指标变动百分比数值。&lt;br&gt;&lt;br&gt;   * 支持勾选变化显著时报警，勾选后，只有数据变化存在统计学显著的概念才会触发报警。&lt;br&gt;&lt;br&gt;* 支持添加多条报警策略，多个报警策略对最终报警触发的影响由上述报警规则的配置结果决定。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_5-报警任务-通知方式配置&quot;&gt;&lt;/span&gt;</p>
+<h2>5. 报警任务\-通知方式配置</h2>
+<p>报警方式：飞书、钉钉、企业微信、邮件</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e9fbbecb7b557e8fa502b14bd9b1c04d.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><a href="https://www.feishu.cn/hc/zh-CN/articles/360024984973" target="_blank" rel="noopener">飞书</a>：进入飞书群组中，打开会话设置，找到群机器人，并点击添加机器人。选择 自定义机器人 加入群组</li></ul>
+<ul><li><a href="https://work.weixin.qq.com/api/doc/90000/90136/91770" target="_blank" rel="noopener">企业微信</a>：进入微信群聊中，打开会话设置，找到群机器人，并点击右上角的添加，选择 机器人 添加到群聊</li></ul>
+<ul><li><a href="https://developers.dingtalk.com/document/robots/custom-robot-access" target="_blank" rel="noopener">钉钉</a>：打开机器人管理页面。以PC端为例，打开PC端钉钉，点击头像，选择机器人管理。在机器人管理页面选择自定义机器人。在配置安全设置时，选择自定义关键词，填写报警作为关键词，否则可能会造成报警信息丢失</li></ul>
+<ul><li>完成机器人配置后，将对应WebHook地址复制进对应输入框，并妥善保存好此地址，避免地址泄露后被恶意调用发送垃圾消息</li></ul>
+<p>&lt;span id=&quot;三-报警任务管理&quot;&gt;&lt;/span&gt;</p>
+<h1>报警任务管理</h1>
+<p>点击任务名称进入任务详情可以进行编辑修改、删除等管理操作。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_9b078dc633f5910ca2c0d3a3a4045d23.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;四-接收组管理&quot;&gt;&lt;/span&gt;</p>
+<h1>接收组管理</h1>
+<p>在接收组中可以创建、编辑、删除接收组。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e96b5bffc6469cf7ef8ea96aea3b5b2e.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

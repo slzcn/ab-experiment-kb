@@ -708,7 +708,11 @@ async function openDoc(id){
   $('#rback').onclick=()=>{ try{history.replaceState(null,'',location.pathname+location.search);}catch(e){} render(); };
   const cl=$('#copyLink');
   if(cl) cl.onclick=async()=>{
-    const url=location.origin+location.pathname+'#doc='+cl.dataset.id;
+    // 复制的是真实静态页地址（可分享、可被搜索引擎收录）；本地 file:// 打开时回退 hash
+    const base=location.pathname.replace(/[^/]*$/,'');   // 去掉 index.html，取目录
+    const url=location.protocol==='file:'
+      ? location.origin+location.pathname+'#doc='+cl.dataset.id
+      : location.origin+base+'a/'+cl.dataset.id+'.html';
     let ok=false;
     try{ await navigator.clipboard.writeText(url); ok=true; }
     catch(e){

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>高级分析：同期群分析 · A/B 实验知识库</title>
+<meta name="description" content="一. 概述 为什么需要同期群分析？ 大部分产品的用户使用行为是随使用时间的推移呈阶段性变化的，即用户对于产品/功能的使用是有生命周期的：用户在接触新产品or新功能后，会经历从初期使用，到频繁使用成为忠诚用户，或兴趣降低成">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/66825.html">
+<meta property="og:title" content="高级分析：同期群分析"><meta property="og:description" content="一. 概述 为什么需要同期群分析？ 大部分产品的用户使用行为是随使用时间的推移呈阶段性变化的，即用户对于产品/功能的使用是有生命周期的：用户在接触新产品or新功能后，会经历从初期使用，到频繁使用成为忠诚用户，或兴趣降低成">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/66825.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📊 实验报告与分析</span></div>
+<h1>高级分析：同期群分析</h1>
+<div class="meta">📄 1,499 字 · 🕐 2024-05-20</div>
+<article class="md"><p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>一. 概述</h1>
+<p><strong>为什么需要同期群分析？</strong> </p>
+<p>大部分产品的用户使用行为是随使用时间的推移呈阶段性变化的，即用户对于产品/功能的使用是有生命周期的：用户在接触新产品or新功能后，会经历从初期使用，到频繁使用成为忠诚用户，或兴趣降低成为流失用户的过程。</p>
+<p>产品运营需要做的，就是管理和改变用户生命周期，提升用户的黏性和活跃度。这里的数据决策基础，即同期群分析。</p>
+<p><strong>什么是同期群分析？</strong> </p>
+<p><strong>同期群分析</strong> ：即将用户按初始行为的发生时间进行划分为群组（即 <strong>同期群）</strong>  ，然后：</p>
+<ul><li>对处于同期群的用户进行横向比较，从而得出相似群体随时间的变化，观察策略对用户整个生命周期的影响；</li></ul>
+<ul><li>对不同的同期群纵向比较，可以从总体上看到，应用的表现是否越来越好了，从而验证产品改进是否取得了效果。</li></ul>
+<p>&lt;span id=&quot;二-名词解释&quot;&gt;&lt;/span&gt;</p>
+<h1>二. 名词解释</h1>
+<ul><li><strong>同期群</strong> ：属于用户分群里的一个细分，是指在规定时间内对具有共同行为特征的用户进行分群。</li></ul>
+<ul><li><strong>共同行为特征</strong> ：是指在某个时间段内的相似行为，它除了按不同时间的新增用户来分类外，还可以按不同的行为来分类，譬如首次进入实验。</li></ul>
+<ul><li><strong>新进组用户</strong> ：当日首次进入实验的用户。</li></ul>
+<p>&lt;span id=&quot;三-应用场景&quot;&gt;&lt;/span&gt;</p>
+<h1>三. 应用场景</h1>
+<p><strong>1.实验策略对用户有长期效应吗？</strong> </p>
+<p>抖音开发了一个播放时长换奖励的新功能，先开启一个A/B实验验证实验效果，看数据发现看到新功能的用户数据表现明显好于对照组，想知道实验策略能否对用户有长期影响：比如让用户养成了习惯，即使实验关闭无奖励，用户也依然保持着播放的习惯。</p>
+<p>那么就可以借助同期群分析，观察用户自首次进入实验组看到新功能，在后续的1天后/2天后/n天后，指标表现是否还是优于对照组，从而判断实验策略是短期有效还是长期对用户有影响。</p>
+<p><strong>2.分析实验对不同活跃度用户的影响</strong></p>
+<p>实验开启后，想比较在实验不同阶段体验实验策略的用户，后续的表现情况，用于分析不同日期「新进组用户」群组之间的差异，则可借助同期群分析，对不同天「新进组用户」，查看1天后/2天后/n天后的指标表现</p>
+<p>&lt;span id=&quot;四-同期群分析&quot;&gt;&lt;/span&gt;</p>
+<h1>四. 同期群分析</h1>
+<p>&lt;span id=&quot;_1-操作入口&quot;&gt;&lt;/span&gt;</p>
+<h2>1.操作入口</h2>
+<p>在实验报告页的<strong>高级分析</strong>页面，在左侧导航栏单击<strong>同期群分析</strong>，如下图：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/645c178b15174c72a364dcf263efdda7~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-按进组时间拆分指标趋势&quot;&gt;&lt;/span&gt;</p>
+<h2>2.按进组时间拆分指标趋势</h2>
+<p>指标趋势展示，所选时间内的首次进组用户自首次进组后当天、1天后、2天后...30天后的指标趋势图。</p>
+<ul><li>默认展示从实验开始日期截止到昨日的汇总数据。</li></ul>
+<ul><li>可在上方添加维度观察某个用户群体(比如“系统语言=en”)的同期群分析。</li></ul>
+<ul><li>可在趋势图的左上角切换指标：</li></ul>
+<ul><li>支持： 人均类 (pv/au、pv/uv、sum/au、sum/uv)、 转化率类 (uv/au)、ctr 点击率类(pv/sum、sum/pv、pv/pv、sum/sum），以及满足该类型的组合指标；</li></ul>
+<ul><li>不支持：pv类型、sum类型。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_ce05187beaeddd394453752799a61aa3.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-按进组时间拆分详细数据&quot;&gt;&lt;/span&gt;</p>
+<h2>3.按进组时间拆分详细数据</h2>
+<p>详细数据，展示所选时间内的首次进组用户自首次进组后当天、1天后、2天后...30天后的指标数据。</p>
+<ul><li>每个实验组，展示相对于对照组的涨跌幅和置信区间；</li></ul>
+<ul><li>点击详细数据实验分组旁的箭头icon，可查看每天的数据，即当天新进组用户在当天、1天后、2天后...30天后的指标数据。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_6e45aa5a6a53841c8170abbe1d6dbd89.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_4-同期群报告如何解读&quot;&gt;&lt;/span&gt;</p>
+<h2>4.同期群报告如何解读</h2>
+<p>以指标purchase转化率为例，下图展示了新进组用户自首次进入实验后的购买转化率(即有购买的人数占比)趋势和详细数据，可以看到：</p>
+<p>（1）用户从首次进组后，购买转化率(有购买的人数占比)是呈下跌趋势的，比如实验版本新进组用户是433人，首次进组当天购买转化率在10%左右，进组3天后的购买转化率在6%左右，在20天后趋于0</p>
+<p>（2）从详细数据来看，实验版本与对照版本的按进组拆分购买转化率的对比是不显著的，也就是实验策略对于购买转化率长期趋势无正向效果。</p>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/2e9559470cef4c2fa8dae9e9a4fd7215~tplv-em5hxbkur4-noop.image?width=2330&amp;height=996" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/56b1a677a04b43d8a7120a6be4cb5cce~tplv-em5hxbkur4-noop.image?width=2314&amp;height=548" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

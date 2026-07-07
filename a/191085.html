@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>配置和插件示例 · A/B 实验知识库</title>
+<meta name="description" content="说明 UBA数据集成私有化V4.2.0模板支持，用户属性数据集成私有化V4.4.0（含）以上版本支持 一、概述 企业在通过数据集成将其他厂的UBA数据上报至火山DataTester数据服务时，希望不仅同步UBA数据、也希">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/191085.html">
+<meta property="og:title" content="配置和插件示例"><meta property="og:description" content="说明 UBA数据集成私有化V4.2.0模板支持，用户属性数据集成私有化V4.4.0（含）以上版本支持 一、概述 企业在通过数据集成将其他厂的UBA数据上报至火山DataTester数据服务时，希望不仅同步UBA数据、也希">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/191085.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>配置和插件示例</h1>
+<div class="meta">📄 1,047 字 · 🕐 2023-03-21</div>
+<article class="md"><p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;UBA数据集成私有化V4.2.0模板支持，用户属性数据集成私有化V4.4.0（含）以上版本支持&lt;/div&gt;</p>
+<p>&lt;span id=&quot;一、概述&quot;&gt;&lt;/span&gt;</p>
+<h1>一、概述</h1>
+<p>企业在通过数据集成将其他厂的UBA数据上报至火山DataTester数据服务时，希望不仅同步UBA数据、也希望将用户属性数据同步至火山DataTester数据服务做后续的分析，除此之外也存在一些函数转换的需求，如希望根据指定字段的顺序，按序获取各个field的值，如果获取到值，则赋值给目标field，为了满足此类需求DataTester通过提供插件函数的方式进行支持，详见插件函数说明</p>
+<p>&lt;span id=&quot;二、功能介绍&quot;&gt;&lt;/span&gt;</p>
+<h1>二、功能介绍</h1>
+<p>&lt;span id=&quot;_2-1-配置模版&quot;&gt;&lt;/span&gt;</p>
+<h2>2.1 配置模版</h2>
+<p>&lt;span id=&quot;_2-1-1uba数据demo模板&quot;&gt;&lt;/span&gt;</p>
+<h3>2.1.1UBA数据Demo模板</h3>
+<pre><code>env {
+  job.name = kafka_2_kafka
+}
+
+source {
+    KafkaTableStream {
+        # kafka地址
+        consumer.bootstrap.servers = &quot;{ip1}:{port},{ip2}:{port}&quot;
+        # 消费者组名称
+        consumer.group.id = &quot;test&quot;
+        # topic名称
+        topics = kafka_source
+        # 临时表名称
+        result_table_name = fake
+        # json格式
+        format.type = json
+        # 数据示例
+        schema = &quot;{\&quot;user_id\&quot;: \&quot;ST_1\&quot;, \&quot;event_name\&quot;: \&quot;abtest_exposure\&quot;, \&quot;app_name\&quot;: \&quot;seatunel_test\&quot;, \&quot;app_id\&quot;: 10000000, \&quot;custom\&quot;: \&quot;{\\\&quot;A\\\&quot;:\\\&quot;a\\\&quot;}\&quot;, \&quot;local_time_ms\&quot;: 1654831159493, \&quot;ab_version\&quot;: 4, \&quot;params\&quot;: \&quot;{\\\&quot;A\\\&quot;:\\\&quot;a\\\&quot;}\&quot;, \&quot;server_time\&quot;: 1654831159, \&quot;log_type\&quot;: \&quot;mario_event\&quot;}&quot;
+    }
+}
+
+transform {
+    # 如果源数据中没有ssid，则需要使用补充ssid插件
+    SSID {
+        source_id = user_id
+        source_app_id = app_id
+        ssid_psm = &quot;vpc.device.idsvc&quot;
+    }
+
+    # 使用json格式化插件，将数据格式化为下游kafka的schema
+    JsonTemplateFormat {
+        # 输出字段名称
+        json_result_name = event
+        # json模板         
+        event = {
+            &quot;user&quot;:{
+                &quot;user_unique_id&quot;: user_id,
+                &quot;ssid&quot;: ssid
+            },
+            &quot;header&quot;:{
+                &quot;app_id&quot;: app_id,
+                &quot;app_name&quot;: app_name,
+                &quot;custom&quot;: custom
+                &quot;ab_version&quot;:ab_version
+            },
+            &quot;params&quot;: params,
+            &quot;event_name&quot;: event_name
+            &quot;server_time&quot;: server_time
+            &quot;log_type&quot;: log_type,
+            &quot;local_time_ms&quot;: local_time_ms
+        }
+    }
+}
+
+sink {
+    # 将数据输出至sink kafka中
+    Kafka {
+        # 输出字段名称
+        row_field_name = &quot;event&quot;
+        # kafka集群地址
+        producer.bootstrap.servers = &quot;{ip1}:{port},{ip2}:{port}&quot;
+        # 需要写入数据的topic
+        topics = &quot;test&quot; 
+    }
+}</code></pre>
+<p>&lt;span id=&quot;_2-1-2用户属性demo模板&quot;&gt;&lt;/span&gt;</p>
+<h3>2.1.2用户属性Demo模板</h3>
+<pre><code>env {
+  execution.parallelism = 1
+}
+source {
+    # KafkaSource样例
+    KafkaTableStream {
+        # kafka server地址
+        consumer.bootstrap.servers = &quot;192.168.0.197:9192&quot;
+        # 消费者group id
+        consumer.group.id = &quot;seatunnel5&quot;
+        # 需要消费的topic
+        topics = sunday
+        # 消费数据后，生成的flink table name
+        result_table_name = test
+        # topic中数据的scheam，支持json，csv
+        # 需要把所有可能存在的数据均罗列出来
+        format.type = json
+        schema = &quot;{\&quot;user\&quot;:\&quot;test_123\&quot;,\&quot;ssid\&quot;:\&quot;b0354d33-413a-4a98-9e27-c8676f0579ae\&quot;,\&quot;params\&quot;:{\&quot;ab_profile_20_custom\&quot;:20,\&quot;ab_profile_21_custom\&quot;:21,\&quot;ab_profile_22_custom\&quot;:\&quot;22\&quot;},\&quot;app_id\&quot;:10000000,\&quot;time_ms\&quot;:1676258783123}&quot;
+        format.field-delimiter = &quot;,&quot;
+        format.allow-comments = &quot;true&quot;
+    }
+}
+transform {
+    # 补充ssid插件，如果只有user_unique_id，则必须使用此插件
+    # 如果已自行维护user_unique_id与ssid，则可不使用此插件
+    SSID {
+        source_id = user
+        source_app_id = app_id
+        # 私有化id服务psm，无特殊情况无需修改
+        ssid_psm = &quot;vpc.device.idsvc&quot;
+    }
+    # json格式化插件，此样例中json格式，无特殊情况无需修改
+    JsonTemplateFormat {
+      # 输出字段名称
+        json_result_name = event
+        event = {
+            # __profile_set，设置用户属性
+            # __profile_set_once，设置用户属性，如果该属性不存在
+            # __profile_unset，删除用户属性
+            # __profile_append，添加一个属性到数组（仅支持数组类型）
+            # __profile_remove，从数组删除一个属性（仅支持数组类型）
+            # __profile_increment，累加属性（仅支持数字类型）
+            # 此处无需写死，可以通过在source kafka进行配置，来做不同的操作，支持的操作如上所列
+            &quot;event_name&quot;: &quot;__profile_set&quot;, 
+            &quot;user&quot;: {
+                # 用户id
+                &quot;user_unique_id&quot;: user,
+                # 用户ssid
+                &quot;ssid&quot;: ssid
+            },
+            &quot;header&quot;: {
+                # 应用id
+                &quot;app_id&quot;: app_id,
+                # 无特殊情况无需修改
+                &quot;custom&quot;: &quot;{}&quot;,
+            },
+            # 需要设置的用户属性具体内容
+            # key应该为已经在tester中注册过的用户属性，比如age
+            # value应该为需要从输入端取值的key的json路径
+            &quot;params&quot;: {
+                # 解释：从输入端kafka的params.ab_profile_20_custom这个key中取值，并且赋值给tester中的用户属性age
+                &quot;age&quot;: &quot;params.ab_profile_20_custom&quot;
+            },
+            # 无特殊情况无需修改
+            &quot;extras&quot;: &quot;{}&quot;,
+            # 设置的时间戳，单位为毫秒，数据流会丢弃7天前的时间戳，建议设置为当前时间
+            &quot;local_time_ms&quot;: time_ms,
+        }
+    }
+}
+sink {
+    Kafka {
+        # 如无特殊需求，无需修改
+        row_field_name = &quot;event&quot;
+        # 如无特殊需求，无需修改
+        topics = &quot;user_profile&quot;
+        # kafka server地址
+        producer.bootstrap.servers = &quot;192.168.0.197:9192&quot;
+    }
+}</code></pre>
+<p>&lt;span id=&quot;_2-2-支持插件函数&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 支持插件函数</h2>
+<p>&lt;span id=&quot;_2-2-1-fieldmerge插件说明&quot;&gt;&lt;/span&gt;</p>
+<h3>2.2.1 FieldMerge插件说明</h3>
+<p>&lt;span id=&quot;描述&quot;&gt;&lt;/span&gt;</p>
+<h4>描述</h4>
+<p>根据指定字段的顺序，按序获取各个field的值，如果获取到值，则赋值给目标field；如果取不到值或者值为null，则去判断下一个field</p>
+<p>&lt;span id=&quot;字段&quot;&gt;&lt;/span&gt;</p>
+<h4>字段</h4>
+<table><thead><tr><th>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;name&lt;/div&gt;&lt;br&gt;</th><th>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;type&lt;/div&gt;&lt;br&gt;</th><th>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;required&lt;/div&gt;&lt;br&gt;</th><th>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;default value&lt;/div&gt;&lt;br&gt;</th></tr></thead><tbody><tr><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;merge_field_names&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;string&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;yes&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;\-&lt;/div&gt;&lt;br&gt;</td></tr><tr><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;result_field_name&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;string&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;yes&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;\-&lt;/div&gt;&lt;br&gt;</td></tr><tr><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;result_field_type&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;string&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;yes&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;\-&lt;/div&gt;&lt;br&gt;</td></tr><tr><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;defualt_value&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;string&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;no&lt;/div&gt;&lt;br&gt;</td><td>&lt;div style=&quot;text-align: center&quot;&gt;&lt;br&gt;null&lt;/div&gt;&lt;br&gt;</td></tr></tbody></table>
+<ul><li>merge_field_names</li></ul>
+<p>需要merge的field names，用&#x27;,&#x27;分隔，优先级依次降低</p>
+<ul><li>result_field_name</li></ul>
+<p>merge后的值的field name</p>
+<ul><li>result_field_type</li></ul>
+<p>支持int, long, float, double, string</p>
+<ul><li>default_value</li></ul>
+<p>如果所有field均未取到值，或者均为null，最后赋值的默认值；值类型需要和result_field_type一致</p>
+<p>&lt;span id=&quot;示例&quot;&gt;&lt;/span&gt;</p>
+<h4>示例</h4>
+<pre><code>FieldMerge {
+    merge_field_names = &quot;age1,age2,age3&quot;
+    result_field_name = &quot;age&quot;
+    result_field_type = &quot;int&quot;
+    default_value = 100
+}
+
+# 如果需要合并多次，则指定多个FieldMerge插件即可
+FieldMerge {
+    merge_field_names = &quot;language_en,language_cn&quot;
+    result_field_name = &quot;language&quot;
+    result_field_type = &quot;string&quot;
+    default_value = &quot;zh_cn&quot;
+}</code></pre>
+<p><strong>说明</strong></p>
+<p>从上游的数据中，按照age1、age2、age3的顺序，尝试获取value，获取到之后，则赋值给age；如果全都获取不到，则使用默认值100</p>
+<ul><li>age1 = 111，age2 = 222，age3 = 333</li></ul>
+<ul><li>result： age = 111</li></ul>
+<ul><li>（age1 = null，）age2 = 222，age3 = 333</li></ul>
+<ul><li>result：age = 222</li></ul>
+<ul><li>age1 = &quot;abc&quot;，age2 = 222，age3 = 333</li></ul>
+<ul><li>result：age = 222，虽然age1存在值abc，但是abc无法转换成int值，所以会被抛弃</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

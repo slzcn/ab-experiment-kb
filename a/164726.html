@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iOS SDK调试及数据验证 · A/B 实验知识库</title>
+<meta name="description" content="1. 检查项验证 （1）SDK是否引入，可以通过远程引入和离线引入两种方式，推荐远程引入，如果需要手动引入，请先下载sdk，之后参考文档手动引入； （2）检查是否添加source源 （3）检查是否集成SDK初始化代码 （">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/164726.html">
+<meta property="og:title" content="iOS SDK调试及数据验证"><meta property="og:description" content="1. 检查项验证 （1）SDK是否引入，可以通过远程引入和离线引入两种方式，推荐远程引入，如果需要手动引入，请先下载sdk，之后参考文档手动引入； （2）检查是否添加source源 （3）检查是否集成SDK初始化代码 （">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/164726.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>iOS SDK调试及数据验证</h1>
+<div class="meta">📄 1,899 字 · 🕐 2024-08-21</div>
+<article class="md"><p>&lt;span id=&quot;_1-检查项验证&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 检查项验证</h1>
+<p>（1）SDK是否引入，可以通过远程引入和离线引入两种方式，推荐远程引入，如果需要手动引入，请先下载sdk，之后参考文档手动引入；</p>
+<p>（2）检查是否添加source源</p>
+<p>（3）检查是否集成SDK初始化代码 （4）检查appid是否为想上报应用的appid</p>
+<p>（5）检查是否配置channel渠道，iOS一般默认App Store渠道</p>
+<p>（6）检查数据上报地址是否设置正确，saas使用默认即可，如果是私有部署需要配置私有部署的数据上传地址，在做数据上报的时候需要保证手机和电脑访问这个地址是通的，本机可以ping下域名</p>
+<p>（7）检查AB开关是否开启：config.abEnable = YES；</p>
+<p>（8）检查是否调用实验api ABTestConfigValueForKey；</p>
+<p>（9）如果使用实时埋点监测或者圈选功能，需要做以下验证：<a href="https://www.volcengine.com/docs/6285/106883" target="_blank" rel="noopener">为什么实时埋点检测及圈选无法进入</a>。</p>
+<p>（10）以上检查验证完之后就可以调用相关api，比如分流、用户、事件等api上报</p>
+<p>&lt;span id=&quot;_2-实验调试&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 实验调试</h1>
+<p>&lt;span id=&quot;_2-1-为什么要调试实验&quot;&gt;&lt;/span&gt;</p>
+<h2>2.1 为什么要调试实验</h2>
+<p>实验上线前需要保证前面的集成过程无误，上线后才能保证实验结果的科学和有效！</p>
+<p>&lt;span id=&quot;_2-2-开启调试状态&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 开启调试状态</h2>
+<p>参照<a href="https://www.volcengine.com/docs/6287/65809" target="_blank" rel="noopener">创建实验</a>，使实验处于“调试中” 状态，如下图所示：</p>
+<ul><li>实验状态一共分三种：调试中、运行中、已结束。</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e0ed28bda2cc3d28400661e127ab6925.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-3-开始调试验证&quot;&gt;&lt;/span&gt;</p>
+<h2>2.3 开始调试验证</h2>
+<p>（1）初始化中打开log开关，可以在output中看到Track Launch event相关信息证明sdk初始化成功</p>
+<ul><li>objective\-c</li></ul>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5ae8e6a0a1fb7b062dce26c8f585e13e.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>Swift</li></ul>
+<p>   ``<code>Swift    // 在控制台输出日志，可用于观察用户行为日志上报情况，建议在上线时关闭    config.showDebugLog = true // true:开启日志，false:关闭日志    config.logger = { (log) inprint(log ?? &quot;log is nil&quot;)} // 开启日志时设置Logger    </code>``</p>
+<p>（2）通过获取ssid api获取ssid，由于sdk初始化之后会去id服务拿ssid，因此获取ssid前加个2s的延迟</p>
+<ul><li>objective\-c</li></ul>
+<p>   ```objectivec    #import &lt;RangersApplog/BDAutoTrackNotifications.h&gt;    // 在初始化 SDK 之前设置监听     [[NSNotificationCenter defaultCenter] addObserver:self                                                selector:@selector(onRegisterSuccess:)                                                    name:BDAutoTrackNotificationRegisterSuccess object:nil];    //SDK 初始化代码部分    //然后在 SDK 初始化之后设置回调</p>
+<ul><li>(void)onRegisterSuccess:(NSNotification *)noti  {</li></ul>
+<p>       NSString *dids = [noti.userInfo objectForKey:kBDAutoTrackNotificationRangersDeviceID];        NSString *ssids = [noti.userInfo objectForKey:kBDAutoTrackNotificationSSID];         NSLog(@&quot;onRegisterSuccess.dids：%@&quot;, dids); // 获取设备bddid        NSLog(@&quot;onRegisterSuccess.ssids：%@&quot;, ssids); // 获取SSID    }    ```</p>
+<ul><li>Swift</li></ul>
+<p>   ```Swift    NotificationCenter.default.addObserver(self, selector: #selector(onRegisterSuccess), name: NSNotification.Name(rawValue: BDAutoTrackNotificationRegisterSuccess), object: nil)</p>
+<p>   func onRegisterSuccess(noti: Notification) {        let did = noti.userInfo[kBDAutoTrackNotificationRangersDeviceID]        let ssid = noti.userInfo[kBDAutoTrackNotificationSSID]        print(&quot;onRegisterSuccess.dids：\(did)&quot;)        print(&quot;onRegisterSuccess.ssids：\(ssid)&quot;)    }    ```</p>
+<p>（3）获取到ssid后，将ssid添加到白名单的任意版本做测试，并在右下角点击&quot;保存&quot;按钮。如下：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e9f8aee10969691c5d8e27500d24a6d0.png" loading="lazy"> &lt;/span&gt;</p>
+<p>白名单功能说明（详情请参考<a href="https://www.volcengine.com/docs/6287/65824" target="_blank" rel="noopener">用户测试白名单</a>）</p>
+<ul><li>白名单功能主要是用于测试调试实验/feature，添加白名单的用户会被强制命中实验，方便在测试的过程中可以测试实验版本和对照版本的效果。</li></ul>
+<ul><li>白名单需要添加分流id，客户端实验分流id是ssid，服务端实验分流id使用的decisionid（也就是代码的第一个id），一般我们建议使用uuid，所以我们也会看到有些白名单是uuid。</li></ul>
+<p>（4）运行app，看右下角返回的实验参数是否为添加白名单对应的版本value，未命中实验会返回默认值</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_68981cb9210f83c4bc0ec647b4134ab4.png" loading="lazy"> &lt;/span&gt;</p>
+<p>如果返回的是默认值，需要检查：</p>
+<ul><li>ssid添加后是否做保存</li></ul>
+<ul><li>ssid添加的对不对，运行的ssid是不是添加白名单的ssid</li></ul>
+<ul><li>abtest_config接口是否通，在日志中搜索abtest_config，查看接口是否通</li></ul>
+<ul><li>如果以上都不是，确定是获取实验参数的代码是否在初始化前执行</li></ul>
+<p>（5）如果实验参数获取正常，那么整个实验调试就OK了</p>
+<p>&lt;span id=&quot;_3-数据验证&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 数据验证</h1>
+<p>&lt;span id=&quot;_3-1-埋点验证功能验证&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 埋点验证功能验证</h2>
+<p>注意：如果单独购买AB的私有部署版本，只有超管权限可以使用，如果其他成员需要验证，可以使用抓包，saas和同时购买AB和finder的可以正常使用。</p>
+<p>功能说明：<a href="https://www.volcengine.com/docs/6285/66054" target="_blank" rel="noopener">https://www.volcengine.com/docs/6285/66054</a></p>
+<p>需要按照实时埋点的相关要求集成，当集成成功后在系统管理\-数据管理\-一般事件，点击验证埋点，选择移动端</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_bbcda10c1e996175198202b28f3d2e60.png" loading="lazy"> &lt;/span&gt;</p>
+<p>扫码之后会实时看到上报的行为数据，左侧为实时的行为，右侧为对应行为的属性信息</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_3cc677f5c8195655ad0bd7927cded511.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-2-抓包验证&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 抓包验证</h2>
+<p>配置好抓包工具，选择数据上报地址对应的接口，查看app_log中的event_v3的接口，也可以通过抓包看abtest_config接口返回的结果</p>
+<p>saas地址：<a href="http://toblog.volceapplog.com" target="_blank" rel="noopener">http://toblog.volceapplog.com</a>，私有部署需要选择对应的数据上报地址</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_2f7581527acae26fc3c93618d700c8d6.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-3-系统验证&quot;&gt;&lt;/span&gt;</p>
+<h2>3.3 系统验证</h2>
+<p>说明：用户细查功能仅SaaS系统支持</p>
+<p>在指标管理\-数据管理验证，上报的自定义事件和自定义属性在事件列表、事件属性和用户属性列表是否存在。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_64da0fb623ccc6f19ad872482fa5e1ad.png" loading="lazy"> &lt;/span&gt;</p>
+<p>在全局设置\-受众管理\-用户细查，查看上报用户的详细行为，当在用户细查验证数据都OK，整个集成及上报就验证完成</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e27859a9d3e5baa3c902b0d1c9b30a91.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_817a01ff33c160b3770b585d18ec0a92.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_53309c16a6d82737247b14522f350205.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

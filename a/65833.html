@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实验权限管理 · A/B 实验知识库</title>
+<meta name="description" content="概述 权限管理，一般指根据系统设置的安全规则或者安全策略，用户可以访问而且只能访问自己被授权的资源。 为什么要做权限管理？ 将功能按不同层级或者属性进行划分，更细粒度的进行权限管控，可以一定程度上增强数据的安全性，增强相">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65833.html">
+<meta property="og:title" content="实验权限管理"><meta property="og:description" content="概述 权限管理，一般指根据系统设置的安全规则或者安全策略，用户可以访问而且只能访问自己被授权的资源。 为什么要做权限管理？ 将功能按不同层级或者属性进行划分，更细粒度的进行权限管控，可以一定程度上增强数据的安全性，增强相">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65833.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>实验权限管理</h1>
+<div class="meta">📄 1,106 字 · 🕐 2026-02-03</div>
+<article class="md"><p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>概述</h1>
+<p>权限管理，一般指根据系统设置的安全规则或者安全策略，用户可以访问而且只能访问自己被授权的资源。</p>
+<p><strong>为什么要做权限管理？</strong> </p>
+<ul><li>将功能按不同层级或者属性进行划分，更细粒度的进行权限管控，可以一定程度上增强数据的安全性，增强相关业务稳定性；</li></ul>
+<ul><li>权限不同，可以查看、操作的项目不同，避免由于误操作带来的一系列负面问题；</li></ul>
+<ul><li>职责不同所需要的页面/信息不同，提供最有效的信息可提升操作效率，避免无关页面带来的干扰。</li></ul>
+<p>「A/B 测试」为用户提供「实验」资源实体的细粒度权限管控，新创建的实验默认为公共实验。</p>
+<p>&lt;span id=&quot;二-权限模型&quot;&gt;&lt;/span&gt;</p>
+<h1>权限模型</h1>
+<p>权限模型分为「公共实验」和「私有实验」两类，不同角色与不同权限模型之间的关系表如下：</p>
+<table><thead><tr><th>分类</th><th><strong>集团管理员</strong></th><th><strong>应用管理员</strong></th><th><strong>实验创建者</strong></th><th><strong>普通用户</strong></th></tr></thead><tbody><tr><td>公共实验</td><td>查看权限</td><td>查看权限</td><td>查看权限</td><td>查看权限</td></tr><tr><td>私有实验</td><td>查看权限</td><td>查看权限</td><td>查看权限</td><td>不可见</td></tr></tbody></table>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;实际上授权只是针对普通用户/角色的授权，可授予「查看权限」。&lt;/strong&gt;&lt;/div&gt;</p>
+<table><thead><tr><th><strong>操作类型</strong></th><th><strong>查看权限</strong></th></tr></thead><tbody><tr><td>查看实验详情</td><td>支持</td></tr><tr><td>查看实验报告</td><td>支持</td></tr><tr><td>查看实验操作历史</td><td>支持</td></tr><tr><td>关联Feature</td><td>不支持</td></tr><tr><td>冻结/解冻实验</td><td>不支持</td></tr><tr><td>修改实验</td><td>不支持</td></tr><tr><td>诊断实验</td><td>不支持</td></tr><tr><td>复制实验</td><td>不支持</td></tr><tr><td>调试实验</td><td>不支持</td></tr><tr><td>开启实验</td><td>不支持</td></tr><tr><td>结束实验</td><td>不支持</td></tr><tr><td>删除实验</td><td>不支持</td></tr><tr><td>权限管理</td><td>不支持</td></tr></tbody></table>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;集团管理员&lt;/strong&gt; ，指的是当前集团的管理员，比如“Demo体验”集团的集团管理员。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;应用管理员&lt;/strong&gt; ，指的是当前集团接入应用的应用管理员。比如“Demo体验”集团下“电商APP、教育APP、小程序Demo、网页端Demo、移动端Demo”应用的应用管理员。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;角色&lt;/strong&gt; ：可在“集团管理\-角色管理”添加角色，可给普通用户开通某个应用的“应用管理员、成员”权限。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;三-操作入口&quot;&gt;&lt;/span&gt;</p>
+<h1>操作步骤</h1>
+<p>&lt;span id=&quot;dfbe8c60&quot;&gt;&lt;/span&gt;</p>
+<h2>操作入口</h2>
+<ol><li>登录控制台后，在左侧导航栏选择“A/B测试\&gt;实验列表”。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/365afb750a1b447cbcee479d2f56a3b6~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>在实验列表页，点击“操作”栏的“更多\-权限管理”。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/f053521fe7684d65ace001485b3cda1b~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;efb0cea0&quot;&gt;&lt;/span&gt;</p>
+<h2>为公共实验添加权限</h2>
+<ol><li>在“实验权限管理”弹窗，选择“公共实验”。</li></ol>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;&lt;strong&gt;公共实验：&lt;/strong&gt;当前集团可访问该应用的用户默认拥有「查看权限」。   &lt;/div&gt;</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/e8e8821f5cfb4dc6afc40429064a9314~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>如需添加某用户为该实验的协作者，需要将该用户设置为实验人员即可，可点击左侧的“系统管理\&gt;权限管理”。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/f831647a2c4d4c5289923e00398061fb~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>在“权限管理”页面，点击“邀请用户”，在对话框中选择成员，设置对应角色为“实验人员”，然后点击“确定”。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/5ddbaa587fc14be0bd91c8eab0110e37~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;五-私有实验&quot;&gt;&lt;/span&gt;</p>
+<h2>为私有实验添加权限</h2>
+<ol><li>在“实验权限管理”弹窗，选择“私有实验”。</li></ol>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;&lt;strong&gt;私有实验：&lt;/strong&gt;当前集团当前应用的“集团管理员、应用管理员、实验创建者”默认拥有「权限」。   &lt;/div&gt;</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/8925c2d0c9ae4d8ba23678dc2a10f6af~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>在“实验权限管理”弹窗，点击“添加用户角色”。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/a6ea1842760c415f80085b8c6163574c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>选择用户/角色，开启查看权限，然后点击“确定”。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/2b73825b06af495db081f4afff40b91c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

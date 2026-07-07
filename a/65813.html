@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实验固化至Feature · A/B 实验知识库</title>
+<meta name="description" content="一. 概述 在创建A/B实验时，在配置实验版本步骤支持与Feature进行关联；针对 运行中 、 结束后 的独立实验，用户可以在实验详情页右上角「固化至Feature」将实验固化到Feature上。 独立实验，指的是从未">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65813.html">
+<meta property="og:title" content="实验固化至Feature"><meta property="og:description" content="一. 概述 在创建A/B实验时，在配置实验版本步骤支持与Feature进行关联；针对 运行中 、 结束后 的独立实验，用户可以在实验详情页右上角「固化至Feature」将实验固化到Feature上。 独立实验，指的是从未">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65813.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>实验固化至Feature</h1>
+<div class="meta">📄 1,138 字 · 🕐 2024-07-18</div>
+<article class="md"><p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>一. 概述</strong></h2>
+<p>在创建A/B实验时，在配置实验版本步骤支持与Feature进行关联；针对<strong>运行中</strong>、<strong>结束后</strong>的独立实验，用户可以在实验详情页右上角「固化至Feature」将实验固化到Feature上。</p>
+<ul><li>独立实验，指的是从未关联过Feature，也非从任何一个Feature创建而来的实验。实验一旦固化到Feature后，为避免冲突，无法再关联其他Feature；</li></ul>
+<ul><li>调试中的实验不支持固化至Feature。</li></ul>
+<p><strong>前置条件：</strong>  目前支持包含1个参数变量（boolean、string、number和json）的编程实验，允许实验固化至Feature。</p>
+<p><strong>权限相关</strong> ：对实验具有「协作者权限」的用户，可以从独立实验或其中某一个效果较好的实验版本直接固化为Feature。</p>
+<p>&lt;span id=&quot;二-应用场景&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>二. 应用场景</strong></h2>
+<ul><li>实验关联Feature：</li></ul>
+<ul><li>可以更加方便管理和排查问题，如线上崩溃，进组用户不符合预期（用户反馈没有体验到功能），均可以排查配置在哪里发布了；</li></ul>
+<ul><li>实验固化至Feature：</li></ul>
+<ul><li>已经通过AB实验验证某个版本为优胜版本，需要 <strong>全量发布</strong> 到线上；</li></ul>
+<ul><li>实验结果已经非常显著，希望将优胜版本 <strong>灰度发布</strong> 到线上。</li></ul>
+<p>&lt;span id=&quot;三-固化至feature基本原则&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>三. 固化至Feature基本原则</strong></h2>
+<p>实验固化至Feature的基本原则如下：</p>
+<ul><li>当前Feature与实验是1对多的关系，允许一个Feature上开启多个同一互斥层的实验，不允许一个实验固化到多个Feature。</li></ul>
+<ul><li>运行中（含冻结/解冻）、结束的实验均可固化至Feature，草稿箱实验不可固化至Feature。</li></ul>
+<ul><li>如果一个实验固化至Feature，实验在运行中，Feature处于开启状态，那么实验命中优先级高于Feature命中优先级。具体影响如下所示：</li></ul>
+<table><thead><tr><th>用户</th><th>是否为实验受众</th><th>是否进入实验流量分配</th><th>是否为Feature受众</th><th>是否进入Feature流量分配</th><th>结果</th></tr></thead><tbody><tr><td>user1</td><td>是</td><td>是</td><td>是&amp;否</td><td>是&amp;否</td><td>命中实验</td></tr><tr><td>user2</td><td>是</td><td>否</td><td>是</td><td>是</td><td>命中Feature</td></tr><tr><td>user3</td><td>是</td><td>否</td><td>是</td><td>否</td><td>无行为</td></tr><tr><td>user3</td><td>是</td><td>否</td><td>否</td><td>N/A</td><td>无行为</td></tr><tr><td>user4</td><td>否</td><td>N/A</td><td>是</td><td>是</td><td>命中Feature</td></tr><tr><td>user4</td><td>否</td><td>N/A</td><td>是</td><td>否</td><td>无行为</td></tr><tr><td>user5</td><td>否</td><td>N/A</td><td>否</td><td>N/A</td><td>无行为</td></tr></tbody></table>
+<p>&lt;span id=&quot;四-操作入口&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>四. 操作入口</strong></h2>
+<p><strong>1. 实验详情页/实验报告页</strong></p>
+<p>在实验详情页/实验报告页，点击“固化至Feature”，如下图：</p>
+<table><thead><tr><th>进行中实验</th><th>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_4de9bf3e159c9b51ada9d8eb1369db2c.png" loading="lazy"> &lt;/span&gt;</th></tr></thead><tbody><tr><td>已结束实验</td><td>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_33505e3e509d992c0e730a1baa07ae35.png" loading="lazy"> &lt;/span&gt;</td></tr></tbody></table>
+<p><strong>2.实验创编页</strong></p>
+<p>在实验创建「配置实验版本」中，点击“关联”，如下图</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_4cdb3fe1e368307918c664904240ab4f.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;五-固化至feature页面&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>五. 固化至Feature页面</strong></h2>
+<p>在以上入口将实验固化至feature，即进入创建/编辑feature页面。后续流程，可参考<a href="https://www.volcengine.com/docs/6287/66385" target="_blank" rel="noopener">创建feature</a>的流程。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实验指标组概述 · A/B 实验知识库</title>
+<meta name="description" content="基本概念 术语 概念说明 注意点 指标 在互联网行业中，指标通常用于描述在一定时间和条件下，是某种事物或现象的规模、程度、比例、结构等概念，通常由指标名称和指标数值组成。 指标可以分为 简单计数型指标 和 复合型指标 ：">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65816.html">
+<meta property="og:title" content="实验指标组概述"><meta property="og:description" content="基本概念 术语 概念说明 注意点 指标 在互联网行业中，指标通常用于描述在一定时间和条件下，是某种事物或现象的规模、程度、比例、结构等概念，通常由指标名称和指标数值组成。 指标可以分为 简单计数型指标 和 复合型指标 ：">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65816.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🎯 指标体系</span></div>
+<h1>实验指标组概述</h1>
+<div class="meta">📄 1,709 字 · 🕐 2025-12-10</div>
+<article class="md"><p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>基本概念</h1>
+<table><thead><tr><th>术语</th><th>概念说明</th><th>注意点</th></tr></thead><tbody><tr><td>指标</td><td>在互联网行业中，指标通常用于描述在一定时间和条件下，是某种事物或现象的规模、程度、比例、结构等概念，通常由指标名称和指标数值组成。</td><td>指标可以分为<strong>简单计数型指标</strong>和<strong>复合型指标</strong>：&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>简单计数型指标</strong>：是指可通过重复加1这一数学行为而获得数值的指标，如UV（Unique Visit , 独立访客数）、PV（Page View，页面浏览量）。&lt;br&gt;&lt;br&gt;* <strong>复合型指标</strong>：是由简单计数型指标经四则运算后得到的，如跳出率、购买转化率。</td></tr><tr><td>指标组</td><td>多个指标的集合。通常，我们会将相关性较强的指标放在同一个分组，方便进行查找使用以及管理，如：xx项目营收指标组、订单指标组、xx页面转化指标组等。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;新版指标管理默认按照指标组粒度来展示及管理指标.&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;对于历史已经创建的指标，对于公有指标会根据【指标owner&lt;em&gt;指标类型&lt;/em&gt;公/私有】来进行数据迁移和分组，即相同owner的相同类型的公有指标，会归到同一个分组中；私有指标每个指标会单独生成一个指标组。&lt;/div&gt;&lt;br&gt;</td><td><strong>相同类型</strong>的（类型：事件/留存/漏斗指标）才可归属同一个分组中，即：同一个指标组中所有指标类型相同</td></tr></tbody></table>
+<p>&lt;span id=&quot;二-指标组列表&quot;&gt;&lt;/span&gt;</p>
+<h1>操作指导</h1>
+<p>登录DataTester产品控制台后，您可单击左侧导航栏的<strong>指标管理</strong>\&gt;<strong>指标组列表</strong>，进入指标组列表页面。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/71efd29b03024da0b850fb7cf27cee87~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>在指标组列表页面，您可以：</p>
+<ul><li><strong>新建指标组</strong>：点击页面右上角“<strong>创建指标组</strong>”，即可开始创建新的指标组。</li></ul>
+<p>   创建指标组时，您可以选择创建的指标组类别，包含事件指标、留存指标、漏斗指标，对应的创建操作详细指导请参见<a href="https://www.volcengine.com/docs/6287/65818" target="_blank" rel="noopener">新建事件指标</a>、<a href="https://www.volcengine.com/docs/6287/101620" target="_blank" rel="noopener">新建留存指标</a>、<a href="https://www.volcengine.com/docs/6287/65819" target="_blank" rel="noopener">新建漏斗指标</a>。</p>
+<ul><li><strong>合并指标组</strong>：可将多个同类型的指标支持合并为一个新的指标组。</li></ul>
+<ul><li><strong>查看指标组</strong>：</li></ul>
+<ul><li><strong>过滤</strong>：默认显示全部使用中的指标。点击状态列的「过滤icon」，可切换展示已下线指标组或全部状态指标。</li></ul>
+<ul><li><strong>搜索</strong>：支持输入“指标组名称、描述、创建人”来搜索指标。</li></ul>
+<ul><li>点击「指标名称」即可跳转至指标组详情页，查看指标组基本信息、指标口径、指标组权限等，详情请参见<a href="https://www.volcengine.com/docs/6287/178281" target="_blank" rel="noopener">查看指标详情及权限管理</a>。</li></ul>
+<ul><li><strong>修改指标组：</strong>  点击操作列的「编辑icon」，即可跳转至指标组编辑状态进行修改。</li></ul>
+<ul><li>注：仅指标组owner及管理员可编辑指标组，非管理员不可编辑他人的指标组。</li></ul>
+<ul><li><strong>其他操作</strong>：</li></ul>
+<ul><li><strong>下线</strong>：可下线当前指标组。下线前提：当前指标组下所有指标都没有与运行中实验关联。</li></ul>
+<ul><li><strong>复制</strong>：可复制当前指标组 。</li></ul>
+<p>&lt;span id=&quot;三-实验关注指标&quot;&gt;&lt;/span&gt;</p>
+<h1>指标组应用</h1>
+<p>在DataTester创建AB实验时，实验指标用于评估各实验版本的策略效果，辅助决策进行AB实验的功能是否能符合业务预期。</p>
+<p>通过配置<strong>实验核心指标</strong>和<strong>实验关注指标</strong>，后续实验完成后，会根据您配置的指标为您自动输出指标相关的实验报告，辅助您分析实验结果。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b0abed712fc049b686dba2c6220d4528~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;核心指标&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>核心指标</strong></h2>
+<p>核心指标，用来决策实验功能是否符合预期的「直接效果指标」，也叫「成功指标」。只可以设置一个指标为某个实验的核心指标，可在实验报告里面查看实验数据。比如开设「按钮文案」的优化实验，那么「按钮点击率」就是该实验的核心指标。</p>
+<p>一般常见的核心指标，如下：</p>
+<ul><li>转化率、uv/au类；</li></ul>
+<ul><li>人均次数类，如pv/au、pv/uv、sum/au、sum/uv；</li></ul>
+<ul><li>平均值类，如sum/pv；</li></ul>
+<p>您可以根据当前业务，去选择或者新建核心指标。</p>
+<p>&lt;span id=&quot;必看指标&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>关注指标 &amp; 必看指标</strong></h2>
+<ul><li>您可以在创建实验的过程中，选择实验过程中需要关注的指标，配置为实验关注指标。实验关注指标通常指实验功能可能对其无直接的因果关联、无法直接带来提升，但一般而言不能对其有显著负向影响。</li></ul>
+<ul><li>您也可以在创建指标组时指定指标为<strong>必看指标</strong>（指的是必须守护的业务线指标），若某个指标被设置为必看指标，则在该应用下创建实验时，每个实验都会默认选择必看指标为实验关注指标。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

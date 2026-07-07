@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>新建漏斗指标 · A/B 实验知识库</title>
+<meta name="description" content="转化漏斗模型，本质上是分解和量化，寻找目标过程中各个环节的转化效率，从而帮助运营和产品人员找到薄弱环节、针对异常步骤调优。漏斗模型可以广泛应用于流量监控、用户运营、产品目标转化、营销广告等日常数据运营工作中，称之为转化漏">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65819.html">
+<meta property="og:title" content="新建漏斗指标"><meta property="og:description" content="转化漏斗模型，本质上是分解和量化，寻找目标过程中各个环节的转化效率，从而帮助运营和产品人员找到薄弱环节、针对异常步骤调优。漏斗模型可以广泛应用于流量监控、用户运营、产品目标转化、营销广告等日常数据运营工作中，称之为转化漏">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65819.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🎯 指标体系</span></div>
+<h1>新建漏斗指标</h1>
+<div class="meta">📄 1,264 字 · 🕐 2024-09-12</div>
+<article class="md"><p>转化漏斗模型，本质上是分解和量化，寻找目标过程中各个环节的转化效率，从而帮助运营和产品人员找到薄弱环节、针对异常步骤调优。漏斗模型可以广泛应用于流量监控、用户运营、产品目标转化、营销广告等日常数据运营工作中，称之为转化漏斗。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;漏斗指标每个指标组仅限创建一个指标。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;原因：漏斗指标的转化链路中也包含多个转化率指标，所以相较于其他事件指标，本身即为一组指标的概念，在报告页会按照指标粒度呈现漏斗数据和图表。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;5829c607&quot;&gt;&lt;/span&gt;</p>
+<h1>背景信息</h1>
+<p>&lt;span id=&quot;一、概述&quot;&gt;&lt;/span&gt;</p>
+<h2>相关概念</h2>
+<ul><li>CVR：转化率，通常是用来衡量CPA广告效果的指标，后泛化为针对某一特定目标，启动人群达成的情况。</li></ul>
+<ul><li>转化时间窗口：漏斗的各个事件必须按照配置顺序在「转化时间窗口」时间限制内完成，计为一次成功的转化。晚于转化时间窗口的后续目标事件，不计入转化。</li></ul>
+<ul><li>查询时间区间：长期观察的漏斗，通过查询时间区间，过滤目标时间区域内的转化事件形成的漏斗。</li></ul>
+<p>&lt;span id=&quot;652e1710&quot;&gt;&lt;/span&gt;</p>
+<h2>常见漏斗类型</h2>
+<p>在AB实验场景下，常见的漏斗类型有如下三类：</p>
+<ul><li>获客：此类型主要吸引新的潜在客户并将其转换为客户。</li></ul>
+<p>   部分广告投放机构经常使用优惠或赠品吸引潜在客户提供电子邮件地址或其他联系信息等，形成客户转化。</p>
+<ul><li>激活：此类型针对的是尚未真正开始高频使用产品的新客户。</li></ul>
+<ul><li>营利：此类型旨在提高现有客户的CLV。</li></ul>
+<p>&lt;span id=&quot;bc0e0755&quot;&gt;&lt;/span&gt;</p>
+<h1>新建漏斗指标</h1>
+<ol><li>登录DataTester产品控制台后，单击左侧导航栏的<strong>指标管理</strong>\&gt;<strong>指标组列表</strong>，进入指标组列表页面后单击右上角的「创建指标组」进入指标组创建页面。</li></ol>
+<ol><li>配置基本信息。选择<strong>指标组类型</strong>为<strong>漏斗指标</strong>，并配置指标组名称、指标组描述、负责人信息。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/95eebe2f313c4c48b08a8c183f18bc61~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>配置指标。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/88bd388b5a2b4e27ab4848d43140fd61~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>参数</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>指标名称</strong> &amp; <strong>指标描述</strong></td><td>* <strong>指标名称</strong>：必填，建议取与事件内容相关的名称，如“点击登录按钮人均次数”，便于快速知道是关于哪个事件的指标；名称指标组内唯一，最长不超过50个字符。&lt;br&gt;&lt;br&gt;* <strong>指标描述</strong>：选填，简述指标代表的含义、计算逻辑、用途等，可以让业务相关人员更加合理的使用指标。</td></tr><tr><td><strong>转化窗口期</strong></td><td>指用户完成转化的时间，用户在设定的窗口期内完成完整的转化流程才算做转化成功。可选分钟、小时、天。</td></tr><tr><td><strong>漏斗事件</strong></td><td>* 添加漏斗指标计算的漏斗事件，最少2个漏斗事件，最多10个漏斗事件。&lt;br&gt;&lt;br&gt;   * 虚拟事件、一般事件、圈选实际都可作为漏斗转化事件。&lt;br&gt;&lt;br&gt;   * 指标计算时，会严格遵守事件的先后发生顺序进行漏斗转化计算。&lt;br&gt;&lt;br&gt;      如果实验到访者在转化时间窗口内，没有按照转化漏斗的顺序完成所有事件，不会计入转化数据统计。&lt;br&gt;&lt;br&gt;* 支持为各个漏斗事件分别添加对应事件的过滤条件。</td></tr><tr><td><strong>全局过滤条件</strong></td><td>支持为所有漏斗事件添加全局过滤条件，可选择通过用户属性（含预置属性和自定义属性）进行过滤。</td></tr></tbody></table>
+<ol><li>完成指标添加后，单击右上角的「保存」，完成指标组创建。</li></ol>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;一旦漏斗指标开始启动收集、统计和分析数据之后，不建议编辑漏斗，修改漏斗的操作将会触发所有数据的自动更新。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;220f2a9c&quot;&gt;&lt;/span&gt;</p>
+<h1>使用漏斗指标</h1>
+<ul><li>在创建实验时，可以将设置好的转化漏斗指标添加到关注指标中。</li></ul>
+<ul><li>在一个实验中，最多只能添加一个转化漏斗指标，且暂不可设置为核心指标，以及不支持进行监控报警。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

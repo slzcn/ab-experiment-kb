@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>添加与管理广告账户 · A/B 实验知识库</title>
+<meta name="description" content="使用DataTester进行广告实验时，您首先需要先添加广告账户，将巨量引擎的账号授权添加到DataTester上，后续通过此广告账户在DataTester上实现资产管理、广告创建等操作。本文为您介绍添加与管理DataT">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1113901.html">
+<meta property="og:title" content="添加与管理广告账户"><meta property="og:description" content="使用DataTester进行广告实验时，您首先需要先添加广告账户，将巨量引擎的账号授权添加到DataTester上，后续通过此广告账户在DataTester上实现资产管理、广告创建等操作。本文为您介绍添加与管理DataT">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1113901.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📢 广告投放实验</span></div>
+<h1>添加与管理广告账户</h1>
+<div class="meta">📄 1,332 字 · 🕐 2024-02-06</div>
+<article class="md"><p>使用DataTester进行广告实验时，您首先需要先添加广告账户，将巨量引擎的账号授权添加到DataTester上，后续通过此广告账户在DataTester上实现资产管理、广告创建等操作。本文为您介绍添加与管理DataTester广告账户的流程。</p>
+<p>&lt;span id=&quot;7abcbab3&quot;&gt;&lt;/span&gt;</p>
+<h1>前提条件</h1>
+<ul><li>已完成前期准备工作，包括集团创建、DataTester的项目接入。</li></ul>
+<ul><li>已完成产品授权。由于广告测试功能为旗舰版专有功能，您需要完成DataTester的旗舰版授权后才可使用广告实验相关功能。</li></ul>
+<p>操作引导请参见<a href="https://www.volcengine.com/docs/6287/1113738" target="_blank" rel="noopener">广告实验概述</a>中的<strong>准备工作</strong>。</p>
+<p>&lt;span id=&quot;_1-添加广告账户&quot;&gt;&lt;/span&gt;</p>
+<h1>添加广告账户</h1>
+<ol><li>登录DataTester产品控制台后，在左侧导航栏单击点击<strong>场景能力</strong>\&gt;<strong>广告场景</strong>\&gt;<strong>账户管理</strong>，进入广告账户页面。</li></ol>
+<ol><li>单击页面右上方的【<strong>添加广告账户</strong>】按钮，页面弹出一个授权范围的弹窗。</li></ol>
+<ol><li>勾选全部权限后单击<strong>授权</strong>。</li></ol>
+<p>   这里需要选择全部权限进行授权，因为后续广告实验依赖通过这些权限获取广告数据，以进行科学的计算分析得出科学的实验报告。</p>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_2be391e38e05054328d326537701d3ce.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>点击授权之后，页面跳转至媒体侧（巨量引擎）的页面，页面会自动获取并展示可对DataTester授权的巨量引擎账号列表，您可根据需要勾选授权。勾选授权的账号后续会被添加至DataTester的广告账户中。</li></ol>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_2125cd067e409a30cb57231e6cfc0131.png" loading="lazy"> &lt;/span&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;页面展示的巨量引擎的账号列表为当前登录账号下的广告投放账户，其他账户类型，例如账户管家、广告主等类型账号不会展示在这里。   &lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;如果您此前未登录巨量引擎，点击授权后需先登录巨量引擎页面后，再继续勾选账号完成授权操作。   &lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;2150baf1&quot;&gt;&lt;/span&gt;</p>
+<h1>启用/停用/删除广告账户</h1>
+<p>授权添加至DataTester的广告账户会在账户管理页面中展现，广告账户被启用后，才可在后续的广告实验中被使用。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;仅管理员可对广告账户进行“停用”、“重新启用”、“删除”等操作。&lt;/div&gt;</p>
+<p>对于已启动的广告账户，后续如果不需要继续使用，也可操作暂停使用。您可以在授权账户列表页面的操作列进行启动、暂停等操作，操作后对应广告账户的状态会随之变更。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/221f570d9b664c5889cc35723c0c6600~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>启用账户</strong>：账户状态为<strong>活跃中</strong>，该广告账户可以正常使用。</li></ul>
+<ul><li><strong>停用账户</strong>：账户状态为<strong>停用中</strong>，当前账号已被停用，将不可使用该账户创建广告、获取数据。如果需要再次使用此账户，需进行<strong>重新启用</strong>的操作。</li></ul>
+<ul><li><strong>长期未使用账户</strong>：账号最近 30 天没有收到数据，且未创建广告，账户状态自动变更为<strong>不活跃</strong>。</li></ul>
+<ul><li><strong>授权失效账户</strong>：授权失效后，账户状态自动变为<strong>已过期</strong>。此账户需重新授权后才可使用。</li></ul>
+<ul><li><strong>删除账户</strong>：对于不在需要的账户，您也可以在操作列单击删除进行删除。</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;注意   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-wrapper-indent=&quot;1&quot;&gt;广告账户删除后创建广告中不能再选择该账户，该账户的广告数据也将全部被删除，请您谨慎操作。   &lt;/div&gt;</p>
+<p>&lt;span id=&quot;_2-账户操作-分配&quot;&gt;&lt;/span&gt;</p>
+<h1>分配广告账户</h1>
+<p>如果集团内的其他成员也需要使用该广告账户，则管理员可以将该广告账户分配给其他成员，被分配账户的成员也可以分配账户给其他人。</p>
+<p>分配后的成员可以查看该账户的数据、使用该账户进行投放、修改该账户的广告项目、广告等操作；管理员可以移除已分配的成员，移除后该成员的广告账户权限也将全部被回收。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_9708bb8beb95311232d6b990f056bde1.png" loading="lazy"> &lt;/span&gt;</p>
+<p>如图：点击用户名即可授权，移除成员则点击删除按钮</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_14533132b4f38f563c6da8807b91c70b.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&amp;nbsp;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

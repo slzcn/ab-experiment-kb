@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>创建Feature：手动创建 · A/B 实验知识库</title>
+<meta name="description" content="功能简介 若有新的功能/策略，需经常变更迭代，可创建为一个Feature作为动态配置，界面化管理和更新。 示例：比如商品优惠券梳理、APP登录方式，这些功能或策略可通过创建一个Feature配置，在界面上更新生效策略。">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/66385.html">
+<meta property="og:title" content="创建Feature：手动创建"><meta property="og:description" content="功能简介 若有新的功能/策略，需经常变更迭代，可创建为一个Feature作为动态配置，界面化管理和更新。 示例：比如商品优惠券梳理、APP登录方式，这些功能或策略可通过创建一个Feature配置，在界面上更新生效策略。">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/66385.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🚩 Feature管理</span></div>
+<h1>创建Feature：手动创建</h1>
+<div class="meta">📄 2,766 字 · 🕐 2026-06-22</div>
+<article class="md"><p>&lt;span id=&quot;a2d492c7&quot;&gt;&lt;/span&gt;</p>
+<h1>功能简介</h1>
+<p>若有新的功能/策略，需经常变更迭代，可创建为一个Feature作为动态配置，界面化管理和更新。</p>
+<p>示例：比如商品优惠券梳理、APP登录方式，这些功能或策略可通过创建一个Feature配置，在界面上更新生效策略。</p>
+<p>&lt;span id=&quot;二、如何使用&quot;&gt;&lt;/span&gt;</p>
+<h1>创建Feature</h1>
+<p>&lt;span id=&quot;6b732382&quot;&gt;&lt;/span&gt;</p>
+<h2>进入操作入口</h2>
+<ol><li>登录DataTester产品控制台后，在产品左侧导航栏单击<strong>配置管理</strong>\&gt;<strong>Feature列表</strong>，进入Feature列表页面。</li></ol>
+<ol><li>单击页面右上角的“+创建Feature”，进入创建Feature页面。</li></ol>
+<p>   配置创建Feature需填写的信息：基本信息、适用APP、自定义变量、设置变体、发布受众，配置详情可参见下文。</p>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_c22a822c1901e8b3a45d735e0f7eb3d8.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;71b627fa&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>配置Feature：基本信息</strong></h2>
+<p>Feature基本信息包括Feature的名称、key等基础说明信息，旨在传达该Feature代表什么功能或策略等。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/31fd34d9d52a4ab990d8d7fb635bee94~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>参数说明</strong></th></tr></thead><tbody><tr><td><strong>key名称</strong></td><td>Key是功能特性（Feature）的核心键值，填写后会在代码中嵌入。配置要求：key值全局唯一，支持英文字符、数字、下划线，最长不超过200个字符，一经创建不允许修改编辑。&lt;br&gt;&lt;br&gt;示例：app_login_type。</td></tr><tr><td><strong>Feature名称</strong></td><td>建议取与策略相关的名称，让其他人快速理解对应什么策略上线。配置要求：名称全局唯一，支持中英文字符、数字、下划线，最长不超过100个字符(不可包含特殊符号)。&lt;br&gt;&lt;br&gt;示例：APP登录方式。</td></tr><tr><td><strong>Feature描述</strong>&amp;<strong>上传配图</strong></td><td>对feature的描述。配置要求：支持中英文字符、数字、下划线，最长不超过2048个字符。&lt;br&gt;&lt;br&gt;示例：这是APP登录方式的feature。&lt;br&gt;&lt;br&gt;您也可可以点击Feature描述后的上传配置，上传Feature图片或页面截图，便于快速辨识Feature的差异。</td></tr><tr><td><strong>标签</strong></td><td>可以自定义标签，主要用于分类和搜索查询，方便Feature的管理，比如用户性能优化的策略可以统一加上「性能优化」标签；支持添加多个标签。建议选择已有标签or添加新标签方便管理（最多支持10个，每个20个字符以内）。</td></tr><tr><td><strong>Owners</strong></td><td>默认创建人为Owner，可添加其他人为Owner，方便协同操作。</td></tr><tr><td><strong>终端类型</strong></td><td>指获取Feature分组信息并控制配置Feature生效的终端是客户端还是服务端， 可根据您的业务类型和Feature生效方式选择端类型。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 客户端Feature，如客户端交互功能、UI样式等都建议创建客户端Feature。&lt;br&gt;&lt;br&gt;* 服务端Feature，如内容分发算法&amp;策略、由服务端逻辑控制产品功能的Feature都是服务端Feature。</td></tr></tbody></table>
+<p>&lt;span id=&quot;bda6da22&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>配置Feature：设置变体</strong></h2>
+<p>设置变体即配置Feature key的取值(value）。示例：若Feature为APP登录方式，则变体可为 1:QQ登录、2:微信登录 3:抖音登录</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/4c45d8c3e103491c83d53538dd28a761~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>参数说明</strong></th></tr></thead><tbody><tr><td><strong>变体类型</strong></td><td>配置变体的取值类型，当前支持boolean、string、number和json四种类型（json类型支持多层嵌套）。</td></tr><tr><td><strong>参数校验</strong></td><td>对于非boolean类型的变体，您可以打开<strong>参数校验</strong>开关，在参数校验中设置参数的取值规则，后续在配置具体变量取值时，系统将根据您配置的校验规则进行取值校验。</td></tr><tr><td><strong>变体取值</strong></td><td>* boolean：默认包含两个变体值True和False，可添加描述&lt;br&gt;&lt;br&gt;* string：字符串格式&lt;br&gt;&lt;br&gt;* number：支持整数位十位，小数位五位&lt;br&gt;&lt;br&gt;* json：json类型支持多层嵌套，请按json规范填写</td></tr><tr><td><strong>添加新变体</strong></td><td>一个Feature可创建多个变体，boolean类的变体可添加两个变体；其他类型支持添加更多。</td></tr></tbody></table>
+<p>&lt;span id=&quot;ac66c43d&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>配置Feature：发布受众</strong></h2>
+<p>发布受众即为该Feature设置生效规则，即最终下发按什么规则生效，包括：生效到哪个APP、生效哪个变体取值。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/a7a9006e3df34b189464294198dea6c4~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>受众规则按照if...else...的逻辑生效：</p>
+<ul><li>命中if\-<strong>自定义受众规则</strong>的用户，将按照自定义受众规则中的发布范围进行发布。</li></ul>
+<ul><li>未命中if规则的用户，将按else\-<strong>最终默认规则</strong>生效。</li></ul>
+<p>若需设置不同条件发布不同的变体取值，则可在受众规则中进行灵活设置。</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>参数说明</strong></th></tr></thead><tbody><tr><td>if\-自定义受众规则</td><td>* <strong>过滤条件</strong>：可对受众规则添加多个过滤条件，多个条件之间为“且”的关系。&lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;若已有的过滤条件不满足需求，可进入用户属性页面创建新的用户属性，作为自定义过滤条件。   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;* 发布范围：可选择发布范围“某个变体、多变体、不下发参数值”(其中多变体指多个变体可随机按比例发布)，选择某个变体或多变体后，可设置流量比例。&lt;br&gt;&lt;br&gt;* 添加受众规则：可添加多组受众规则，每组关系为&quot;或&quot;，且自上而下进行判断。例如当请求命中第一条自定义规则后，无需判断后续规则</td></tr><tr><td>else\-默认最终规则</td><td>「自定义受众规则」未命中的用户，自动发布最终规则。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 选择其中一个变体：比如有3个变体，可选择默认最终规则为变体1、变体2、变体3其中的一个变体。&lt;br&gt;&lt;br&gt;* 不下发参数值：变体值不下发，生效本地默认值。</td></tr></tbody></table>
+<p>&lt;span id=&quot;c379b23d&quot;&gt;&lt;/span&gt;</p>
+<h1>查看Feature列表及状态</h1>
+<p>您可以在左侧导航栏<strong>配置管理</strong>\&gt;<strong>Feature列表</strong>页后看到所有已创建的Feature及其状态。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/a0632b37d94245dab700e9ac4fcb0ff6~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>开关状态：表明当前Feature是否发布生效。已开始的Feature，您可以在Feature详情页面的右上角手动关闭Feature。</li></ul>
+<ul><li>发布版状态：</li></ul>
+<ul><li>未发布：Feature未执行发布操作。</li></ul>
+<ul><li>灰度中：Feature已执行发布，发布生效的流量还未达100%。</li></ul>
+<ul><li>发布确认：Feature在执行发布的过程中，当前待进行发布确认操作。</li></ul>
+<ul><li>已全量：Feature已执行发布，发布生效的流量已达100%。</li></ul>
+<ul><li>已回滚：已发布的Feature被回滚。</li></ul>
+<p>&lt;span id=&quot;edef7647&quot;&gt;&lt;/span&gt;</p>
+<h1>后续步骤</h1>
+<p>&lt;span id=&quot;33bc3a7c&quot;&gt;&lt;/span&gt;</p>
+<h2>查看并嵌入Feature代码</h2>
+<p>创建Feature或者实验后，研发人员需要业务代码中书写对应的Feature或者实验信息。</p>
+<p>通常这些信息需要研发人员在多个平台间填写，增大了配置成本和出错风险。Tester在创建Feature时，提供了基于填写的配置信息自动生成示例代码的功能，并支持自定义生成代码规则，用户可将生成好的代码复制到客户端代码中，降低填写成本。详情请参见<a href="https://www.volcengine.com/docs/6287/164636" target="_blank" rel="noopener">嵌入Feature代码</a>。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/6ec2fab25ef14adb851e1087c4cfaa9d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;5447f08b&quot;&gt;&lt;/span&gt;</p>
+<h2>调试Feature</h2>
+<p>创建完成Feature、正式发布Feature前，您可以为Feature添加白名单用户，通过白名单用户来测试Feature配置是否符合预期，操作详情请参见<a href="https://www.volcengine.com/docs/6287/163138" target="_blank" rel="noopener">调试Feature：白名单测试</a>。</p>
+<p>&lt;span id=&quot;db9b0af0&quot;&gt;&lt;/span&gt;</p>
+<h2>发布Feature</h2>
+<p>Feature创建或者变更后，需发布才会生效到线上，若需发布可参考<a href="https://www.volcengine.com/docs/6287/66387" target="_blank" rel="noopener">如何发布</a>。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

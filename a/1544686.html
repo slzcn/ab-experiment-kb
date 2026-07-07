@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SaaS云原生/非云原生&amp;私有化环境 · A/B 实验知识库</title>
+<meta name="description" content="当前DataTester为您提供的SaaS化和私有化两大类的部署方式，其中SaaS环境随产品的发展迭代可分为旧版SaaS环境（SaaS\ 非云原生）和SaaS\ 云原生环境两类，两类SaaS环境的产品功能和操作流程基本一">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1544686.html">
+<meta property="og:title" content="SaaS云原生/非云原生&amp;私有化环境"><meta property="og:description" content="当前DataTester为您提供的SaaS化和私有化两大类的部署方式，其中SaaS环境随产品的发展迭代可分为旧版SaaS环境（SaaS\ 非云原生）和SaaS\ 云原生环境两类，两类SaaS环境的产品功能和操作流程基本一">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1544686.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>SaaS云原生/非云原生&amp;私有化环境</h1>
+<div class="meta">📄 1,627 字 · 🕐 2025-04-23</div>
+<article class="md"><p>当前DataTester为您提供的SaaS化和私有化两大类的部署方式，其中SaaS环境随产品的发展迭代可分为旧版SaaS环境（SaaS\-非云原生）和SaaS\-云原生环境两类，两类SaaS环境的产品功能和操作流程基本一致，在管理员的操作和部分细节上有少许差别。本文为您介绍SaaS两类环境的识别方式。</p>
+<p>&lt;span id=&quot;ae51d202&quot;&gt;&lt;/span&gt;</p>
+<h1>如何确认SaaS环境是否是SaaS\-云原生环境？</h1>
+<p>如果您使用的是DataTester的SaaS环境，您不确定自己的环境是否是SaaS\-云原生环境，您可登录DataTester产品控制台后，对照以下内容来检查确定使用的是否是SaaS\-云原生环境。</p>
+<ul><li>切换应用方式</li></ul>
+<table><thead><tr><th><strong>旧版SaaS环境（SaaS\-非云原生环境）</strong></th><th><strong>SaaS\-云原生环境</strong></th></tr></thead><tbody><tr><td>在页面左上角切换应用时，能切换选择个集团下的某个项目。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/aa5115eb52af4764a8f9d58129a6f9c8~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;由于SaaS\-非云原生环境一个项目仅支持绑定一个应用，因此进入某个项目即代表进入了项目绑定的应用。</td><td>在页面左上角切换应用时，有1项目多应用的是SaaS\-云原生环境。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/96f8977843014ceeb8571e5f9d0881cf~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;由于SaaS\-云原生环境一个项目支持绑定多个应用，因此切换应用时您可以直接在左上角选择进入哪个应用。</td></tr></tbody></table>
+<ul><li>查看集团设置入口：如果您当前的账号权限为管理员权限，可查看集团设置，则可根据集团设置入口来判断当前的环境类型</li></ul>
+<table><thead><tr><th><strong>旧版SaaS环境（SaaS\-非云原生环境）</strong></th><th><strong>SaaS\-云原生环境</strong></th></tr></thead><tbody><tr><td>您可以查看界面左下角位置，如果有集团设置入口，则您当前的环境为SaaS\-非云原生环境。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/731db03488bc4676a367f095f71bd9b4~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td><td>如果您的页面左下角没有集团设置入口，则当前环境为SaaS\-云原生环境。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/4109a9fa6e1646b4a3334a788cf8f112~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr></tbody></table>
+<ul><li>SaaS\-云原生/SaaS\-非云原生支持的地域</li></ul>
+<table><thead><tr><th><strong>旧版SaaS环境（SaaS\-非云原生环境）</strong></th><th><strong>SaaS\-云原生环境</strong></th></tr></thead><tbody><tr><td>国内地域：SaaS\-非云原生环境中的服务不区分地域概念。</td><td>国内地域：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 华北2（北京）：cn\-beijing</td></tr><tr><td>海外地域：&lt;br&gt;&lt;br&gt;SaaS\-非云原生环境当前暂不支持海外地域。如果您的业务在海外希望使用海外地域的DataTester服务：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 新用户建议使用SaaS\-云原生的海外环境。&lt;br&gt;&lt;br&gt;* 存量用户建议使用BytePlus的环境。详情可联系火山引擎技术支持人员咨询。</td><td>海外地域：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 亚太东南（柔佛）：ap\-southeast\-1</td></tr></tbody></table>
+<p>   SaaS\-云原生环境的用户如果希望查看当前使用的DataTester服务是哪个地域，可参考<a href="https://www.volcengine.com/docs/6287/1544685" target="_blank" rel="noopener">支持的地域</a>。</p>
+<p>&lt;span id=&quot;495551a8&quot;&gt;&lt;/span&gt;</p>
+<h1>注意事项</h1>
+<p>不同环境、不同地域的DataTester在产品功能和使用逻辑上大致相同，主要差异点在于：</p>
+<ul><li>数据上报地址：不同环境、地域的实验指标数据上报地址不一致，您需将数据上报至对应地域的地址中，如果上报地址与地域不匹配会造成数据无法正常查询分析。各地域的数据上报地址请参见<a href="https://www.volcengine.com/docs/6287/1544684" target="_blank" rel="noopener">实验指标数据上报地址</a>。</li></ul>
+<ul><li>应用/项目/集团等管理操作：不同环境的管理员操作入口有差异，。</li></ul>
+<p>其他更多差异可在查看对应功能文档时关注其中关于功能对于支持的环境相关描述。</p>
+<p>&lt;span id=&quot;e3811312&quot;&gt;&lt;/span&gt;</p>
+<h1>帮助文档中关于SaaS环境的标注说明</h1>
+<p>为便于您跟进当前使用的SaaS环境来查看对应的帮助文档，在帮助文档中通过以下方式来标注不同环境场景下的指导文档：</p>
+<ul><li>SaaS\-云原生与旧版SaaS环境中，大部分的产品使用无差异，此类文档在帮助文档中不会特意区分SaaS和SaaS云原生。如果类似的内容同时标注了SaaS和私有化，则SaaS部分表明同时适用于SaaS\-云原生与旧版SaaS环境。</li></ul>
+<ul><li>在SaaS\-云生与旧版SaaS环境中有使用不一致的场景下，帮助文档会在内容中标注SaaS\-非云原生和SaaS\-云原生的区别。如果类似的内容同时标注了SaaS\-非云原生和SaaS\-云原生，则SaaS\-非云原生部分适用于旧版SaaS环境，SaaS\-云原生适用于云原生环境。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

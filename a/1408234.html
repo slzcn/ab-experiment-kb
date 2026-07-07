@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HarmonyOS Next SDK 集成 · A/B 实验知识库</title>
+<meta name="description" content="注意事项 支持的环境 ： 环境 是否支持 备注 SaaS\ 云原生私有化 492 版本 已支持 环境已完成适配，platform 以 openHarmony 上报。如果是老的私有化版本升级上来的，需要联系火山引擎技术支持">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1408234.html">
+<meta property="og:title" content="HarmonyOS Next SDK 集成"><meta property="og:description" content="注意事项 支持的环境 ： 环境 是否支持 备注 SaaS\ 云原生私有化 492 版本 已支持 环境已完成适配，platform 以 openHarmony 上报。如果是老的私有化版本升级上来的，需要联系火山引擎技术支持">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1408234.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>HarmonyOS Next SDK 集成</h1>
+<div class="meta">📄 4,351 字 · 🕐 2025-07-22</div>
+<article class="md"><p>&lt;span id=&quot;2b0c808f&quot;&gt;&lt;/span&gt;</p>
+<h1>注意事项</h1>
+<ul><li><strong>支持的环境</strong>：</li></ul>
+<table><thead><tr><th>环境</th><th>是否支持</th><th>备注</th></tr></thead><tbody><tr><td>SaaS\-云原生&lt;br&gt;&lt;br&gt;私有化 492 版本</td><td>已支持</td><td>环境已完成适配，platform 以 openHarmony 上报。&lt;br&gt;&lt;br&gt;如果是老的私有化版本升级上来的，需要联系火山引擎技术支持人员获取 HarmonyOS Next SDK 新版适配包。</td></tr><tr><td>SaaS\-非云原生</td><td>不支持</td><td>环境不支持或未完成适配，如果想提早集成，SDK 的 platform 会以 Android 上报。</td></tr><tr><td>私有化 492 之前版本</td></tr></tbody></table>
+<ul><li><strong>SDK版本说明</strong>：</li></ul>
+<p>   当前 HarmonyOS Next SDK 为 Bate / RC 版，鸿蒙系统目前已正式版推出，本 SDK 基于鸿蒙 HarmonyOS 5.0.0 Release 版本编译打包，后续会随华为系统的更新持续迭代，当前功能适配非完整版本。</p>
+<ul><li>当前支持最新版的 HarmonyOS Next SDK 已支持的功能包括：</li></ul>
+<ul><li>自定义埋点 / 请求加密（默认加密 / 国密 sm2）/ 用户标识与用户属性 / AB 分流实验 / 事件黑名单 / web 打通 / 崩溃采集（JS 层）/ 实时埋点验证 / custom header 设置 / 全埋点（beta）/ 组件曝光 / 多 ID 口径</li></ul>
+<ul><li>Devtools 调试工具</li></ul>
+<ul><li>查看事件信息 / 查看网络请求 / 查看接入状态 / 配置信息模块 / 内置扫一扫功能</li></ul>
+<ul><li>SDK发布日志详情请参见<a href="https://www.volcengine.com/docs/6287/158895" target="_blank" rel="noopener">SDK更新日志</a>。</li></ul>
+<ul><li>暂不支持多线程 / 多进程，鸿蒙系统比较特殊，采取线程间进程隔离，需额外适配方案。</li></ul>
+<p>&lt;span id=&quot;5c199ece&quot;&gt;&lt;/span&gt;</p>
+<h1>集成增长营销套件 SDK</h1>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;HarmonyOS SDK 要求最低接入的鸿蒙版本为 API 12 以上。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;1c99d377&quot;&gt;&lt;/span&gt;</p>
+<h2>获取 SDK 与接入方式</h2>
+<p>获取 SDK 与接入方式：您可前往<a href="https://github.com/volcengine/datarangers-sdk-packages" target="_blank" rel="noopener">Github地址</a>获取HarmonyOS SDK。</p>
+<p>&lt;span id=&quot;9c68f4c0&quot;&gt;&lt;/span&gt;</p>
+<h2>权限声明</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;OAID 是用户弹窗权限，如需采集相关数据时，您需要在应用逻辑中添加 OAID 权限申请代码。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;配置在 enrty 下的 module.json5 中：&lt;/div&gt;</p>
+<pre><code>&quot;requestPermissions&quot;: [
+  {
+    // 网络权限，必要添加
+    &quot;name&quot;: &quot;ohos.permission.INTERNET&quot;
+  },
+  {
+    // wifi 信息获取，必要添加
+    &quot;name&quot;: &quot;ohos.permission.GET_WIFI_INFO&quot;
+  },
+  { 
+    // 获取网络信息，必要添加
+    &quot;name&quot;: &quot;ohos.permission.GET_NETWORK_INFO&quot;
+  },
+  {
+    // 资产持久化，建议添加，与 deviceId 生成相关，未声明会导致卸载重装 deviceId 变化
+    &quot;name&quot;: &quot;ohos.permission.STORE_PERSISTENT_DATA&quot;
+  },
+  {
+    // oaid 权限（可选），建议添加
+    &quot;name&quot;: &quot;ohos.permission.APP_TRACKING_CONSENT&quot;,
+    &quot;reason&quot;: &quot;$string:your_reason&quot;,
+    &quot;usedScene&quot;: {
+      &quot;abilities&quot;: [],
+      &quot;when&quot;: &quot;inuse&quot;
+    }
+  },
+],</code></pre>
+<p>&lt;span id=&quot;20fdc4b1&quot;&gt;&lt;/span&gt;</p>
+<h1>获取数据上送地址</h1>
+<p>进行数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如果上报地址设置错误，后续会导致您无法查询到上报的数据。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请在上报数据前，务必确认您当前使用的环境类型，根据环境类型配置上报地址。查看当前的环境类型请参见&lt;a href=&quot;https://www.volcengine.com/docs/6287/1544686&quot;&gt;SaaS云原生/非云原生&amp;私有化环境&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果您使用的是SaaS\-云原生环境，您也需确认您的服务所在的地域，根据所在地域配置上报地址（通常您的服务会在华北2\-北京地域，部分用户可能会使用其他地域）。SaaS\-云原生用户查看服务所在地域请参见&lt;a href=&quot;https://www.volcengine.com/docs/6287/1544685&quot;&gt;支持的地域&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;7540d2f4&quot;&gt;&lt;/span&gt;</p>
+<h2>SaaS\-云原生 &amp; SaaS\-非云原生</h2>
+<table><thead><tr><th>地址类型</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（国内：华北2\-北京）</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（海外：亚太东南\-柔佛）</th><th>SaaS\-非云原生环境 国内环境</th><th>SaaS\-非云原生 海外BytePlus环境&lt;br&gt;&lt;br&gt;（以下 SG 指新加坡）</th></tr></thead><tbody><tr><td>数据上报地址</td><td>* SaaS\-云原生（华北）：https://gator.volces.com</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td>无需配置，使用默认的数据上报地址</td><td>暂不支持</td></tr><tr><td>分流地址</td><td>https://tab.volces.com</td><td>https://tab.ab.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>无需手动配置</td></tr></tbody></table>
+<p>&lt;span id=&quot;6b568ccc&quot;&gt;&lt;/span&gt;</p>
+<h2>私有化环境</h2>
+<p>私有化部署场景下，您需要获取部署私有化环境时，自行规划配置的数据上送地址。如您不清楚此地址，请联系您的项目经理或客户成功经理。</p>
+<p>&lt;span id=&quot;ad0278fa&quot;&gt;&lt;/span&gt;</p>
+<h1>初始化增长营销套件 SDK</h1>
+<p>鸿蒙将 init 与 start 完全分离。</p>
+<ul><li>init 之后才可以调用 SDK 的各种方法，SDK 不支持 init 之前进行埋点，但 init 之后就可以开始埋点落库了。</li></ul>
+<ul><li>start 之后才开始采集诸如 oaid 等敏感 header 信息，并且此时才进行数据请求。</li></ul>
+<ul><li>如果创建了 AbilityStage，可以将 init 放在 AbilityStage 的 oncreate 中，可以在这里初始化 SDK，然后在隐私弹窗后再调用 start。</li></ul>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;AbilityStage 相当于 Android 中的 Application。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;dc752ebc&quot;&gt;&lt;/span&gt;</p>
+<h2>SaaS\-云原生</h2>
+<ul><li>使用1.3.1及之后版本的SDK</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;使用1.3.1及之后版本的SDK时，您需要单独设置指标数据采集的上报地址和A/B实验的分流地址。   &lt;/div&gt;</p>
+<p>   ```TypeScript    // 创建新的 AppLog 实例    let appLog = new AppLog()    // 鸿蒙 sdk channel 作为可选参数    let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)      // 是否打开日志      .setLogEnabled(true)      // 设置数据采集上报地址和实验分流地址，第一个参数为 数据采集上报地址，第二个参数为实验分流地址，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节。       .setUri(createByDomainWithSpecifyAB(&quot;https://**<strong>.</strong><strong>.com&quot;, &quot;https://</strong>*.****.com&quot;))    // init sdk 传入配置，init 之后可以    appLog.init(context, config)</p>
+<p>   // 鸿蒙 SDK 需要手动调用 start 才开始采集敏感信息与发送请求    appLog.start()    ```</p>
+<ul><li>使用1.3.1之前的版本，建议您升级至新版的SDK本进行集成。</li></ul>
+<p>&lt;span id=&quot;1088cfa9&quot;&gt;&lt;/span&gt;</p>
+<h2>SaaS\-非云原生</h2>
+<pre><code>import { AppLog, InitConfig } from &#x27;@volcengine/applog&#x27;
+
+// 创建新的 AppLog 实例
+let appLog = new AppLog()
+// 鸿蒙 sdk channel 作为可选参数
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+  // 是否打开日志
+  .setLogEnabled(true)
+// init sdk 传入配置，init 之后可以
+appLog.init(context, config)
+
+// 鸿蒙 SDK 需要手动调用 start 才开始采集敏感信息与发送请求
+appLog.start()</code></pre>
+<p>&lt;span id=&quot;3d21cc3e&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>私有化</strong></h2>
+<pre><code>import { AppLog, InitConfig } from &#x27;@volcengine/applog&#x27;
+
+// 创建新的 AppLog 实例
+let appLog = new AppLog()
+// 鸿蒙 sdk channel 作为可选参数
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+  // 是否打开日志
+  .setLogEnabled(true)
+  // 设置私有化部署数据上送地址，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节。
+  .setUri(createByDomain(&quot;your_REPORT_URL&quot;))
+// init sdk 传入配置，init 之后可以
+appLog.init(context, config)
+
+// 鸿蒙 SDK 需要手动调用 start 才开始采集敏感信息与发送请求
+appLog.start()</code></pre>
+<p>&lt;span id=&quot;8d53251d&quot;&gt;&lt;/span&gt;</p>
+<h2>多实例</h2>
+<p>当前版本每个实例都是新创建出来的，所以创建新的 AppLog 对应传入不同的应用实例即可。</p>
+<pre><code>import { AppLog, InitConfig } from &#x27;@volcengine/applog&#x27;
+
+// 创建新的 AppLog 实例
+let appLog1 = new AppLog()
+// init sdk 传入配置，init 之后可以
+appLog1.init(context, new InitConfig(&#x27;yourAppId1&#x27;, &#x27;yourChannel&#x27;)
+  // 是否打开日志
+  .setLogEnabled(true))
+  
+// 鸿蒙 SDK 需要手动调用 start 才开始采集敏感信息与发送请求
+appLog1.start()
+
+// 创建新的 AppLog 实例
+let appLog2 = new AppLog()
+// init sdk 传入配置，init 之后可以
+appLog2.init(context, new InitConfig(&#x27;yourAppId2&#x27;, &#x27;yourChannel&#x27;)
+  // 是否打开日志
+  .setLogEnabled(true))
+  
+// 鸿蒙 SDK 需要手动调用 start 才开始采集敏感信息与发送请求
+appLog2.start()</code></pre>
+<p>&lt;span id=&quot;3146a8bf&quot;&gt;&lt;/span&gt;</p>
+<h1>敏感信息采集</h1>
+<p>&lt;span id=&quot;8412acfc&quot;&gt;&lt;/span&gt;</p>
+<h2>关闭 Oaid 采集</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;鸿蒙 Oaid 为用户授权权限，需要应用侧主动申请权限，如果申请权限且用户同意，SDK 才能采集到 Oaid，也支持在用户同意的情况下关闭 Oaid 采集。&lt;/div&gt;</p>
+<p>设备的 OAID 信息采集默认开启，如需关闭：</p>
+<pre><code>let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+  .setOaidEnabled(false)</code></pre>
+<p>&lt;span id=&quot;de7acb74&quot;&gt;&lt;/span&gt;</p>
+<h2>关闭运营商信息采集</h2>
+<p>设备的运营商信息默认采集，如需关闭：</p>
+<pre><code>let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+  .setOperatorInfoEnabled(false)</code></pre>
+<p>&lt;span id=&quot;c13f4770&quot;&gt;&lt;/span&gt;</p>
+<h1>配置 Scheme(可选)</h1>
+<p>如需使用<a href="https://www.volcengine.com/docs/84129/1261787" target="_blank" rel="noopener">实时埋点检测</a>，请配置 Scheme，否则可跳过此步骤。</p>
+<p>&lt;span id=&quot;8f3eb705&quot;&gt;&lt;/span&gt;</p>
+<h2>方式一 使用 Devtools 内置扫一扫</h2>
+<p>该方式无需配置唤醒协议，</p>
+<p>集成 Devtools 后点开，控制台 \-\&gt; 扫一扫 按照流程操作即可。</p>
+<p>&lt;span id=&quot;e9d2db98&quot;&gt;&lt;/span&gt;</p>
+<h2>方式二 传统扫码跳转</h2>
+<p>现阶段鸿蒙系统浏览器已支持扫码跳转。</p>
+<p>&lt;span id=&quot;8c901af2&quot;&gt;&lt;/span&gt;</p>
+<h3>获取 URL Scheme</h3>
+<p>scheme一般为<code>rangersapplog.xxxxx</code>的形式。</p>
+<p>在集团中接入一个应用后，您可以在集团相关页面查看应用的AppKey等信息，详情请参考：<a href="https://www.volcengine.com/docs/6287/66984" target="_blank" rel="noopener">如何创建应用</a>。</p>
+<ul><li>SaaS\-云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/eba094f44e174faea6c7cdcdc7447d2d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>SaaS\-非云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b55e61ee067544deaff4939685d1475c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;8f735898&quot;&gt;&lt;/span&gt;</p>
+<h3>配置 URL Scheme</h3>
+<p>&lt;span id=&quot;df124470&quot;&gt;&lt;/span&gt;</p>
+<h4>配置跳转协议（方式二添加）</h4>
+<pre><code>// 在 entry 模块下的主 Ability 中配置 uris：
+&quot;uris&quot;: [
+    {
+        // rangersapplog.xxx 请替换为官方文档中展示的 scheme  
+        &quot;scheme&quot;: &quot;rangersapplog.xxx&quot;,
+        &quot;host&quot;: &quot;rangersapplog&quot;,
+        &quot;path&quot;: &quot;picker&quot;
+    }
+]
+// 示例：
+&quot;abilities&quot;: [
+  {
+    &quot;name&quot;: &quot;EntryAbility&quot;,
+    &quot;srcEntry&quot;: &quot;./ets/entryability/EntryAbility.ets&quot;,
+    &quot;description&quot;: &quot;$string:EntryAbility_desc&quot;,
+    &quot;icon&quot;: &quot;$media:icon&quot;,
+    &quot;label&quot;: &quot;$string:EntryAbility_label&quot;,
+    &quot;startWindowIcon&quot;: &quot;$media:startIcon&quot;,
+    &quot;startWindowBackground&quot;: &quot;$color:start_window_background&quot;,
+    &quot;exported&quot;: true,
+    &quot;skills&quot;: [
+      {
+        // 也需要配置
+        &quot;actions&quot;: [
+          &quot;ohos.want.action.viewData&quot;
+        ],
+        &quot;uris&quot;: [
+          {
+            // rangersapplog.xxx 请替换为官方文档中展示的 scheme  
+            &quot;scheme&quot;: &quot;rangersapplog.xxx&quot;,
+            &quot;host&quot;: &quot;rangersapplog&quot;,
+            &quot;path&quot;: &quot;picker&quot;
+          }
+        ]
+      },
+    ]
+  }
+]</code></pre>
+<p>&lt;span id=&quot;d43a9d17&quot;&gt;&lt;/span&gt;</p>
+<h4>添加实时埋点启动代码（方式二添加）</h4>
+<pre><code>import { InitConfig } from &#x27;@volcengine/applog&#x27;
+
+// 在配置跳转协议的 Ability 中添加以下代码：
+// 在示例中的 EntryAbility 中添加：
+// onNewWant 是在启动后又有启动调用回调
+onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+  // 传入协议 uri 即可
+  appLog.simulate()?.start(want.uri)
+}
+
+// 如果还没有启动 App 就想要扫码实时埋点
+onCreate(want: Want, _: AbilityConstant.LaunchParam): void {
+  // 注意，需要在 SDK init 之后调用才可以
+  // 传入协议 uri 即可
+  appLog.simulate()?.start(want.uri)
+}</code></pre>
+<p>&lt;span id=&quot;af865fd7&quot;&gt;&lt;/span&gt;</p>
+<h1>初始化基本配置</h1>
+<p>&lt;span id=&quot;a760f4a7&quot;&gt;&lt;/span&gt;</p>
+<h2>SDK init</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;SDK 在 init 之前不接受任何方法调用，想要调用 SDK 内部方法，需要先进行 init，且 init 方法已做合规处理，init 不会自动采集敏感信息与发送请求。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;可以考虑在 AbilityStage 的 onCreate 中 sdk init，在隐私同意后进行 sdk start。&lt;/strong&gt;&lt;/div&gt;</p>
+<pre><code>appLog.init(context, config)</code></pre>
+<p>&lt;span id=&quot;43895e6c&quot;&gt;&lt;/span&gt;</p>
+<h2>SDK start</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;请不要在 init 之前调用 start，调用 start 后，SDK 真正开始做敏感信息采集与请求上报。&lt;/div&gt;</p>
+<pre><code>appLog.start()</code></pre>
+<p>&lt;span id=&quot;a6a8e4bf&quot;&gt;&lt;/span&gt;</p>
+<h2>开启 SDK 日志</h2>
+<p>&lt;span id=&quot;5d4c44ad&quot;&gt;&lt;/span&gt;</p>
+<h3>SDK 内部数据输出日志</h3>
+<pre><code>import { InitConfig } from &#x27;@volcengine/applog&#x27;
+
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+  // 开启 SDK 日志
+  .setLogEnabled(true)</code></pre>
+<p>&lt;span id=&quot;3c44d765&quot;&gt;&lt;/span&gt;</p>
+<h3>应用自己接管打印日志</h3>
+<pre><code>import { InitConfig } from &#x27;@volcengine/applog&#x27;
+
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+  // 也需要先开启 SDK 日志
+  .setLogEnabled(true)
+  // 实现日志接管方法
+  .setLogger({
+    log: (_: hilog.LogLevel, __: string, msg: string, err?: Error) =&gt; {
+        hilog.debug(0x0100, &#x27;AppLogH_test&#x27;, `${msg} ${err ? JSON.stringify(err) : &quot;&quot;}`)
+    }
+})</code></pre>
+<p>&lt;span id=&quot;a743933c&quot;&gt;&lt;/span&gt;</p>
+<h2>自定义域名</h2>
+<pre><code>import { InitConfig } from &#x27;@volcengine/applog&#x27;
+import { createByDomain } from &#x27;@volcengine/applog/src/main/ets/core/base/url/UriConfig&#x27;
+
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+  .setUri(createByDomain(&quot;your_REPORT_URL&quot;))</code></pre>
+<p>&lt;span id=&quot;d15ec284&quot;&gt;&lt;/span&gt;</p>
+<h2>加密设置</h2>
+<p>SDK 默认开启加密，且内置的默认加密方式与 Android 一致。</p>
+<p>如果需要修改 SDK 加密方式，建议在 init 和 start 之间插入对应代码，这样可以确保启动后请求应用加密方式。</p>
+<p>&lt;span id=&quot;26fc5cd5&quot;&gt;&lt;/span&gt;</p>
+<h3>默认加密</h3>
+<p>无需额外设置。</p>
+<pre><code>import { AppLog, InitConfig } from &#x27;@volcengine/applog&#x27;
+
+let appLog = new AppLog()
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+appLog.init(context, config)
+// 默认无需添加，默认开启加密
+appLog.encrypt()?.enablePlugin()
+// 切换至默认加密方式，建议在 start 之前调用，因为 start 就开始请求
+appLog.encrypt()?.useDefaultEncrypt()
+appLog.start()</code></pre>
+<p>&lt;span id=&quot;a0b3fe99&quot;&gt;&lt;/span&gt;</p>
+<h3>国密 SM2</h3>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;该加密方式目前仅私有化版本支持。&lt;/div&gt;</p>
+<pre><code>import { AppLog, InitConfig } from &#x27;@volcengine/applog&#x27;
+
+let appLog = new AppLog()
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+appLog.init(context, config)
+// 默认无需添加，默认开启加密
+appLog.encrypt()?.enablePlugin()
+// 切换至国密 SM2 非对称加密，需要手动传入公钥
+appLog.encrypt()?.useSm2Encrypt(&quot;your_public_key&quot;)
+appLog.start()</code></pre>
+<p>&lt;span id=&quot;8a8ff7a7&quot;&gt;&lt;/span&gt;</p>
+<h3>关闭 SDK 加密</h3>
+<p>对于调试阶段，可以关闭 SDK 加密，方便抓包查看数据是否正常。</p>
+<pre><code>import { AppLog, InitConfig } from &#x27;@volcengine/applog&#x27;
+
+let appLog = new AppLog()
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+appLog.init(context, config)
+// 关闭加密
+appLog.encrypt()?.disablePlugin()
+appLog.start()</code></pre>
+<p>&lt;span id=&quot;14de2aa0&quot;&gt;&lt;/span&gt;</p>
+<h2>打通内嵌 H5 页</h2>
+<p>如果您的应用同时集成 Web/JS SDK 以及 Harmony SDK，默认情况下，所有 H5 事件会通过 Web/JS SDK 上报，如果您希望 H5 事件由 Harmony SDK 接管上报，可以使用打通内嵌 H5 功能，此时 H5 页上产生的事件将通过 Harmony SDK 上报，而不在 Web/JS SDK 上报，这种接管上报场景下会复用 Harmony 端设置的<code>user_unique_id</code>和公共属性，但是也支持打通时 web 侧设置 / 更新端上的 uuid / 公共属性，请在打通时注意采用哪边数据，如果完全以端上为准可以去掉 web sdk 侧的 uuid / 公共属性操作。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;打通功能需要 Web/JS SDK 与 Harmony SDK 同时集成并彼此配合，且当前版本 Web/JS SDK 打通后默认屏蔽 H5 全埋点功能，因为此时上报都由 Harmony SDK 接管，如果还想采集 H5 全埋点，需要查看 5.7 小节：原生端采集 H5 全埋点 。 Web/JS SDK 集成请参考&lt;a href=&quot;https://www.volcengine.com/docs/84129/1261745&quot;&gt;《Web/JS SDK 集成》&lt;/a&gt; 以及 3.4 小节。&lt;/div&gt;</p>
+<ul><li>初始化SDK</li></ul>
+<pre><code>import { AppLog, InitConfig } from &#x27;@volcengine/applog&#x27;
+
+let appLog = new AppLog()
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+appLog.init(context, config)
+// ...
+appLog.start()
+
+export {
+    appLog
+}</code></pre>
+<ul><li>在Web组件上使用</li></ul>
+<p>&lt;span id=&quot;77c2787e&quot;&gt;&lt;/span&gt;</p>
+<h3>方式一：使用 javaScriptProxy 注入</h3>
+<pre><code>import web_webview from &#x27;@ohos.web.webview&#x27;
+import { appLog } from &#x27;./applog&#x27;
+
+@Component
+export struct Webview {
+    controller: web_webview.WebviewController = new web_webview.WebviewController()
+    bridgeProxyInfo = appLog.bridge()!.injectJsBridgeByJsProxy()
+    
+    build() {
+        Web({ src: $rawfile(&#x27;webview.html&#x27;), controller: this.controller })
+          .javaScriptAccess(true)
+          .javaScriptProxy({
+            object: this.bridgeProxyInfo.object,
+            name: this.bridgeProxyInfo.name,
+            methodList: this.bridgeProxyInfo.methodList,
+            controller: this.controller,
+          })
+    }
+}</code></pre>
+<p>&lt;span id=&quot;187d19cc&quot;&gt;&lt;/span&gt;</p>
+<h2>开启崩溃采集</h2>
+<p>当前 SDK 支持通过 errorManager 采集 JS crash，SDK 内部默认关闭。</p>
+<pre><code>let appLog = new AppLog()
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+appLog.init(context, config)
+// 主动开启 JS Crash 采集
+appLog.crash()?.enablePlugin()
+appLog.start()</code></pre>
+<p>&lt;span id=&quot;2b73c8f6&quot;&gt;&lt;/span&gt;</p>
+<h1>AB 实验</h1>
+<p>AB 实验默认关闭（与 Android 一致），如果需要使用 AB 实验需要先手动开启。</p>
+<p>&lt;span id=&quot;06c36b76&quot;&gt;&lt;/span&gt;</p>
+<h2>开启 AB 实验功能</h2>
+<pre><code>import { AppLog, InitConfig } from &#x27;@volcengine/applog&#x27;
+
+let appLog = new AppLog()
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+appLog.init(context, config)
+// 开启 AB 实验，建议在 init 与 start 之间调用
+appLog.abTest()?.enablePlugin()
+appLog.start()</code></pre>
+<p>&lt;span id=&quot;9adfacb2&quot;&gt;&lt;/span&gt;</p>
+<h2>获取 AB 实验服务端配置</h2>
+<pre><code>// 建议每次在获取最新 AB 后获取所有实验结果
+appLog.topicReceiver().on(Topic.ABTestConfigReady, (_) =&gt; {
+    appLog.abTest()?.getAllAbTestConfigs()
+})</code></pre>
+<p>&lt;span id=&quot;7dddafc8&quot;&gt;&lt;/span&gt;</p>
+<h2>进行 AB 实验曝光</h2>
+<pre><code>// 建议每次在获取最新 AB 后触发实验
+appLog.topicReceiver().on(Topic.ABTestConfigReady, (_) =&gt; {
+    appLog.abTest()?.getAbConfig(&quot;ab_key&quot;, defaultValue)
+})</code></pre>
+<p>&lt;span id=&quot;d604294c&quot;&gt;&lt;/span&gt;</p>
+<h2>获取已曝光实验 Vid 列表</h2>
+<pre><code>appLog.abTest()?.getAbSdkVersion()</code></pre>
+<p>&lt;span id=&quot;b04a0d2b&quot;&gt;&lt;/span&gt;</p>
+<h2>订阅 AB 服务端分流配置获取</h2>
+<pre><code>appLog.topicReceiver()?.on(Topic.ABTestConfigReady, (abTestConfig) =&gt; {
+  hilog.info(0x0000, &#x27;AppLogH&#x27;, `AppLog abtest config ready:  ${JSON.stringify(abTestConfig)}`)
+})
+
+abTestConfig 格式：
+就是具体的实验配置
+{
+    &quot;ab&quot;: {
+        &quot;val&quot;: &quot;访问页面 A&quot;,
+        &quot;vid&quot;: &quot;1&quot;
+    },
+    &quot;ba&quot;: {
+        &quot;val&quot;: &quot;对照版&quot;,
+        &quot;vid&quot;: &quot;2&quot;
+    },
+    &quot;tt&quot;: {
+        &quot;val&quot;: true,
+        &quot;vid&quot;: &quot;3&quot;
+    }
+}</code></pre>
+<p>&lt;span id=&quot;ba68403e&quot;&gt;&lt;/span&gt;</p>
+<h2>订阅新曝光 Vid 记录</h2>
+<pre><code>appLog.topicReceiver()?.on(Topic.ABTestVidChanged, (vids) =&gt; {
+  hilog.info(0x0000, &#x27;AppLogH&#x27;, `AppLog abtest vids:  ${JSON.stringify(vids)}`)
+})
+
+vids 格式：
+{
+  // 最新曝光的 vid
+  &quot;new_vid&quot;:&quot;1&quot;,
+  // 已曝光的 vid 集合（包含最新的）
+  &quot;vids&quot;:&quot;1&quot;
+}</code></pre>
+<p>&lt;span id=&quot;78d156d3&quot;&gt;&lt;/span&gt;</p>
+<h1>DevTools 工具</h1>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;SDK 提供了 DevTools 工具，支持在开发时方便观察 SDK 的一些运行信息。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;928b8d68&quot;&gt;&lt;/span&gt;</p>
+<h2>Devtools 集成</h2>
+<p>初始化 SDK 和注册 DevTools 插件（<strong>初始化方式新老版本一致</strong>）</p>
+<pre><code>import { AppLog, InitConfig } from &#x27;@volcengine/applog&#x27;
+import { DevTools } from &#x27;@volcengine/applog_devtools&#x27;
+
+let appLog = new AppLog()
+let config = new InitConfig(&#x27;yourAppId&#x27;, &#x27;yourChannel&#x27;)
+appLog.init(context, config)
+
+// 注册 DevTools 插件
+DevTools.applyDevTools(appLog)
+
+appLog.start()
+
+export {
+    appLog
+}</code></pre>
+<p>&lt;span id=&quot;55b0bdec&quot;&gt;&lt;/span&gt;</p>
+<h2>新版使用方式：1.2.0 及以上版本</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;新版使用方式：1.2.0 及以上版本&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;新版本 Devtools 实现了和 Android 一样的全局悬浮能力（使用子窗口功能），所以无需额外挂载，直接使用即可。&lt;/strong&gt;&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;如果是老版本升级上来，需要移除之前的使用方式。&lt;/strong&gt;&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;新版版监听 onWindowStageActive，如果 SDK 初始化比较晚可能错过监听，前后台切换一下即可，显示出来，正常情况无需手动调用显示。&lt;/div&gt;</p>
+<pre><code>//  如果需要手动打开 可以手动调用：
+Devtools.show(windowStage: window.WindowStage)
+
+//  支持手动关闭：
+Devtools.close()</code></pre>
+<p>&lt;span id=&quot;fcf40e0e&quot;&gt;&lt;/span&gt;</p>
+<h2>老版使用方式：1.0.0 / 1.1.0 版本</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;老版本 Devtools 并非像 Android 那样的全局悬浮窗，需要在哪个页面使用，需要在对应页面挂载。&lt;/div&gt;</p>
+<p>在需要的页面挂载 DevTools 组件，推荐在根组件上挂载</p>
+<pre><code>import DevToolsPage from &#x27;@volcengine/applog_devtools&#x27;
+
+@Entry
+@Component
+struct Index {
+  // ...
+  
+  build() {
+    Column() {
+      // ...
+      
+      DevToolsPage()
+    }
+  }
+}</code></pre>
+<p>&lt;span id=&quot;d68fe538&quot;&gt;&lt;/span&gt;</p>
+<h1>参考：数据上报流程与机制</h1>
+<p>默认是一分钟上报一次，但是没有具体上报条数，SDK 策略为新的按体积查询事件的上报策略（Android / iOS 为按条数查询）， 每次上报查询 1M 左右数据进行上报，不再以 200 条为准（可以尽量多的上报）。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

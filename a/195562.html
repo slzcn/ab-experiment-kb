@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Java SDK · A/B 实验知识库</title>
+<meta name="description" content="1. 安装 SDK 1.1 下载 SDK 当前 SDK 版本：v2.0.27 datatester java sdk 2.0.27.jar &amp;nbsp; 1.2 添加 jar 包 1. java 版本需求：Java 8">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/195562.html">
+<meta property="og:title" content="Java SDK"><meta property="og:description" content="1. 安装 SDK 1.1 下载 SDK 当前 SDK 版本：v2.0.27 datatester java sdk 2.0.27.jar &amp;nbsp; 1.2 添加 jar 包 1. java 版本需求：Java 8">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/195562.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>Java SDK</h1>
+<div class="meta">📄 5,861 字 · 🕐 2026-06-04</div>
+<article class="md"><p>&lt;span id=&quot;_1-安装sdk&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 安装 SDK</h1>
+<p>&lt;span id=&quot;_1-1-下载sdk&quot;&gt;&lt;/span&gt;</p>
+<h2>1.1 下载 SDK</h2>
+<p>当前 SDK 版本：v2.0.27</p>
+<p>&lt;Attachment link=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/db3c6551bdf94b0fb707e5b2a6bd7d03~tplv-goo7wpa0wc-image.image&quot; name=&quot;datatester-java-sdk-2.0.27.jar&quot;&gt;datatester-java-sdk-2.0.27.jar&lt;/Attachment&gt;</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span id=&quot;_1-2-添加jar包&quot;&gt;&lt;/span&gt;</p>
+<h2>1.2 添加 jar 包</h2>
+<ol><li>java 版本需求：Java 8 及更高版本。</li></ol>
+<ol><li>导入方式：将 jar 文件添加至项目 Modules。</li></ol>
+<p>以主流 IDE(IntelliJ IDEA)为例，jar 包添加示例：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_a41ac6b5214f8e9ba1f51933bcaffe5c.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_009d4740db7e76c34b3ed32087b424fe.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_1-3-maven依赖导入&quot;&gt;&lt;/span&gt;</p>
+<h2>1.3 Maven 依赖导入</h2>
+<p>在成功添加 jar 包后，您需要通过 maven 管理添加必要依赖。</p>
+<p>添加依赖方式：将以下代码添加至项目 pom.xml 中</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ol><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请务必添加所有必要依赖项。&lt;/div&gt;</li></ol>
+<ol><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请确保您使用的依赖版本大于或等于 Tester 官方默认版本。&lt;/div&gt;</li></ol>
+<ol><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请使用当前最新版本，默认修复已有安全漏洞&lt;/div&gt;</li></ol>
+<pre><code>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+        &lt;artifactId&gt;gson&lt;/artifactId&gt;
+        &lt;version&gt;2.8.9&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+        &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+        &lt;version&gt;1.2.76&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+        &lt;artifactId&gt;jackson-core&lt;/artifactId&gt;
+        &lt;version&gt;2.11.4&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+        &lt;artifactId&gt;jackson-annotations&lt;/artifactId&gt;
+        &lt;version&gt;2.11.4&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+        &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+        &lt;version&gt;2.11.4&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+        &lt;artifactId&gt;guava&lt;/artifactId&gt;
+        &lt;version&gt;27.0.1-jre&lt;/version&gt;
+    &lt;/dependency&gt;
+    
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.github.zafarkhaja&lt;/groupId&gt;
+        &lt;artifactId&gt;java-semver&lt;/artifactId&gt;
+        &lt;version&gt;0.9.0&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+        &lt;version&gt;1.7.21&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-slf4j-impl&lt;/artifactId&gt;
+        &lt;version&gt;2.15.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+        &lt;version&gt;2.15.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
+        &lt;version&gt;2.15.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.lmax&lt;/groupId&gt;
+        &lt;artifactId&gt;disruptor&lt;/artifactId&gt;
+        &lt;version&gt;3.4.2&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
+        &lt;artifactId&gt;httpclient&lt;/artifactId&gt;
+        &lt;version&gt;4.5.8&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.httpcomponents.client5&lt;/groupId&gt;
+        &lt;artifactId&gt;httpclient5&lt;/artifactId&gt;
+        &lt;version&gt;5.0.1&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.google.protobuf&lt;/groupId&gt;
+        &lt;artifactId&gt;protobuf-java&lt;/artifactId&gt;
+        &lt;version&gt;2.5.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.googlecode.protobuf-java-format&lt;/groupId&gt;
+        &lt;artifactId&gt;protobuf-java-format&lt;/artifactId&gt;
+        &lt;version&gt;1.4&lt;/version&gt;
+    &lt;/dependency&gt;
+
+&lt;/dependencies&gt;</code></pre>
+<p>&lt;span id=&quot;b5dc503a&quot;&gt;&lt;/span&gt;</p>
+<h2>1.4 获取数据上送地址</h2>
+<p>进行数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如果上报地址设置错误，后续会导致您无法查询到上报的数据。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请在上报数据前，务必确认您当前使用的环境类型，根据环境类型配置上报地址。查看当前的环境类型请参见&lt;a href=&quot;https://www.volcengine.com/docs/84129/1261497&quot;&gt;SaaS云原生/非云原生&amp;私有化环境&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果您使用的是SaaS\-云原生环境，您也需确认您的服务所在的地域，（通常您的服务会在华北2\-北京地域，部分用户可能会使用其他地域）。SaaS\-云原生用户查看服务所在地域请参见。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;08ed447b&quot;&gt;&lt;/span&gt;</p>
+<h3>SaaS\-云原生 &amp; SaaS\-非云原生</h3>
+<table><thead><tr><th>地址类型</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（国内：华北2\-北京）</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（海外：亚太东南\-柔佛）</th><th>SaaS\-非云原生环境 国内环境</th><th>SaaS\-非云原生 海外BytePlus环境&lt;br&gt;&lt;br&gt;（以下 SG 指新加坡）</th></tr></thead><tbody><tr><td>数据上报地址</td><td>* SaaS\-云原生（华北）：&lt;br&gt;&lt;br&gt;   https://gator.volces.com</td><td>https://gator.uba.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>https://mcs.tobsnssdk.com</td></tr><tr><td>分流地址&lt;br&gt;&lt;br&gt;（meta信息地址）</td><td>https://tab.volces.com</td><td>https://tab.ab.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>https://tab.abtest.bytepluses.com</td></tr></tbody></table>
+<p>&lt;span id=&quot;c5ceb591&quot;&gt;&lt;/span&gt;</p>
+<h3>私有化环境</h3>
+<p>私有化部署场景下，您需要获取部署私有化环境时，自行规划配置的数据上送地址。如您不清楚此地址，请联系您的项目经理或客户成功经理。</p>
+<p>&lt;span id=&quot;_2-代码示例&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 使用示例</h1>
+<p>&lt;span id=&quot;34ae6ec6&quot;&gt;&lt;/span&gt;</p>
+<h2>2.1 SaaS\-云原生</h2>
+<pre><code>import com.bytedance.tester.AbClient;
+import com.bytedance.tester.model.User;
+import com.bytedance.tester.model.common.Variable;
+import com.bytedance.tester.abInfo.UserAbInfoHandler;
+import com.bytedance.tester.abInfo.MemoryHandler;
+import java.util.HashMap;
+    
+public class Example {
+    public static void main(String[] args) {
+        /** 初始化ABTest分流类，appKey获取方式详见接口描述AbClient
+         初始化环境信息，其中：
+         1. appid，appkey为应用的标识，需要替换为真实的appkey和appid
+         2. meta_host: 获取meta信息的地址，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节。
+         3. track_host: 事件上报地址，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节；
+         4. setNewEnv(true):  true: 代表SaaS-云原生环境, false: 代表SaaS-非云原生环境
+        **/
+        AbClient abClient = new AbClient.Builder(&quot;appkey&quot;, appid).setMetaHost(&quot;https://tab.volces.com&quot;).setTrackHost(&quot;https://gator.volces.com&quot;).setNewEnv(true).build();
+        // 开启debug模式，默认打印未命中实验的用户信息
+        abClient.setDebugMode(true); 
+        // 声明一个用户，decisionID用于分流，trackID用于事件上报
+        // decisionID: 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+        // trackID:  事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+        // add: 添加用户属性，仅用于分流，不随埋点上报
+        // build: 生成User对象
+        User user = new User.UserBuilder().create(&quot;decisionID&quot;, &quot;trackID&quot;)
+                .setDeviceId(6981329701821561868L) // 可选，非必要
+                .add(&quot;gender&quot;, &quot;male&quot;)
+                .add(&quot;phone&quot;, null)
+                .add(&quot;is_vip&quot;, false)
+                .add(&quot;version&quot;, &quot;1.2.2&quot;)
+                .add(&quot;age&quot;, 18)
+                .build();
+        
+        // 进组不出组内存实现接口，若用户不配置下列代码，则默认不开启“进组不出组”功能
+        // 持久化存储进组信息，请自行实现 UserAbInfoHandler 接口（推荐）
+        // MemoryHandler为内存存储，仅用于测试，请勿在生产环境使用
+        UserAbInfoHandler memoryHandler = MemoryHandler.getInstance(); 
+        abClient.setUserAbInfoHandler(memoryHandler);
+        // 推荐接口
+        String defaultValue = null; // 默认版本值，当分流未命中时返回该值，注意：返回值为包装后的对象，并非defaultValue本身，依然需要使用get方法获取
+        Variable variable1 = abClient.activate(&quot;variantKey&quot;, user, defaultValue);
+        if(null == variable1) {
+            return;
+        }
+        Object value1 = variable1.getValue();
+        if(null == value1) {
+            return;
+        }
+        if(value1.equals(&quot;a&quot;)){
+        }
+        else if(value1.equals(&quot;b&quot;)){
+        }
+    }
+}</code></pre>
+<p>&lt;span id=&quot;45ab9cbd&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 SaaS\-非云原生(老客)</h2>
+<pre><code>import com.bytedance.tester.AbClient;
+import com.bytedance.tester.model.User;
+import com.bytedance.tester.model.common.Variable;
+import com.bytedance.tester.abInfo.UserAbInfoHandler;
+import com.bytedance.tester.abInfo.MemoryHandler;
+import java.util.HashMap;
+    
+public class Example {
+    public static void main(String[] args) {
+        // 初始化ABTest分流类，appKey获取方式详见接口描述AbClient
+        AbClient abClient = new AbClient.Builder(&quot;2b47a1f318d78fd71854815*********&quot;).build();
+        // 开启debug模式，默认打印未命中实验的用户信息
+        abClient.setDebugMode(true); 
+        // 声明一个用户，decisionID用于分流，trackID用于事件上报
+        // decisionID: 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+        // trackID:  事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+        // add: 添加用户属性，仅用于分流，不随埋点上报
+        // build: 生成User对象
+        User user = new User.UserBuilder().create(&quot;decisionID&quot;, &quot;trackID&quot;)
+                .setDeviceId(6981329701821561868L) // 可选，非必要
+                .add(&quot;gender&quot;, &quot;male&quot;)
+                .add(&quot;phone&quot;, null)
+                .add(&quot;is_vip&quot;, false)
+                .add(&quot;version&quot;, &quot;1.2.2&quot;)
+                .add(&quot;age&quot;, 18)
+                .build();
+        
+        // 进组不出组内存实现接口，若用户不配置下列代码，则默认不开启“进组不出组”功能
+        // 持久化存储进组信息，请自行实现 UserAbInfoHandler 接口（推荐）
+        // MemoryHandler为内存存储，仅用于测试，请勿在生产环境使用
+        UserAbInfoHandler memoryHandler = MemoryHandler.getInstance(); 
+        abClient.setUserAbInfoHandler(memoryHandler);
+        // 推荐接口
+        String defaultValue = null; // 默认版本值，当分流未命中时返回该值，注意：返回值为包装后的对象，并非defaultValue本身，依然需要使用get方法获取
+        Variable variable1 = abClient.activate(&quot;variantKey&quot;, user, defaultValue);
+        if(null == variable1) {
+            return;
+        }
+        Object value1 = variable1.getValue();
+        if(null == value1) {
+            return;
+        }
+        if(value1.equals(&quot;a&quot;)){
+        }
+        else if(value1.equals(&quot;b&quot;)){
+        }
+    }
+}</code></pre>
+<p>&lt;span id=&quot;71b2e441&quot;&gt;&lt;/span&gt;</p>
+<h2>2.3 私有化</h2>
+<pre><code>import com.bytedance.tester.AbClient;
+import com.bytedance.tester.model.User;
+import com.bytedance.tester.model.common.Variable;
+import com.bytedance.tester.abInfo.UserAbInfoHandler;
+import com.bytedance.tester.abInfo.MemoryHandler;
+import java.util.HashMap;
+    
+public class Example {
+    public static void main(String[] args) {
+        /** 初始化ABTest分流类，appKey获取方式详见接口描述
+         AbClient初始化环境信息，其中：
+         1. meta_host: 获取meta信息的地址，私有化用户按需修改；
+         2. track_host: 事件上报地址，私有化用户按需修改；
+         3.setOnpremise(true): 是否指定上述两个域名，如果指定设为true
+         **/
+         AbClient abClient = new AbClient.Builder(&quot;2b47a1f318d78fd71854815*********&quot;).setMetaHost(&quot;xxx&quot;).setTrackHost(&quot;xxxx&quot;).setOnpremise(true).build();
+        // 开启debug模式，默认打印未命中实验的用户信息
+        abClient.setDebugMode(true); 
+        // 声明一个用户，decisionID用于分流，trackID用于事件上报
+        // decisionID: 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+        // trackID:  事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+        // add: 添加用户属性，仅用于分流，不随埋点上报
+        // build: 生成User对象
+        User user = new User.UserBuilder().create(&quot;decisionID&quot;, &quot;trackID&quot;)
+                .setDeviceId(6981329701821561868L) // 可选，非必要
+                .add(&quot;gender&quot;, &quot;male&quot;)
+                .add(&quot;phone&quot;, null)
+                .add(&quot;is_vip&quot;, false)
+                .add(&quot;version&quot;, &quot;1.2.2&quot;)
+                .add(&quot;age&quot;, 18)
+                .build();
+        // 进组不出组内存实现接口，若用户不配置下列代码，则默认不开启“进组不出组”功能
+        // 持久化存储进组信息，请自行实现 UserAbInfoHandler 接口（推荐）
+        // MemoryHandler为内存存储，仅用于测试，请勿在生产环境使用
+        UserAbInfoHandler memoryHandler = MemoryHandler.getInstance(); 
+        abClient.setUserAbInfoHandler(memoryHandler);
+        // 推荐接口
+        String defaultValue = null; // 默认版本值，当分流未命中时返回该值，注意：返回值为包装后的对象，并非defaultValue本身，依然需要使用get方法获取
+        Variable variable1 = abClient.activate(&quot;variantKey&quot;, user, defaultValue);
+        if(null == variable1) {
+            return;
+        }
+        Object value1 = variable1.getValue();
+        if(null == value1) {
+            return;
+        }
+        if(value1.equals(&quot;a&quot;)){
+        }
+        else if(value1.equals(&quot;b&quot;)){
+        }
+    }
+}</code></pre>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;私有化环境中，如果您希望使用用户分群作为受众条件，则可以在初始化&lt;code&gt;new AbClient&lt;/code&gt;中增加&lt;code&gt;.setCohortClient(new HttpCohortClient(app_id, metaHost))&lt;/code&gt;的配置。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;_3-核心类介绍&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 核心类介绍</h1>
+<p>&lt;span id=&quot;_3-1-user&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 User</h2>
+<p><strong>描述：</strong>  用户对象，用于表明分流用户的详细属性</p>
+<p><strong>使用方式：</strong>  用分流接口时作为入参，使用方式如下所示</p>
+<pre><code>// 首先通过Builder类创建用户对象，trackId为缺省值，允许为空
+User.UserBuilder userBuilder = new User.UserBuilder().create(&quot;decisionId&quot;, &quot;trackId&quot;);
+// 填充deviceid，用于绑定尚未生成uuid的用户（可选）
+userBuilder.setDeviceId(6981329701821561868L);
+// 向Builder中填充用户属性
+userBuilder.add(&quot;age&quot;, 18);
+userBuilder.add(&quot;name&quot;, &quot;小明&quot;);
+userBuilder.add(&quot;is_vip&quot;, true);
+// 生成User对象
+User user = userBuilder.build();</code></pre>
+<p>&lt;span id=&quot;_3-2-variable&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 Variable</h2>
+<p><strong>描述：</strong>  变体对象，用于表明分流结果的详细属性</p>
+<p><strong>使用方式：</strong>  分流接口的返回对象基本类，使用方式如下所示</p>
+<pre><code>String vid = variable.vid; // 变体的ID
+String type = variable.type; // 变体值的数据类型，与Tester平台配置保持一致
+// 通用方法，获取Object对象，具体数据类型需要用户自行判断
+Object o = variable.getValue();
+// 精确数据类型
+String vStr = variable.getString(); // 非字符串类型默认返回null
+int vInt = variable.getInteger(); // 非int类型默认返回0
+double vDouble = variable.getDouble(); // 非double类型默认返回0.0
+boolean vBoolean = variable.getBoolean(); // 非boolean类型默认返回false</code></pre>
+<p>&lt;span id=&quot;_3-3-userabinfohandler&quot;&gt;&lt;/span&gt;</p>
+<h2>3.3 UserAbInfoHandler</h2>
+<p>描述：进组不出组接口</p>
+<p>接口内容：</p>
+<pre><code>public interface UserAbInfoHandler {
+    /**
+          * 获取进组信息
+          *  @param decisionId 用户分流ID
+          *  @return key:实验ID  value:进组的变体ID
+          */
+    HashMap&lt;String, String&gt; query(String decisionId);
+
+    /**
+          * 更新进组信息
+          *  @param decisionId 用户分流ID
+          *  @param abInfo 用户进组信息，&lt;experimentID, versionID&gt;
+          *  @return 是否成功更新
+          */
+    boolean createOrUpdate(String decisionId, HashMap&lt;String, String&gt; abInfo);
+}</code></pre>
+<p>使用方式：</p>
+<ol><li>初始化AbClient 时 不指定UserAbInfoHandler，则默认使用空实现，不启用“进组不出组”功能。</li></ol>
+<ol><li>初始化AbClient时 执行setUserAbInfoHandler，使用默认提供的内存实现MemoryHandler（使用方式见代码示例）。</li></ol>
+<ol><li>继承UserAbInfoHandler接口，自行实现持久化存储；初始化A bClient时 通过setUserAbInfoHandler传 入。</li></ol>
+<p>&lt;span id=&quot;_3-4-性能参数（私有化专用）&quot;&gt;&lt;/span&gt;</p>
+<h2>3.4 性能参数（私有化专用）</h2>
+<p>AbClient.eventDispatcher.properties</p>
+<pre><code>AbClient abClient = new AbClient.Builder(&quot;appKey&quot;).setMetaHost(&quot;MetaHost&quot;).setTrackHost(&quot;TrackHost&quot;).setOnpremise(true).build();
+abClient.setThreadCount(4);
+abClient.setQueueSize(102400);</code></pre>
+<p>&lt;span id=&quot;_4-接口说明&quot;&gt;&lt;/span&gt;</p>
+<h1>4. 接口说明</h1>
+<p>&lt;span id=&quot;_4-1-abclient&quot;&gt;&lt;/span&gt;</p>
+<h2>4.1 AbClient</h2>
+<p><strong>接口：</strong> </p>
+<p>new AbClient.Builder(String appKey).setMetaHost(String metaHost).setTrackHost(String trackHost).setOnpremise(boolean isOnpremise).build();</p>
+<p><strong>描述：初始化</strong>ABTest分流类。</p>
+<p><strong>参数：</strong> </p>
+<ul><li>appKey：表明您的Tester应用。出于安全考虑，此处请使用appKey而非appID表明您的应用。</li></ul>
+<p>   在集团中接入一个应用后，您可以在集团相关页面查看应用的AppKey等信息，详情请参考：<a href="https://www.volcengine.com/docs/6287/66984" target="_blank" rel="noopener">如何创建应用</a>。</p>
+<ul><li>SaaS\-云原生</li></ul>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/eba094f44e174faea6c7cdcdc7447d2d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>SaaS\-非云原生</li></ul>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b55e61ee067544deaff4939685d1475c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>metaHost ：填写获取实验元信息的地址，默认为SaaS\-非云原生国内线上地址，其他环境参考上文2 .1~2.3。海外Saas域 名：MetaHost.SG</li></ul>
+<ul><li>trackHost ：填写事件上报的地址，默认为SaaS\-非云原生国内线上地址，其他环境参考上文2 .1~2.3。海外Saas域 名：TrackHost.SG</li></ul>
+<ul><li>isOnpremise(default=false)：表明您的应用是否需要额外配置metaHost和 trackHost</li></ul>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1、请尽早初始化 AbClient，以免影响您的分流服务和埋点上报服务。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;2、每个应用有且仅有一个分流类 AbClient，请确保它在所有线程中的唯一性。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt; ---</p>
+<p>&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;Meta 元信息服务默认使用火山引擎 A/B 平台国内线上地址，请谨慎修改。saas 合法地址请参考代码中 MetaHost 枚举类。私有化客户需修改为部署时 AB 服务的挂载域名。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt; ---</p>
+<p>&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;埋点上报服务默认使用火山引擎 A/B 平台国内线上地址，请谨慎修改。saas 合法地址请参考代码中 TrackHost 枚举类。私有化客户需修改为部署时 AppLog 服务的挂载域名。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;_4-2-activate&quot;&gt;&lt;/span&gt;</p>
+<h2>4.2 activate</h2>
+<p><strong>接口：</strong>  Variable activate(String variantKey, User user, Object defaultValue)</p>
+<p><strong>描述：</strong>  获取特定key的分流结果，并上报曝光事件</p>
+<p><strong>参数：</strong> </p>
+<p>variantKey：变体的key</p>
+<p>user：用户对象</p>
+<p>defaultValue：变体默认值</p>
+<p><strong>返回值：</strong>  该数返回命中变体对象，未命中时返回默认值对象</p>
+<pre><code>public class Variable {
+    String vid; // 变体id
+    Object val; // 变体值
+    String type; // 变体值的数据类型
+}</code></pre>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<ol><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;该接口与所有含有“WithImpression”字样的接口均会自动上报曝光事件，用户可在 AbClient 初始化时指定 trackHost，调整事件上报地址。&lt;/div&gt;</li></ol>
+<ol><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;事件上报接口请务必填写User中trackID字段，否则上报失效。&lt;/div&gt;</li></ol>
+<p>&lt;span id=&quot;_4-3-getabinfo&quot;&gt;&lt;/span&gt;</p>
+<h2>4.3 getABInfo</h2>
+<p><strong>接口：</strong>  HashMap&lt;String, Variable\&gt; getABInfo(User user)</p>
+<p><strong>描述：</strong>  获取实验和feature的分流结果</p>
+<p><strong>参数：</strong> </p>
+<p>user：用户对象</p>
+<p><strong>返回值：</strong>  该数返回命中变体的Map对象 ，具体格式如下所示</p>
+<pre><code>{
+  &quot;key1&quot;: {
+    &quot;vid&quot;: &quot;123&quot;,
+    &quot;value&quot;: &quot;v1&quot;,
+    &quot;type&quot;: &quot;string&quot;
+  },
+  &quot;key2&quot;: {
+    &quot;vid&quot;: &quot;456&quot;,
+    &quot;value&quot;: false,
+    &quot;type&quot;: &quot;boolean&quot; 
+  },
+  &quot;key3&quot;: {
+    &quot;vid&quot;: &quot;789&quot;,
+    &quot;value&quot;: 123.45,
+    &quot;type&quot;: &quot;double&quot; 
+  }   
+}</code></pre>
+<p>&lt;span id=&quot;_4-4-getexperimentvariantname&quot;&gt;&lt;/span&gt;</p>
+<h2>4.4 getExperimentVariantName</h2>
+<p><strong>接口：</strong>  String getExperimentVariantName(String experimentId, User user)</p>
+<p><strong>描述：</strong>  获取用户命中的实验版本名称</p>
+<p><strong>参数：</strong> </p>
+<p>experimentId：指定分流的实验ID</p>
+<p>user：用户对象</p>
+<p><strong>返回值：</strong>  该数返回用户命中的实验版本名称</p>
+<p>&lt;span id=&quot;_4-5-getexperimentconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>4.5 getExperimentConfigs</h2>
+<p><strong>接口：</strong>  HashMap&lt;String, Variable\&gt; getExperimentConfigs(String experimentId, User user)</p>
+<p><strong>描述：</strong>  获取用户命中的特定实验的变体详情</p>
+<p><strong>参数：</strong> </p>
+<p>experimentId：指定分流的实验ID</p>
+<p>user：用户对象</p>
+<p><strong>返回值：</strong> </p>
+<p>该数返回命中变体的Ma p对象 ，表明用户命中某个实验的变体详情，通常仅能命中一个变体。</p>
+<p>&lt;span id=&quot;_4-6-getallexperimentconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>4.6 getAllExperimentConfigs</h2>
+<p><strong>接口：</strong>  HashMap&lt;String, Variable\&gt; getAllExperimentConfigs(User user)</p>
+<p><strong>描述：</strong>  获取用户命中的所有实验的变体详情</p>
+<p><strong>参数：</strong> </p>
+<p>user：用户对象</p>
+<p><strong>返回值：</strong> </p>
+<p>该数返回命中变体的Ma p对象 ，表明用户命中所有实验的变体详情，通常命中多个变体。</p>
+<p>&lt;span id=&quot;_4-7-getfeatureconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>4.7 getFeatureConfigs</h2>
+<p><strong>接口：</strong>  HashMap&lt;String, Variable\&gt; getFeatureConfigs(String featureId, User user)</p>
+<p><strong>描述：</strong>  获取用户命中的特定feature的变体详情</p>
+<p><strong>参数：</strong> </p>
+<p>featureId：feature ID</p>
+<p>user：用户对象</p>
+<p><strong>返回值：</strong> </p>
+<p>返回命中变体的Map对象 ，表明用户命中某个f ature的变体详情，通常仅能命中一个变体。</p>
+<p>&lt;span id=&quot;_4-8-getallfeatureconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>4.8 getAllFeatureConfigs</h2>
+<p><strong>接口：</strong>  HashMap&lt;String, Variable\&gt; getAllFeatureConfigs(User user)</p>
+<p><strong>描述：</strong>  获用户命中的所有feature的变体详情</p>
+<p><strong>参数：</strong> </p>
+<p>user：用户对象</p>
+<p><strong>返回值：</strong>  返回命中变体的Map对象 ，表明用户命中所有feature的变体详情，通常命中多个变体。</p>
+<p>&lt;span id=&quot;_4-9-getexperimentvariantnamewithimpression&quot;&gt;&lt;/span&gt;</p>
+<h2>4.9 getExperimentVariantNameWithImpression</h2>
+<p>功能同接口“getExperimentVariantName”（此接口上报曝光事件）</p>
+<p>&lt;span id=&quot;_4-10-getexperimentconfigswithimpression&quot;&gt;&lt;/span&gt;</p>
+<h2>4.10 getExperimentConfigsWithImpression</h2>
+<p>功能同接口“getExperimentConfigs”（此接口上报曝光事件）</p>
+<p>&lt;span id=&quot;_4-11-getfeatureconfigswithimpression&quot;&gt;&lt;/span&gt;</p>
+<h2>4.11 getFeatureConfigsWithImpression</h2>
+<p>功能同接口“getFeatureConfigs”（此接口上报曝光事件）</p>
+<p>&lt;span id=&quot;_4-12-setinterval&quot;&gt;&lt;/span&gt;</p>
+<h2>4.12 setInterval</h2>
+<p><strong>接口：</strong>  void setInterval(int n)</p>
+<p><strong>描述：</strong>  设置meta元信息更新的时间间隔</p>
+<p><strong>参数：</strong> </p>
+<p>n：元信息自动更新时间间隔（单位：秒）</p>
+<p>&lt;span id=&quot;_4-13-setthreadcount&quot;&gt;&lt;/span&gt;</p>
+<h2>4.13 setThreadCount</h2>
+<p><strong>接口：</strong>  void setThreadCount(int n)</p>
+<p><strong>描述：</strong>  设置埋点上报服务的最大线程数</p>
+<p><strong>参数：</strong> </p>
+<p>n：最大线程数（默认为4）</p>
+<p>&lt;span id=&quot;_4-14-getsuccessevents&quot;&gt;&lt;/span&gt;</p>
+<h2>4.14 getSuccessEvents</h2>
+<p><strong>接口：</strong>  int getSuccessEvents()</p>
+<p><strong>描述：</strong>  获上报成功的事件数，用于监测事件上报回调结果</p>
+<p><strong>返回值：</strong>  上成功的事件数</p>
+<p><strong>注意：</strong>  私化版本不支持回调函数</p>
+<p>&lt;span id=&quot;_4-15-getfailevents&quot;&gt;&lt;/span&gt;</p>
+<h2>4.15 getFailEvents</h2>
+<p><strong>接口：</strong>  int getFailEvents()</p>
+<p><strong>描述：</strong>  获上报失败的事件数，用于监测事件上报回调结果</p>
+<p><strong>返回值：</strong>  上报失败的事件数</p>
+<p>&lt;span id=&quot;_4-16-getqueueevents&quot;&gt;&lt;/span&gt;</p>
+<h2>4.16 getQueueEvents</h2>
+<p><strong>接口：</strong>  int getQueueEvents()</p>
+<p><strong>描述：</strong>  获线程池中剩余事件数，用于监测尚未上报的事件数量</p>
+<p><strong>返回值：</strong>  尚未上报的事件数</p>
+<p>&lt;span id=&quot;_4-17-logger&quot;&gt;&lt;/span&gt;</p>
+<h2>4.17 Logger</h2>
+<p>ABTest服务端SDK使用文件记录log日志 。如果您希望修改日志配置，请编辑文件log4j2.xml，默认的log地址 为./logs</p>
+<p>&lt;span id=&quot;_5-常见问题处理&quot;&gt;&lt;/span&gt;</p>
+<h1>5. 常见问题处理</h1>
+<p>&lt;span id=&quot;如何使用redis实现进组不出组逻辑？&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>如何使用Redis实现</strong> <strong>进组不出组逻辑？</strong> </h2>
+<p>请参考集成示例，redis实现</p>
+<pre><code>/**
+  * 实现 UserAbInfoHandler接口，并实现接口中声明的方法
+  * 进组不出组，Redis实现。
+  */
+public class NotOutGroupRedisImplement implements UserAbInfoHandler {
+    /**
+          * 存储分流结果
+          *  @param userId   用户ID
+          *  @param hashMap  分流结果参数和值，key=分流参数，value=对应版本的标识
+          *  @return
+     */
+    @Override
+    public boolean createOrUpdate(String userId, HashMap&lt;String, String&gt; hashMap) {
+        long res = 0 ;
+        for (Map.Entry&lt;String, String&gt; entry : hashMap.entrySet()) {
+             res = JedisUtils.getJedis().hset(userId, entry.getKey(), entry.getValue());
+        }
+        return res &gt; 0 ;
+    }
+    /**
+          * 查询用户对应的分组
+          *  @param userId
+          *  @return 用户对应的分流结果  key=分流参数，value=对应版本的标识
+          */
+    @Override
+    public HashMap&lt;String, String&gt; query(String userId) {
+        Map&lt;String, String&gt; resMap = JedisUtils.getJedis().hgetAll(userId);
+        return (HashMap&lt;String, String&gt;) resMap;
+    }
+}</code></pre>
+<p>在AB分流代码中配置进组不出组的逻辑</p>
+<pre><code>AbClient abClient = new AbClient.Builder(appKey).build();
+NotOutGroupRedisImplement notOutGroupHandler = new NotOutGroupRedisImplement();
+abClient.setUserAbInfoHandler(notOutGroupHandler);
+Variable variable1 = abClient.activate(&quot;variantKey&quot;, user, defaultValue);</code></pre>
+<p>&lt;span id=&quot;f5351ff9&quot;&gt;&lt;/span&gt;</p>
+<h2>如果获取不到 uuid，或者想做匿名用户的服务端实验，如何设置？</h2>
+<p>用户类中的 <code>decisionId</code> 需要使用用户唯一标识，例如客户端设备 ID、SSID 等；<code>trackId</code> 用于事件上报，如果用户已登录，设置为对应的实名用户 ID，如果是匿名用户，设置为空字符串 <code>&quot;&quot;</code>。</p>
+<p>匿名用户需要额外设置可关联的设备标识，通常按以下规则选择：</p>
+<table><thead><tr><th>场景</th><th>推荐配置</th><th>是否使用 anonymousId</th></tr></thead><tbody><tr><td>私有化环境 App 端匿名用户，且有 long 类型设备 ID</td><td><code>setDeviceId</code></td><td>不使用</td></tr><tr><td>Web 及小程序匿名用户，且有 long 类型 webId</td><td><code>setWebId</code></td><td>不使用</td></tr><tr><td>SaaS\-非云原生环境匿名用户</td><td><code>setBdDid</code></td><td>不使用</td></tr><tr><td>匿名标识是客户自定义字符串，无法使用 long 类型的 <code>deviceId</code> / <code>webId</code> 表达，且处于私有化或火山云新环境曝光上报场景</td><td><code>setAnonymousId</code></td><td>使用</td></tr></tbody></table>
+<p>注意：</p>
+<ul><li><code>decisionId</code> 用于分流，请设置为稳定的用户唯一标识。</li></ul>
+<ul><li><code>trackId</code> 用于事件上报。匿名用户没有实名 ID 时，建议设置为空字符串 <code>&quot;&quot;</code>。</li></ul>
+<ul><li>如果已有可用的 <code>deviceId</code>、<code>webId</code> 或 SaaS 场景下的 <code>bdDid</code>，优先使用这些字段。</li></ul>
+<ul><li><code>anonymousId</code> 是 <code>deviceId</code> / <code>webId</code> / <code>bdDid</code> 之外的补充方案。</li></ul>
+<p>常规匿名用户配置示例：</p>
+<pre><code>User user = new User.UserBuilder().create(&quot;decisionID&quot;, &quot;&quot;) // trackId有值设置对应的值，没有值设置空字符串
+        .setDeviceId(6981329701821561868L) // 私有化App端使用此方法
+        .setWebId(7018215618686981329L) // Web及小程序使用此方法
+        .setBdDid(&quot;H5PPHTEHXLMEGCGROGLY2343242M2LMFIMQE4VIRW76HKYWH4Q01&quot;) // SaaS-非云原生环境使用此方法
+        .build();</code></pre>
+<p>&lt;span id=&quot;4f71123d&quot;&gt;&lt;/span&gt;</p>
+<h3>使用 anonymousId 上报匿名用户事件</h3>
+<p>如果客户侧匿名 ID 是字符串类型，例如自定义匿名 ID、三方匿名 ID 等，无法放入 <code>deviceId</code> / <code>webId</code> 这类 long 类型字段，可以通过 <code>anonymousId</code> 进行匿名用户识别。</p>
+<p>使用 <code>anonymousId</code> 时，请将 <code>trackId</code> 设置为空字符串 <code>&quot;&quot;</code>，并通过 <code>setAnonymousId</code> 设置匿名 ID。用户登录后，如果希望登录实名之后的行为能和匿名之前的行为关联起来，需要继续带上同一个 <code>anonymousId</code>，同时把 <code>trackId</code> 设置为登录后的实名用户 ID。</p>
+<p>注意：</p>
+<ul><li><code>anonymousId</code> 适用于私有化/火山云新环境曝光上报场景。</li></ul>
+<ul><li>SaaS\-非云原生环境匿名用户请使用 <code>setBdDid</code>，不使用 <code>setAnonymousId</code>。</li></ul>
+<ul><li>初始化 <code>AbClient</code> 时需要配置正确的 <code>metaHost</code> 和 <code>trackHost</code>。</li></ul>
+<ul><li>调用 <code>activate</code> 或其他带有 <code>WithImpression</code> 的接口时，SDK 会自动上报曝光事件。</li></ul>
+<ul><li>匿名用户场景下，<code>decisionId</code> 仍用于分流；<code>trackId</code> 用于事件上报，匿名时建议设置为空字符串。</li></ul>
+<p>&lt;span id=&quot;5822057b&quot;&gt;&lt;/span&gt;</p>
+<h3>anonymousId 匿名用户曝光上报示例</h3>
+<pre><code>import com.bytedance.tester.AbClient;
+import com.bytedance.tester.model.User;
+import com.bytedance.tester.model.common.Variable;
+
+public class AnonymousIdExample {
+    public static void main(String[] args) {
+        int appId = 123456;
+        AbClient abClient = new AbClient.Builder(&quot;appKey&quot;, appId)
+                .setMetaHost(&quot;https://tab.volces.com&quot;)
+                .setTrackHost(&quot;https://gator.volces.com&quot;)
+                .setNewEnv(true)
+                .build();
+
+        User anonymousUser = new User.UserBuilder()
+                .create(&quot;anonymous-decision-id&quot;, &quot;&quot;)
+                .setAnonymousId(&quot;anonymous-id-001&quot;)
+                .add(&quot;version&quot;, &quot;1.2.2&quot;)
+                .build();
+
+        String defaultValue = null;
+        Variable variable = abClient.activate(&quot;variantKey&quot;, anonymousUser, defaultValue);
+        if (variable == null) {
+            return;
+        }
+
+        Object value = variable.getValue();
+        // 根据业务逻辑使用分流结果 value
+    }
+}</code></pre>
+<p>&lt;span id=&quot;0ec38bfa&quot;&gt;&lt;/span&gt;</p>
+<h3>anonymousId 匿名转实名关联示例</h3>
+<p>用户登录后，如果希望实名之后的行为与匿名之前的行为关联，需要在设置实名 <code>trackId</code> 的同时，继续带上匿名阶段使用的同一个 <code>anonymousId</code>。</p>
+<pre><code>import com.bytedance.tester.AbClient;
+import com.bytedance.tester.model.User;
+import com.bytedance.tester.model.common.Variable;
+
+public class AnonymousToLoginExample {
+    public static void main(String[] args) {
+        int appId = 123456;
+        AbClient abClient = new AbClient.Builder(&quot;appKey&quot;, appId)
+                .setMetaHost(&quot;https://tab.volces.com&quot;)
+                .setTrackHost(&quot;https://gator.volces.com&quot;)
+                .setNewEnv(true)
+                .build();
+
+        User loginUser = new User.UserBuilder()
+                .create(&quot;login-decision-id&quot;, &quot;login-user-id&quot;)
+                .setAnonymousId(&quot;anonymous-id-001&quot;)
+                .build();
+
+        Variable variable = abClient.activate(&quot;variantKey&quot;, loginUser, null);
+        if (variable == null) {
+            return;
+        }
+
+        Object value = variable.getValue();
+        // 登录后的曝光事件会携带 login-user-id 和 anonymous-id-001
+    }
+}</code></pre></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

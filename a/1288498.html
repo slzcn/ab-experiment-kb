@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>小程序SDK调试及数据验证 · A/B 实验知识库</title>
+<meta name="description" content="实验上线前需要保证前面的集成过程无误，上线后才能保证实验结果的科学和有效 ！小程序SDK的调试及数据验证思路一致，以下已微信小程序SDK为例，为您介绍调试及验证的核心流程与操作要点。 1. 开启调试状态 参照“[创建实验">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1288498.html">
+<meta property="og:title" content="小程序SDK调试及数据验证"><meta property="og:description" content="实验上线前需要保证前面的集成过程无误，上线后才能保证实验结果的科学和有效 ！小程序SDK的调试及数据验证思路一致，以下已微信小程序SDK为例，为您介绍调试及验证的核心流程与操作要点。 1. 开启调试状态 参照“[创建实验">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1288498.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>小程序SDK调试及数据验证</h1>
+<div class="meta">📄 941 字 · 🕐 2024-07-03</div>
+<article class="md"><p>实验上线前需要保证前面的集成过程无误，上线后才能保证实验结果的科学和有效 ！小程序SDK的调试及数据验证思路一致，以下已微信小程序SDK为例，为您介绍调试及验证的核心流程与操作要点。</p>
+<p>&lt;span id=&quot;b758530a&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1. 开启调试状态</strong></h2>
+<p>参照“<a href="https://www.volcengine.com/docs/6287/65809" target="_blank" rel="noopener">创建实验</a>”章节，使实验处于“调试中” 状态，如下图所示：</p>
+<ul><li>实验状态一共分三种：调试中、运行中、已结束。</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_2f66f0e4ae2661808ad071db4f19c224.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;457680ef&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2. 通过接口获取调试设备的统计口径</strong></h2>
+<ul><li>分别在微信小程序SDK init和config中打开日志和A/B Test开关，并完成初始化，详情请参见<a href="https://www.volcengine.com/docs/6287/65804" target="_blank" rel="noopener">小程序SDK集成（通用）</a>。</li></ul>
+<ul><li>通过<a href="https://www.volcengine.com/docs/6287/1288499#e3b1b22c" target="_blank" rel="noopener">4.6 获取平台生成的各种ID</a>方法获取对应的ssid。</li></ul>
+<p>&lt;span id=&quot;3dbf97f2&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>3. 添加至白名单</strong></h2>
+<p>创建实验时，将您的测试设备 ssid 添加到白名单中，并在右下角点击&quot;保存&quot;按钮。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_3883aefa4b186b1ba8d308a25ee4f7d2.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;700f9d88&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>4. 微信小程序参数调试</strong></h2>
+<p>设置完上述步骤后，清空缓存并编译，观察ab数据包（即abtest_config接口返回的实验数据），是否获取到了Tester 中的配置。下图中是成功获取到了实验参数：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_b116a0dc3025f69cc461a33c00563eba.png" loading="lazy"> &lt;/span&gt;</p>
+<p>如果您的微信小程序没有发出实验请求，或实验请求为空, 请按下面步骤排查：</p>
+<ul><li>初始化时是否正确设置 enable_ab_test: true；</li></ul>
+<ul><li>微信小程序是否将“A/B Test域名”和“事件上报域名”添加到 微信开发者后台/开发/开发者设置/服务器域名 &quot;request合法域名&quot; 中，具体域名参考1.2～1.4章节。</li></ul>
+<p>触发实验事件后，您可以在事件数据包头观察到 ab_sdk_version 字段和内容（下图以ab_exposed事件举例，其他事件以此类推）：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_ceb652719d7e57b2ce5d8758973e46ca.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;c2bab1da&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>5. 真机或模拟器实验场景调试</strong></h2>
+<p>在实验参数调试正常的情况下，开发或者是QA/PM/运营 同学需要观察实验所在的页面是否符合之前实验设计的预期。</p>
+<ul><li>关于实验设计和准备，请参照“<a href="https://www.volcengine.com/docs/6287/65809" target="_blank" rel="noopener">创建实验</a>”章节。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

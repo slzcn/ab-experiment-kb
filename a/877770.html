@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>被动和关系事件 · A/B 实验知识库</title>
+<meta name="description" content="1.概述 主被动事件是基于「用户」的主动触发和被动受影响的行为描述。在一些业务场景中，用户既有可能是行为的发起者，也有可能是行为的影响者。行为发起者所触发产生的行为称为「主动事件」，行为影响者所受影响的行为称为「被动事件">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/877770.html">
+<meta property="og:title" content="被动和关系事件"><meta property="og:description" content="1.概述 主被动事件是基于「用户」的主动触发和被动受影响的行为描述。在一些业务场景中，用户既有可能是行为的发起者，也有可能是行为的影响者。行为发起者所触发产生的行为称为「主动事件」，行为影响者所受影响的行为称为「被动事件">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/877770.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>被动和关系事件</h1>
+<div class="meta">📄 4,649 字 · 🕐 2023-06-19</div>
+<article class="md"><p>&lt;span id=&quot;_1-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>1.概述</h1>
+<p>主被动事件是基于「用户」的主动触发和被动受影响的行为描述。在一些业务场景中，用户既有可能是行为的发起者，也有可能是行为的影响者。行为发起者所触发产生的行为称为「主动事件」，行为影响者所受影响的行为称为「被动事件」，当主动事件和被动事件存在对应关系、成对出现时称为「关系事件」。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_b75699ee57e88659f615d871e1fca6f1.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;典型场景：社交应用&quot;&gt;&lt;/span&gt;</p>
+<h2>典型场景：社交应用</h2>
+<p><strong>场景1:</strong>   用户A关注了用户B。</p>
+<p>用户A是关注行为的发起者，触发了一个主动事件，用户B是关注行为的影响者，被动接受了一个事件。</p>
+<p>主动事件：用户A关注了用户B</p>
+<p>被动事件：用户B被用户A关注</p>
+<p>主动事件和被动事件存在对应关系，并在这个场景中成对出现，于是产生了「关系事件」。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_90cdddd59095dce30aaf1e3089b52974.png" loading="lazy"> &lt;/span&gt;</p>
+<p><strong>场景2:</strong>   用户A给用户B发送了一条消息。</p>
+<p>主动事件：用户A发送1条消息</p>
+<p>被动事件：用户B接收1条消息</p>
+<p><strong>场景3:</strong>   用户A给用户B发了一个红包</p>
+<p>主动事件：用户A发了1个红包</p>
+<p>被动事件：用户B收到一个红包</p>
+<p><strong>更多场景</strong> ：喜欢与被喜欢、评论与被评论、投诉与被投诉、分享内容与接收内容...</p>
+<p>&lt;span id=&quot;特殊场景&quot;&gt;&lt;/span&gt;</p>
+<h2>特殊场景</h2>
+<p><strong>场景描述：</strong>   系统给用户推送通知，客服解决投诉过程中给用户推送了一个优惠券，程序触发了给用户发送了消息。</p>
+<p>因为主被动事件是基于「用户」的，所以这种场景下不存在主动事件，主动触发行为的不是用户；</p>
+<p>用户是行为的接受者，被动受到影响，只有被动事件。</p>
+<p>被动事件：用户收到通知/用户收到优惠券/用户收到推送消息</p>
+<p>&lt;span id=&quot;_2-分析&quot;&gt;&lt;/span&gt;</p>
+<h1>2.分析</h1>
+<p>&lt;span id=&quot;转化分析&quot;&gt;&lt;/span&gt;</p>
+<h2>转化分析</h2>
+<p>&lt;span id=&quot;用户互关的场景&quot;&gt;&lt;/span&gt;</p>
+<h3>用户互关的场景</h3>
+<p>关系事件</p>
+<table><thead><tr><th><strong>事件ID</strong></th><th><strong>事件名称</strong></th><th><strong>用户ID</strong></th><th><strong>目标对象ID</strong></th><th><strong>发起对象ID</strong></th><th><strong>是否被动</strong></th><th><strong>是否关系</strong></th><th><strong>语义</strong></th></tr></thead><tbody><tr><td>1</td><td>subscribe</td><td>A</td><td>B</td><td>null</td><td>否</td><td>是</td><td>A关注B</td></tr><tr><td>2</td><td>$inactive_subscribe</td><td>B</td><td>null</td><td>A</td><td>是</td><td>是</td><td>B被A关注</td></tr><tr><td>3</td><td>subscribe</td><td>B</td><td>A</td><td>null</td><td>否</td><td>否</td><td>B关注A</td></tr></tbody></table>
+<p>当我们想统计回关的比例时，需用到被动事件，构建漏斗如下：</p>
+<p>第一步：$inactive_subscribe，关联发起对象ID</p>
+<p>第二步：subscribe，关联目标对象ID（由于目前不支持list类型的关联属性，本场景下需要用户自己上报一个目标对象的ID）</p>
+<p>其他条件：按用户ID分组。</p>
+<p>&lt;span id=&quot;_3-事件和属性变更&quot;&gt;&lt;/span&gt;</p>
+<h1>3.事件和属性变更</h1>
+<p>关系事件和被动事件比主动事件多出一些预置属性用来加以区分，主要区别见下表：</p>
+<table><thead><tr><th></th><th>事件名称</th><th>预置属性</th><th>展示名</th><th>预置属性类型</th><th>取值说明</th></tr></thead><tbody><tr><td>主动事件（关系）</td><td>event_name</td><td>$target_uuid_list</td><td>被动事件UUID</td><td>list</td><td>手动上报用户ID</td></tr><tr><td></td><td></td><td>$inline</td><td>是否为关系事件</td><td>string</td><td>true，及其它任意值</td></tr><tr><td>被动事件（关系）</td><td>$inactive_</td><td>$inactive</td><td>是否为被动事件</td><td>string</td><td>true，及其它任意值</td></tr><tr><td></td><td></td><td>$inline</td><td>是否为关系事件</td><td>string</td><td>true，及其它任意值</td></tr><tr><td></td><td></td><td>$source_uuid</td><td>主动事件UUID</td><td>string</td><td>对应的关联事件的 UUID</td></tr><tr><td>被动事件（手动）</td><td>自定义</td><td>$inactive</td><td>是否为被动事件</td><td>string</td><td>true，及其它任意值</td></tr></tbody></table>
+<p>用户通过在主动事件中标记当前事件为关系事件（$inline 为 &quot;true&quot;）时，系统会自动生成对应的被动事件。系统生成的被动事件会额外设置一个预置属性： &quot;$source_uuid&quot;， 为主动事件触发用户的 uuid。</p>
+<p>&lt;span id=&quot;_4-常见问题&quot;&gt;&lt;/span&gt;</p>
+<h1>4.常见问题</h1>
+<p>&lt;span id=&quot;_4-1-如何区分主被动事件？&quot;&gt;&lt;/span&gt;</p>
+<h2>4.1 如何区分主被动事件？</h2>
+<p>被动事件的属性 $inactive 的值为 true，注意目前这个属性的数据类型为 string，而不是 boolean。</p>
+<p>上报关系事件时，系统会自动生成被动事件。系统自动生成的被动事件不仅仅会拥有上述预置属性，还会包含 $inline = &quot;true&quot; 和 $source_uuid（值为对应主动事件 uuid）这两个属性，同时事件名称中还会自动添加“$inactive_”前缀。</p>
+<p>&lt;span id=&quot;_4-2-被动事件是否会对账单数据计算产生影响？&quot;&gt;&lt;/span&gt;</p>
+<h2>4.2 被动事件是否会对账单数据计算产生影响？</h2>
+<p>被动事件在计算事件量消耗时默认会被计算在内，但在计算MAU和DAU时不会被计算在内。被禁用的被动事件一样不会产生消耗。</p>
+<p>&lt;span id=&quot;_4-3-上报关系事件时，如果-target-uuid-list中包含多个-uuid，是否会生成多个被动事件？&quot;&gt;&lt;/span&gt;</p>
+<h2>4.3 上报关系事件时，如果$target_uuid_list中包含多个 uuid，是否会生成多个被动事件？</h2>
+<p>是的。$target_uuid_list 是 list 属性，支持传入多个 uuid。系统会自动为每个受该事件影响的用户生成一个对应的被动事件。</p>
+<p>&lt;span id=&quot;_5-数据上报&quot;&gt;&lt;/span&gt;</p>
+<h1>5.数据上报</h1>
+<p>我们提供用户触发主动事件时自动生成对应的被动事件的方法。</p>
+<p>&amp;nbsp;</p>
+<p>为区分主被动事件，我们新增了事件公共属性 $inactive，当 $inactive 为 true 时对应的事件是被动事件。</p>
+<table><thead><tr><th><strong>属性名称</strong></th><th><strong>数据类型</strong></th><th><strong>取值范围</strong></th></tr></thead><tbody><tr><td>$inactive</td><td>string</td><td>&quot;true&quot; 被动事件&lt;br&gt;&lt;br&gt;&quot;false&quot; 主动事件&lt;br&gt;&lt;br&gt;其它时，为非被动事件，也可以认为是主动事件</td></tr></tbody></table>
+<p>&lt;span id=&quot;android&quot;&gt;&lt;/span&gt;</p>
+<h2>Android</h2>
+<p>&lt;span id=&quot;自动生成关系事件&quot;&gt;&lt;/span&gt;</p>
+<h3>自动生成关系事件</h3>
+<p>示例代码：&quot;关联事件&quot;</p>
+<pre><code>new ActionButton (
+    &quot;关联事件&quot;,
+    new Action ()
+    {
+        @Override public void doAction ()
+        {
+            JSONObject param = new JSONObject ();
+            try {
+                param.put ( &quot;video_id&quot;, Generator.getRandomNum ( 0, 10000000 ) );
+                param.put ( &quot;category&quot;, &quot;主动被动事件&quot; );
+                param.put ( &quot;author_id&quot;, Generator.getRandomNum ( 0, 10000 ) );
+                param.put ( &quot;$inline&quot;, &quot;true&quot; );
+                JSONArray uuid_list = new JSONArray ();
+                for (int i = 0; i &lt; Generator.getRandomNum ( 0, 10 ); i++)
+                {
+                    uuid_list.put ( Generator.getRandomNum ( 10000, 99999 ) );
+                }
+                param.put ( &quot;$target_uuid_list&quot;, uuid_list );
+            }
+            catch (JSONException e)
+            { e.printStackTrace (); }
+            AppLog.onEventV3 ( &quot;like&quot;, param );
+        }
+    }
+)</code></pre>
+<p>&lt;span id=&quot;手动上报被动事件&quot;&gt;&lt;/span&gt;</p>
+<h3>手动上报被动事件</h3>
+<p>示例代码： &quot;被动事件&quot;</p>
+<pre><code>new ActionButton (
+    &quot;被动事件&quot;,
+    new Action ()
+    {
+        @Override public void doAction ()
+        {
+            JSONObject param = new JSONObject ();
+            try {
+                param.put ( &quot;video_id&quot;, Generator.getRandomNum ( 0, 10000000 ) );
+                param.put ( &quot;category&quot;, &quot;主动被动事件&quot; );
+                param.put ( &quot;author_id&quot;, Generator.getRandomNum ( 0, 10000 ) );
+                param.put ( &quot;$inactive&quot;, &quot;true&quot; );
+            }
+            catch (JSONException e)
+            { e.printStackTrace (); }
+            AppLog.onEventV3 ( &quot;like&quot;, param );
+        }
+    }
+)</code></pre>
+<p>&lt;span id=&quot;ios&quot;&gt;&lt;/span&gt;</p>
+<h2>iOS</h2>
+<p>&lt;span id=&quot;示例代码：-主动事件&quot;&gt;&lt;/span&gt;</p>
+<h3>示例代码：&quot;主动事件&quot;</h3>
+<pre><code>[BDAutoTrack eventV3:@&quot;like&quot; params:@{
+    @&quot;video_title&quot;: @&quot;Lady Gaga on Oscar&quot;,
+    @&quot;category&quot; : @&quot;主动被动事件&quot;,
+    @&quot;$inactive&quot; : @&quot;false&quot;
+}];</code></pre>
+<p>&lt;span id=&quot;自动生成关系事件&quot;&gt;&lt;/span&gt;</p>
+<h3>自动生成关系事件</h3>
+<p>示例代码：&quot;关联事件&quot;</p>
+<pre><code>[BDAutoTrack eventV3:@&quot;like&quot; params:@{
+    @&quot;video_title&quot;: @&quot;Lady Gaga on Oscar&quot;,
+    @&quot;category&quot; : @&quot;主动被动事件&quot;,
+    @&quot;$inactive&quot; : @&quot;true&quot;,
+    @&quot;$inline&quot;: @&quot;true&quot;,
+    @&quot;$target_uuid_list&quot; : @[@&quot;123&quot;, @&quot;456&quot;, @&quot;789&quot;]
+}];</code></pre>
+<p>&lt;span id=&quot;手动上报被动事件&quot;&gt;&lt;/span&gt;</p>
+<h3>手动上报被动事件</h3>
+<p>示例代码：&quot;被动事件&quot;</p>
+<pre><code>[BDAutoTrack eventV3:@&quot;like&quot; params:@{
+    @&quot;video_title&quot;: @&quot;Lady Gaga on Oscar&quot;,
+    @&quot;category&quot; : @&quot;主动被动事件&quot;,
+    @&quot;$inactive&quot; : @&quot;true&quot;
+}];</code></pre>
+<p>&lt;span id=&quot;jssdk&quot;&gt;&lt;/span&gt;</p>
+<h2>JSSDK</h2>
+<p>&lt;span id=&quot;示例代码：-主动事件&quot;&gt;&lt;/span&gt;</p>
+<h3>示例代码：&quot;主动事件&quot;</h3>
+<pre><code>window.collectEvent(&#x27;like&#x27;, {
+   from: &quot;index&quot;,
+   category: &quot;主动被动事件&quot;,
+   $inactive: &quot;false&quot; 
+});</code></pre>
+<p>&lt;span id=&quot;自动生成关系事件&quot;&gt;&lt;/span&gt;</p>
+<h3>自动生成关系事件</h3>
+<p>示例代码：&quot;关联事件&quot;</p>
+<pre><code>window.collectEvent(&#x27;like&#x27;, {
+   from: &quot;index&quot;,
+   category: &quot;主动被动事件&quot;,
+   $inactive: &quot;true&quot; ,
+   $inline: &quot;true&quot;,
+   $target_uuid_list: [&quot;123&quot;,&quot;456&quot;,&quot;789&quot;]
+});</code></pre>
+<p>&lt;span id=&quot;手动上报被动事件&quot;&gt;&lt;/span&gt;</p>
+<h3>手动上报被动事件</h3>
+<p>示例代码：&quot;被动事件&quot;</p>
+<pre><code>window.collectEvent(&#x27;like&#x27;, {
+   from: &quot;index&quot;,
+   category: &quot;主动被动事件&quot;,
+   $inactive: &quot;true&quot; ,
+});</code></pre>
+<p>&lt;span id=&quot;小程序-sdk&quot;&gt;&lt;/span&gt;</p>
+<h2>小程序 SDK</h2>
+<p>&lt;span id=&quot;示例代码：-主动事件&quot;&gt;&lt;/span&gt;</p>
+<h3>示例代码：&quot;主动事件&quot;</h3>
+<pre><code>app.$$Rangers.event(&#x27;like&#x27;, {
+    from: &quot;index&quot;,
+   category: &quot;主动被动事件&quot;,
+   $inactive: &quot;false&quot;,
+})</code></pre>
+<p>&lt;span id=&quot;自动生成关系事件&quot;&gt;&lt;/span&gt;</p>
+<h3>自动生成关系事件</h3>
+<p>示例代码：&quot;关联事件&quot;</p>
+<pre><code>app.$$Rangers.event(&#x27;like&#x27;, {
+   from: &quot;index&quot;,
+   category: &quot;主动被动事件&quot;,
+   $inactive: &quot;true&quot; ,
+   $inline: &quot;true&quot;,
+   $target_uuid_list: [&quot;123&quot;,&quot;456&quot;,&quot;789&quot;]
+});</code></pre>
+<p>&lt;span id=&quot;手动上报被动事件&quot;&gt;&lt;/span&gt;</p>
+<h3>手动上报被动事件</h3>
+<p>示例代码：&quot;被动事件&quot;</p>
+<pre><code>app.$$Rangers.event(&#x27;like&#x27;, {
+   from: &quot;index&quot;,
+   category: &quot;主动被动事件&quot;,
+   $inactive: &quot;true&quot; 
+});</code></pre>
+<p>&lt;span id=&quot;http-api-服务端上报&quot;&gt;&lt;/span&gt;</p>
+<h2>Http Api 服务端上报</h2>
+<p>&lt;span id=&quot;示例代码：-主动事件&quot;&gt;&lt;/span&gt;</p>
+<h3>示例代码：&quot;主动事件&quot;</h3>
+<pre><code>{
+    &quot;user&quot;: {
+        // 建议先在客户端上报用户的user_unique_id，然后再在服务端使用
+        &quot;user_unique_id&quot;: &quot; 74481585297&quot;   //用户唯一标示
+    },
+    &quot;header&quot;: {
+        &quot;app_channel&quot;: &quot;App Store&quot;   //App渠道
+    },
+    &quot;events&quot;: [
+        {
+            &quot;event&quot;: &quot;like&quot;,    //事件名称
+            &quot;params&quot;: &quot;{
+                \&quot;category\&quot;:\&quot;主动被动事件\&quot;,
+                \&quot;$inactive\&quot;:\&quot;false\&quot;
+             }&quot;,    //事件属性
+            &quot;local_time_ms&quot;: 1489573628001   //事件发生的时间戳
+        }
+    ]
+}</code></pre>
+<p>&lt;span id=&quot;自动生成关系事件&quot;&gt;&lt;/span&gt;</p>
+<h3>自动生成关系事件</h3>
+<p>示例代码：&quot;关联事件&quot;</p>
+<pre><code>{
+    &quot;user&quot;: {
+        // 建议先在客户端上报用户的user_unique_id，然后再在服务端使用
+        &quot;user_unique_id&quot;: &quot; 74481585297&quot;   //用户唯一标示
+    },
+    &quot;header&quot;: {
+        &quot;app_channel&quot;: &quot;App Store&quot;   //App渠道
+    },
+    &quot;events&quot;: [
+        {
+            &quot;event&quot;: &quot;like&quot;,    //事件名称
+            &quot;params&quot;: &quot;{
+                \&quot;category\&quot;:\&quot;主动被动事件\&quot;,
+                \&quot;$inactive\&quot;:\&quot;true\&quot;,
+                \\&quot;$inline\\&quot;:\\&quot;true\\&quot;,
+                \&quot;$target_uuid_list\&quot;:[\&quot;123\&quot;,\&quot;456\&quot;,\&quot;789\&quot;]
+             }&quot;,    //事件属性
+            &quot;local_time_ms&quot;: 1489573628001   //事件发生的时间戳
+        }
+    ]
+}</code></pre>
+<p>&lt;span id=&quot;手动上报被动事件&quot;&gt;&lt;/span&gt;</p>
+<h3>手动上报被动事件</h3>
+<p>示例代码：&quot;被动事件&quot;</p>
+<pre><code>{
+    &quot;user&quot;: {
+        // 建议先在客户端上报用户的user_unique_id，然后再在服务端使用
+        &quot;user_unique_id&quot;: &quot; 74481585297&quot;   //用户唯一标示
+    },
+    &quot;header&quot;: {
+        &quot;app_channel&quot;: &quot;App Store&quot;    //App渠道
+    },
+    &quot;events&quot;: [
+        {
+            &quot;event&quot;: &quot;like&quot;,    //事件名称
+            &quot;params&quot;: &quot;{
+                \&quot;category\&quot;:\&quot;主动被动事件\&quot;,
+                \&quot;$inactive\&quot;:\&quot;true\&quot;
+             }&quot;,    //事件属性
+            &quot;local_time_ms&quot;: 1489573628001   //事件发生的时间戳
+        }
+    ]
+}</code></pre></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

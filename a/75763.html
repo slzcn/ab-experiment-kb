@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A/B实验怎么开 · A/B 实验知识库</title>
+<meta name="description" content="在熟悉了什么是A/B实验之后，一起来看看A/B实验应该怎么开吧！ 制定目标 明确北极星目标 对于任何一家 公司来说（不管是互联网公司还是传统公司），都有一个最重要的业务发展指标——“北极星指标“（North Star M">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/75763.html">
+<meta property="og:title" content="A/B实验怎么开"><meta property="og:description" content="在熟悉了什么是A/B实验之后，一起来看看A/B实验应该怎么开吧！ 制定目标 明确北极星目标 对于任何一家 公司来说（不管是互联网公司还是传统公司），都有一个最重要的业务发展指标——“北极星指标“（North Star M">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/75763.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📐 实验设计与规划</span></div>
+<h1>A/B实验怎么开</h1>
+<div class="meta">📄 3,359 字 · 🕐 2026-02-13</div>
+<article class="md"><p>在熟悉了什么是A/B实验之后，一起来看看A/B实验应该怎么开吧！</p>
+<p>&lt;span id=&quot;制定目标&quot;&gt;&lt;/span&gt;</p>
+<h2>制定目标</h2>
+<p>&lt;span id=&quot;明确北极星目标&quot;&gt;&lt;/span&gt;</p>
+<h3>明确北极星目标</h3>
+<p>对于任何一家 公司来说（不管是互联网公司还是传统公司），都有一个最重要的业务发展指标——“北极星指标“（North Star Metric），也称“唯一重要指标”（OMTM，One Metric That Matters）。</p>
+<p>通常北极星指标需要包含四大特点：</p>
+<ul><li>能够反映产品为用户提供的核心价值；</li></ul>
+<ul><li>能够衡量用户的活跃程度；</li></ul>
+<ul><li>易于被团队理解；</li></ul>
+<ul><li>能够反应企业整体上是否成功。</li></ul>
+<p>对于一些成熟行业，北极星指标已经相对固定，比如：</p>
+<table><thead><tr><th>核心 价值</th><th>北极星指标</th></tr></thead><tbody><tr><td>为用户提供物有所值的商品和互动式购物体验</td><td>GMV（商品交易总额）</td></tr><tr><td>让用户高效地获得值得信赖的答案</td><td>问题回答数</td></tr><tr><td>为用户提供高 品质 居住产品与生活服务</td><td>订单数</td></tr></tbody></table>
+<p>显然，北极星指标的制定是 *企业* 更为战略层面的工作，然而A/B测试不能绕开这一环。在北极星目标明确的前提下， *企业* 才能通过系统化的A/B实验实现快速迭代和增长。</p>
+<p>&lt;span id=&quot;细化指标&quot;&gt;&lt;/span&gt;</p>
+<h3>细化指标</h3>
+<p>确定了北极星目标，各个业务团队需要分领属于自己的任务，这里便涉及到将北极星指标拆解为可执行的具体指标。拿电商平台做个例子，假如我设定2019年的GMV是300万美元，那么我们可以将这个北极星目标逐步拆解，例如：</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/aafc3970873b4f5dba65c5d7218e4274" loading="lazy"> &lt;/span&gt;</p>
+<p>在北极星指标被细化后，各个部门便可以围绕细化后的具体指标，开展有针对性的实验。</p>
+<p>&lt;span id=&quot;建立假设&quot;&gt;&lt;/span&gt;</p>
+<h2>建立假设</h2>
+<p>在明确目标之后，增长团队应该着手分析早期数据，并从数据中找到增长的可能。这一过程需要产品经理、运营经理和技术研发共同探讨完成。</p>
+<p>分析结束后，团队需要提出假设，如：将购买页面主色调从蓝色改为红色能够将用户购买率提升3%。值得注意的是，我们所做出的假设必须包含两方面：第一是 <strong>提出新策略</strong> ，“购买页面主色调从蓝色改为红色”，这决定了实验中我们要如何配置实验参数；第二是 <strong>确切的提升值</strong> ，如“用户购买率提升3%”，这决定了应该有多少用户进入实验。</p>
+<p>在A/B实验中，用指标的“预期值提升值”倒推实验流量，需要运用到复杂的统计学知识。然而，即使你并不了解这些知识，使用成熟的A/B实验工具——火山引擎A/B测试的“实验流量建议工具”这一功能，就可以轻松确定应进入实验的流量。详情请参见<a href="https://www.volcengine.com/docs/6287/65814" target="_blank" rel="noopener">预估实验流量：流量计算器</a>。</p>
+<p>&lt;span id=&quot;配置实验&quot;&gt;&lt;/span&gt;</p>
+<h2>配置实验</h2>
+<p>明确了上述内容之后，接下来就该设置实验啦。以A/B测试为例，想要完整地设置好一个实验，我们需要关注以下几个方面：</p>
+<p>&lt;span id=&quot;where-实验开在哪儿&quot;&gt;&lt;/span&gt;</p>
+<h3>Where 实验开在哪儿</h3>
+<p>这里所说的“开在哪儿”，指的是如何选择正确的实验层。</p>
+<p>何谓“实验层”呢？“实验层”技术是为了让多个实验能够并行不相互干扰，且都获得足够的流量而研发的流量分层技术。</p>
+<p>设想一下，假如我现在有4个实验要进行，每一个实验要取用30%的流量才能够得出可信的实验结果。此时为了同时运行这4个实验就需要4\*30%=120%的流量，这意味着 *100%*  的流量不够同时分配给这4个实验。那么此时我只能选择给实验排序，让几个实验先后完成。但这会造成实验效率低下。试想一下，许多大型互联网公司每年有上万个实验要进行，如果只能排队挨号，实验恐怕可以排到9012年。</p>
+<p>那么有没有办法可以解决这个问题呢？</p>
+<p>有，就是使用实验层技术，把总体流量“复制”无数遍，形成无数个流量层，让总体流量可以被无数次复用，从而提高实验效率。各层之间的流量是 <strong>正交</strong> 的，你可以简单理解为：在流量层选择正确的前提下，流量经过科学的分配，可以保证各实验的结果不会受到其他层实验的干扰。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/dcce2d6d30e54205bb75f8eea1f60d7d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>在选择实验层的时候，我们要遵循的规则是：<strong>业务冲突</strong>，在系统层面体现为<strong>参数冲突</strong>。进行实验时需要规避业务冲突。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;如何鉴定一个实验A是否与其他实验冲突？一般由业务含义来判定。&lt;/div&gt;</p>
+<p>例如，点赞按钮，实验A设计为红色，实验B设计为蜡烛；实验A与实验B涉及到对同一个「物理对象」的修改（操作），同时修改会引起冲突或者问题，即对一个具体用户的按钮，它到底是什么颜色。</p>
+<p>规避的方法主要为，将冲突的实验选择在同一个流量层进行实验。</p>
+<p>这类实验在推全时，也需要考虑冲突的问题；不能单独推全。</p>
+<p>如果不存在业务冲突，那么一般建议直接独立进行实验即可，不用考虑其他实验的运行。在 DataTester 上，直接新建实验将被单独分配一个新的流量层，这个流量层与其他实验正交。</p>
+<p>&lt;span id=&quot;when-实验开多久&quot;&gt;&lt;/span&gt;</p>
+<h3>When 实验开多久</h3>
+<p>基于一些统计学原理，实验开设得过长或过短都不利于实验结果的可信度。通常实验时长要与产品的“数据特征周期”一致。如何理解呢？比如某 *直播* 类app产品，用户在周一到周五的 *活跃* 度较低，在周末 *活跃* 度较高，以一个自然周为周期，不断循环。那么这一 *直播* 产品在做A/B实验时，通常应该将时长设置为一周。</p>
+<p>&lt;span id=&quot;who-谁进入实验&quot;&gt;&lt;/span&gt;</p>
+<h3>Who 谁进入实验</h3>
+<p>实验中，我们要对进入实验的流量大小做出设置。通常在实验的初始阶段，我们倾向于先分配较少的流量（如1%）进入实验。如果初期实验结果一切正常，那么可以进一步加大流量；假如实验数据出现巨大的异常，那么可以随时将实验终止。小流量可以最低程度减少实验异常对用户体验的影响。</p>
+<p>除了对流量大小进行设置之外，我们还可以添加限制条件，对进入实验的用户进行过滤，比如只看“安卓用户”、只看“北京地区用户”等等。这部分过滤条件通常需要由实验发起者和分析师共同确认。</p>
+<p>&lt;span id=&quot;metric-关注的指标&quot;&gt;&lt;/span&gt;</p>
+<h3>Metric 关注的指标</h3>
+<p>确定哪些指标是我们所关注的。再来看看前文中我们做出的假设：将购买页面主色调从蓝色改为红色能够将用户购买率提升3%。在这一实验中，“用户购买率”必定是我们的关注的指标，并且是我们的“ <strong>目标指标</strong> ”。除此之外，我们还应该关注一些产品常关注的重要数据指标，用以 *观察* 实验中的新策略是否会对其他重要指标产生负面影响。</p>
+<p>&lt;span id=&quot;how-实验配置参数&quot;&gt;&lt;/span&gt;</p>
+<h3>How 实验配置参数</h3>
+<p>配置参数实际上是一串代码，这串代码决定了进入实验的用户，其体验到的产品会有什么不同。仍旧用前文中的假设做例子，如果我假设“将购买页面主色调从蓝色改为红色能够提升用户购买率”，那么在实验中，我的下发的配置参数就应该让实验组用户的购买页面色调呈现为红色。这些参数的具体代码需要与产品的研发进行确认。</p>
+<p>&lt;span id=&quot;前期测试&quot;&gt;&lt;/span&gt;</p>
+<h2>前期测试</h2>
+<p>在经过上述的步骤，我们的实验就已经基本设置好了。但在我们并不应急于开启实验，还应当对实验进行前期测试。</p>
+<p>测试时，我们会将“测试用户”添加白名单之中，并在测试用户的手机/电脑上中 *观察* 实验配置是否能够正常生效（如购买页面的颜色改变是否可以正常显示）、客户端/网页是否会崩溃、实验数据能否正确上报等。</p>
+<blockquote>在实验正式开启之前，通常需要先选择几名用户进入测试阶段，观察实验是否能够正常获取想要收集的数据，或客户端是否有bug等。参与这一步的用户被称为“白名单用户”。</blockquote>
+<blockquote>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/a1ac3fa5f4604d3e8316646d05c5d4d4~tplv-em5hxbkur4-noop.image?width=1473&amp;height=427" loading="lazy"> &lt;/span&gt;</blockquote>
+<p>&lt;span id=&quot;评估结果&quot;&gt;&lt;/span&gt;</p>
+<h2>评估结果</h2>
+<p>实验结果需要从两方面评估：第一是数据结果的涨跌；第二是判断是否可以相信数据结果，即结果是否“显著”。</p>
+<p>数据的涨跌自不必多言，如何理解数据是否显著呢？</p>
+<p>我们知道，A/B实验是一种小流量实验，我们需要从总体流量中抽取一定量的样本来验证新策略是否有效。抽样过程中，样本并不能完全代表整体。样本分布不均导致实验结果可能出现一种情况——我采取的策略其实没用，但是实验结果显示策略有效。</p>
+<p>统计学告诉我们，这种错误不可能完全避免，但是我们可以通过一些统计学方法，在得出实验数据结果的过程中，计算上述错误发生的概率。换句话说，我们可以判断我们的实验有百分之多少的概率是可信的。</p>
+<p>根据业界的公认标准，在A/B实验中，如经统计学计算，实验数据结果有95%以上的概率可信，我们便称数据结果是显著的。这样的数据结果才能够用于判断实验假设是否成立。</p>
+<p>在A/B测试平台中，我们用数据报告中的颜色来表示数据是否显著。</p>
+<p>为了便于判断，「A/B 测试」在数据表格中直接使用颜色直观给出显著性。绿色指的是该指标相对于对照组为正向显著、红色为负向显著、黑色为不显著。</p>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/0c23fdd81dcc4c9ea64839272d3e9932~tplv-em5hxbkur4-noop.image?width=2424&amp;height=556" loading="lazy"> &lt;/span&gt;</p>
+<p>除此外，火山引擎A/B测试还提供了置信区间、P\-value、MDE、概率分布势等丰富的统计指标，可以进行进一步的 *<strong>定量分析</strong>*。如想了解更多，欢迎阅读<a href="https://www.volcengine.com/docs/6287/65838" target="_blank" rel="noopener">[如何看懂实验报告</a>]</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

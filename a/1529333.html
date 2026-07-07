@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>可视化数据集成 · A/B 实验知识库</title>
+<meta name="description" content="说明 此功能为SaaS旗舰版功能（当前SaaS\ 云原生环境中，柔佛地域暂不支持），且默认关闭，如需使用需联系火山引擎技术支持人员进行开通。 一、概述 在企业进行数据采集时使用过其他厂商的埋点系统，不希望重复建设埋点体系">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1529333.html">
+<meta property="og:title" content="可视化数据集成"><meta property="og:description" content="说明 此功能为SaaS旗舰版功能（当前SaaS\ 云原生环境中，柔佛地域暂不支持），且默认关闭，如需使用需联系火山引擎技术支持人员进行开通。 一、概述 在企业进行数据采集时使用过其他厂商的埋点系统，不希望重复建设埋点体系">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1529333.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>可视化数据集成</h1>
+<div class="meta">📄 989 字 · 🕐 2025-04-23</div>
+<article class="md"><p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;此功能为SaaS旗舰版功能（当前SaaS\-云原生环境中，柔佛地域暂不支持），且默认关闭，如需使用需联系火山引擎技术支持人员进行开通。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;一、概述&quot;&gt;&lt;/span&gt;</p>
+<h1>一、概述</h1>
+<p>在企业进行数据采集时使用过其他厂商的埋点系统，不希望重复建设埋点体系，希望DataTester能够提供数据集成的方案，对历史数据资产直接复用。为了支持数据集成的需求， DataTester采用可视化数据集成的方式支持Kafka消息订阅，通过创建并执行数据集成任务，将其他厂的UBA数据上报至火山DataTester数据服务。</p>
+<ul><li>创建数据集成任务</li></ul>
+<ul><li>通过输入Kafka服务器、topic等信息，进行数据源的连接</li></ul>
+<ul><li>将连接后的数据源内的元数据进行解析，支持客户通过数据映射配置进行字段映射</li></ul>
+<ul><li>支持客户对任务配置时间/周期等进行配置</li></ul>
+<ul><li>支持客户对任务设置任务告警</li></ul>
+<ul><li>任务运维</li></ul>
+<ul><li>在任务列表通过任务开关对任务进行启动/停止</li></ul>
+<ul><li>通过任务日志可以查看数据任务的执行结果</li></ul>
+<ul><li>任务明细&amp;邮件可以查看单次告警明细</li></ul>
+<p>&lt;span id=&quot;二、数据集成流程示例&quot;&gt;&lt;/span&gt;</p>
+<h1>二、数据集成流程示例</h1>
+<ul><li>流程示例：某厂商Kafka\-UBA数据接入DataTester</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_651b5d047dd2ae96e9c7be4d4502318c.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;三、与客户平台交互方式说明&quot;&gt;&lt;/span&gt;</p>
+<h1>三、与客户平台交互方式说明</h1>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e565c95cac3cfd4bd1240364b641a10d.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;四、功能介绍&quot;&gt;&lt;/span&gt;</p>
+<h1>四、功能介绍</h1>
+<p>&lt;span id=&quot;_4-1-创建集成任务&quot;&gt;&lt;/span&gt;</p>
+<h2>4.1 创建集成任务</h2>
+<p>DataTester提供两种方式进行数据集成，分别为可视化配置和自定义上传配置，两种方式带来的效果一致，二选一即可</p>
+<p>&lt;span id=&quot;_4-1-1-可视化配置数据集成&quot;&gt;&lt;/span&gt;</p>
+<h3>4.1.1 可视化配置数据集成</h3>
+<p>&lt;span id=&quot;_1-基本信息&quot;&gt;&lt;/span&gt;</p>
+<h4>1.基本信息</h4>
+<ul><li>新建数据集成任务，需要定义数据集成任务的基本信息</li></ul>
+<ul><li>选择需要同步的数据源类型：UBA数据、用户属性，并配置任务名称和任务描述。</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/4a80436b5fc94a4ebe7a599c11405522~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-数据源连接&quot;&gt;&lt;/span&gt;</p>
+<h4>2.数据源连接</h4>
+<ul><li>新建数据集成任务时，需输入“提供数据源”的三方/客户的消费者组名称、kafka服务器地址、kafka Topic名称，进行数据源的连接测试</li></ul>
+<ul><li>点击连接测试会尝试连接topic并读取最新一条数据填充示例</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/3ed9a75a5bee4faca475fc63123a2c33~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-元数据映射&quot;&gt;&lt;/span&gt;</p>
+<h4>3. 元数据映射</h4>
+<p>数据源字段映射至Tester系统字段</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/60df39bfe6ca476692280a3a12a4390d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_4-任务配置&quot;&gt;&lt;/span&gt;</p>
+<h4>4.任务配置</h4>
+<ul><li>支持客户对任务配置时间/周期等进行配置</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0067bdf5458a4c24bd93d3b9346cca21~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_4-1-2上传配置数据集成&quot;&gt;&lt;/span&gt;</p>
+<h3>4.1.2自定义配置数据集成</h3>
+<p>&lt;span id=&quot;_1-自定义配置集成任务&quot;&gt;&lt;/span&gt;</p>
+<h4>1.自定义配置集成任务</h4>
+<ul><li>选择自定义配置集成任务</li></ul>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_883aad17aa56d1215c9ca8be36dd3193.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-创建集成任务&quot;&gt;&lt;/span&gt;</p>
+<h4>2.创建集成任务</h4>
+<ul><li>上传配置</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/1c6dd48298fb4da49c4fd042cd8d4668~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-配置模版&quot;&gt;&lt;/span&gt;</p>
+<h4>3.配置文件</h4>
+<p>具体文件格式可以联系火山技术支持人员</p>
+<p>&lt;span id=&quot;e779aebb&quot;&gt;&lt;/span&gt;</p>
+<h4>4.任务配置</h4>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0067bdf5458a4c24bd93d3b9346cca21~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_4-2-任务运维&quot;&gt;&lt;/span&gt;</p>
+<h2>4.2 任务运维</h2>
+<p>&lt;span id=&quot;_4-2-1-任务列表&quot;&gt;&lt;/span&gt;</p>
+<h3>4.2.1 任务列表</h3>
+<ul><li>任务列表</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0b50a2ef18324c298fdae150816e5ba9~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>任务明细</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/cb7b28a16f7847ae9935458862331589~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_4-3-数据应用&quot;&gt;&lt;/span&gt;</p>
+<h2>4.3 数据应用</h2>
+<p>通过数据集成的同步的用户行为数据，可以在Datatester后台【数据管理】页面进行查看，并可使用该部分事件创建事件指标，示例如下：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_31aacc9cab56f0aa2f96eef75fee936a.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_11b09f03d7a95f940fcb755aa3ae8dbb.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

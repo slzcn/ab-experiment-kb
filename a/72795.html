@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>倾听玩家声音一定可以带来增长吗？ · A/B 实验知识库</title>
+<meta name="description" content="我们在游戏运营中，都会去倾听玩家的声音并采取反馈动作。 但有时候，在前方等我们的可能也会是个坑。 我们通过一个内部射击类游戏的案例，来探讨如何倾听玩家的声音。 到底怎么倾听玩家的声音[ ](https://www.vol">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/72795.html">
+<meta property="og:title" content="倾听玩家声音一定可以带来增长吗？"><meta property="og:description" content="我们在游戏运营中，都会去倾听玩家的声音并采取反馈动作。 但有时候，在前方等我们的可能也会是个坑。 我们通过一个内部射击类游戏的案例，来探讨如何倾听玩家的声音。 到底怎么倾听玩家的声音[ ](https://www.vol">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/72795.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🏆 实战案例库</span></div>
+<h1>倾听玩家声音一定可以带来增长吗？</h1>
+<div class="meta">📄 1,373 字 · 🕐 2021-08-31</div>
+<article class="md"><p>我们在游戏运营中，都会去倾听玩家的声音并采取反馈动作。</p>
+<p>但有时候，在前方等我们的可能也会是个坑。</p>
+<p>我们通过一个内部射击类游戏的案例，来探讨如何倾听玩家的声音。</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/66e7045ddba847bbbc84adf67babf9e8.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;到底怎么倾听玩家的声音&quot;&gt;&lt;/span&gt;</p>
+<h2>到底怎么倾听玩家的声音<a href="https://www.volcengine.com/docs/6281/69696#%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E5%80%BE%E5%90%AC%E7%8E%A9%E5%AE%B6%E7%9A%84%E5%A3%B0%E9%9F%B3" target="_blank" rel="noopener">#</a></h2>
+<p>在游戏运营过程中，我们做了很多的玩家调研，深入了解玩家对于游戏的想法和希望解决的问题。</p>
+<p>在调研中发现，玩家集中反馈希望在游戏里面能够获取更多的游戏金币，群、商店、邮件等多个渠道都有这样的反馈。</p>
+<p>这款游戏变现的方式是激励视频广告。</p>
+<p>所以我们的改进思路是「一举两得」，希望在整个广告激励过程中能够给予玩家更多的金币，从而吸引他们观看激励视频的广告。</p>
+<p>方案选在了一个转盘抽奖的广告位。转盘有四个区域，其中有一个区域是英雄，如果在抽奖过程中没有抽到满意的奖项，可以观看广告再次抽奖。</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/9281c36fef014794935ea2cede287bff.png" loading="lazy"> &lt;/span&gt;</p>
+<p>基于收集的玩家反馈，我们觉得玩家更希望得到金币，调整了转盘的奖励方案，把原来英雄的奖项拿掉了，给了一个更高金币的奖项。</p>
+<p>当时我们的想法：玩家想要更多的金币那就提供更多的金币。</p>
+<p>我们结合真实的玩家反馈，我们做了针对性的调整，是不是就能得到更好的增长了呢？</p>
+<p>&lt;span id=&quot;知道真相的我眼泪掉下来&quot;&gt;&lt;/span&gt;</p>
+<h2>知道真相的我眼泪掉下来<a href="https://www.volcengine.com/docs/6281/69696#%E7%9F%A5%E9%81%93%E7%9C%9F%E7%9B%B8%E7%9A%84%E6%88%91%E7%9C%BC%E6%B3%AA%E6%8E%89%E4%B8%8B%E6%9D%A5" target="_blank" rel="noopener">#</a></h2>
+<p>然而实际结果没有想象得那么理想。</p>
+<p>在新方案上线了三天之后，我们发现整个转盘广告点位点击次数下降了60%，广告点击渗透率下降了32%，次留与3留也分别下降了3%与7%，这里面就出现了问题。</p>
+<p>回顾来看，首先我们得到的信息反馈是玩家表示需要更多的金币，但我们忽略了玩家拿到这些金币干什么，他们其实也是想兑换更多的英雄。</p>
+<p>英雄代表了这款游戏的核心符号和核心价值，英雄给予玩家的冲击力和激励的价值会比金币更高。</p>
+<p>在这个故事里，不仅仅要聆听玩家表面告诉我们的信息，更要深层次地挖掘玩家的行为到底传递给了我们哪些真实的信号。</p>
+<p>并且，我们需要满足玩家真正的深层次的需求。</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/869697dd9af84deb95170afa0f3eaf37.png" loading="lazy"> &lt;/span&gt;</p>
+<p>虽然刚才讲到方案上线三天之后，基本上广告的观看降了60%，渗透率降了30%多，实际上当时我们还好做了一个A/B实验。</p>
+<p>我们通过A/B实验的方式得到了一个负向的效果，所以我们没有全量推到线上，因而规避了将近60%的广告收入的损失。</p>
+<p>&lt;span id=&quot;总结&quot;&gt;&lt;/span&gt;</p>
+<h2>总结<a href="https://www.volcengine.com/docs/6281/69696#%E6%80%BB%E7%BB%93" target="_blank" rel="noopener">#</a></h2>
+<p>我们在设计新方案、上线新方案之前，我们需要把方案进行验证，以小流量的方式进行验证。</p>
+<p>在得到了科学结果之后，再决定这个方案是不是要发布给全量玩家，或者及时下线规避风险。</p>
+<p>因此，在收集玩家反馈时，一方面要倾听真正的声音，另一方面要借助A/B实验规避一些主观猜测或者主观设计的风险，从而实现精准的增长。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>分流模型与用户受众 · A/B 实验知识库</title>
+<meta name="description" content="随产品的不断发展、业务类型不断丰富、组织团队不断扩充，通常需要针对目标用户进行大量且广泛的试验，因此在开启实验前需要能够系统规划各团队进行实验的流量，实现更精细化的试验流量管理， 精准调配、灵活调整、充分利用 平台用户流">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1688215.html">
+<meta property="og:title" content="分流模型与用户受众"><meta property="og:description" content="随产品的不断发展、业务类型不断丰富、组织团队不断扩充，通常需要针对目标用户进行大量且广泛的试验，因此在开启实验前需要能够系统规划各团队进行实验的流量，实现更精细化的试验流量管理， 精准调配、灵活调整、充分利用 平台用户流">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1688215.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📐 实验设计与规划</span></div>
+<h1>分流模型与用户受众</h1>
+<div class="meta">📄 2,440 字 · 🕐 2025-07-09</div>
+<article class="md"><p>随产品的不断发展、业务类型不断丰富、组织团队不断扩充，通常需要针对目标用户进行大量且广泛的试验，因此在开启实验前需要能够系统规划各团队进行实验的流量，实现更精细化的试验流量管理，<strong>精准调配、灵活调整、充分利用</strong>平台用户流量的同时还要保证试验结果的科学合理。本文为您介绍使用DataTester开展实验前进行流量规划的思路和注意事项。</p>
+<p>&lt;span id=&quot;220ec8d6&quot;&gt;&lt;/span&gt;</p>
+<h1>分流原理</h1>
+<p>分流服务是A/B实验的产品基础，确保每个用户进入不同实验的随机性和稳定性，才能保障实验结果的置信度。因此了解分流原理，对于实验设计、命中排查、解读报告都至关重要。</p>
+<p>&lt;span id=&quot;faf84d16&quot;&gt;&lt;/span&gt;</p>
+<h2>A/B实验分流服务、vid</h2>
+<p>开设A/B实验，顾名思义，我们至少需要一个A组和一个B组，那么究竟是什么决定了哪些用户被实验命中，以及哪些用户进入A组/B组呢？就是靠A/B实验分流服务。</p>
+<ul><li>分流服务会帮助实验者，从总体流量中抽取部分流量，并将抽取的流量随机地分配进A组与B组之中，尽量减少抽样误差。</li></ul>
+<ul><li>需要注意的一点是，当分流服务分流完成后，被选中进入实验的用户会被赋予一个“身份信息”——ab_version(又称vid)，这个id标记着流量究竟应该进入实验的哪一组中。</li></ul>
+<p>&lt;span id=&quot;bc267eaa&quot;&gt;&lt;/span&gt;</p>
+<h2>分流原理：分流服务的input&amp;output</h2>
+<p>分流服务的任务是对用户进行随机抽样，并均匀地分配到实验组和对照组中，使其生效不同的功能。</p>
+<p>我们先来把分流服务看作是一个“黑盒”。也就是说，抛开分流服务具体包含了什么样的流程和逻辑，先将分流服务看作是一个整体。接着，我们通过输入输出来解释它的工作原理：</p>
+<ul><li>输入：业务端向分流服务发出请求，告诉分流服务用户是谁</li></ul>
+<ul><li>输出：分流服务返回业务端这个用户是否命中实验，以及用户被分到了哪个实验组。</li></ul>
+<p>以最简单、通俗的话来说：<strong>实验中，我们向分流服务发出请求（request），告诉分流服务用户是谁，随后分流服务就会告诉我们，这个用户是否被实验命中，以及用户被分到了哪个组里</strong>。</p>
+<ul><li><strong>分流服务的input</strong></li></ul>
+<p>   当我们在向分流服务发出请求（request）的时候，我们要告诉分流服务的信息被称为“<strong>请求参数</strong>”。当中包含的信息有：<strong>用户是谁（用户的分流id【decisionID】）、用户从哪儿来（appkey）、用户符合什么条件（filter）</strong> 。</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;&lt;strong&gt;decisionID&lt;/strong&gt;：分流id，需要是唯一标识id，可以使用uuid，did。在实验过程中，究竟使用什么id去标记用户，需要业务方结合实验场景自行裁定。   &lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;&lt;strong&gt;appkey&lt;/strong&gt;：应用的唯一标识，请求参数中的appkey标记了用户来源于哪个应用。   &lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;&lt;strong&gt;filter&lt;/strong&gt;：实际上就是过滤条件。在开设实验时，实验者可能会为进入实验的流量增加一些限制条件，规定被实验命中的用户必须符合（或不符合）这些条件，进而达到缩小用户群体、精准找到用户的目的。这种限制条件就是filter。在向分流服务发出请求的时候，用户信息中必须带有和过滤条件相对应的属性信息。比如某实验中，实验者规定，被实验命中的必须是北京用户。那么在发出请求时，如果请求信息中不含有用户的定位信息/定位信息不为北京，该用户就会被过滤掉，无法被实验命中。   &lt;/div&gt;</li></ul>
+<p>   有了这些信息，分流服务就有了“原材料”，并在内部进行加工，对用户进行分流处理。</p>
+<ul><li><strong>分流服务的output</strong></li></ul>
+<p>   如果用户被实验命中，分流服务会输出该用户的身份信息<strong>vid（ab_version）/vid list</strong>（一个用户可能同时命中不同层的多个实验，因此会输出vid list）和该用户应对应的<strong>实验配置</strong>。如果用户没有被实验命中，那么分流服务则不会输出信息。</p>
+<table><thead><tr><th><strong>对比说明</strong></th><th><strong>客户端实验</strong></th><th><strong>服务端实验</strong></th></tr></thead><tbody><tr><td><strong>基本概念</strong>&lt;br&gt;&lt;br&gt;（分流服务 &amp; VID）</td><td>开设A/B实验，顾名思义，我们至少需要一个A组和一个B组，那么究竟是什么决定了哪些用户被实验命中，以及哪些用户进入A组/B组呢？就是靠A/B实验分流服务。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 分流服务会帮助实验者，从总体流量中抽取部分流量，并将抽取的流量随机地分配进A组与B组之中，尽量减少抽样误差。&lt;br&gt;&lt;br&gt;* 需要注意的一点是，当分流服务分流完成后，被选中进入实验的用户会被赋予一个“身份信息”——ab_version(又称vid)，这个id标记着流量究竟应该进入实验的哪一组中。</td></tr><tr><td><strong>实验SDK逻辑</strong></td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/84687f97b5414a06ba34e99b721df9d2~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;1. 客户应用侧集成DataTester的客户端SDK。&lt;br&gt;&lt;br&gt;2. 当用户打开APP触发客户端SDK初始化时，客户端SDK会向DataTester的<strong>分流服务</strong>发送分流请求，分流服务会<strong>返回对应的分流结果</strong>，APP侧根据分流结果生效对应实验版本的功能。后续分流结果会被存在本地。&lt;br&gt;&lt;br&gt;3. APP执行至曝光区代码时，会调用获取实验参数API拿到存在本地的分流结果中的实验进组信息（VID），并自动<strong>上报预置的曝光事件</strong>（abtest_exposure），曝光事件会携带用户命中实验的分组（VID）信息。&lt;br&gt;&lt;br&gt;4. 用户在APP进行操作，当触发<strong>实验指标相关埋点</strong>时，会通过客户端SDK上报并落库至数仓中，后续可在实验报告查看相关指标数据。&lt;br&gt;&lt;br&gt;5. 客户端SDK每隔10分钟会重新请求一次分流服务拉取最新的分流结果，如果本地有，会覆盖之前缓存的，如果本地没有会把获取的结果存在本地。</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/58b3ed97f26e445fb38cb3adcafd482a~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;1. 客户服务端集成DataTester的服务端SDK，或者部署服务端的分流Agent。&lt;br&gt;&lt;br&gt;2. 服务端SDK初始化后会定时调用DataTester的<strong>元数据服务</strong>获取实验元信息（包括实验名称、版本分配、目标受众、白名单等）。&lt;br&gt;&lt;br&gt;3. 用户访问C端应用，C端应用向服务端发起请求；服务端SDK使用获取到的实验元信息进行计算，返回实验分流结果。&lt;br&gt;&lt;br&gt;4. 服务端同时上报预置的曝光事件，（abtest_exposure），曝光事件会携带用户命中实验的分组（VID）信息。&lt;br&gt;&lt;br&gt;5. 服务端的分流结果（版本配置信息）同时会向下游服务传递。&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;服务端SDK/分流Agent仅完成实验分流和上报预置的曝光事件，如果您还需上报实验指标数据，可通过集成客户端SDK上报指标事件，或通过HTTP API、数据集成功能集成实验指标数据。&lt;/div&gt;&lt;br&gt;</td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

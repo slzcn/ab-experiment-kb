@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>发布/回滚Feature · A/B 实验知识库</title>
+<meta name="description" content="Feature若需生效到线上，则需要发布才能生效，如果线上的版本在发布中、已全量的状态，若出现异常，您也可以可点击“回滚”，回滚至上一个生效的全量版本，降低影响面。本文为您介绍发布和回滚Feature的操作。 Featu">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/66387.html">
+<meta property="og:title" content="发布/回滚Feature"><meta property="og:description" content="Feature若需生效到线上，则需要发布才能生效，如果线上的版本在发布中、已全量的状态，若出现异常，您也可以可点击“回滚”，回滚至上一个生效的全量版本，降低影响面。本文为您介绍发布和回滚Feature的操作。 Featu">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/66387.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🚩 Feature管理</span></div>
+<h1>发布/回滚Feature</h1>
+<div class="meta">📄 1,781 字 · 🕐 2024-08-14</div>
+<article class="md"><p>Feature若需生效到线上，则需要发布才能生效，如果线上的版本在发布中、已全量的状态，若出现异常，您也可以可点击“回滚”，回滚至上一个生效的全量版本，降低影响面。本文为您介绍发布和回滚Feature的操作。</p>
+<p>&lt;span id=&quot;9b0c5991&quot;&gt;&lt;/span&gt;</p>
+<h1>Feature操作场景</h1>
+<table><thead><tr><th><strong>操作场景</strong></th><th><strong>详细介绍</strong></th><th><strong>应用场景</strong></th></tr></thead><tbody><tr><td><strong>发布</strong></td><td>将创建的Feature发布到线上，使Feature生效。</td></tr><tr><td><strong>回滚</strong></td><td>指的将线上生效的变体值恢复到上一个生效全量版本的正确状态的行为。&lt;br&gt;&lt;br&gt;比如线上生效的版本在发布中、已全量，可点击“回滚”，回滚至上一个生效的全量版本。</td><td>比如正在发布的某个版本有用户的很多负面反馈，那么可以回滚到上一个生效的全量的相对安全版本。</td></tr><tr><td><strong>取消发布</strong></td><td>指的是已设置定时未来某个时刻发布，但是还未到该时刻，选择取消发布。</td><td>比如已经设置定时发布，但忽然发现发布设置的变体值、发布范围等信息还有不正确的地方，那么可以选择取消该版本的发布。修改正确后，再重新发布。</td></tr><tr><td><strong>关闭Feature</strong></td><td>将生效中的Feature手动关闭。</td></tr></tbody></table>
+<p>&lt;span id=&quot;一、功能简介&quot;&gt;&lt;/span&gt;</p>
+<h1>发布Feature</h1>
+<p>为了保证发布安全性，降低上线风险，FeatureFlag提供了灰度发布功能，即可控制流量由小到大逐步放量，上线过程中观测用户反馈和数据指标，保证功能平滑上线。</p>
+<p>&lt;span id=&quot;fa87a860&quot;&gt;&lt;/span&gt;</p>
+<h2>发布Feature</h2>
+<ol><li>登录DataTester控制台后，单击左侧导航栏<strong>配置管理</strong>\&gt;<strong>Feature列表</strong>，进入Feature列表页后可看到所有已创建的Feature。在状态为未发布的Feature中，单击Feature名称，进入Feature详情页面。</li></ol>
+<ol><li>在Feature版本详情页，单击右上角的<strong>发布/回滚</strong>按钮，在弹出的侧边页面中填写发布计划信息。</li></ol>
+<ol><li>确认发布信息。</li></ol>
+<p>      根据界面提示填写<strong>发布描述</strong>，并查看本次发布的版本与上个版本之间的差异，确认无误后单击<strong>提交</strong>。</p>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/554beacf7f0446ca8c33be7417deb05c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>配置增量发布方案。</li></ol>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>参数说明</strong></th></tr></thead><tbody><tr><td><strong>选择发布方案</strong></td><td>配置本次Feature发布是<strong>手动发布</strong>还是<strong>定时自动发布</strong>。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 手动发布：适用于单次发布Feature。&lt;br&gt;&lt;br&gt;* 定时自动发布：适用于希望定时周期性发布Feature的场景。</td></tr><tr><td><strong>开始发布计划</strong>&amp;<strong>预置发布频率</strong></td><td>仅<strong>定时自动发布方案</strong>需配置，您需要根据业务需要，选择开始发布的实际和每次发布的频率和流量，然后单击<strong>一键设置</strong>。&lt;br&gt;&lt;br&gt;系统会根据您的设置，自动为您配置好流量至100%时，每次发布的流量控制，您也可以手动进行调整。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/dd9569ecbdb14415af73be3268cd41ed~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td><strong>流量控制</strong></td><td>* 手动发布：配置Feature发布后，后续什么时间回滚改版本的Feature。到达定时下线时间后，Feature会自动回滚上一个全量版本，若无则生效本地默认值&lt;br&gt;&lt;br&gt;* 定时发布：您可设置首次发布的时间和发布的频率、流量值，一键生成所有发布中的流量后，可手动调整每次发布的流量。</td></tr><tr><td><strong>定时下线</strong></td><td>您可以根据业务需要，配置Feature发布后，是否需要在某个时间自动回滚该版本的Feature。&lt;br&gt;&lt;br&gt;如果打开定时下线开关，到达设置的定时下线时间后，Feature会自动回滚上一个全量版本，若无则生效本地默认值。</td></tr></tbody></table>
+<p>&lt;span id=&quot;f3184d5e&quot;&gt;&lt;/span&gt;</p>
+<h2>查看Feature状态</h2>
+<p>Feature发布后，您可以在Feature详情页面查看Feature状态。</p>
+<ul><li>Feature发布流量未达100%时，Feature状态为<strong>灰度中</strong>。</li></ul>
+<ul><li>Feature发布流量达100%时，Feature状态为<strong>已全量</strong>。</li></ul>
+<p>&lt;span id=&quot;_2-出现问题快速回滚&quot;&gt;&lt;/span&gt;</p>
+<h1>回滚Feature</h1>
+<p>若在某个版本发布过程中，发现异常，可点击回滚本次发布，回滚后，将会回到（即生效）上一个已全量版本；若历史无全量版本，会关闭Feature继续生效本地默认值。</p>
+<p>&lt;span id=&quot;ee17b319&quot;&gt;&lt;/span&gt;</p>
+<h2>回滚Feature</h2>
+<p>当前版本发布中、灰度中、已全量这些已执行发布操作的版本，可以进行回滚。回滚成功，默认会立即生效上一个生效的全量版本。若线上无正在生效的全量版本，则关闭feature生效本地默认值。</p>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/76bd77c10a194f7fb42dc21caa90b2bc~tplv-em5hxbkur4-noop.image?width=1881&amp;height=400" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;557688bc&quot;&gt;&lt;/span&gt;</p>
+<h2>查看Feature状态</h2>
+<ul><li>Feature回滚后，Feature本版本的状态会变为<strong>已回滚</strong>，生效状态为<strong>已失效</strong>。</li></ul>
+<ul><li>回滚的Feature版本不支持直接再次发布，如果希望再次发布Feature，您需要编辑一下Feature，生成新的Feature版本，然后重新发布新版本的Feature。</li></ul>
+<p>&lt;span id=&quot;e95041fe&quot;&gt;&lt;/span&gt;</p>
+<h1>取消发布</h1>
+<p>发布方案为「定时自动发布」且当前版本待发布，可以进行取消发布。取消成功，默认会立即生效上一个生效的全量版本。若线上无正在生效的全量版本，则关闭feature生效本地默认值。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

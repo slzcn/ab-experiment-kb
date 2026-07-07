@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>高级分析：差异分析与群体对比 · A/B 实验知识库</title>
+<meta name="description" content="一. 概述 为什么需要做差异分析？ 在做完实验后，实验结果是针对所有实验的受众人群的，可以通过数据得到相应策略有正向效果/负向效果的结论。但是一个策略对于面向全部用户的正向/负向结论，并不等同于面对细分用户也有相同的结论">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/104940.html">
+<meta property="og:title" content="高级分析：差异分析与群体对比"><meta property="og:description" content="一. 概述 为什么需要做差异分析？ 在做完实验后，实验结果是针对所有实验的受众人群的，可以通过数据得到相应策略有正向效果/负向效果的结论。但是一个策略对于面向全部用户的正向/负向结论，并不等同于面对细分用户也有相同的结论">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/104940.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📊 实验报告与分析</span></div>
+<h1>高级分析：差异分析与群体对比</h1>
+<div class="meta">📄 879 字 · 🕐 2025-02-13</div>
+<article class="md"><p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>一. 概述</h1>
+<p><strong>为什么需要做差异分析？</strong> </p>
+<p>在做完实验后，实验结果是针对所有实验的受众人群的，可以通过数据得到相应策略有正向效果/负向效果的结论。但是一个策略对于面向全部用户的正向/负向结论，并不等同于面对细分用户也有相同的结论。这时可以使用群体对比+差异分析，得到针对某一细分人群，实验策略为正向/负向的结论。</p>
+<p>&lt;span id=&quot;二-名词解释&quot;&gt;&lt;/span&gt;</p>
+<h1>二. 名词解释</h1>
+<ul><li><strong>群体对比</strong> ：通过将全部用户拆分成多个用户组进行对比</li></ul>
+<ul><li><strong>差异分析</strong> ：使用蒙特卡洛法，得到某策略为面向某群体的最优策略，或某群体是最适合某一策略的群体。</li></ul>
+<ul><li><strong>蒙特卡洛法</strong> ：蒙特卡罗法也称统计模拟法、统计试验法。是把概率现象作为研究对象的数值模拟方法。是按抽样调查法求取统计值来推定未知特性量的计算方法。蒙特卡罗是摩纳哥的著名赌城，该法为表明其随机抽样的本质而命名。故适用于对离散系统进行计算仿真试验。在计算仿真中，通过构造一个和系统性能相近似的概率模型，并在数字计算机上进行随机试验，可以模拟系统的随机特性。</li></ul>
+<p>&lt;span id=&quot;三-应用场景&quot;&gt;&lt;/span&gt;</p>
+<h1>三. 应用场景</h1>
+<p><strong>理财产品推广</strong></p>
+<p>背景：现有黄金、股票型基金、债券型基金三种理财产品。我们对全部用户进行实验，推广不同类型的理财产品，分析哪种理财产品最受用户欢迎，从而加大该理财产品的投放力度。</p>
+<p>分析：通过实验我们发现，黄金、股票型基金、债券型基金三种理财产品的购买率分别为3.11%、7.52%、4.38%。那么我们就应该向所有用户推广股票型基金吗？此时我们使用群体对比，将用户拆分为25岁以下、25～35岁、25～45岁、45岁以上四个群体。经过分析我们发现，年轻用户对于股票型基金的青睐度更高，而年长用户对债券型基金的青睐度更高。同理，我们也可以发现，女性用户对黄金理财产品付费意愿更强，而男性用户偏好基金型理财产品。</p>
+<p>&lt;span id=&quot;四-功能使用&quot;&gt;&lt;/span&gt;</p>
+<h1>四. 功能使用</h1>
+<p>&lt;span id=&quot;_1-功能入口&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1.功能入口</strong></h2>
+<p>在实验报告页的<strong>高级分析</strong>页面，在左侧导航栏单击差异分析，在右侧页面的筛选条件中添加群体对比，添加多个群体对比，并点击查询按钮，如下图：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/36ca782d3bdb4ea190724e4eb808f7c1~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-数据展现&quot;&gt;&lt;/span&gt;</p>
+<h2>2.数据展现</h2>
+<p>此时在下方会出现差异分析模块，我们可以对比得到不同实验策略与不同用户群体之间的适用性。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/f2df77bc60a14125a8c5c07c7fea2884~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>支持查看实验版本、用户分群、客群对比的数据。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

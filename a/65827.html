@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>用户分群 · A/B 实验知识库</title>
+<meta name="description" content="背景信息 用户分群是企业进行数据分析、精细化运营的关键一步。用户分群即用户信息标签化，通过用户的历史行为路径、行为特征、偏好等属性，将具有相同属性的用户划分为一个群体，并进行后续的分析。 在A/B实验中使用用户分群能力圈">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65827.html">
+<meta property="og:title" content="用户分群"><meta property="og:description" content="背景信息 用户分群是企业进行数据分析、精细化运营的关键一步。用户分群即用户信息标签化，通过用户的历史行为路径、行为特征、偏好等属性，将具有相同属性的用户划分为一个群体，并进行后续的分析。 在A/B实验中使用用户分群能力圈">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65827.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>用户分群</h1>
+<div class="meta">📄 1,897 字 · 🕐 2024-08-15</div>
+<article class="md"><p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>背景信息</h1>
+<p>用户分群是企业进行数据分析、精细化运营的关键一步。用户分群即用户信息标签化，通过用户的历史行为路径、行为特征、偏好等属性，将具有相同属性的用户划分为一个群体，并进行后续的分析。</p>
+<ul><li>在A/B实验中使用用户分群能力圈定目标用户进行定向实验，有助于开启实验设定目标的有效性。</li></ul>
+<ul><li>同一个应用，如果用户在增长分析（DataFinder）产品中创建分群，也支持在「A/B 测试」产品创建实验、创建Feature选择目标受众的时候使用该分群。</li></ul>
+<p>&lt;span id=&quot;二-分群列表&quot;&gt;&lt;/span&gt;</p>
+<h1>分群列表</h1>
+<p>分群列表为您展示分群的基本情况，如下图：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/04c9a4d924ad4371b38c6bf33e72beba~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>可操作内容如下：</p>
+<ul><li><strong>搜索</strong> ：输入分群名称、创建人可搜索分群；</li></ul>
+<ul><li><strong>创建</strong> ：点击“+创建分群”，即可选择通过条件、文件创建分群；</li></ul>
+<ul><li><strong>管理操作</strong> ：可导出、编辑、刷新、删除分群信息。</li></ul>
+<p>&lt;span id=&quot;三-创建分群&quot;&gt;&lt;/span&gt;</p>
+<h1>创建分群</h1>
+<p><strong>入口</strong>：用户分群页面，右上角「+用户分群」</p>
+<p>支持通过事件筛选、属性筛选等条件创建用户分群，如下图：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/9ac30ef682074a2b8c5fa8e90a51af5d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-1-通过「规则圈选」创建&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>创建方式1：规则圈选</strong></h2>
+<ol><li>配置基本信息。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/9a564fb647004296868dbf287842aadd~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>参数</th><th>配置说明</th></tr></thead><tbody><tr><td>分群名称 &amp; 分群描述</td><td>可直接编辑分群名称和描述信息；</td></tr><tr><td>计算周期</td><td>手动更新：创建完成后将进行计算，计算完成后不会自动更新。若需要重新计算，请点击‘更新’。&lt;br&gt;&lt;br&gt;每日例行：创建完成后将进行计算，并在每日6点计算前一日数据。</td></tr></tbody></table>
+<ol><li>配置创建规则</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0b1f7715ad4944108bf23c3601d54121~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>输入项</th><th>说明</th></tr></thead><tbody><tr><td>时间范围</td><td>时间范围支持<strong>相同时间段</strong>和<strong>不同时间段</strong>&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>相同时间段</strong>：所有筛选条件的时间段都一致&lt;br&gt;&lt;br&gt;* <strong>不同时间段</strong>：自定义每个筛选条件的时间段&lt;br&gt;&lt;br&gt;* 每次时间范围仅支持选择连续365天</td></tr><tr><td>过滤条件</td><td>可以选择用户“做过”，“没做”，“依次做过”的某些行为 &amp; “用户是”“用户不是”的属性&lt;br&gt;&lt;br&gt;&lt;br&gt;* 若选择“用户是”，您仅可选择用户属性的最终值（即该用户该属性的最新值）。&lt;br&gt;&lt;br&gt;* 若需要选择动态属性（如30天前的属性值），请先选择触发事件，并在过滤条件中选择所需属性。&lt;br&gt;&lt;br&gt;* 过滤条件支持“且/或”切换；组合条件支持“且/或”切换；</td></tr><tr><td>预估人数</td><td>点击创建规则配置提示文案后的刷新小图标，可以立即计算当前分群的人数</td></tr></tbody></table>
+<p>&lt;span id=&quot;_3-2-通过「文件上传」创建&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>创建方式2：文件上传</strong></h2>
+<p>支持通过上传用户标识id的列表文件，来创建用户分群，如下图：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/ff8563df5be748b2a309118f963b4e15~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;四-使用分群&quot;&gt;&lt;/span&gt;</p>
+<h1>使用分群</h1>
+<p>在创建实验和创建Feature设置目标受众的时候，可以选择用户分群。如下图：</p>
+<p>&lt;span id=&quot;创建实验中实验&quot;&gt;&lt;/span&gt;</p>
+<h3>创建实验中使用</h3>
+<p>「设置生效策略」\-\&gt;「用户受众规则」时，可选择已创建的分群：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_206339f79a3236b8827e682d1ebfb687.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;创建feature中使用&quot;&gt;&lt;/span&gt;</p>
+<h3>创建Feature中使用</h3>
+<p>「发布受众」\-\&gt;「自定义受众规则」时，可选择已创建的分群：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_d53b718ad5f7ab620ee10fe25c872ef8.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;532b6258&quot;&gt;&lt;/span&gt;</p>
+<h1>参考：用户分群创建逻辑</h1>
+<p>以下为您介绍主要分群创建的逻辑，更多内容可参见DataFinder的用户分群文档。</p>
+<p>&lt;span id=&quot;ac30eb07&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>分群创建规则</strong></h2>
+<table><thead><tr><th><strong>规则条件</strong></th><th><strong>规则介绍</strong></th><th><strong>计算条件</strong></th><th><strong>取值范围</strong></th></tr></thead><tbody><tr><td>用户做过</td><td>选择符合业务所需的具体事件。</td><td>* 总次数：该事件发生的总次数&lt;br&gt;&lt;br&gt;* 每日次数：该事件每日发生的总次数&lt;br&gt;&lt;br&gt;* 天数分布：用户触发该事件的天数分布&lt;br&gt;&lt;br&gt;* 连续天数：用户连续触发该事件的天数&lt;br&gt;&lt;br&gt;* 按...求和/求最大值/求最小值/求平均值/求去重数</td><td>等于、大于、大于等于、小于、小于等于或者区间</td></tr><tr><td>用户没做过</td><td>运营中一个很常见的场景是，希望找到一段时间内没做过某些事情的用户，对他们进行针对性的触达。</td><td>* 总次数：该事件发生的总次数&lt;br&gt;&lt;br&gt;* 每日次数：该事件每日发生的总次数&lt;br&gt;&lt;br&gt;* 天数分布：用户触发该事件的天数分布&lt;br&gt;&lt;br&gt;* 连续天数：用户连续触发该事件的天数&lt;br&gt;&lt;br&gt;* 按...求和/求最大值/求最小值/求平均值/求去重数</td><td>等于、大于、大于等于、小于、小于等于或者区间</td></tr><tr><td>用户依次做过</td><td>指定事件行为序列，用户只有按顺序触发这些事件时才会被选中。</td></tr><tr><td>用户是</td><td>支持选择用户属性、用户分群、用户标签 （默认选择最新值）。</td><td></td><td>等于、不等于、包含、不包含、为空、不为空、自定义包含、正则匹配</td></tr><tr><td>用户不是</td><td>排除特定用户属性、用户分群、用户标签的用户。</td><td></td><td>等于、不等于、包含、不包含、为空、不为空、自定义包含、正则匹配</td></tr></tbody></table>
+<p>&lt;span id=&quot;5417e402&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>分群计算的时间</strong></h2>
+<ul><li>目前分群是会在每日6点开始进行例行计算，通常在8点前会完成一次计算。</li></ul>
+<ul><li>若分群时间条件中包含‘今日’，首次计算&amp;刷新时会触发实时计算；每日例行任务仅计算t\-1日数据</li></ul>
+<p>当前分群计算策略尽可能保障了使用者使用分群时，分群中的人群是最新的。</p>
+<p>&lt;span id=&quot;bdf5fd66&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>静态分群的计算时间</strong></h2>
+<ul><li>若您的分群条件中，仅包含静态时间（如2022.1.1\-2022.2.1），计算方式仅支持手动更新。</li></ul>
+<ul><li>若您不需要每日更新分群结果，也可以选择手动更新。</li></ul>
+<p>&lt;span id=&quot;6457150d&quot;&gt;&lt;/span&gt;</p>
+<h1>参考：用户分群在分流中的生效规则</h1>
+<p>用户分群作为实验的受众规则的实现方式之一，在实验分流过程中的生效与通用的受众规则的过滤是一致的，分流的流程大致如下：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/f05b43a679a44b2883096528e4bd310f~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>由图可见，如果用户不是白名单用户，则分流时会先进行hash分桶，再进行过滤条件的过滤，即用户分群等受众规则条件在分桶后生效。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

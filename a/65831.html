@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SaaS发布日志（2024年前） · A/B 实验知识库</title>
+<meta name="description" content="本文为您提供关于 「A/B 测试」（又名DataTester）使用功能的各项发版更新记录。 20231109\ V3.0.1 用户命中查询优化 实验报告页优化 指标组管理优化 实验列表等列表页跳转详情新开页面 20231">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65831.html">
+<meta property="og:title" content="SaaS发布日志（2024年前）"><meta property="og:description" content="本文为您提供关于 「A/B 测试」（又名DataTester）使用功能的各项发版更新记录。 20231109\ V3.0.1 用户命中查询优化 实验报告页优化 指标组管理优化 实验列表等列表页跳转详情新开页面 20231">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65831.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📎 上手·协议·其他</span></div>
+<h1>SaaS发布日志（2024年前）</h1>
+<div class="meta">📄 24,345 字 · 🕐 2025-06-26</div>
+<article class="md"><p><strong>本文为您提供关于</strong>「A/B 测试」（又名DataTester）使用功能的各项发版更新记录。</p>
+<p>&lt;span id=&quot;0cfce9f0&quot;&gt;&lt;/span&gt;</p>
+<h1>20231109\-V3.0.1</h1>
+<ul><li>用户命中查询优化</li></ul>
+<ul><li>实验报告页优化</li></ul>
+<ul><li>指标组管理优化</li></ul>
+<ul><li>实验列表等列表页跳转详情新开页面</li></ul>
+<p>&lt;span id=&quot;_20231026-v3-0-0&quot;&gt;&lt;/span&gt;</p>
+<h1>20231026\-V3.0.0</h1>
+<ul><li>广告营销实验体验优化</li></ul>
+<ul><li>AB容器组件接入apaas</li></ul>
+<ul><li>实验模版\-自定义流程\-模版发布</li></ul>
+<ul><li>新增用户命中查询功能</li></ul>
+<p>&lt;span id=&quot;_2023年7月31日-v2-8-0-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年7月31日 V2.8.0 版本</h1>
+<ul><li>可视化编辑器VisualEditor3.0.1上线，优化用户体验</li></ul>
+<ul><li>广告创建流程优化</li></ul>
+<p>&lt;span id=&quot;_2023年7月31日-v2-7-6-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年7月31日 V2.7.6 版本</h1>
+<ul><li>广告投放新增橙子建站落地页AB实验组件</li></ul>
+<ul><li>可视化编辑器VisualEditor3.0：chrome扩展模式等上线</li></ul>
+<ul><li>广告投放</li></ul>
+<ul><li>新增销售线索/电商店铺</li></ul>
+<ul><li>适配巨量mapi status字段改动</li></ul>
+<ul><li>修复实验报告页过滤维度用户属性计算逻辑显示错误</li></ul>
+<p>&lt;span id=&quot;_2023年7月20日-v2-7-5-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年7月20日 V2.7.5 版本</h1>
+<ul><li>广告投放新增橙子建站落地页AB实验组件</li></ul>
+<ul><li>可视化编辑器3.0上线，详细查看：<a href="https://www.volcengine.com/docs/6287/1113985" target="_blank" rel="noopener">可视化编辑器</a></li></ul>
+<p>&lt;span id=&quot;_2023年7月14日-v2-7-4-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年7月14日 V2.7.4 版本</h1>
+<p>【新增】</p>
+<ul><li>广告实验上线监测能力</li></ul>
+<ul><li>广告实验报告支持贝叶斯</li></ul>
+<p>&lt;span id=&quot;_2023年7月6日-v2-7-3-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年7月6日 V2.7.3 版本</h1>
+<p>【新增】</p>
+<ul><li>编程实验支持反转实验；详细可查看文档：<a href="https://www.volcengine.com/docs/6287/1113735" target="_blank" rel="noopener">反转实验</a></li></ul>
+<ul><li>新版广告实验上线：<a href="https://www.volcengine.com/docs/6287/1113738" target="_blank" rel="noopener">广告实验新手引导</a></li></ul>
+<ul><li>流程画布：支持选择任意几个节点看人数，增加统计口径；</li></ul>
+<p>【优化】</p>
+<ul><li>指标组列表支持按指标组类型筛选；</li></ul>
+<p>&lt;span id=&quot;_2023年6月13日-v2-7-2-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年6月13日 V2.7.2 版本</h1>
+<ul><li>修复报告页相关问题</li></ul>
+<ul><li>优化指标组列表接口</li></ul>
+<p>&lt;span id=&quot;_2023年5月25日-v2-7-1-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年5月25日 V2.7.1 版本</h1>
+<ul><li>优化了实验流量监控报警、指标相关功能</li></ul>
+<ul><li>修复了部分已知问题</li></ul>
+<p>&lt;span id=&quot;_2023年5月11日-v2-7-0-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年5月11日 V2.7.0 版本</h1>
+<ul><li>Feature Flag 优化：</li></ul>
+<ul><li>增加是否生效标签</li></ul>
+<ul><li>创建 编辑 提示信息优化</li></ul>
+<ul><li>发布增加review权限</li></ul>
+<ul><li>智能运营权限管理优化</li></ul>
+<p>&lt;span id=&quot;_2023年5月5日-v2-6-1-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年5月5日 V2.6.1 版本</h1>
+<ul><li>【bugfix】</li></ul>
+<ul><li>修复流量计算任务时间类型问题</li></ul>
+<ul><li>创编指标组添加负责人报错</li></ul>
+<ul><li>【优化】</li></ul>
+<ul><li>优化留存任务每次重跑的问题</li></ul>
+<ul><li>针对mab实验流量算法改动和mab报告优化</li></ul>
+<ul><li>【新增】</li></ul>
+<ul><li>指标组详情增加指标是否关联运行中实验</li></ul>
+<ul><li>漏斗指标支持刷新计算</li></ul>
+<p>&lt;span id=&quot;_2023年4月25日-v2-6-0-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年4月25日 V2.6.0 版本</h1>
+<ul><li><strong>【新增】</strong> </li></ul>
+<ul><li>全新MAB智能调优实验上线，点击了解详情！<a href="https://www.volcengine.com/docs/6287/416714" target="_blank" rel="noopener">MAB智能调优实验</a></li></ul>
+<ul><li><strong>【bugfix】</strong> </li></ul>
+<ul><li>指标组事件名称太长，导致UI展示错乱</li></ul>
+<ul><li>权限和指标上线获取用户权限信息修改</li></ul>
+<p>&lt;span id=&quot;_2023年3月09日-v2-4-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年3月09日 V2.4.2版本</h1>
+<ol><li>白名单管理，实验和feature白名单的个数限制放到500</li></ol>
+<p>&lt;span id=&quot;_2023年3月02日-v2-4-1版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年3月02日 V2.4.1版本</h1>
+<ol><li>创建父子实验时忽略父实验关联的feature信息</li></ol>
+<ol><li>测试用户选择器默认拉取前1000条数据</li></ol>
+<ol><li>指标dsl新增 property_compose_type 字段</li></ol>
+<p>&lt;span id=&quot;_2023年2月24日-v2-4-0版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年2月24日 V2.4.0版本</h1>
+<ol><li>新版实验上线：重构了实验列表，降低信息密度，提升使用效率；优化实验创建流程；优化并修复实验权限部分相关问题；</li></ol>
+<ol><li>指标升级：新增指标组，可指标更方便的进行分组管理；优化指标创建流程，可疲劳创建指标，提升效率；优化指标权限部分相关问题；</li></ol>
+<ol><li>产品内新增指引文档说明；</li></ol>
+<p>&lt;span id=&quot;_2023年1月12日-v2-3-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2023年1月12日 V2.3.2版本</h1>
+<ol><li>智能运营支持不同通道可配置不同的频率控制和调用频率</li></ol>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_0cfbc4d7b754f9784f1629c1332b62a5.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2022年12月26日-v2-3-0版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年12月26日 V2.3.0版本</h1>
+<ol><li>全新FeatureFlag（智能发布）功能上线：</li></ol>
+<ol><li>底层逻辑优化</li></ol>
+<ol><li>操作界面大升级</li></ol>
+<ol><li>新增实验固化流程等重点功能</li></ol>
+<ol><li>细节操作更加合理人性化</li></ol>
+<ol><li>visualEditor可视化编辑2.0上线</li></ol>
+<p>&lt;span id=&quot;_2022年11月20日-v2-2-1版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年11月20日 V2.2.1版本</h1>
+<p><strong>迭代说明：</strong> </p>
+<ol><li>优化上线多变体可视化实验</li></ol>
+<ol><li>DataTester产品内新增运维+工单的入口，方便用户进行快速反馈。</li></ol>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_cef638912404be363f6b09d3a608fb90.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2022年10月25日-v2-1-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年10月25日 V2.1.2版本</h1>
+<p><strong>迭代说明：</strong> </p>
+<ol><li><strong>上线「经验库」功能</strong></li></ol>
+<p>通过指标过滤、业务信息过滤、用户过滤等方式，选择符合当前筛选条件的历史实验，给未来新开实验提供历史经验参考。详细可查看文档：<a href="https://www.volcengine.com/docs/6287/144907" target="_blank" rel="noopener">经验库</a></p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_58d069e866147007c9db23c8f728e63d.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li><strong>上线「优化计划」功能</strong></li></ol>
+<p>「优化计划」是日常产品的迭代从始至终的缩影，通过制定优化目标、关联AB实验和自动效果跟踪，帮助用户更好的制定业务目标、设计实验、跟踪最终效果，查看帮助文档：<a href="https://www.volcengine.com/docs/6287/138910" target="_blank" rel="noopener">优化计划</a></p>
+<ol><li><strong>推送实验全量发布</strong></li></ol>
+<ul><li>推送实验做完后，可以选择优胜组进行全量推送；</li></ul>
+<p>&lt;span id=&quot;_2022年10月11日-v2-1-1版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年10月11日 V2.1.1版本</h1>
+<p><strong>迭代说明：</strong> </p>
+<ol><li>定时任务缓存同期群报告数据支持app粒度开关</li></ol>
+<ol><li>分流bugfix：修复profile查询逻辑错误</li></ol>
+<p>&lt;span id=&quot;_2022年09月22日-v2-0-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年09月22日 V2.0.2版本</h1>
+<p><strong>迭代说明：</strong> </p>
+<ol><li>创建指标dsl算子增加属性类型</li></ol>
+<ol><li>分流和调度：数据加载逻辑优化</li></ol>
+<p>&lt;span id=&quot;_2022年09月08日-v2-0-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年09月08日 V2.0.2版本</h1>
+<p><strong>迭代说明：</strong> </p>
+<ol><li>支持查看行为细查</li></ol>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_50f4fc77a96542bca0ce2602c0ee422b.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>实验到期提醒支持webhook</li></ol>
+<ol><li>定时任务优化</li></ol>
+<p>&lt;span id=&quot;_2022年08月25日-v2-0-0版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年08月25日 V2.0.0版本</h1>
+<p><strong>迭代说明：</strong> </p>
+<ol><li>新增OpenAPI: 基于指标模板创建指标</li></ol>
+<ol><li>anyevent可选事件公共属性</li></ol>
+<ol><li>报告页逻辑优化，包含报告概览核心指标显著性去除60天最大限制和指标报告的实验版本排序优化</li></ol>
+<ol><li>优化创建指标弹窗速度</li></ol>
+<p>&lt;span id=&quot;_2022年08月11日-v1-9-8版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年08月11日 V1.9.8版本</h1>
+<p><strong>迭代说明：</strong> </p>
+<ol><li>数据管理优化：用户属性\-预置属性支持更改状态，不包括：ab_version、app_platform、app_version、os_name</li></ol>
+<ol><li>伪父子请求实验列表接口优化</li></ol>
+<p>&lt;span id=&quot;_2022年07月18日-v1-9-6版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年07月18日 V1.9.6版本</h1>
+<p><strong>迭代说明：</strong> </p>
+<ol><li>线上售卖支持新的计价方式</li></ol>
+<ol><li>父子实验支持命中实验人群</li></ol>
+<ol><li>分流升级IP定位SDK</li></ol>
+<ol><li>实验创建留存指标的问题</li></ol>
+<p>&lt;span id=&quot;_2022年06月16日-1-9-40版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年06月16日 1.9.40版本</h1>
+<ul><li>功能：</li></ul>
+<ol><li>【场景能力】流程画布实验：在流程画布中设置不同的实验版本，选择目标转化数据较优的版本提升流程画布整体的转化效率。</li></ol>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_88e96411adaad58f2ddc2bbe277b96cc" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>优化&amp;bugfix</li></ul>
+<ol><li>白名单长度限制调整</li></ol>
+<ol><li>openAPI：修改实验接口 补充版本type信息；创建实验接口 增加rpc调用失败兜底</li></ol>
+<ol><li>开放平台草稿信息versions类型适配</li></ol>
+<ol><li>应用接入去除name去重校验</li></ol>
+<p>&lt;span id=&quot;_2022年06月09日-v1-9-39版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年06月09日 V1.9.39版本</h1>
+<ul><li>功能：</li></ul>
+<ol><li>【可视化实验】：可视化编辑器优化</li></ol>
+<ul><li>新增元素：支持通过HTML代码的方式新增元素</li></ul>
+<ul><li>支持能力：</li></ul>
+<p>         （1）格式化</p>
+<p>         （2）换行和取消换行</p>
+<p>         （3）HTML代码格式校验</p>
+<p>         （4）手动输入标签，自动闭合标签</p>
+<p>         （5）优化默认初始化示例代码</p>
+<ul><li>优化&amp;bugfix</li></ul>
+<ol><li>分群接口字段修复</li></ol>
+<ol><li>新增实验冻结、暂停、事件相关等openAPI</li></ol>
+<ol><li>修复私有化安全编译后对静态方法wrapper报错的问题</li></ol>
+<ol><li>修复报告页计算除数为0的问题</li></ol>
+<ol><li>修复os_version在目标受众不展示的问题</li></ol>
+<p>&lt;span id=&quot;_2022年05月20日-v1-9-38版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年05月20日 V1.9.38版本</h1>
+<ul><li>功能</li></ul>
+<ol><li>上线公告</li></ol>
+<ol><li>报价体系升级改造</li></ol>
+<ul><li>bug修复&amp;优化：</li></ul>
+<ol><li>目标受众有关用户属性跳转链接错误的修复</li></ol>
+<ol><li>实验创编服务端实验进组不出组文案调整 (改为进组出组)</li></ol>
+<ol><li>调整上线公告的icon大小</li></ol>
+<ol><li>修复指标事件空白hover + 创建漏斗提示虚拟事件被删除的问题</li></ol>
+<ol><li>修复公共属性重复的问题</li></ol>
+<ol><li>分流服务：更新组件版本</li></ol>
+<ol><li>修复报告页同步转异步导致的埋点问题</li></ol>
+<p>&lt;span id=&quot;_2022年05月20日-v1-9-37版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年05月20日 V1.9.37版本</h1>
+<ul><li>功能</li></ul>
+<ol><li>【场景能力】智能文案调优，文案赛马能力，适用于多文案场景。</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_582ee96885cdc179684ffe386ad54993" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>【指标管理】新增跳出率/退出率指标</li></ol>
+<ul><li>优化&amp;bugfix</li></ul>
+<ol><li>【bugfix】漏斗创建过滤分群和ab_version</li></ol>
+<ol><li>【优化】智能文案调优相关更改</li></ol>
+<ol><li>【bugfix】海外多时区相关问题修复</li></ol>
+<p>&lt;span id=&quot;_2022年05月07日-v1-9-36版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年05月07日 V1.9.36版本</h1>
+<ul><li>功能</li></ul>
+<ol><li>多变体可视化实验：多变体实验（MVT）是同时测试一个网页的两个或更多部分的变体，以查看哪个组合产生最好的结果。MVT 不是显示哪个页面变体最有效（如在 A/B 测试中），而是识别每个元素的最有效变体并确定元素变体的最佳组合。当前支持实验模式为可视化实验。</li></ol>
+<ul><li>适用场景：</li></ul>
+<ul><li>当网站/APP访问量较高时，运行多变体实验才比较有用且有效。</li></ul>
+<ul><li>当用户有一个策略假设可以通过多种方式实现变体，但无法决定该测试哪种组合时，建议使用多变体实验验证。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_7a6e74f29291341911471d5fca4fb4e7" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>优化&amp;bugfix</li></ul>
+<ol><li>mvt实验中关闭实验版本，增加二次确认</li></ol>
+<ol><li>可视化编辑器，保存变体/恢复默认样式，按钮适应页面</li></ol>
+<ol><li>mvt实验报告隐藏热力图标签</li></ol>
+<ol><li>群体洞察报告空结果处理异常修复</li></ol>
+<ol><li>被关联实验剔除草稿</li></ol>
+<ol><li>国际站无权限访问提示优化</li></ol>
+<p>&lt;span id=&quot;_2022年04月21日-v1-9-35版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年04月21日 V1.9.35版本</h1>
+<ul><li>功能</li></ul>
+<p>   1.【编程实验】目标受众\-新增过滤条件：「实验进组用户」，该过滤条件可以选择所有已经开启的实验。</p>
+<p>   2.【广告投放】人群包管理2.0功能上线</p>
+<p>   3.【广告监测】统一授权新增腾讯广告渠道</p>
+<ul><li>优化&amp;bugfix</li></ul>
+<ol><li>选择实验模式弹窗展示优化</li></ol>
+<ol><li>Input的属性变更统一修改</li></ol>
+<ol><li>feature:openapi_v3 查看手动停止实验的原duration；修改creator_source</li></ol>
+<ol><li>断言改为正常响应</li></ol>
+<ol><li>push报告和用户画像报告兼容空结果</li></ol>
+<ol><li>应用接入刷新缓存</li></ol>
+<ol><li>解决label是null的问题</li></ol>
+<ol><li>可视化实验添加版本问题修复</li></ol>
+<ol><li>关闭实验组优化</li></ol>
+<ol><li>【广告监测】设备联调3.0功能上线支持深度事件联调，支持老设备反复联调&quot;</li></ol>
+<ol><li>创建实验\-开始调试 ，加了300ms防抖，多次点击只触发一次</li></ol>
+<ol><li>feature示例代码展示undefined</li></ol>
+<p>&lt;span id=&quot;_2022年04月07日-v1-9-34版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年04月07日 V1.9.34版本</h1>
+<ul><li>功能</li></ul>
+<ol><li>【系统管理】数据管理模块合并至系统管理</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_a9327824602c144994d793cf5118fe96" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>【可视化实验】多页可视化实验：在一个版本中可以包含多个页面，适用于优化前后有关联的多个页面。</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_bb0e1f6607a14e9abe1f8f1109897d59" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>优化&amp;修复：</li></ul>
+<ol><li>feature(byteio):创建实验时，为应用开启byteio</li></ol>
+<ol><li>立即/定时的推送实验的目标受众：事件公共属性、私有化\-用户属性无效的问题</li></ol>
+<ol><li>UI走查调整</li></ol>
+<ol><li>服务端实验也支持MAB</li></ol>
+<ol><li>修复工作流程创建表单标签不展示</li></ol>
+<ol><li>修复海外指标查询时区问题</li></ol>
+<p>&lt;span id=&quot;_2022年03月31日-v1-9-33版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年03月31日 V1.9.33版本</h1>
+<ol><li>品牌增效度量（BLS)</li></ol>
+<ol><li>CIA增效度量实验mvp版本</li></ol>
+<ol><li>【流量分配】“流量变更是否会影响已分配的进组用户，只会对未进组用户”开关逻辑调整</li></ol>
+<ul><li>**客户端\*\*\*\*实验**：在创建中、调试中、运行中可修改开关。</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_43e0cbf06cfb0acf30f3005235696208" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>服务端实验</strong>：需在实验创建、运行中修改开关时，需完成完成<a href="https://www.volcengine.com/docs/6287/65805" target="_blank" rel="noopener">相关的开发</a>。</li></ul>
+<ol><li>【场景能力】推送实验通道增加友盟</li></ol>
+<ol><li>工单入口调整</li></ol>
+<ul><li>优化&amp;bugfix：</li></ul>
+<ol><li>openapi v3</li></ol>
+<ol><li>定时任务（删除demo集团草稿箱内）</li></ol>
+<ol><li>部分模块UI调整</li></ol>
+<p>&lt;span id=&quot;_2022年03月14日-v1-9-32版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年03月14日 V1.9.32版本</h1>
+<ul><li>功能</li></ul>
+<ul><li>广告监测和投放底层数据融合改造和媒体授权一体化功能页面</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_9bae0a4596590efd9cc52a59ad2ed606" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>Bug修复&amp;优化：</li></ul>
+<ul><li>广告投放查询数据解除120天限制</li></ul>
+<ul><li>报表展示去除不合理兜底逻辑</li></ul>
+<ul><li>海外staging环境修复</li></ul>
+<ul><li>tester事件和属性直接依赖meta改造</li></ul>
+<ul><li>报告页事件相关接口增加缓存</li></ul>
+<ul><li>海外站文案修复</li></ul>
+<ul><li>slardar域名合规处理</li></ul>
+<ul><li>修复漏斗版本颜色&amp;hover文案被截断</li></ul>
+<ul><li>指标管理优化</li></ul>
+<ul><li>旧的属性值接口替换</li></ul>
+<p>&lt;span id=&quot;_2022年02月24日-v1-9-31版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年02月24日 V1.9.31版本</h1>
+<ol><li>报告页使用优化：</li></ol>
+<ol><li>盒须快照无数据提示原因</li></ol>
+<ol><li>专业术语增加场景化示例解释</li></ol>
+<ol><li>留存指标的口径说明优化</li></ol>
+<ol><li>报告页增加解读说明</li></ol>
+<ol><li>实验报告页导出进组用户id</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_ded90bb4f1094f344578a8b67e48c2e4" loading="lazy"> &lt;/span&gt;</p>
+<p>Bug修复&amp;优化：</p>
+<ol><li>缓存数据时间过长不可用</li></ol>
+<ol><li>广告支持多语言必要传参</li></ol>
+<ol><li>报告页实验版本展现顺序调整</li></ol>
+<ol><li>单个实验组和进组不出组字段兼容</li></ol>
+<ol><li>草稿箱改造导致的layer_id=null的问题</li></ol>
+<ol><li>修复实验列表的未创建成功提示弹窗的背景图在英文环境下被遮挡的问题</li></ol>
+<ol><li>修复在没有保存实验返回实验列表时还显示未创建成功提示弹窗</li></ol>
+<ol><li>人群圈选增加平台条件</li></ol>
+<ol><li>人群明细查询clickhouse新增限流、人群明细下发batch_size调整</li></ol>
+<ol><li>consumer服务调用profile新增限流</li></ol>
+<ol><li>推送实验\-填写通道配置页 \- 样式调整，修复海外样式问题</li></ol>
+<p>&lt;span id=&quot;_2022年02月21日-v1-9-30版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年02月21日 V1.9.30版本</h1>
+<p>功能：</p>
+<ol><li>【数据管理】事件公共属性口径调整：根据上报方式不同，“事件属性”和“事件公共属性”在概念上统一为“事件属性”，和“用户属性”加以区分。</li></ol>
+<ol><li>【Feature管理】变体支持图片描述和VID信息展示：</li></ol>
+<ul><li><strong>1）变体支持图片描述</strong></li></ul>
+<p>新建Feature时，在变体旁增加图片上传入口；</p>
+<p>配置详情页基本配置的图片支持放大预览，每个变体旁增加图片显示；</p>
+<p>从实验固化至Feature时可将实验组的图片描述复制到变体，同理从Feature开启实验也可将变体的图片复制到实验组；</p>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_97df56f375453983ddb57d4173674fb2" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>2）变体增加VID显示</strong></li></ul>
+<p>变体创建完成后可在详情页查看变体ID，在Feature列表可以依据变体ID搜索对应Feature</p>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_7e9af483d97671f941b5355938a605d9" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>【指标管理】指标支持复制和删除</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_09ccdd9b0ca990faf0be32e7d09ec49d" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>【流量分配】“流量变更是否会影响已分配的进组用户，只会对未进组用户”开关逻辑调整</li></ol>
+<ol><li>客户端实验：实验调试状态中，不允许关闭开关；在运行中的状态下修改实验，开关默认不能修改；调整组间流量后，开关可以修改。</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_83e828cbb061955d4f463e480fce0c2d" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>服务端实验：需在实验创建、运行中修改开关时，需完成完成相关的开发。</li></ol>
+<p>另，服务端实验开启后不可调整组间流量。</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_c155c21bbeb3e18c0be9eee19dc65153" loading="lazy"> &lt;/span&gt;</p>
+<p>优化：</p>
+<ol><li>SDK扫码的H5下的产品名称调整一致</li></ol>
+<p>&lt;span id=&quot;_2022年01月24日-1-9-29版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年01月24日 1.9.29版本</h1>
+<ol><li>【系统管理 \- 审批和工作流程】： 支持不同的业务可配置不同的工作流程，可将审批等作为工作流程的一个环节。（工作流程：由不同环节组成的不同业务的操作流程，比如实验开启、实验固化Feature、Feature都是不同的工作流程）</li></ol>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_2f7ce0b6aa3e211cf4af06ea6f7cb929" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_2ff96aa5690e99fa714402db5dcfc6dd" loading="lazy"> &lt;/span&gt;</p>
+<p>优化：</p>
+<ol><li>overwatch组件升级</li></ol>
+<ol><li>下载数据格式调整</li></ol>
+<ol><li>feature支持特殊字符，版本列表UI优化</li></ol>
+<ol><li>【推送运营】目标转化逻辑调整需求</li></ol>
+<ol><li>【推送运营】配合数据流完成kafka切bmq</li></ol>
+<ol><li>【推送运营】性能优化项\-consumer服务profile调用逻辑优化</li></ol>
+<ol><li>【推送运营】推送实验设置实验版本页和分群相关页面dprc升级</li></ol>
+<ol><li>【推送运营】：频控优化&amp;事件筛选去除预置事件</li></ol>
+<ol><li>【推送运营】：推送任务报表优化</li></ol>
+<ol><li>【推送运营】：FCM\-android/iOS\-到达数据修正</li></ol>
+<p>&lt;span id=&quot;_2022年01月13日-1-9-28版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2022年01月13日 1.9.28版本</h1>
+<p>功能：</p>
+<ol><li>系统管理\-系统设置：新增“假设检验评估方法”设置，可对当前应用内实验的评估方式设置为“T检验”（默认）或“序贯检验”。</li></ol>
+<ul><li>序贯检验：用于需要对实验结果进行连续观测，提前进行决策的实验场景，严格控制第一类错误概率，但会降低实验显著的。在传统的T检验情况下，如果在未达到实验的预定时间就开始观测实验结果并做出决策，有很大可能导致实验发生第一类错误的概率大于5%，使用序贯检验可以在这种场景下保证p\-value小于5%，便于提前做出决策。</li></ul>
+<ul><li>开启序贯检验后无法使用流量计算器</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_7aeca16e25f6409c0bda4b56d5e8e225" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>多客群实验：即针对某一个方案，通过挑选不同的客群，测试当下方案的最优质客群的实验。实验报告多维分析增加「群体对比」能力，使用蒙特卡洛方法，得出每个方案/人群为最优的概率</li></ol>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_0eeb8c004f384b98bc1f55195477d6ef" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>可视化3.2: 支持元素尺寸相关CSS样式编辑</li></ol>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_e098e9cf99d022ec62bfb243b103db0b" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>系统管理：全局操作历史，可从全局角度下查看所有实验和Feature的变更记录</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_2ed1b4bc5cc2e9c86e3ed915071d1e4f" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>系统管理：白名单支持批量登记</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_eab201669454bfcd1d5213c42ebd9052" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>删除用户时数据资产迁移：当某个用户离职（离开）集团时，集团管理员可对离职（离开集团）人员的资产进行迁移处理。资产范围：用户在平台创建的所有内容</li></ol>
+<ol><li>指标管理：指标权限管理新增“私有指标”、“公共指标”配置项。</li></ol>
+<ul><li>指标默认为「公共指标」，当前集团可访问该应用的用户对该指标拥有「查看权限」。当前集团当前应用的集团管理员、应用管理员、指标创建者默认拥有「协作者权限」，可以赋予普通用户「查看权限」和「协作者权限」。</li></ul>
+<ul><li>设置为「私有指标」时，仅创建者、管理员和集团管理员有「查看权限」和「协作者权限」。可以赋予其他用户「查看权限」和「协作者权限」。</li></ul>
+<ul><li>历史指标默认均为公共指标。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_79aaf0c5aa4fb92a53a16cee6c729a95" loading="lazy"> &lt;/span&gt;</p>
+<p>优化：</p>
+<ol><li>可视化实验UI重构</li></ol>
+<ol><li>海外站的优胜组的icon替换</li></ol>
+<ol><li>线上售卖UI组件升级</li></ol>
+<ol><li>overwatch组件升级</li></ol>
+<p>&lt;span id=&quot;_2021年12月06日-1-9-27版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年12月06日 1.9.27版本</h1>
+<p>功能：</p>
+<p>智能运营：</p>
+<ul><li>FCM通道Android「到达数据」调整技术方案 :支持通知消息或透传消息</li></ul>
+<ul><li>注: 修改解决了原安卓数据不准问题(原本是通知，或者通知+透传，现在支持了仅透传)</li></ul>
+<ul><li>两种消息类型的区别：</li></ul>
+<ul><li>透传：可以精准统计到达率，但是通知配置信息需要客户端自定义设置，具体见文档https://xxx</li></ul>
+<ul><li>通知：无需客户端研发，但是可能存在到达数据统计不准确问题</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_ea28f0a7d4724d45015f1073ad6b5439" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>频控功能优化</li></ul>
+<p>优化&amp;bugfix</p>
+<ol><li>【优化】推送任务和流程画布报表优化，推送实验选用极光通道后，表单配置内容对比「智能运营」模块补齐uri_activity 和 uri_action配置项</li></ol>
+<ol><li>【优化】白名单、互斥组、服务器端过滤参数、流量计算器rc前端样式升级</li></ol>
+<ol><li>【bugfix】升级 chart\-space 版本，修复自定义 legend 不能正常展示问题</li></ol>
+<ol><li>【bugfix】服务端参数回显错误问题</li></ol>
+<ol><li>【bugfix】修复系统管理指标权限优先级高于指标管理页单个指标权限的问题</li></ol>
+<ol><li>【bugfix】FinderAB&amp;PlayerAB的指标编辑时候过程时候的展开按钮不可点击</li></ol>
+<p>&lt;span id=&quot;_2021年11月22日-1-9-26版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年11月22日 1.9.26版本</h1>
+<p>功能：</p>
+<ol><li>【国际站】推送实验支持多语言多时区</li></ol>
+<ol><li>实验报告页：支持异步查询</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_1f7aa4980311a3f33e9607a3382b9139" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>针对查询时长大于30秒的查询任务, 建议使用异步查询的方式进行处理, 同时页面上提供选择异步查询或是等待, 选择多样化。该功能主要解决三个问题:</li></ul>
+<ul><li>查询的数据量特别大，同时查询复杂度很高，且无法命中缓存</li></ul>
+<ul><li>查询的并发人数较多，且无法命中缓存</li></ul>
+<ul><li>查询返回的结果集特别大，例如查询一个百万级进组用户数的实验结果</li></ul>
+<ul><li>可以设置任务进展通知邮箱, 可以输入多个, 默认带上ID已绑定的邮箱(如果不输入, 则默认不需要通知)</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_fc7faba81a728f982780576ab84624ea" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>系统管理\-系统设置：支持去除被动事件</li></ol>
+<p>实验进组可以区分按主动任意事件进组，被动事件不作为进组标准。您可将这类事件上报为被动事件, 数据满足真实业务情况。</p>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_114db3a2b7327a31e1659c1392a20efa" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>系统管理\-系统设置：支持自定义无权限提示信息</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_9883fad975c3eb38bb53a55456055875" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>可视化实验2.3：针对同一个页面可以同时开启\*\*「多轮」\*\*可视化实验</li></ol>
+<p>注：当前限制前1轮实验，必须有1个版本流量设置为全量100%，才可开启下一轮可视化实验；目前限制为3轮</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_3a5f82e69d6b7d5b2beda206f084d768" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>支持关闭实验版本：</li></ol>
+<p>使用场景：</p>
+<ul><li>当实验开启多组，有一组因工程或策略等问题导致有不可接受的负向，需要及时止损但又希望其他组继续实验不受影响，火山引擎A/B测试支持关闭某实验组。</li></ul>
+<ul><li>例如实验开启ABCD四组，发现B组显著负向，想要关闭B组但继续尝试CD。</li></ul>
+<p>注：只有状态为运行中的实验可关闭单个实验组</p>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_1b1941d767c791162fb9794dae727219" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>支持限制指标数量：</li></ol>
+<p>在系统设置处，您可对单个实验支持最多的指标数进行设置，上限为1000</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_ecd2aba0ba8f768ce921d666d6b198c1" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>实验支持关联多个转化漏斗指标</li></ol>
+<p>&lt;span id=&quot;_2021年11月04日-1-9-25-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年11月04日 1.9.25 版本</h1>
+<p>功能：</p>
+<ul><li>推送实验支持多语言多时区</li></ul>
+<ul><li>报表指标优化</li></ul>
+<p>Bug修复：</p>
+<ul><li>webhook回执去除did补uuid逻辑</li></ul>
+<ul><li>勾选[无法下发走厂商通道]不影响iOS推送</li></ul>
+<ul><li>极光一次推送两次回执</li></ul>
+<p>&lt;span id=&quot;_2021年10月27日-1-9-24-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年10月27日 1.9.24 版本</h1>
+<p>功能：</p>
+<ul><li>推送实验：支持事件触发、针对时机创建推送实验。</li></ul>
+<ul><li>事件触发：可选择事件触发推送实验，且可设置事件触发规则</li></ul>
+<ul><li>针对时机：允许不同版本选择不同的推送时机</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_50d5a5fba545baed5fb2b68515316ebb" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>推送人群圈选dsl升级</li></ul>
+<ul><li>活跃口径由app_launch 统一为 any active event</li></ul>
+<ul><li>dsl格式由v1改成了v3：解决v1老版本dsl创建任务时校验时间过长导致超时的问题</li></ul>
+<ul><li>实验关联feature支持 json格式</li></ul>
+<ul><li>json类型的实验支持固化为Feature</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_4b533aec7e904de791523433fe8db67d" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>可视化实验3.1：支持背景相关CSS样式编辑，修复编辑器问题</li></ul>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_bbcf2e20997c536a0cf7b6bb4ed87c53" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>线上售卖二期：流程优化及改造</li></ul>
+<p>优化</p>
+<ul><li>推送人群圈选dsl升级</li></ul>
+<p>&lt;span id=&quot;_2021年10月14日-1-9-23-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年10月14日 1.9.23 版本</h1>
+<ul><li>功能</li></ul>
+<ul><li>OpenAPI支持 创建实验/启动实验/停止实验/获取互斥组列表/获取指标列表</li></ul>
+<ul><li>广告实验增加快手渠道</li></ul>
+<ul><li>支持极光批量推送</li></ul>
+<ul><li>①单次推送人数从原来的1人增加到最高1000人</li></ul>
+<ul><li>②推送频率(每分钟推送多少次)可在极光通道设置进行设置</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/59fd43544d9a4c7c87dd13ce718139bb" loading="lazy"> &lt;/span&gt;</p>
+<p>Bug修复：</p>
+<ul><li>群体洞察报告，过滤条件显示undefined</li></ul>
+<p>&lt;span id=&quot;_2021年9月27日-1-9-22-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年9月27日 1.9.22 版本</h1>
+<ul><li>功能</li></ul>
+<ul><li>场景能力\-广告投放：新增电商单品投放（SDPA）能力。通过商品库的商品信息，基于商品特征和用户行为偏好实现精准推送，打破广告之间数据共享能力差的问题，提升广告主拉新、拉活能力。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/f568d85c324a44d48f804e478fb9e094" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>实验类型\-广告实验\-广告对比实验：新增电商单品广告（SDPA）实验</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/dfee19ccf46147b9b20c5d37fe6fecb1" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>服务端分流SDK Go Agent</li></ul>
+<ul><li>优化：</li></ul>
+<ul><li>漏斗指标的不支持修改DSL内容</li></ul>
+<ul><li>服务端过滤参数类型设置的类型，在示例代码中体现</li></ul>
+<ul><li>缺陷修复：</li></ul>
+<ul><li>修复可视化参数匹模式时热力图打开报错的问题</li></ul>
+<ul><li>修复实验结论超过30天显示逻辑异常的问题</li></ul>
+<ul><li>修复进组不出组失效的问题</li></ul>
+<p>&lt;span id=&quot;_2021年9月17日-1-9-21-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年9月17日 1.9.21 版本</h1>
+<ul><li>功能</li></ul>
+<ul><li>自定义过滤模版：新增“时间选择”，可按需对实验报告页日期进行设置并保存成模板。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/25414e727cf247d1ba2b50b514d93262" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/c5e057478a0347f7b86ff8464036d880" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>流程画布支持可重入：对于定时型和触发型流程画布的推送任务，可选择用户参与限制(参与1次or 不限制)</li></ul>
+<ul><li>参与1次：则用户被推送一次后，不会被重复推送</li></ul>
+<ul><li>不限制：用户若多次满足条件会被重复推送，总次数不超过全局频控</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/27208685f60f4c299c4747432b443377" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>优化</li></ul>
+<ul><li>实验报告下载优化</li></ul>
+<ul><li>一些bug修复：</li></ul>
+<ul><li>虚拟事件不允许使用any_event、any_active_event</li></ul>
+<ul><li>创建指标时屏蔽app激活等内置事件</li></ul>
+<p>&lt;span id=&quot;_2021年9月09日-1-9-20-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年9月09日 1.9.20 版本</h1>
+<p>功能：</p>
+<ul><li>广告实验\-增效度量实验：投放类型支持 “系统投放”, 可与tester产品中广告投放能力联动，在saas上完成增效度量实验闭环。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/73e2da1a44b34b04b1f3f8d9073737d1" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>广告投放 ：支持dmp人群包管理 ，支持通过增效度量实验进行创建dmp人群包，并根据绑定账户进行推送生效。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/e42bc10010744b1f907153c48620412e" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>推送实验：支持WebHook，可对接自有或其他触达通道。除了使用系统提供的 Push 等常用方式触达用户，在实际运营工作中，还可能用到一些较为个性化的触达通道（如网站的站内信），或者希望在触达前进行一些个性化处理。为了帮助您对接这些自有或个性化的触达通道，系统提供了 Webhook 接口对接的方式，在触达执行时，会通过回调的方式通知您的服务接口。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/f53ff4ccf6b74ac0af498fe3d820a8d8" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>可视化实验：支持URL精准匹配和URL参数匹配。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/e6a5f1e52cde416bb0264bf6851b7be2" loading="lazy"> &lt;/span&gt;</p>
+<p>精准匹配适用于用户明确知道url的场景，参数匹配用于在某些投放场景下，投放的渠道会随机增加参数的场景，在这种场景下，简单匹配无法区分让某些投放渠道，精准匹配无法提前预知具体的链接</p>
+<p>优化：</p>
+<ul><li>接入应用流程优化：接入应用步骤简化</li></ul>
+<p>&lt;span id=&quot;_2021年8月26日-1-9-19-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年8月26日 1.9.19 版本</h1>
+<p>功能：</p>
+<ol><li><strong>指标管理\-指标监控：</strong>  Feature 和 实验发布之后，即等同于发布了新版本，即使是小流量实验，也意味着可能对线上业务产生影响。该模块提供了报警监控的能力，可以对上线之后的功能进行监控，当业务指标或技术指标出现变动时，报警任务会及时触达到对应的负责人。</li></ol>
+<ul><li>支持的报警类型：大盘报警、Feature报警以及实验报警</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/a2edd447f5a443f2b076852f6b32e30c" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>可对基本信息、报警等级、任务间隔、关联场景、关联Feature、关联实验、报警策略、通知方式进行配置</li></ul>
+<ul><li>通知方式：支持飞书、企业微信、钉钉、邮件等多种触达方式</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/087d9f44012c4c05b1309344d31a1ecf" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>可对报警任务的接受组进行配置和管理</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/b48cfe7e2ae5413d85dde58472f24828" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>广告实验\-增效度量实验：通过A/B实验的思路+组间匹配的方式，对比用户被不同广告类型、广告素材曝光后，将是否发生广告曝光作为唯一变量，来合理科学度量广告曝光对于转化量的提升。 广告主可以在火山引擎AB平台，上传DMP人群，配置度量实验，进行跨渠道的投放生效，ab平台提供投放和监测服务，也可配置对接客户的投放和监测服务，在投放后一定周期内完成监测数据归因和转化数据回传，平台统一生成增效度量实验报告。</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/cf94890e032d459fb3fd0d4e6df09398" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>「广告对比实验」新增「电商店铺」场景</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/5ce419e579984a0aa308c70a17196728" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>增加人群定向/预算出价实验</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/3441f4acdd2e413b8d78a33921c7f19c" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>电商店铺数据报告：数据报告有两个部分：</li></ul>
+<ol><li>汇总数据对比：</li></ol>
+<ul><li>包含曝光人数、转化率、转化数、消耗、CPM、点击单价、转化成本、展示数、点击数、点击率</li></ul>
+<ul><li>每个指标后面计算出对照组和实验组的差异值，并用红色箭头表示下降、绿色箭头表示上升</li></ul>
+<ul><li>计算的数据是从实验开始至今的汇总数据</li></ul>
+<ol><li>明细数据</li></ol>
+<ul><li>可以通过下拉框选择具体的指标，查看实验开始至今的每天变化趋势</li></ul>
+<ul><li>时间粒度默认天级，没有其他粒度可选</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/cbece451b4bb43abb1588bafb60313e3" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>热力图分析：可视化/多链接实验报告支持热力图分析，帮助您直观且快速的对比不同实验版本的效果。</li></ol>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/370bd9ecbfc94d59a9fc362f76bb653a" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>点击热力图：适用于观察用户具体的点击行为，以此洞察页面的交互优化。（如：通过热力图发现页面的哪些部分吸引了大多数用户的注意，进一步优化；通过热力图发现用户经常会点击一些非连接/元素的地方，可以考虑在该位置增加可点击链接/元素）</li></ul>
+<ul><li>元素热力图：根据圈选事件生成热力图，并展示元素点击的统计量和排序</li></ul>
+<p>&lt;span id=&quot;_2021年8月13日-1-9-18-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年8月13日 1.9.18 版本</h1>
+<p>优化：</p>
+<ul><li>进入产品后，默认跳转到上次停留的应用上（没有携带appid的情况下）</li></ul>
+<ul><li>报告页新架构技术优化</li></ul>
+<ul><li>白名单输入SSID或UUID的时候去掉前后空格</li></ul>
+<p>&lt;span id=&quot;_2021年8月09日-1-9-17-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年8月09日 1.9.17 版本</h1>
+<ul><li><strong>场景能力\-智能运营</strong>：营销自动化工具，支持运营人员自助开展用户的精准触达，以提升用户运营效率。</li></ul>
+<ul><li>*精准人群圈选* ：支持通过用户分群、用户属性、行为条件等多种方式圈定目标用户；</li></ul>
+<ul><li>*精准触达时机* ：可按照预设规则，由用户行为自动触发营销动作，并支持定时触达、例行触达等方式；</li></ul>
+<ul><li>*流程画布* ：可设计编排自动化流程，在用户旅程的环节中自动提醒用户，以促进用户转化；</li></ul>
+<ul><li>*多任务分流和赛马* ：在一个任务中同时使用多套内容触达用户，根据触达效果手动或自动选择最优方案；</li></ul>
+<ul><li>*跨渠道触达* ：系统通过user_unique_id将用户在各个触点的行为合并串联在一起，同时支持跨渠道触达；</li></ul>
+<ul><li>*实时效果监控* ：系统提供推送实时数据报表帮助运营人员监控触达效果。</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/f30b9217a519406898552de4b3575f17" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2021年8月02日-1-9-16-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年8月02日 1.9.16 版本</h1>
+<p>功能：</p>
+<ol><li>广告实验：全新实验类型「广告实验」，对于投放中不同素材、预算出价、人群定向、落地页等广告元素进行实验，并且通过科学完善的实验报告，验证素材的转化数据，了解不同广告元素对于投放结果的影响，提升投放效果。</li></ol>
+<p>   &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/a90b7d9cb706406a8834d418310a9a2e" loading="lazy"> &lt;/span&gt;</p>
+<p>   &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/e88e55073b3a4e44822a2becea40bf57" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>自定义留存指标：指标列表新增“留存指标”类型，支持灵活新建指定起始事件和回访事件口径的自定义留存指标；</li></ol>
+<p>   &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/1cb4a5be670f4e5dbd1dce242e1be602" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>实验报告页新增“留存指标”分析模块，提供更全面灵活的实验分析能力：支持筛选时间和维度、以及灵活切换留存指标口径，并提供天级详细数据和趋势图。</li></ul>
+<p>   &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/9ae893cb42d44bb09662e79441c16ab1" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>多链接实验url匹配类型新增【参数匹配】方式，支持用户自定义url中的域名、路径及参数</li></ol>
+<p>   &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/be825d607a6347279edf7d3324630b39" loading="lazy"> &lt;/span&gt;</p>
+<p>优化：</p>
+<ol><li>编程实验 、可视化实验创建指引视频新增和更新</li></ol>
+<p>   &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/84c1722a4c524fd5b8afe02f0115b9ba" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>可视化DEMO实验优化：支持对demo实验进行编辑和修改</li></ol>
+<p>&lt;span id=&quot;_2021年7月19日-1-9-15-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年7月19日 1.9.15 版本</h1>
+<p>优化：</p>
+<ol><li>前端切换CDN, 对JS SDK的域名有影响, 需要用户配合升级JS SDK</li></ol>
+<ol><li>其他小优化</li></ol>
+<p>&lt;span id=&quot;_2021年7月06日-1-9-14-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年7月06日 1.9.14 版本</h1>
+<p>功能：</p>
+<ul><li>广告投放：全新「广告投放」模块，集创建广告计划、广告数据分析、资源管理为一体。</li></ul>
+<ul><li>批量创建计划：将计划拆解成多元件，以组装积木的方式一次创建多种组合多个计划，极大提高效率。</li></ul>
+<ul><li>素材管理：帮助您以数据化的方式管理公共、私人不同类型的素材，并度量素材效果。</li></ul>
+<ul><li>多维度数据分析：自定义大宽表，结合多数据源，支持多维度下钻分析。帮助您管理和了解不同素材、落地页、人群包的拉新转化效果。</li></ul>
+<ul><li>账号管理：可添加、分配和管理您的广告账户，支持对「投放状态」以及「账户分配」进行批量管理。</li></ul>
+<ul><li>应用管理：您可以接入并设置广告投放的应用，及其投放渠道和回传方式。</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/bf8756dd25884eb1aa5638253708c84d" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>指标权限管理：</li></ul>
+<ul><li>在「指标管理」中，可针对单个指标，可对不同角色或用户进行「查看权限」和「协作者权限」的设置，实现多人协作。</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/ba47af2f7d5f40a9a72b9512415c0e69" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>可视化实验：</li></ul>
+<ul><li>支持新增、隐藏、移动、删除元素</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/cd71144388d64c12aca8cb269bb25182" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2021年6月28日-1-9-13-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年6月28日 1.9.13 版本</h1>
+<p>功能：</p>
+<ul><li>AB测试产品支持线上售卖</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/ad41a1bfe6234b87a92b25e7f12cf9c7" loading="lazy"> &lt;/span&gt;</p>
+<p>优化：</p>
+<ul><li>Feature Flag交互主流程优化&amp;UI升级</li></ul>
+<ul><li>版本管理页展示最新版本的详情信息,可直接查看版本详情</li></ul>
+<ul><li>版本详情编辑、发布、开启实验操作按钮UI优化,方便用户直观进行各项操作</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/5204d499da804f79b3f3ee6acfef5ae6" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>Feature列表增加发布和回滚操作入口</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/eb7838a2a31d4dac8705b86ea46c200a" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>创建/编辑Feature增加目录引导,可快捷定位到各步骤</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/e6d0060093c545b7bdfd31e1986ef19d" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>多链接实验：优化实验配置流程，在设置实验版本的同时可创建虚拟事件。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/7fb4710c68204b9f93956ae9b697bbbb" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>服务端实验支持冻结操作、客户端实验支持暂停操作</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/e47ee51af90e4f45af5a4d23b2dbb0bc" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2021年6月10日-1-9-12-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年6月10日 1.9.12 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>智能实验调优：及时、智能地调整流量分配，快速淘汰低价值、不符合预期的变量组合，让最优的变量组合快速发挥价值，取得 \*\*尽可能优的总体效果、取得整体收益的最大化。</li></ul>
+<p>      注：目前支持编程实验(客户端)、可视化实验、多链接实验</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/69bad266a2e34a48b41d8db2df0a1592" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>优化：</li></ul>
+<ul><li>服务端实验报告查询性能优化：查询速度约提升80%（注：具体提升因环境、app而异）</li></ul>
+<p>&lt;span id=&quot;_2021年5月27日-1-9-11-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年5月27日 1.9.11 版本</h1>
+<ul><li>优化：</li></ul>
+<ul><li>指标保存不冲突时候展示问题</li></ul>
+<ul><li>置信区间设置的问题</li></ul>
+<ul><li>同期群的指标详情hover的提示</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/8c46a378c1b240db8073e3fb5e0823f5" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2021年5月20日-1-9-10-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年5月20日 1.9.10 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>Tester核心页面UI升级</li></ul>
+<ul><li>可基于地理位置（城市、省份）圈选目标受众进行客户端实验【仅中国站】</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/da6f45a5d74b443f9c6afb2a7d44161f" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>优化：</li></ul>
+<ul><li>修改运行中和已经结束的实验，跳过AABB实验校验</li></ul>
+<ul><li>修复了权限管理禁用的名称仍可点击的问题</li></ul>
+<ul><li>修复了指标列表一些相关的问题</li></ul>
+<ul><li>起停删除实验升级新API</li></ul>
+<ul><li>分流即时生效（端到端生效时间pct99降低到10s）</li></ul>
+<p>&lt;span id=&quot;_2021年5月18日-1-9-9-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年5月18日 1.9.9 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>权限管理：可高效快捷对用户进行功能（如实验管理、指标管理等）授权。</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/603feebf023842d39bc57428de0cfe08" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>顶部导航栏支持切换集团</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/65a83a0537fc4a589b14e451f537adde" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2021年5月06日-1-9-8-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年5月06日 1.9.8 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>报告页自定义过滤模板：对实验报告进行看板配置时，可将常用的过滤条件保存成自定义模板并共享，避免重复配置，提升协作效率。</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/95420936c92a44ad8305093ced2b3d0d" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>群体洞察：分析实验报告时，可通过简单的点选，从年龄、性别的角度对实验指标进行洞察与分析。</li></ul>
+<p>      &lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/18a04d61605b4c2bac0041f50ecdba04" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2021年4月22日-1-9-7-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年4月22日 1.9.7 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>「应用性能监控」数据赋能FeatureFlag v1.0</li></ul>
+<ul><li>接入「应用性能监控」三端技术指标：崩溃次数、崩溃率等12个技术指标，可在FeatureFlag使用监测\&gt;\&gt;监控指标查看</li></ul>
+<ul><li>创建feature可选择关注哪些技术指标，关注的技术指标能查看监控看板</li></ul>
+<ul><li>支持报警：指标波动超出阈值可报警，报警事件可按指标+名称聚合查看</li></ul>
+<p>         ``<code>Plain          注：使用需要安装「应用性能监控」SDK，可按照接入指导安装即可          </code>``</p>
+<ul><li>优化：</li></ul>
+<ul><li>增加埋点：①虚拟事件的创建&amp;管理。②APNs和FCM通道</li></ul>
+<p>&lt;span id=&quot;_2021年4月15日-1-9-6-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年4月15日 1.9.6 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>指标属性聚合函数过滤能力，即当用户选择的事件定义口径包括「UV」、「PV/UV」、「PV/AU」、「UV/AU」、「SUM/UV」，事件属性为数值型的时候，可以按照「人」、「事件属性」、「公共属性」（包含「自定义属性」）这些聚合维度进行聚合，可选的维度≤2个，默认值是「人」。</li></ul>
+<ul><li>关注指标列表支持指标“复制”</li></ul>
+<ul><li>SaaS客户端实验，支持客户上传的用户自定义属性分流(user profile上报的用户属性)，自定义定向能力增强</li></ul>
+<ul><li>自定义选择邮件接收人</li></ul>
+<ul><li>国际站多语言能力增强，支持切换”日文“环境。</li></ul>
+<ul><li>优化：</li></ul>
+<ul><li>可视化实验Demo优化：①百度网站无法使用降级体验，优化后可使用。②SDK版本低，引导更新文案常驻在页面。③圈选事件入口漏出。④客户未打开ab开关，新增sdk升级引导。⑤缩略图展示的时候被拉伸，已修复。⑥无法上传图片且无报错提示，已修复。⑦如果只开通了tester没有开通finder，打开可视化编辑器会提示“身份验证失败”，但是可正常进行编辑操作，圈选模拟器只支持finder的鉴权，已经修复。</li></ul>
+<p>&lt;span id=&quot;_2021年4月8日-1-9-5-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年4月8日 1.9.5 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>虚拟事件创建&amp;管理</li></ul>
+<ul><li>国际站Push实验V1.1，支持创建海外APNs和FCM通道的推送实验</li></ul>
+<ul><li>优化：</li></ul>
+<ul><li>Demo优化（①可视化实验，编辑器保存后，下一步操作引导优化。②在创建实验/feature的过程中，使用服务端过滤参数，改成只可查看和使用自己创建的）</li></ul>
+<ul><li>虚拟事件、分群、指标等增删改查对实验影响及解决方案</li></ul>
+<p>&lt;span id=&quot;_2021年3月25日-1-9-4-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年3月25日 1.9.4 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>可视化实验：</li></ul>
+<ul><li>①V2.0：界面重构&amp;UI美化、编辑区域常驻、配置文件schema升级、支持切换PC桌面端&amp;移动端、操作记录拆分、代码重构；</li></ul>
+<ul><li>②V2.1：扩展支持编辑元素类型（V1.x版本支持编辑的元素类型只有div span p a img；V2.0支持全部类型的元素编辑，仅对某些元素可编辑内容做了限制。）、显示可视化编辑页面的缩略图、已创建圈选事件可以再次创建指标、支持自定义图片上传。</li></ul>
+<ul><li>采集事件指标，支持公共属性过滤</li></ul>
+<ul><li>A/B实验固化Feature流程优化：</li></ul>
+<ul><li>①固化流程优化：增加保存并发布操作，提升从实验到固化feature全量的流畅体验；增加固化后关停实验操作和提示；</li></ul>
+<ul><li>②固化规则优化：优化了从单个组固化和从实验固化的默认规则和不同版本的合并/覆盖规则；</li></ul>
+<ul><li>③固化的icon优化。</li></ul>
+<ul><li>Feature支持json类型的变体。</li></ul>
+<ul><li>优化：</li></ul>
+<ul><li>SSID分流服务优化（SSID后端生成、服务端补查SSID，解决登录用户跳变等影响）</li></ul>
+<p>&lt;span id=&quot;_2021年3月18日-1-9-3-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年3月18日 1.9.3 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>实验的“长时运行提醒/到期提醒/实验报告订阅/指标监控”，支持同时给所有实验协作者发送邮件</li></ul>
+<ul><li>优化：</li></ul>
+<ul><li>“开启运维按钮”，完成升级发版</li></ul>
+<ul><li>DataTester迁移至火山引擎后，必要埋点前后端更新</li></ul>
+<p>&lt;span id=&quot;_2021年3月11日-1-9-2-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年3月11日 1.9.2 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>白名单验证过滤条件</li></ul>
+<p>&lt;span id=&quot;_2021年3月2日-1-9-1-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年3月2日 1.9.1 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>Feature Key生命周期管理\-服务端</li></ul>
+<ul><li>服务端实验解决方案升级(需要使用2.0版本sdk)： sdk自动上报用户进组信息，对应示例代码和文案调整等</li></ul>
+<ul><li>服务端SDK升级（Java、Python、Golang、PHP、Nodejs、Ruby）</li></ul>
+<ul><li>优化：</li></ul>
+<ul><li>实验报告页\-过滤维度，新老用户口径查询逻辑优化</li></ul>
+<ul><li>事件量统计接口迁移到rangers，对未授权的app增加过滤</li></ul>
+<p>&lt;span id=&quot;_2021年2月28日-1-8-6-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年2月28日 1.8.6 版本</h1>
+<ul><li>优化：</li></ul>
+<ul><li>Demo实验上线</li></ul>
+<ul><li>中国站：移动端应用（父子实验、转化漏斗实验）</li></ul>
+<ul><li>国际站：移动端应用（推送实验）</li></ul>
+<ul><li>实验报告：</li></ul>
+<ul><li>鼠标hover转化漏斗指标，显示指标的“转化时间窗口、全局过滤条件”</li></ul>
+<ul><li>转化漏斗展示事件名称优化 ，显示别名</li></ul>
+<ul><li>同期群分析，图切换成chartSpace</li></ul>
+<p>&lt;span id=&quot;_2021年2月19日-1-8-5-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年2月19日 1.8.5 版本</h1>
+<ul><li>功能：</li></ul>
+<ul><li>扫码关联调试设备。支持移动端App（iOS、Android），不支持微信小程序、Web/H5/WAP端</li></ul>
+<ul><li>其他</li></ul>
+<ul><li>适配staring翻译支持实时发布更新</li></ul>
+<p>&lt;span id=&quot;_2021年1月28日-1-8-4-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年1月28日 1.8.4 版本</h1>
+<ul><li>优化</li></ul>
+<ul><li>Demo环境的“Demo实验&quot;，实验列表漏出「创建子实验」的入口，创建实验流程漏出「新建互斥组」入口。</li></ul>
+<ul><li>Feature管理，首次设置发布计划，弹窗二次确认。</li></ul>
+<ul><li>顶部导航（帮助文档、消息中心）图表大小、颜色一致。</li></ul>
+<ul><li>互斥组列表，状态过滤条件改为平铺形态。</li></ul>
+<ul><li>指标创建支持数值格式化UI优化，增强功能的可扩展性。</li></ul>
+<ul><li>Bugfixs</li></ul>
+<ul><li>打开产品帮助引导，输入框无法输入。</li></ul>
+<ul><li>新建指标，如未完成必填内容填写，无法保存且loading状态。</li></ul>
+<ul><li>点击「保存草稿or开始调试」，两个按钮同时处于加载状态。</li></ul>
+<ul><li>其他</li></ul>
+<ul><li>前端组件全部升级到antd4版本。</li></ul>
+<p>&lt;span id=&quot;_2021年1月21日-1-8-3-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年1月21日 1.8.3 版本</h1>
+<p>优化</p>
+<ul><li>Feature 变体使用监测</li></ul>
+<ul><li>筛选条件：支持按Feature版本筛选查看某个版本的变体使用情况。</li></ul>
+<ul><li>变体使用趋势图，支持一键全选所有变体。</li></ul>
+<ul><li>展示当前发布版本以及状态，支持跳转至版本详情页。</li></ul>
+<ul><li>变体图例格式优化，支持查看变体信息和生效状态。</li></ul>
+<ul><li>在「发布计划」页面，支持跳转至对应版本的变体使用监测页面。</li></ul>
+<p>&lt;span id=&quot;_2021年1月18日-1-8-2-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年1月18日 1.8.2 版本</h1>
+<p>功能</p>
+<ul><li>同期群分析，支持单天口径。</li></ul>
+<ul><li>采集事件指标增加算子「每日活跃均次」，算子描述：pv/sum(dau)，表示事件发生的总次数/用户活跃天数。</li></ul>
+<p>优化</p>
+<ul><li>实验报告页的过滤条件选项，增加“为空”“不为空”。</li></ul>
+<ul><li>指标列表，支持查看该指标被使用于哪些实验，以及操作历史优化。</li></ul>
+<ul><li>各个功能的“名称、描述”的输入框实现保持一致。</li></ul>
+<ul><li>英文状态下的运行时间符合英文语法。</li></ul>
+<p>&lt;span id=&quot;_2021年1月10日-1-8-1-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2021年1月10日 1.8.1 版本</h1>
+<p>优化</p>
+<ul><li>埋点分析：父子实验、feature发布计划&amp;回滚、必看指标大盘看板</li></ul>
+<p>技术升级</p>
+<ul><li>前端图形库切换到chartspace</li></ul>
+<p>&lt;span id=&quot;_2020年12月24日-1-7-8-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年12月24日 1.7.8 版本</h1>
+<p>功能</p>
+<ul><li>Feature Key生命周期监控和管理\-客户端</li></ul>
+<p>优化</p>
+<ul><li>Demo集团用户，支持查看必看指标大盘看板。</li></ul>
+<p>&lt;span id=&quot;_2020年12月17日-1-7-7-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年12月17日 1.7.7 版本</h1>
+<p>功能</p>
+<ul><li>实验报告富信息\-二期（①天级趋势图支持P\-value。②指标列表支持分子分母信息。③累积趋势图支持天级，不支持灵活自定义时间窗口和过滤条件多维现查。）</li></ul>
+<ul><li>国际站push推送实验（极光推送、个推推送）。</li></ul>
+<p>优化</p>
+<ul><li>在Tester系统管理，提供「数据管理」入口。</li></ul>
+<ul><li>Tester控制台迁移至火山引擎，下掉工单入口。</li></ul>
+<p>&lt;span id=&quot;_2020年12月10日-1-7-6-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年12月10日 1.7.6 版本</h1>
+<p>功能：</p>
+<ul><li>必看指标看板</li></ul>
+<ul><li>支持服务端ruby sdk</li></ul>
+<ul><li>站内信发送支持多语言</li></ul>
+<ul><li>DataTester控制台迁移至火山引擎</li></ul>
+<p>优化：</p>
+<ul><li>英文界面优化（①预置的崩溃监控指标，支持英文。②新建feature只有分群无公共属性，bugfix。③服务端实验/feature，去掉分群作为过滤条件的入口。④实验数据导出，支持英文。等等）</li></ul>
+<ul><li>实验报告优化：若实验添加了转化漏斗指标，不论漏斗指标置信不置信，都显示置信度和置信区间。</li></ul>
+<p>&lt;span id=&quot;_2020年12月3日-1-7-5-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年12月3日 1.7.5 版本</h1>
+<p>功能：</p>
+<ul><li>Feature发布计划&amp;回滚</li></ul>
+<p>优化：</p>
+<ul><li>新建指标支持数值格式化</li></ul>
+<ul><li>实验列表支持拖拽</li></ul>
+<ul><li>必填\*丢失 bugfix。③英文显示不全bugfix。④指标名称&amp;口径重复校验优化。⑤填写白名单时，可区分当前App的口径UUID/SSID。⑥国际站隐藏实验审批入口。⑦各个列表页搜索组件保持一致。⑧增加必看指标、核心指标的问号文案。⑨实验驳回/通过优化，因为右上角支持对N+1个实验进行驳回/通过，所以去掉针对单个实验“操作”列的驳回/通过。⑩国际站英文翻译list修改。等等）</li></ul>
+<p>&lt;span id=&quot;_2020年11月26日-1-7-4-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年11月26日 1.7.4 版本</h1>
+<p>优化</p>
+<ul><li>可视化实验，未安装可视化SDK，降级方案&amp;安装扩展弹窗提示信息优化。</li></ul>
+<ul><li>调度脚本性能优化（调度的耗时从17s降低到400ms）。</li></ul>
+<ul><li>实验参数取值提示优化（①允许AA实验，即只有2个实验版本前提下，允许两个实验组的参数组合取值相同；②当版本数≥3，不允许参数组合取值相同）。</li></ul>
+<p>&lt;span id=&quot;_2020年11月19日-1-7-3-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年11月19日 1.7.3 版本</h1>
+<p>功能：</p>
+<ul><li>支持创建父子关联实验。</li></ul>
+<ul><li>产品用量统计，与finder、player口径分别保持一致。</li></ul>
+<p>优化：</p>
+<ul><li>实验报告页优化（详细视图增加vid信息等）。</li></ul>
+<p>&lt;span id=&quot;_2020年11月6日-1-7-2-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年11月6日 1.7.2 版本</h1>
+<p>优化：</p>
+<ul><li>可视化编辑器优化。</li></ul>
+<ul><li>指标创建口径冲突校验。</li></ul>
+<ul><li>实验版本名称，任意类型实验&amp;任意实验状态都可支持编辑。</li></ul>
+<ul><li>实验报告的指标的计算方式展现形式修改优化。</li></ul>
+<p>&lt;span id=&quot;_2020年11月3日-1-7-1-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年11月3日 1.7.1 版本</h1>
+<p>功能：</p>
+<ul><li>实验报告页富信息一期（①实验关注指标：p\-value、MDE、盒须快照、天级趋势、概率分布；②留存指标：N日留存日趋势图；③全局视图 \-\&gt; 单一视图）。</li></ul>
+<ul><li>按活跃天数求均值。</li></ul>
+<p>&lt;span id=&quot;_2020年10月27日-1-6-7-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年10月27日 1.6.7 版本</h1>
+<p>优化：</p>
+<ul><li>老用户留存进组用户数异常问题排查。</li></ul>
+<ul><li>埋点分析“push推送实验、崩溃监控、转化漏斗分析”。</li></ul>
+<p>其它：</p>
+<ul><li>提供inner api给push，包括①新建实验，②修改实验配置（主要是实验组的流量比例），③查看实验详情。</li></ul>
+<ul><li>SaaS/私有化版本完成一轮安全渗透测试。</li></ul>
+<p>&lt;span id=&quot;_2020年10月22日-1-6-6-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年10月22日 1.6.6 版本</h1>
+<p>功能：</p>
+<ul><li>新增产品用量统计口径（MAU+全事件量）</li></ul>
+<p>优化：</p>
+<ul><li>产品帮助引导\-注册服务端过滤参数（实验+feature）</li></ul>
+<p>&lt;span id=&quot;_2020年10月15日-1-6-5-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年10月15日 1.6.5 版本</h1>
+<p><strong>优化：</strong> </p>
+<ul><li>产品帮助引导\-push推送实验</li></ul>
+<ul><li>必看指标权限优化</li></ul>
+<p>&lt;span id=&quot;_2020年9月24日-1-6-4-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年9月24日 1.6.4 版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>转化漏斗分析</li></ul>
+<ul><li>OpenAPI 进组用户id接口</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>前端组件库升级（另一半）。</li></ul>
+<ul><li>Demo集团demo实验造数</li></ul>
+<ul><li>填写实验、feature等名称，空格优化。</li></ul>
+<ul><li>草稿实验权限优化</li></ul>
+<ul><li>实验报告页\-实时报告优化（①创建实验当天，在「实验关注指标」默认显示实时数据（5分钟级）。②结束实验当天，即使实验已结束，用户仍然可以查看实时数据。③若实验当天开当天关，实验结束后，「关注实验指标」默认为实时数据颗粒度（5分钟级）。当实验开启日≠实验结束日时，实验结束当日「关注实验指标」默认为天级颗粒度。④报告顶部「实验概览」的“进组用户”更名为“实时进组用户”。）</li></ul>
+<p>&lt;span id=&quot;_2020年9月17日-1-6-3-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年9月17日 1.6.3 版本</h1>
+<p><strong>优化：</strong> </p>
+<ul><li>安全工单修复“实验草稿详情页权限越界”，暂时改为只有管理员和实验创建者才可查看草稿详情。</li></ul>
+<ul><li>Demo集团优化：①搜索框内文案一致。②去掉demo集团新建xx悬浮。③白名单、服务端过滤参数页面常驻信息提示“Demo环境您只能看到自己创建的白名单，正式环境可以看到当前应用所有xxx。”</li></ul>
+<ul><li>Demo集团互斥组用户可创建并使用。</li></ul>
+<ul><li>Demo集团「DataPlayer移动端demo」应用下，不能查看分群页面，下掉该应用tester的入口。</li></ul>
+<ul><li>顶导定位优化（如点击系统管理\-用户分群，顶导变为蓝色）。</li></ul>
+<p>&lt;span id=&quot;_2020年9月14日-1-6-2-版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年9月14日 1.6.2 版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>PushAB实验1.0</li></ul>
+<ul><li>App崩溃监控</li></ul>
+<ul><li>添加DOM水印</li></ul>
+<ul><li>实验列表字段自定义：支持对列表表格展现内容做自定义配置</li></ul>
+<ul><li>样本量计算器支持多重比较修正</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>选择实验模式优化：可视化和多链接实验只支持Web端网页、H5页面；推送实验只支持iOS、Android应用</li></ul>
+<ul><li>留存指标支持多重比较修正</li></ul>
+<ul><li>实验参数冲突校验</li></ul>
+<p><strong>产品运营：</strong> </p>
+<ul><li>埋点分析（包含实验列表「去关联、选择实验模式」，feature列表「开启实验、权限管理」，产品用量统计，用户分群，置信水平参数设置）</li></ul>
+<p>&lt;span id=&quot;_2020年9月3日-1-6-1版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年9月3日 1.6.1版本</h1>
+<p><strong>优化：</strong> </p>
+<ul><li>实验报告页缓存机制优化</li></ul>
+<ul><li>实验报告页指标hover态弹窗优化</li></ul>
+<ul><li>创建指标hover态提示信息优化：hover公共属性&amp;事件属性，显示更多属性相关信息（同Finder）</li></ul>
+<ul><li>新增“引导实验固化至Feature”提示信息</li></ul>
+<ul><li>Feature自定义受众规则过滤条件优化：当属性类型为字符串、操作符 为 “=”时，属性值支持切换到文本模式，可批量复制</li></ul>
+<ul><li>“Demo体验”集团权限优化，实验、Feature、指标、白名单、服务端过滤参数的「权限+页面常驻文案+重名报错文案」优化</li></ul>
+<p><strong>产品运营：</strong> </p>
+<ul><li>埋点分析增加FinderAB/PlayerAB预约商务演示</li></ul>
+<p>&lt;span id=&quot;_2020年8月27日-1-5-9版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年8月27日 1.5.9版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>Feature权限管理</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>实验权限管理优化：①列表字段名称及枚举值优化； ②文案优化“共享\-\&gt;公共”；③搜索下拉显示已添加权限用户，并支持通过拼音搜索</li></ul>
+<p>&lt;span id=&quot;_2020年8月20日-1-5-8版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年8月20日 1.5.8版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>创建/管理用户分群</li></ul>
+<ul><li>OpenAPI：实验配置、实验留存导出、实验指标导出、实验相关过滤参数</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>FinderAB/PlayerAB埋点双写</li></ul>
+<ul><li>Redis缓存</li></ul>
+<ul><li>部分前端优化</li></ul>
+<p>&lt;span id=&quot;_2020年8月13日-1-5-7版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年8月13日 1.5.7版本</h1>
+<p><strong>优化：</strong> </p>
+<ul><li>置信度水平配置优化</li></ul>
+<ul><li>置信度水平更改的站内信文案优化</li></ul>
+<ul><li>实验报告结论概览文案优化；</li></ul>
+<ul><li>可视化编辑模式V1.5优化（接入其他集团提示、圈选事件不可撤销）</li></ul>
+<p>&lt;span id=&quot;_2020年8月6日-1-5-6版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年8月6日 1.5.6版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>置信度水平参数全局设置</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>置信度策略库切换</li></ul>
+<ul><li>产品用量统计优化</li></ul>
+<ul><li>名称输入框优化</li></ul>
+<ul><li>demo实验置顶</li></ul>
+<ul><li>可视化编辑模式1.5优化（如hover信息提示、demo集团放开可视化圈选埋点等）</li></ul>
+<p><strong>其他：</strong> </p>
+<ul><li>vivo浏览器推荐内容项目\-实验进组用户导出</li></ul>
+<p>&lt;span id=&quot;_2020年7月30日-1-5-5版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年7月30日 1.5.5版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>可视化编辑模式1.5：可视化圈选事件、免种SDK渲染页面</li></ul>
+<ul><li>结束一周以内实验补录指标</li></ul>
+<ul><li>付费集团应用用量统计</li></ul>
+<ul><li>实验数据导出</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>创建/编辑实验或feature点击进度条序号定位</li></ul>
+<ul><li>可视化实验URL输入框输入法bugfix</li></ul>
+<ul><li>服务端实验目标受众新增「+注册过滤参数」入口</li></ul>
+<ul><li>实验列表页「查看报告」位置前置</li></ul>
+<p>&lt;span id=&quot;_2020年7月26日-1-5-4版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年7月26日 1.5.4版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>多端接入改造</li></ul>
+<ul><li>指标支持可视化圈选事件</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>帮助引导产品化优化：（1）支持打开&amp;关闭样式（2）分型隔离（3）新增多链接、可视化实验相关内容</li></ul>
+<ul><li>Windows、Mac字体更新</li></ul>
+<ul><li>海外app，禁用分群</li></ul>
+<ul><li>Demo环境指标越权安全漏洞修复</li></ul>
+<p>&lt;span id=&quot;_2020年7月17日-1-5-3版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年7月17日 1.5.3版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>实验受众可使用DataFinder用户分群</li></ul>
+<ul><li>实时报告分析</li></ul>
+<ul><li>服务端node.js SDK</li></ul>
+<ul><li>帮助引导产品化\-增加创建实验教学视频</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>报告页优化</li></ul>
+<ul><li>应用接入示例代码优化调整</li></ul>
+<p>&lt;span id=&quot;_2020年7月9日-1-5-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年7月9日 1.5.2版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>实验诊断工具</li></ul>
+<ul><li>5个实验Demo、3个Feature Demo上线（Demo\-Web端可视化编辑实验、Demo\-小程序编辑模式实验、Demo\-Web端编辑模式实验、Demo\-移动端新用户实验、移动端/Web端/小程序端\-客户端Feature ）</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>创建实验UI优化</li></ul>
+<ul><li>流量计算器的样式bugfix</li></ul>
+<p>&lt;span id=&quot;_2020年7月2日-1-5-1版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年7月2日 1.5.1版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>指标监控报警V1.0</li></ul>
+<ul><li>帮助引导产品化</li></ul>
+<ul><li>服务端Node.js sample code</li></ul>
+<ul><li>Demo升级：4个实验、3个Feature上线，包括:</li></ul>
+<ul><li>(1)Demo\-Web端可视化编辑实验</li></ul>
+<ul><li>(2)Demo\-小程序编辑模式实验</li></ul>
+<ul><li>(3)Demo\-Web端编辑模式实验</li></ul>
+<ul><li>(4)Demo\-移动端新用户实验</li></ul>
+<ul><li>(5)移动端/Web端/小程序端\-客户端Feature</li></ul>
+<p><strong>运营分析优化</strong></p>
+<ul><li>OrgID/AppID/OrgName/AppName埋点更新为公共属性</li></ul>
+<p>&lt;span id=&quot;_2020年6月24日-1-4-7版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年6月24日 1.4.7版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>实验报告 <strong>邮件订阅</strong></li></ul>
+<ul><li><strong>实验生命周期监控</strong> \-实验长时运行提醒</li></ul>
+<ul><li>新手帮助引导产品化</li></ul>
+<ul><li>Web端多链接实验Demo</li></ul>
+<ul><li>Meta元数据服务重构</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>AB实验/FF打通优化（共7个优化点）</li></ul>
+<p>&lt;span id=&quot;_2020年6月11日-1-4-6版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年6月11日 1.4.6版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>实验生命周期监控\-实验到期提醒</li></ul>
+<ul><li>服务端过滤参数管理：可以用于服务端实验和服务端Feature Flag进行受众人群的过滤。</li></ul>
+<ul><li>通过参数过滤实验列表</li></ul>
+<p><strong>优化</strong></p>
+<ul><li>playerAB/finderAB下撤白名单管理入口</li></ul>
+<ul><li>定向圈人filter筛选，增加下拉选项的搜索入口</li></ul>
+<ul><li>白名单管理优化：依据接入SSID/UUID分流口径，提示用户针对性创建。</li></ul>
+<p>&lt;span id=&quot;_2020年6月7日-1-4-5版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年6月7日 1.4.5版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li><strong>开启Feature类型的编程实验</strong> ：实验与Feature打通功能之一，允许用户直接开启Feature类型的编程实验，只需在创建实验参数和版本时，选择目标feature即可。</li></ul>
+<ul><li><strong>Feature Flag示例代码</strong></li></ul>
+<ul><li>其他：jwt内部服务鉴权改造</li></ul>
+<p>&lt;span id=&quot;_2020年5月28日-1-4-4版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年5月28日 1.4.4版本</h1>
+<p><strong>功能/优化：</strong> </p>
+<ul><li><strong>从Feature开启实验</strong> ：实验与Feature打通功能之一，允许用户可以直接从Feature开启实验</li></ul>
+<ul><li><strong>服务端Feature Flag</strong></li></ul>
+<ul><li><strong>实验列表多维过滤器</strong> ：当前支持「实验模式」、「实验类型」、「实验状态」组合过滤条件</li></ul>
+<ul><li><strong>实验示例代码优化</strong> ：代码优化、位置优化、分支优化</li></ul>
+<ul><li>实验支持targeting受众的拖拉拽模式</li></ul>
+<ul><li>SDK加入目标实验config下发接口</li></ul>
+<p><strong>Bugfix：</strong> </p>
+<ul><li>AB固化至feature时，拖拉拽targeting失效问题修复</li></ul>
+<p>&lt;span id=&quot;_2020年5月21日-1-4-3版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年5月21日 1.4.3版本</h1>
+<p><strong>功能/优化：</strong> </p>
+<ul><li>AB实验固化至Feature：实验与Feature Flag打通，用户开启实验后发现效果提升显著且置信，即可以固化至Feature进行发布管控，将好的策略或idea沉淀下来。</li></ul>
+<ul><li>报告页指标统计口径提示：用户查看报告时，指标hover态即可提示指标定义的口径，方便快速了解实验效果。</li></ul>
+<ul><li>前端框架升级，优化性能。</li></ul>
+<p><strong>Bugfix：</strong> </p>
+<ul><li>多链接实验白名单URL过滤bugfix</li></ul>
+<p><strong>其他：</strong> </p>
+<ul><li>Libra所有APP完成DataTester迁移，下线不再提供服务；</li></ul>
+<ul><li>后端KOI升级，如python2.x升级为python3等。</li></ul>
+<p>&lt;span id=&quot;_2020年5月14日-1-4-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年5月14日 1.4.2版本</h1>
+<p><strong>功能/优化：</strong> </p>
+<ul><li>可视化编辑模式</li></ul>
+<ul><li>部分组合指标支持置信度计算。当组合指标计算公式符合A/B、B/A形式的，同时分子分母满足如下约束条件时，支持置信度计算：</li></ul>
+<ul><li>UV/UV或AU/AU或UV/AU类型：例如转化率等</li></ul>
+<ul><li>PV/UV或SUM/UV或PV/AU或SUM/AU类型</li></ul>
+<ul><li>PV/PV或SUM/SUM或PV/SUM或SUM/PV</li></ul>
+<p>&lt;span id=&quot;_2020年5月9日-1-4-1版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年5月9日 1.4.1版本</h1>
+<p><strong>功能/优化：</strong> </p>
+<ul><li>服务端实验暂停的实验报告</li></ul>
+<ul><li>流量为0的实验可保存</li></ul>
+<ul><li>用户体验6处细节优化（帮助中心地址、客户端&amp;服务端实验提示、草稿箱icon、实验名称支持输入空格等）</li></ul>
+<p><strong>Bugfix：</strong> </p>
+<ul><li>留存报告页，多维过滤取消作用于留存，只过滤base_use。</li></ul>
+<p>&lt;span id=&quot;_2020年4月26日-1-3-8版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年4月26日 1.3.8版本</h1>
+<p><strong>功能/优化：</strong> </p>
+<ul><li>PlayerAB上线</li></ul>
+<ul><li>创建/编辑实验时长小于7天提示信息</li></ul>
+<ul><li>复制实验后实验时长设置策略为max(30，原实验时长)</li></ul>
+<p><strong>Bugfix：</strong> </p>
+<ul><li>已结束实验「暂停」和「恢复」按钮置灰</li></ul>
+<p>&lt;span id=&quot;_2020年4月23日-1-3-7版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年4月23日 1.3.7版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>海外开服部分服务上线SG和美东（剩余脚本及CDN等预计陆续在5月后第一周内上线）</li></ul>
+<ul><li>流量计算器WAU定时任务预计算</li></ul>
+<p><strong>优化及Bugfix：</strong> </p>
+<ul><li>分流服务tabAPI（后续补充监控旁路）</li></ul>
+<ul><li>白名单同层重复使用提示bugfix</li></ul>
+<ul><li>流量策略升级修复服务端实验bugfix</li></ul>
+<ul><li>返回内部错误提示信息bugfix</li></ul>
+<p>&lt;span id=&quot;_2020年4月16日-1-3-6版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年4月16日 1.3.6版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>多链接实验1.0，也有称为网页拆分实验、Split URL Testing等</li></ul>
+<ul><li>服务端实验暂停/恢复</li></ul>
+<ul><li>流量建议工具2.0：非转化率型指标</li></ul>
+<ul><li>实验报告的留存分析支持多维过滤</li></ul>
+<p><strong>优化及Bugfix：</strong> </p>
+<ul><li>白名单管理：圈选checkbox、使用白名单icon区分、使用体验整体优化等</li></ul>
+<ul><li>英文报告页文字重叠bugfix</li></ul>
+<ul><li>分流日志</li></ul>
+<p>&lt;span id=&quot;_2020年4月9日-1-3-5版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年4月9日 1.3.5版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>流量策略升级：允许已进组用户在流量变更或过滤属性变化时，维持原有进组信息，不发生出组，避免用户的体验发生跳变。</li></ul>
+<p><strong>Bugfix</strong></p>
+<ul><li>客户端iOS SDK返回默认值BugFix</li></ul>
+<p>&lt;span id=&quot;_2020年4月2日-1-3-4版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年4月2日 1.3.4版本</h1>
+<p><strong>优化：</strong> </p>
+<ul><li>留存定时任务并行化</li></ul>
+<ul><li>实验报告置信区间和结果解读的提示信息</li></ul>
+<ul><li>编辑实验或查看报告，新建浏览器tab页，避免冲掉当前列表的翻页和搜索内容。</li></ul>
+<p><strong>Bugfix</strong></p>
+<ul><li>白名单下拉选项hover态提示信息</li></ul>
+<ul><li>置信区间负向显著颜色问题修复</li></ul>
+<p>&lt;span id=&quot;_2020年3月26日-1-3-3版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年3月26日 1.3.3版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>白名单管理模块：</li></ul>
+<ul><li>白名单增删改查</li></ul>
+<ul><li>创建实验和Feature关联使用白名单</li></ul>
+<ul><li>「运维介入」DataTester默认15天</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>DataTester切换Finder接口调用Rangers的数据管理接口</li></ul>
+<ul><li>冻结/解冻实验，留存报告的展现样式优化</li></ul>
+<p>&lt;span id=&quot;_2020年3月19日-1-3-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年3月19日 1.3.2版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>Feature Flag 拖拉拽定向圈人能力</li></ul>
+<ul><li>流量建议工具（uv/au转化率型指标）：提供流量建议工具，根据客户接入应用的每周新增到访活跃UV、核心指标基线、MDE、统计功效、显著性水平等信息，协助用户计算每个实验版本的样本量、建议开设的线上流量和实验时长。（本期支持UV/AU的转化率型指标）</li></ul>
+<p>&lt;span id=&quot;_2020年3月12日-1-3-1版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年3月12日 1.3.1版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>中国站多语言切换，支持简体中文和英文</li></ul>
+<ul><li>增加「运维人员介入」、「工单」和「IM」入口</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>冻结和解冻实验的实验报告优化</li></ul>
+<ul><li>Feature Flag上传图片样式优化</li></ul>
+<p>&lt;span id=&quot;_2020年3月6日-1-2-5版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年3月6日 1.2.5版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>支持解冻实验</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>域名更新：byte\*_\-\&gt;_data\*</li></ul>
+<ul><li>实验、指标和Feature新icon替换</li></ul>
+<p>&lt;span id=&quot;_2020年2月27日-1-2-4版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年2月27日 1.2.4版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li><strong>Feature管理</strong> ：又称为Feature Toggle、Feature Flip，用于控制线上功能开启或关闭，以及不同值的发布范围。产品在新功能发布前，通常可通过Feature Flag进行灰度小流量衡量效果、验证策略、及早发现bug。Feature Flag具有如下优势：</li></ul>
+<ul><li>产品Feature一站式生命周期管理</li></ul>
+<ul><li>云端控制Feature开关，随时发布，随心发布</li></ul>
+<ul><li>逐步扩量，更安全将Feature发布给用户</li></ul>
+<ul><li>及时止损，Feature有损时秒级关闭Feature</li></ul>
+<ul><li>千人千面，针对不同受众，可以发布不同的Feature版本</li></ul>
+<p>当前Feature Flag模块包括Feature创建与管理、客户端Settings下发、自定义发布受、灰度发布等。目前Feature类型支持两类，Boolean的双变体和String/数值型的多变体。</p>
+<p>Feature原理图如下:</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/tos-cn-v-697126/9f3010cb1b7f4762b7b2c2d490a1a3b3.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>Rangers应用列表页「DataTester」Title链接优化</li></ul>
+<p>&lt;span id=&quot;_2020年2月19日-1-2-3版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年2月19日 1.2.3版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>虚拟事件支持：创建指标支持使用虚拟事件。</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>双层定向圈人样式优化。</li></ul>
+<p>&lt;span id=&quot;_2020年2月13日-1-2-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年2月13日 1.2.2版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>实验级别的权限管控模块：提供实验粒度的用户和角色权限管控。用户可以通过实验创建或编辑后的「权限管控」入口，配置共享实验或私有实验，并针对目标用户或角色进行授权、撤权的操作。</li></ul>
+<ul><li>共享实验，所有集团内该应用可见的用户均可在实验列表页查看该实验的实验报告。集团管理员、应用管理员和被赋予协作者权限的用户可编辑、启停和冻结实验。共享实验中，具有协作者权限的用户可以通过黑名单方式，撤销集团内某些用户对实验的读取权限。</li></ul>
+<ul><li>私有实验，只有创建者、集团管理员、应用管理员和显式地被赋予读取权限的用户才可在实验列表中查看实验的实验报告。创作者、集团管理员、应用管理员和显式地被赋予协作者权限的用户才可编辑、启停和冻结实验。</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>双层定向实验样式优化。</li></ul>
+<p>&lt;span id=&quot;_2020年2月6日-1-2-1版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年2月6日 1.2.1版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>运行实验加入新互斥层：当一个互斥层为空，或没有任何运行中实验，则可以添加运行中的实验进入该互斥层；一个运行中的实验，可通过编辑实验参数加入一个为空的或没有其他运行中实验的互斥层；添加互斥层时显示互斥层剩余流量，每个互斥层都可查看流量使用情况以及当前运行中和调试中实验的流量占用情况。</li></ul>
+<ul><li>双层定向圈人上线：创建/编辑实验时，定向受众环节，支持多个筛选组，组间关系支持「或」；在每个筛选组内支持多个过滤筛选条件，每个条件之间为「且」关系。</li></ul>
+<ul><li>优化进组AU计算：采用any_event计算进组活跃用户数，保证同一APPID下同时存在H5落地页及移动端程序情况下，计算口径的一致性。</li></ul>
+<p><strong>其他：</strong> </p>
+<ul><li>切换应用白屏bug修复。</li></ul>
+<p>&lt;span id=&quot;_2020年1月16日-1-1-2版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年1月16日 1.1.2版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>打通DataFinder增强实验分析能力：通过在DataFinder中以实验ID作为过滤条件，分析DataTester中创建的实验，形成闭环解决方案，您可以在Tester和FinderAB中通过每个实验版本的版本ID进行融通查询。</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>「实验组」更名为「实验版本」</li></ul>
+<ul><li>实验报告优化：包括概览页联动效果、报告结论按照版本排序等优化项。</li></ul>
+<p>&lt;span id=&quot;_2020年1月9日-1-1-0版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年1月9日 1.1.0版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>实验操作历史：用户可从实验报告页及实验详情页查看实验操作历史和变更明细；</li></ul>
+<ul><li>实验冻结：实验冻结，方便用户开设短期实验、长期观察实验指标变化和命中实验的用户留存分析。当前实验冻结后不允许解冻实验。（当前JS SDK不支持冻结实验，预计春节后上线新版本）；</li></ul>
+<ul><li>创建组合指标：在指标管理模块中，用户可以基于多个事件创建组合指标；</li></ul>
+<ul><li>新用户实验：支持开启基于安装时间的新用户实验。创建实验的目标受众环节，用户可以选择「用户新增日期」维度及「开启实验后」等算子，选择让开启实验后的所有新增用户进入实验。</li></ul>
+<p><strong>优化：</strong> </p>
+<ul><li>实验指标优化：创建指标时优先支持比率型指标，包括活跃均次（pv/au）、转化率（pv/au）、按...求活跃均值（sum/au）、人均次数（pv/uv）、按...求人均值（sum/uv）、按...求平均值（sum/pv）。为消除样本量带来的偏差，核心指标必须选择比率型指标；</li></ul>
+<ul><li>实验报告优化：优化实验结论概览，产出全面指示性的结论，同时优化指标置信区间展现方式，为用户提供更加易懂直观的报告分析体验。</li></ul>
+<p>&lt;span id=&quot;_2020年1月2日-1-0-1版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2020年1月2日 1.0.1版本</h1>
+<p><strong>修复范围：</strong> </p>
+<ul><li>支持AA实验</li></ul>
+<ul><li>实验名称唯一</li></ul>
+<ul><li>互斥组标签优化</li></ul>
+<ul><li>实验组命名优化</li></ul>
+<ul><li>流量分配输入框优化</li></ul>
+<ul><li>实验组流量权重控件优化</li></ul>
+<ul><li>数字千位符</li></ul>
+<ul><li>下线recordid自定义维度</li></ul>
+<p>&lt;span id=&quot;_2019年12月19日-1-0-0版本&quot;&gt;&lt;/span&gt;</p>
+<h1>2019年12月19日 1.0.0版本</h1>
+<p><strong>功能：</strong> </p>
+<ul><li>实验管理：用户可以创建和编辑客户端和服务端实验；</li></ul>
+<ul><li>支持多实验版本和多参数；</li></ul>
+<ul><li>实验时长可支持365天；</li></ul>
+<ul><li>支持互斥实验与正交实验：支持创建互斥层，相关实验可以开设在相同互斥层以免互相干扰。非相关实验可以开设为正交实验，保证用户随机、科学、稳定地分流；</li></ul>
+<ul><li>实验流量：支持自定义配置各实验版本之间流量权重；</li></ul>
+<ul><li>定向圈人：支持多种Rangers预置基本维度，包括软件版本、手机品牌、省份、国家、分辨率、运营商、浏览器、浏览器版本、系统语言、设备型号等，用户也可自定义维度及分群进行圈人；</li></ul>
+<ul><li>支持iOS、Android、JS、PHP、Python、Java、Go等多种语言。</li></ul>
+<ul><li>实验报告：统计引擎自动化分析实验指标，计算用户留存，产出指示性结论，辅助科学决策；</li></ul>
+<ul><li>指标管理：用户可以统一管理指标，建立必看指标，避免实验单一指标以偏概全，辅助综合评估实验科学性。</li></ul>
+<p><strong>产品优势：</strong> </p>
+<ul><li>全域实验：支持前端iOS、Android、Web/H5、微信小程序和后端、Python、PHP、Java等全平台开设实验；</li></ul>
+<ul><li>流量圈选：灵活多样的属性规则配置，支持多种预设维度和用户自定义维度，方便精准圈选目标受众；</li></ul>
+<ul><li>互斥实验：相关实验可以开设在相同互斥层以免互相干扰。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

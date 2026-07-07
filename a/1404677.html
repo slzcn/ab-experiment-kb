@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>编程个性化 · A/B 实验知识库</title>
+<meta name="description" content="个性化是指根据用户的行为、兴趣、地理位置等信息， 为用户提供个性化的内容和体验 ，以提高用户满意度和转化率。DataTester支持创建个性化实验，本文为您介绍创建编程个性化实验的操作步骤。 使用限制 当前所有SaaS用">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1404677.html">
+<meta property="og:title" content="编程个性化"><meta property="og:description" content="个性化是指根据用户的行为、兴趣、地理位置等信息， 为用户提供个性化的内容和体验 ，以提高用户满意度和转化率。DataTester支持创建个性化实验，本文为您介绍创建编程个性化实验的操作步骤。 使用限制 当前所有SaaS用">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1404677.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>编程个性化</h1>
+<div class="meta">📄 2,531 字 · 🕐 2025-10-27</div>
+<article class="md"><p>个性化是指根据用户的行为、兴趣、地理位置等信息，<strong>为用户提供个性化的内容和体验</strong>，以提高用户满意度和转化率。DataTester支持创建个性化实验，本文为您介绍创建编程个性化实验的操作步骤。</p>
+<p>&lt;span id=&quot;955091b6&quot;&gt;&lt;/span&gt;</p>
+<h1>使用限制</h1>
+<p>当前所有SaaS用户可免费试用，后续个性化功能会升级为旗舰版功能。</p>
+<ul><li>版本要求：SaaS用户：目前灰度上线，如果您希望使用编程个性化实验，可联系A/B测试技术支持人员，申请白名单试用。</li></ul>
+<ul><li>实验类型：服务端/客户端</li></ul>
+<p>&lt;span id=&quot;2c96cc50&quot;&gt;&lt;/span&gt;</p>
+<h1>创建个性化实验</h1>
+<p>&lt;span id=&quot;504bd871&quot;&gt;&lt;/span&gt;</p>
+<h2>准备工作</h2>
+<p>与普通A/B实验类似，创建个性化实验前，请先完成以下准备工作：</p>
+<ul><li>根据实验需求完成数据接入操作。</li></ul>
+<ul><li>根据实验规划，明确实验指标，建议提前创建好实验指标。</li></ul>
+<p>&lt;span id=&quot;c7c41fb0&quot;&gt;&lt;/span&gt;</p>
+<h2>step1：进入个性化实验页面</h2>
+<p>登录并进入A/B测试控制台后，在页面左侧导航栏选择<strong>个性化</strong>\&gt;<strong>编程个性化</strong>，进入<strong>编程个性化列表</strong>后单击右上角的\*\*+编程个性化\*\*按钮，进入创建页面。</p>
+<p>&lt;span id=&quot;2887a81c&quot;&gt;&lt;/span&gt;</p>
+<h2>step2：配置个性化实验参数</h2>
+<ol><li>配置个性化实验的基础信息。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fd7b9001dfbc4ebfbfc9aef230d0a3a3~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>配置项</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>个性化名称</strong></td><td>建议与个性化内容相关的名称，比如：版本号+内容。便于让其他相关人员能够快速了解到此个性化实验是做什么的、是在哪个迭代版本的。</td></tr><tr><td><strong>类型</strong></td><td>支持选择<strong>服务端</strong>或<strong>客户端</strong>实验类型。</td></tr><tr><td><strong>负责人</strong></td><td>默认为个性化实验创建人。</td></tr></tbody></table>
+<ol><li>配置个性化策略。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/d3141e0ce9034595bdc13b5367795ca6~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>配置项</th><th>配置说明</th></tr></thead><tbody><tr><td>流量层</td><td>* 选择编程个性化实验的流量层，默认自动创建一个新的流量层。&lt;br&gt;&lt;br&gt;* 您也可以选择<strong>手动选择</strong>，在已创建的流量层中选择一个流量层。</td></tr><tr><td>流量层流量</td><td>配置编程个性化实验需要预留的流量层的流量占比。预留流量是指应该看到您的原始页面的用户百分比，至少 5%。</td></tr><tr><td>对照流量比例</td><td>对照流量用来做个性化全局对照组，可呈现全局对照指标。&lt;br&gt;&lt;br&gt;实际对照流量=流量层流量 \* 对照流量比例</td></tr></tbody></table>
+<ol><li>添加个性化观测指标。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/23fcb9898a0c4ff793dc6e9886b47dc3~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>支持在指标列表中勾选添加观测指标。</li></ul>
+<ul><li>如果指标选择的下拉框中没有实验所需的指标，可单击右上方的新建指标，跳转到创建指标页面进行创建；对已选的指标也可单击指标后的链接按钮，跳转指标组详情页面查看详情。</li></ul>
+<ol><li>单击<strong>保存</strong>，进入实验构建器页面，可继续后续创建个性化实验的操作步骤。</li></ol>
+<p>&lt;span id=&quot;97993c55&quot;&gt;&lt;/span&gt;</p>
+<h2>step3：创建实验策略</h2>
+<p>支持为编程个性化实验创建多个实验策略，操作步骤类似，以下以创建一个实验策略为例，为您介绍详细的操作步骤。</p>
+<ol><li>在个性化画布页签中，单击画布中的添加实验策略。</li></ol>
+<p>创建第一个实验</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/46aa0179337c477dbb8cc4622b9a0b90~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>创建多个实验</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fb2f64a2d3d64abda45706117699e5dd~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>配置实验的基础信息参数。</li></ol>
+<table><thead><tr><th>配置项</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>名称</strong>&amp;<strong>描述</strong></td><td>建议与实验内容相关的名称，比如：版本号+内容。</td></tr><tr><td><strong>时长</strong></td><td>默认是7天，自定义有效期最高设置365天。您也可以根据需要选择是否设置为长期有效。</td></tr></tbody></table>
+<ol><li>配置实验生效策略。</li></ol>
+<p>   只有满足此受众规则的用户才能看到实验。 如果不提供条件，此实验将展示给所有访问您网站的用户。</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fc9efab658ac41ff8c3c10baa729b7ac~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>添加且条件、或条件：可以通过筛选<strong>用户属性</strong>（客户端）或\*\*服务端过滤参数（服务端）\*\*来控制参与个性化实验的用户。</li></ul>
+<ul><li>添加分群（客户端支持）：可以通过筛选<strong>用户分群</strong>的方式来控制参与个性化实验的用户。</li></ul>
+<ol><li>配置个性化实验的实验版本信息。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/da213bf9240b4fe387ec4e6c5bf0b78c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>您可根据实际实验需要，选择个性化实验的版本是多实验版本，还是单一版本。</li></ol>
+<ul><li>多实验版本：默认为多实验版本，可通过单击下方的\*\*+添加实验版本\*\*按钮来添加多个实验版本。</li></ul>
+<ul><li>单一版本：仅一个实验版本。</li></ul>
+<ol><li>在各个实验版本页面配置对应的版本类型、实验版本的版本参数。</li></ol>
+<table><thead><tr><th>配置项</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>版本名称</strong>&amp;<strong>描述</strong></td><td>设置用于快速标识实验版本和对照版本的版本名称和描述，比如：版本号+内容。</td></tr><tr><td><strong>测试用户</strong></td><td>添加后续进行实验调试的测试白名单用户，支持：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 手动输入白名单用户的ssid，支持输入多个，通过逗号隔开。&lt;br&gt;&lt;br&gt;* 也可选择已创建的白名单组，支持多选。</td></tr><tr><td><strong>参数配置</strong></td><td>为各个实验版本添加实验参数。</td></tr><tr><td><strong>流量分配</strong></td><td>配置对照组、实验组的用户流量分配，支持均匀分配，或关闭均匀分配开关后手动调整流量分配比例。</td></tr></tbody></table>
+<ol><li>单击<strong>创建并进入调试</strong>，返回编程个性化实验画布页面。</li></ol>
+<p>   已添加的白名单用户可查看对应版本的页面情况，确认子实验的配置是否符合预期。如果符合预期，您可根据规划正式开启个性化实验。</p>
+<p>&lt;span id=&quot;a6582b4f&quot;&gt;&lt;/span&gt;</p>
+<h1>开启/结束个性化实验</h1>
+<p>已调试符合预期的个性化实验，您可按需开始实验，开始后也可以根据实验情况停止对应的个性化实验。</p>
+<ul><li>您可以在实验列表页面，开始/停止对应的个性化实验。</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/a5849bf13373467890c8075de2a002d1~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>您也可以进入个性化实验的实验构建器，在这里您可以开启/停止整个个性实验，或仅开启/停止其中某个子实验。</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0e1950d955f94ffa90589d8df347f925~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;db1668f6&quot;&gt;&lt;/span&gt;</p>
+<h1>查看个性化实验报告</h1>
+<p>实验开始后，您可以进入个性化实验的报告页面，查看个性化实验的指标结果等信息，结合个性化实验报告进行业务调整。</p>
+<p>&lt;span id=&quot;fa6a212c&quot;&gt;&lt;/span&gt;</p>
+<h2>报告概览</h2>
+<p>个性化更关注的是绝对最优解，也就是整体个性化整体最优解。个性化概览在核心指标中收益是最重要。</p>
+<ul><li>选中个性化时，报告展示：</li></ul>
+<p>   （1）总体概览</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/8915635a0fa7454e8ba15d0083fe7625~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/58e98fbef5c44e2680d0f9b128a9febb~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>   （2）实验趋势</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/8955dfd6055447aa82a75f5504f0bf7b~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>切换到实验时展示：</li></ul>
+<p>   （1）个性化实验数据概览</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/e1620e40f3704359bff85e6bb7cca384~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/87b761c44a674b1fa13b4dc8b53b5b7c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>   （2）实验趋势</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/d6425964144e45ccbbe221af8be406b5~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;2ed67b8f&quot;&gt;&lt;/span&gt;</p>
+<h2>日期筛选</h2>
+<p>支持天级别，范围：个性化开始日期 到 T\-1。举个例子：个性化在20240613开启了个性化，如果我们在20240621查询，可选范围是：20240613 \- 20240620。</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/66e3df7a482c44bf9b1af13f9325e323~tplv-goo7wpa0wc-image.image&quot; width=&quot;464px&quot; /&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;a47d868c&quot;&gt;&lt;/span&gt;</p>
+<h1>参考：集成注意事项</h1>
+<p>由于个性化编程实验本与父子实验的实现逻辑类似，个性化实验配置完成后：</p>
+<ul><li>在个性化实验的使用总体概览页面中，实际查询的是类似“父实验”的进组数据。</li></ul>
+<ul><li>在获取画布实验的配置页面中，实际上获取的是类似“子实验”的配置信息，而非“父实验”的配置信息。</li></ul>
+<p>因此，对于个性化实验，您需要在集成SDK时手动获取一下“父实验”的配置信息，用于在SDK集成时配置使用。</p>
+<ol><li>在如下页面中获取“父实验”的variantKey。</li></ol>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/f70f6233179440d4b3d49aa9bdc133b8~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>在实验SDK集成时，获取“子实验”（即画布中的实验）配置前，先获取一次上面查到的配置信息，用于曝光父实验。</li></ol>
+<p>   以Java SDK为例，仅调用一次<code>activate</code>方法，参数的<code>variantKey</code>为上面获取的<code>key</code>，不需要对其结果做处理，详细操作请参见：<a href="https://www.volcengine.com/docs/6287/195562" target="_blank" rel="noopener">Java SDK</a>。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

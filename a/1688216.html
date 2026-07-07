@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>选择实验类型 · A/B 实验知识库</title>
+<meta name="description" content="DataTester为您提供多种实验类型，例如编程实验\ 客户端实验、编程实验\ 服务端实验、可视化实验、MAB智能调优实验等，在开展实验前，您需要先根据业务情况和实验目标，选择合适的实验类型。本文为您介绍各类实验类型的">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1688216.html">
+<meta property="og:title" content="选择实验类型"><meta property="og:description" content="DataTester为您提供多种实验类型，例如编程实验\ 客户端实验、编程实验\ 服务端实验、可视化实验、MAB智能调优实验等，在开展实验前，您需要先根据业务情况和实验目标，选择合适的实验类型。本文为您介绍各类实验类型的">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1688216.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📐 实验设计与规划</span></div>
+<h1>选择实验类型</h1>
+<div class="meta">📄 3,443 字 · 🕐 2025-07-09</div>
+<article class="md"><p>DataTester为您提供多种实验类型，例如编程实验\-客户端实验、编程实验\-服务端实验、可视化实验、MAB智能调优实验等，在开展实验前，您需要先根据业务情况和实验目标，选择合适的实验类型。本文为您介绍各类实验类型的适用场景和实验开展要点。</p>
+<p>&lt;span id=&quot;a0d407de&quot;&gt;&lt;/span&gt;</p>
+<h1>实验类型详解</h1>
+<table><thead><tr><th>支持的实验类型</th><th>实验描述</th><th>特点及应用场景</th><th>详细文档</th></tr></thead><tbody><tr><td>编程实验\-客户端实验</td><td>指通过客户端<strong>获取实验分组信息</strong>并<strong>控制配置生效</strong>的实验。</td><td>* 特点：&lt;br&gt;&lt;br&gt;   * APP唤起时，AB相关配置即需生效&lt;br&gt;&lt;br&gt;   * 依赖客户端SDK，通过请求分流服务完成分流，需要客户端SDK研发完成实验SDK的接入工作。&lt;br&gt;&lt;br&gt;* 场景：&lt;br&gt;&lt;br&gt;   客户端界面布局调整或者本地功能优化的A/B实验，在客户端进行实验是比较合适的。&lt;br&gt;&lt;br&gt;   例如，测试不同的按钮颜色、位置对用户点击率的影响，这些实验基本不需要太多的服务器资源，主要依赖客户端设备的显示和交互功能。</td><td><a href="https://www.volcengine.com/docs/6287/65809" target="_blank" rel="noopener">编程实验</a></td></tr><tr><td>编程实验\-服务端实验</td><td>指通过服务端<strong>获取实验分组信息</strong>并<strong>控制配置生效或下发</strong>的实验。</td><td>* 特点：&lt;br&gt;&lt;br&gt;   * 命中和曝光的逻辑在服务端处理，不要求唤起APP时就使实验配置生效。客户端有充分时间向服务端发起请求，获得实验配置后再向用户展示策略。&lt;br&gt;&lt;br&gt;   * 依赖服务端SDK/服务端分流Agent进行本地分流，需要服务端研发完成SDK集成或部署服务端分流Agent。&lt;br&gt;&lt;br&gt;* 场景：&lt;br&gt;&lt;br&gt;   * 推荐策略、纯服务端配置实验，通常uid分流，不要求唤起APP时就使实验配置生效。&lt;br&gt;&lt;br&gt;   * 部分功能只能由服务端来控制，比如内容分发算法（如用户打开今日头条以后在feed流中会看见什么内容）、由服务端逻辑控制的产品功能（如推送）等。</td><td><a href="https://www.volcengine.com/docs/6287/65809" target="_blank" rel="noopener">编程实验</a></td></tr><tr><td>MAB智能调优实验</td><td>智能调优实验是一种序贯地评估实验数据表现，并自适应的将流量倾斜给效果更好的实验版本的实验类型。其中自适应评估与调优的算法主要是 MAB(Multi\-Armed Bandit) 。</td><td>* 特点：&lt;br&gt;&lt;br&gt;   * 可动态调整流量，根据实验结果及时找出当前效果比较好的版本，将转化效果差的版本降低流量，减少损失，MAB过程更能在总流量不多的情况下将流量收益最大化。&lt;br&gt;&lt;br&gt;   * MAB的核心目标是整个活动最优，并不是帮助客户找到最优组，对实验时限没有要求。&lt;br&gt;&lt;br&gt;* 场景：&lt;br&gt;&lt;br&gt;   * 高价值流量：丢失转化的机会成本较高，例如在线销售大额商品（汽车、钻石等），每个失去的转化都会造成几千/几万块的损失。&lt;br&gt;&lt;br&gt;   * 活动周期短：比如很多电商活动的整个周期就一两天，如果传统AB的方法一般需要7天以上，活动没法提供足够的时间进行A/B实验。&lt;br&gt;&lt;br&gt;   * 优化目标实效性强：例如头条新闻的标题、缩略图、视频内容等的优化测试，需要在短的窗口期内获得最大点击量。&lt;br&gt;&lt;br&gt;   * 持续优化：可以在MAB优化过程中，随时在变体中增加或减少多个元素，比如开启界面MAB时，可以调整界面上被测试的元素。&lt;br&gt;&lt;br&gt;   * 小流量：对于初创公司或者活动冷启动时期，可能没有足够的流量进行实验。</td><td><a href="https://www.volcengine.com/docs/6287/416714" target="_blank" rel="noopener">创建MAB智能调优实验</a></td></tr><tr><td>可视化实验</td><td>可视化实验可通过可视化编辑器进行界面化的操作，无需编码即可创建不同实验版本。</td><td>* 可视化实验最大的优势在于<strong>无需编码、快速实验</strong>，降低产品和运营的使用成本，支持通过所见即所得的可视化编辑器进行可视化操作，比如编辑元素和属性，新增widgets组件，删除元素等，形成不同实验版本。&lt;br&gt;&lt;br&gt;* 多页面可视化实验：在一个版本中可以包含多个页面，适用于优化前后有关联的多个页面。</td><td><a href="https://www.volcengine.com/docs/6287/65811" target="_blank" rel="noopener">可视化实验</a></td></tr><tr><td>多链接实验</td><td>多链接实验也称为Split url实验，支持用户根据分流结果访问不同版本的页面URL。</td><td>* 示例场景：当您有两个不同样式的落地页 <code>https://example.com/1.html</code> 和 <code>https://example.com/2.html</code>，想要对比这两个页面的转化效果。</td><td><a href="https://www.volcengine.com/docs/6287/65808" target="_blank" rel="noopener">多链接实验</a></td></tr><tr><td>推送实验</td><td>推送通知类实验可以对推送通知的标题、内容、点击动作等进行测试。</td><td>推送实验主要用于解决（1）可选方案选择难，无法决策哪种效果佳；（2）变更影响大，不敢轻易变动，担心带来客户舆情这类场景的痛点。例如：&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>多文案推送实验</strong> ：市场人员针对候选文案，很难通过人为经验判断哪个效果最好，即可通过开启A/B实验方式，先验小流量分析实验报告，选择适用场景的最优文案。&lt;br&gt;&lt;br&gt;* <strong>智能文案调优实验：</strong>  在进行多文案推送实验后，我们可以进一步设置智能文案调优实验，将效果更好的文案直接发送给更大范围的用户。</td><td><a href="https://www.volcengine.com/docs/6287/65810" target="_blank" rel="noopener">推送实验</a></td></tr><tr><td>多变体可视化实验</td><td>多变体可视化实验（简称MVT，全称Multi\-variate Visual Test）是同时AB实验一个网页的两个或更多元素的变体，以查看哪个组合产生最好的结果。</td><td>MVT比较适用于如下场景：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 当web网站/H5/APP访问量较高时，运行多变体实验才比较有用且有效。&lt;br&gt;&lt;br&gt;* 当用户有一个策略假设可以通过多种方式实现变体，但无法决定该测试哪种组合时，建议使用多变体实验验证。</td><td><a href="https://www.volcengine.com/docs/6287/158896" target="_blank" rel="noopener">多变体可视化实验</a></td></tr><tr><td>个性化实验</td><td>个性化实验是指根据用户的行为、兴趣、地理位置等信息，<strong>为用户提供个性化的内容和体验</strong>，以提高用户满意度和转化率。</td><td>个性化实验可通过用户的不同特征针对性实验投放，例如：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 根据用户的历史购买记录、浏览记录、搜索记录等信息，对不同用户推荐不同的商品，提高用户购买率和满意度。&lt;br&gt;&lt;br&gt;* 根据用户的地理位置、年龄、性别、兴趣爱好等信息，对不同用户进行定向投放，提高广告点击率和转化率。&lt;br&gt;&lt;br&gt;* 根据用户的社交关系、兴趣爱好、历史行为等信息，对不同用户推荐不同的内容，提高用户参与度和留存率。</td><td><a href="https://www.volcengine.com/docs/6287/1327348" target="_blank" rel="noopener">Web个性化</a>、<a href="https://www.volcengine.com/docs/6287/1404677" target="_blank" rel="noopener">编程个性化</a></td></tr><tr><td>父子实验</td><td>父子实验，指的是在命中已有实验（父实验）某一实验组的用户中切分流量开一个新的实验（子实验）。</td><td>示例场景：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 新闻类App，父实验为是否向用户打开「娱乐」频道。后续在产品迭代进程中，在此基础上开启子实验，针对已打开「娱乐」频道的实验版本中的用户，提供不同功能布局和样式，以观测用户的使用时长和留存。</td><td><a href="https://www.volcengine.com/docs/6287/65812" target="_blank" rel="noopener">父子实验</a></td></tr><tr><td>反转实验</td><td>当一个AB实验的某个实验组指标胜出并上线后，为了观测该组策略/功能更长期的收益和影响，会在对照组（未体验过新策略/功能）中抽一部分流量再开一个AB实验\-即「反转实验」，通过此反转实验长期跟踪观测其核心指标的变化。</td><td>随着业务的快速迭代，AB实验的观测时间有限，往往经短期实验验证得到正向结论后就会全量发布，然而短期内的正向结果不足以评估长期收益，因此「反转实验」日渐成为AB实验评估的必要环节，能用来长期观测重要功能/策略上线后，其关键指标的提升是否仍然符合预期、是否会带来其他负面影响。建议所有要全量上线的实验都开一个小流量反转。</td><td><a href="https://www.volcengine.com/docs/6287/1113735" target="_blank" rel="noopener">反转实验</a></td></tr><tr><td>广告实验</td><td>DataTester的广告实验是一款用于满足广告主/优化师高效验证测试决策诉求的产品工具，通过小流量的广告实验可更清晰看到相同的广告设置条件下到底哪个广告策略效果更好。</td><td>使用DataTester进行广告实验时，本质上是通过在DataTester上的广告账户与巨量引擎的的操作账号、DataTester上的应用与巨量引擎的项目进行授权关联，以实现在DataTester上操作即可实现巨量引擎的广告投放与DataTester的小流量AB实验的能力。</td><td><a href="https://www.volcengine.com/docs/6287/1113738" target="_blank" rel="noopener">广告实验概述</a></td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

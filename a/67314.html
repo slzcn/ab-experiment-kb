@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>字节跳动小程序SDK · A/B 实验知识库</title>
+<meta name="description" content="1. 集成 1.1 安装SDK 使用npm方式安装 1.2 域名配置准备 在 「小程序后台\ 开发\ 开发设置\ 服务器域名」 中进行配置，具体可以参考小程序相应的官方文档，如微信小程序文档 https://develo">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/67314.html">
+<meta property="og:title" content="字节跳动小程序SDK"><meta property="og:description" content="1. 集成 1.1 安装SDK 使用npm方式安装 1.2 域名配置准备 在 「小程序后台\ 开发\ 开发设置\ 服务器域名」 中进行配置，具体可以参考小程序相应的官方文档，如微信小程序文档 https://develo">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/67314.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>字节跳动小程序SDK</h1>
+<div class="meta">📄 7,070 字 · 🕐 2024-05-15</div>
+<article class="md"><p>&lt;span id=&quot;_1-集成&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 集成</h1>
+<p>&lt;span id=&quot;_1-1-安装sdk&quot;&gt;&lt;/span&gt;</p>
+<h2>1.1 安装SDK</h2>
+<blockquote>使用npm方式安装</blockquote>
+<pre><code>npm install @datarangers/sdk-mp</code></pre>
+<p>&lt;span id=&quot;_1-2-域名配置准备&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1.2 域名配置准备</strong></h2>
+<blockquote>在 「小程序后台\-开发\-开发设置\-服务器域名」 中进行配置，具体可以参考小程序相应的官方文档，如微信小程序文档 https://developers.weixin.qq.com/miniprogram/dev/framework/ability/network.html</blockquote>
+<p><strong>SaaS 业务</strong>：将<a href="https://mcs.volceapplog.com" target="_blank" rel="noopener">https://mcs.volceapplog.com</a>，<a href="https://abtest.volceapplog.com" target="_blank" rel="noopener">https://abtest.volceapplog.com</a>添加到小程序后台的“request合法域名”中。</p>
+<p><strong>私有化业务</strong>：将私有化部署的数据上报域名添加到小程序后台的“request合法域名”中，如您不清楚此域名，请联系您的项目经理或客户成功经理。</p>
+<p>&lt;span id=&quot;_1-3-老版本升级&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1.3 老版本升级</strong></h2>
+<p>请注意，如果是SaaS业务，升级SDK到最新版（2.x.x版本）时，需要补充将<a href="https://mcs.volceapplog.com" target="_blank" rel="noopener">https://mcs.volceapplog.com</a>和<a href="https://abtest.volceapplog.com" target="_blank" rel="noopener">https://abtest.volceapplog.com</a>添加到小程序后台的“request合法域名”中，已添加过<a href="https://mcs.ctobsnssdk.com" target="_blank" rel="noopener">https://mcs.ctobsnssdk.com</a>和<a href="https://toblog.ctobsnssdk.com" target="_blank" rel="noopener">https://toblog.ctobsnssdk.com</a>不要立即移除。</p>
+<p>&lt;span id=&quot;_1-4-旧版本说明&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1.4 旧版本说明</strong></h2>
+<p>如果集成旧版本SDK(2.0以下版本)，需要将<a href="https://mcs.ctobsnssdk.com" target="_blank" rel="noopener">https://mcs.ctobsnssdk.com</a>和<a href="https://toblog.ctobsnssdk.com" target="_blank" rel="noopener">https://toblog.ctobsnssdk.com</a> 添加到微信开放平台的请求白名单中。</p>
+<p>&lt;span id=&quot;_2-初始化&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 初始化</h1>
+<p>&lt;span id=&quot;_2-1-获取appid&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2.1 获取appid</strong></h2>
+<p>在开始集成前，首先需要在集团中拥有一个应用。 「应用列表」\-\&gt; 接入应用的「详情」\-\&gt;「应用ID」中可查看您的appid。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_d9d3420909c39945d1f23487a59c257f.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-2-初始化-sdk示例&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 初始化 SDK示例</h2>
+<p>&lt;span id=&quot;_2-2-1-saas-业务&quot;&gt;&lt;/span&gt;</p>
+<h3>2.2.1 SaaS 业务</h3>
+<pre><code>// 在入口页面初始化SDK
+// app.js
+import $$Rangers from &#x27;@datarangers/sdk-mp&#x27;;
+$$Rangers.init({
+    app_id: 0000, // 替换成申请的app_id，参考2.1节获取，注意类型是number而非字符串
+    log: true, // 开启后会控制台会打印日志，开发阶段有助于查看埋点上报过程
+    auto_report: true, // 开启后会上报一些预定义事件，如app_launch、app_terminate等
+    enable_ab_test: true, // 开启ab实验
+});
+$$Rangers.config({
+    mp_name: &#x27;xyz小程序&#x27;, // 一些预定义属性，可以通过config进行设置mp_version: &#x27;1.1.1&#x27;,
+});
+$$Rangers.send();
+App({
+    onLaunch: function () {
+        this.$$Rangers = $$Rangers;
+    
+        // 如果想设置用户标识，比如想使用open_id来标识用户，可以在获取到open_id后把值设置给user_unique_id
+        this.$$Rangers.config({
+            user_unique_id: &#x27;获取到的open_id&#x27;, //可以是open_id，也可以union_id等其他业务觉的可以用来标识用户唯一性的值
+        });
+        // 调用event方法上报具体事件
+        this.$$Rangers.event(&#x27;test_event&#x27;, {
+            from: &#x27;launch&#x27;, // 支持任意属性，值支持数字、字符串等
+        });
+    }
+});
+// 其他页面上报事件，如：
+// pages/index/index.js
+Page({
+    onLoad() {
+        getApp().$$Rangers.event(&#x27;bind_view_tap&#x27;, {
+            &#x27;title&#x27;: &#x27;chart&#x27;,
+        });
+    }
+});</code></pre>
+<p>&lt;span id=&quot;_2-2-2-私有化业务&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>2.2.2 私有化业务</strong></h3>
+<p>私有化业务需要明确设置数据上报域名，如您不清楚此域名，请联系您的项目经理或客户成功经理。</p>
+<pre><code>// 在入口页面初始化SDK
+// app.js
+import $$Rangers from &#x27;@datarangers/sdk-mp&#x27;;
+$$Rangers.init({
+    app_id: 0000, // 替换成申请的app_id，参考2.1节获取，注意类型是number而非字符串
+    channel_domain: &quot;{{DOMAIN}}&quot;, // 设置私有化部署数据上送域名，如您不清楚此地址，请联系您的项目经理或客户成功经理
+    log: true, // 开启后会控制台会打印日志，开发阶段有助于查看埋点上报过程
+    auto_report: true, // 开启后会上报一些预定义事件，如app_launch、app_terminate等
+    enable_ab_test: true, // 开启ab实验
+    ab_channel_domain: &quot;{{ABTEST_DOMAIN}}&quot;, // 设置ab分流接口域名，默认为channel_domain的设置
+});
+$$Rangers.config({
+    mp_name: &#x27;xyz小程序&#x27;, // 一些预定义属性，可以通过config进行设置mp_version: &#x27;1.1.1&#x27;,
+});
+$$Rangers.send();
+
+App({
+    onLaunch: function () {
+        this.$$Rangers = $$Rangers;
+    
+        // 如果想设置用户标识，比如想使用open_id来标识用户，可以在获取到open_id后把值设置给user_unique_id
+        this.$$Rangers.config({
+            user_unique_id: &#x27;获取到的open_id&#x27;, //可以是open_id，也可以union_id等其他业务觉的可以用来标识用户唯一性的值
+        });
+        // 调用event方法上报具体事件
+        this.$$Rangers.event(&#x27;test_event&#x27;, {
+            from: &#x27;launch&#x27;, // 支持任意属性，值支持数字、字符串等
+        });
+    }
+});
+ 
+// 其他页面上报事件，如：
+// pages/index/index.js
+Page({
+    onLoad() {
+        getApp().$$Rangers.event(&#x27;bind_view_tap&#x27;, {
+            &#x27;title&#x27;: &#x27;chart&#x27;,
+        });
+    }
+});</code></pre>
+<p>&lt;span id=&quot;_3-用户与用户属性&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 用户与用户属性</h1>
+<p>&lt;span id=&quot;_3-1-登录态变化调用&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 登录态变化调用</h2>
+<p>&lt;span id=&quot;_3-1-1-账户登录&quot;&gt;&lt;/span&gt;</p>
+<h3>3.1.1 账户登录</h3>
+<p>如您的产品中有账户体系，请在用户登录后立即设置uuid，以保证用户登录前后口径一致性。</p>
+<pre><code>$$Rangers.config({
+    user_unique_id: &#x27;{{USER_UNIQUE_ID}}&#x27;
+});</code></pre>
+<p>&lt;span id=&quot;_3-2-设置用户属性&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 设置用户属性</h2>
+<p>&lt;span id=&quot;_3-2-1-profileset&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.1 profileSet</h3>
+<p>设置用户属性，存在则覆盖，不存在则创建。</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为value
+$$Rangers.profileSet({
+    key: &#x27;value&#x27; // 值支持字符串，数字，数组
+});</code></pre>
+<p>&lt;span id=&quot;_3-2-2-profilesetonce&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.2 profileSetOnce</h3>
+<p>设置用户属性，存在则不设置，不存在则创建，适合首次相关的用户属性，比如首次访问时间等。</p>
+<pre><code>// 示例：设置用户属性，属性名为key_once，属性值为value_once
+$$Rangers.profileSetOnce({
+    key_once: &#x27;value_once&#x27; // 值支持字符串，数字，数组
+});</code></pre>
+<p>&lt;span id=&quot;_3-2-3-profileincrement&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.3 profileIncrement</h3>
+<p>设置数值类型的属性，可进行累加。</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为1
+$$Rangers.profileIncrement({
+    key: 1
+});</code></pre>
+<p>&lt;span id=&quot;_3-2-4-profileappend&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.4 profileAppend</h3>
+<p>设置List类型的用户属性，可持续向List内添加。</p>
+<pre><code>// 示例：设置用户属性，属性名为key，原本已有属性值，现添加属性值为value_append
+$$Rangers.profileAppend({
+    key: &#x27;value_append&#x27;
+});</code></pre>
+<p>&lt;span id=&quot;_3-2-5-profileunset&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.5 profileUnset</h3>
+<p>删除用户的属性。</p>
+<pre><code>// 示例：删除用户属性，属性名为key
+$$Rangers.profileUnset(&#x27;key&#x27;);</code></pre>
+<p>&lt;span id=&quot;_4-获取实验参数&quot;&gt;&lt;/span&gt;</p>
+<h1>4. 获取实验参数</h1>
+<p>版本1.0.9开始，sdk增加了ab实验能力，提供了getVar、getAllVars等方法，这些方法在开启ab实验时才有效，即enable_ab_test: true。「A/B 测试」通常在SDK 初始化后会向分流服务发送一个分流请求（request），在获取到分流服务的响应（response）后，客户端开发可以根据分流的结果参数完成代码分支。</p>
+<ul><li>请注意此步骤的前置条件：已经根据实验的需求方创建好了实验及相关的参数，具体见“<a href="https://www.volcengine.com/docs/6287/65809" target="_blank" rel="noopener">创建实验</a>”。</li></ul>
+<p>&lt;span id=&quot;_4-1-getvar&quot;&gt;&lt;/span&gt;</p>
+<h2>4.1 getVar</h2>
+<p>获取ab实验元信息中的变量对应的值。 一个变量name是和一个vid绑定的，获取成功之后，会把对应的vid设置到sdk上报的公共属性里。</p>
+<pre><code>App({
+  onLaunch: function () {
+    this.$$Rangers = $$Rangers; // 绑定到全局的app，以便其他页面调用。
+    //experiment-key 为实验参数的key ，用户开发做代码分支，default-value 为网络异常时的兜底方案，建议和对照组value一致
+    this.$$Rangers.getVar(&#x27;experiment-key&#x27;, &#x27;defaulte-value&#x27;, function(value) {
+        console.log(value);
+    });
+    //示例
+    this.$$Rangers.getVar(&#x27;size&#x27;, &#x27;1&#x27;, function(value) {
+        console.log(value);
+    });
+  }
+});</code></pre>
+<p>当调用getVar 的方法会自动上报曝光事件（ab_exposure），用于内部处理进组用户的相关统计。</p>
+<p>&lt;span id=&quot;_4-2-getallvars&quot;&gt;&lt;/span&gt;</p>
+<h2>4.2 getAllVars</h2>
+<p>如果需要获取所有ab实验的进组信息可使用getAllVars方法，但是此方法不会上报曝光事件，因此调用此方法系统不会有数据显示，只做获取进组信息接口使用。</p>
+<pre><code>App({
+  onLaunch: function () {
+    this.$$Rangers = $$Rangers; // 绑定到全局的app，以便其他页面调用。
+    this.$$Rangers.getAllVars(function(data) {
+        //data数据格式如下：
+        // {
+        //   &quot;aa&quot;: {&quot;vid&quot;: &quot;1183&quot;, &quot;val&quot;: true},
+        //   &quot;test_before_6d&quot;: {&quot;vid&quot;: &quot;2446&quot;, &quot;val&quot;: &quot;fail&quot;}
+        // }
+    });
+  }
+});</code></pre>
+<table><thead><tr><th>参数</th><th>必选</th><th>说明</th><th>示例</th></tr></thead><tbody><tr><td>callback</td><td>是</td><td>(data: { [key: string]: { val: any,&lt;br&gt;&lt;br&gt;vid: string } }) =\&gt; void&lt;br&gt;&lt;br&gt;获取所有实验数据时候的回调函数。</td><td>{&lt;br&gt;&lt;br&gt;&quot;aa&quot;: {&quot;vid&quot;: &quot;1183&quot;, &quot;val&quot;: true},&lt;br&gt;&lt;br&gt;&quot;test_before_6d&quot;: {&quot;vid&quot;: &quot;2446&quot;, &quot;val&quot;: &quot;fail&quot;}&lt;br&gt;&lt;br&gt;}</td></tr></tbody></table>
+<p>&lt;span id=&quot;_5-事件与事件属性（实验指标）&quot;&gt;&lt;/span&gt;</p>
+<h1>5. 事件与事件属性（实验指标）</h1>
+<p>&lt;span id=&quot;_5-1-上报代码埋点&quot;&gt;&lt;/span&gt;</p>
+<h2>5.1 上报代码埋点</h2>
+<p>用户行为日志采用事件event+属性params的形式，事件一般对应多个属性，也可以仅有事件没有属性。代码埋点方案一般由数据分析师或产品运营设计。</p>
+<p>仅上报事件的代码埋点，示例如下：</p>
+<pre><code>// 示例：上报事件event，该事件不包含属性
+// 置于业务逻辑对应位置
+app.$$Rangers.event(&#x27;event&#x27;);</code></pre>
+<p>上报事件和对应属性的代码埋点，示例如下：</p>
+<pre><code>// 示例：上报事件event，该事件包含两个属性
+//      一个string类型的属性，属性名为key_string，属性值为value_string
+//.     一个int类型的属性，属性名为key_int，属性值为10
+// 置于业务逻辑对应位置
+app.$$Rangers.event(&#x27;event&#x27;, {
+   key_string: &#x27;value_string&#x27;,
+   key_int: 10
+});</code></pre>
+<p>&lt;span id=&quot;_5-2-事件公共属性&quot;&gt;&lt;/span&gt;</p>
+<h2>5.2 事件公共属性</h2>
+<p>如需在每个事件中都包括某属性，可通过公共属性设置，无需在每个事件中重复设置。公共属性只需设置一次，即可包括在所有代码埋点事件、预置事件和全埋点事件中。</p>
+<p>&lt;span id=&quot;_5-2-1-设置公共属性&quot;&gt;&lt;/span&gt;</p>
+<h3>5.2.1 设置公共属性</h3>
+<pre><code>// 示例：设置自定义的公共属性，属性名为key_public，属性值为value_public
+$$Rangers.config({
+   key_public: &#x27;value_public&#x27;
+});</code></pre>
+<p>&lt;span id=&quot;_6-api说明&quot;&gt;&lt;/span&gt;</p>
+<h1>6. API说明</h1>
+<p>&lt;span id=&quot;_6-1-init&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>6.1 init</strong></h2>
+<p>支持的初始化参数</p>
+<table><thead><tr><th></th><th>字段</th><th>字段值</th><th>字段说明</th></tr></thead><tbody><tr><td>基础</td><td>app_id</td><td>number</td><td>业务产品的唯一标识</td></tr><tr><td>log</td><td>boolean</td><td>设置true后，控制台会打印调试信息</td></tr><tr><td>channel&lt;br&gt;&lt;br&gt;别名：report_channel</td><td>枚举值：&lt;br&gt;&lt;br&gt;cn、sg</td><td>上报通道，对应内置的上报域名和ab实验域名，每个应用只能设置唯一一个channel，请根据产品的具体情况，设置合适的channel&lt;br&gt;&lt;br&gt;cn表示国内、sg表示新加坡&lt;br&gt;&lt;br&gt;默认值为cn&lt;br&gt;&lt;br&gt;内置上报域名&lt;br&gt;&lt;br&gt;cn：<a href="https://mcs.volceapplog.com" target="_blank" rel="noopener">https://mcs.volceapplog.com</a>&lt;br&gt;&lt;br&gt;sg：<a href="https://mcs.tobsnssdk.com" target="_blank" rel="noopener">https://mcs.tobsnssdk.com</a>&lt;br&gt;&lt;br&gt;内置ab实验域名&lt;br&gt;&lt;br&gt;cn：<a href="https://abtest.volceapplog.com" target="_blank" rel="noopener">https://abtest.volceapplog.com</a>&lt;br&gt;&lt;br&gt;sg：<a href="https://toblog.tobsnssdk.com" target="_blank" rel="noopener">https://toblog.tobsnssdk.com</a>即当channel值为cn时&lt;br&gt;&lt;br&gt;上报域名为 <a href="https://mcs.volceapplog.com" target="_blank" rel="noopener">https://mcs.volceapplog.com</a>&lt;br&gt;&lt;br&gt;ab实验域名为 <a href="https://abtest.volceapplog.com" target="_blank" rel="noopener">https://abtest.volceapplog.com</a></td></tr><tr><td>channel_domain</td><td>string</td><td>可以自定义上报域名，会覆盖channel设置，通常私有化环境下使用</td></tr><tr><td>自动上报</td><td>auto_report</td><td>boolean</td><td>设置true后，会自动上报预定义事件，如app_launch、app_terminate、predefine_pageview、on_share等事件</td></tr><tr><td>ab实验</td><td>enable_ab_test</td><td>boolean</td><td>设置true后，会开启ab实验功能，包括使用getVar、getAllVars等api</td></tr><tr><td>ab_channel_domain</td><td>string</td><td>可以自定义ab实验域名，会覆盖channel设置，通常私有化环境下使用</td></tr><tr><td>clear_ab_cache_on_user_change</td><td>boolean</td><td>默认切换用户重新获取A/B配置信息，如果要关闭则把clear_ab_cache_on_user_change配置项置为false</td></tr><tr><td>缓冲&lt;br&gt;&lt;br&gt;（仅2.5.0及以上版本支持）</td><td>enable_buffer</td><td>boolean</td><td>设置true后，将开启缓冲</td></tr><tr><td>buffer_interval</td><td>number</td><td>缓冲的间隔时间，单位是毫秒，默认值 5000，含义是到达间隔时间后会上报缓冲区的所有事件</td></tr><tr><td>buffer_number</td><td>number</td><td>缓冲的最大数量，默认值 5，含义是缓冲数量达到该值后会立即上报缓冲区的所有事件</td></tr><tr><td>缓存&lt;br&gt;&lt;br&gt;（仅2.5.0及以上版本支持）</td><td>enable_cache</td><td>boolean</td><td>开启后，请求失败的事件会存到storage中，并在用户下一次再进小程序时补充上报</td></tr><tr><td>其他</td><td>enable_profile</td><td>boolean</td><td>设置true后，可以使用profile相关api</td></tr><tr><td>enable_filter_crawler</td><td>boolean</td><td>设置true后，在爬虫场景下(scene: 1129)不再上报事件</td></tr><tr><td>enable_custom_webid</td><td>boolean</td><td>首先初始化时开启enable_custom_webid，然后再通过config设置web_id，只有设置web_id后才会初始化完成，web_id的值要求必须是数字或者全是数字的字符串类型&lt;br&gt;&lt;br&gt;$$Rangers.init({&lt;br&gt;&lt;br&gt;enable_custom_webid: true,&lt;br&gt;&lt;br&gt;});&lt;br&gt;&lt;br&gt;$$Rangers.config({&lt;br&gt;&lt;br&gt;web_id: &#x27;9876543210&#x27;,&lt;br&gt;&lt;br&gt;});</td></tr></tbody></table>
+<p>示例</p>
+<pre><code>// 参数：InitParams
+// 返回值：void
+$$Rangers.init({
+    app_id: 1338,
+    log: true,
+    auto_report: true,
+    enable_ab_test: true,
+    clear_ab_cache_on_user_change: true,
+    // ...
+});</code></pre>
+<p>&lt;span id=&quot;_6-2-config&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>6.2 config</strong></h2>
+<p>config方法可以调用多次，后面设置会覆盖之前相同的属性字段</p>
+<table><thead><tr><th></th><th>字段</th><th>类型</th><th>说明</th><th>示例</th></tr></thead><tbody><tr><td>用户</td><td>user_unique_id</td><td>string</td><td>使用业务自身的用户id来设置user_unique_id</td><td>$$Rangers.config({&lt;br&gt;&lt;br&gt;user_unique_id: &#x27;zhangsan&#x27;,&lt;br&gt;&lt;br&gt;});</td></tr><tr><td>自定义</td><td>自定义属性</td><td>string/number</td><td>当属性是公共属性字段时，属性将有明确的位置，放在header下&lt;br&gt;&lt;br&gt;当属性不是公共属性字段时，将放在header的custrom下</td><td>$$Rangers.config({&lt;br&gt;&lt;br&gt;city: &#x27;南京&#x27;,&lt;br&gt;&lt;br&gt;custom_name: &#x27;vikings&#x27;,&lt;br&gt;&lt;br&gt;});</td></tr></tbody></table>
+<p>示例</p>
+<pre><code>// 参数：ConfigParams
+// 返回值：void
+$$Rangers.config({
+    city: &#x27;南京&#x27;,
+    custom_name: &#x27;vikings&#x27;,
+    // ...
+});</code></pre>
+<p>&lt;span id=&quot;_6-3-send&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>6.3 send</strong></h2>
+<p>当初始化设置完毕之后，必须调用send方法，sdk才真正初始化完毕，之前不会有数据上报。 示例</p>
+<pre><code>// 参数：无
+// 返回值：void
+$$Rangers.send();</code></pre>
+<p>&lt;span id=&quot;_6-4-event&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>6.4 event</strong></h2>
+<p>进行事件上报。 事件命名规范：</p>
+<ul><li>事件命名仅支持字母、数字和下划线，不要使用app_launch、app_terminate等SDK内部自动上报事件名</li></ul>
+<ul><li>建议事件名和属性统一使用小写</li></ul>
+<ul><li>事件属性值仅接受number与string类型</li></ul>
+<ul><li>不要在事件属性中再嵌套object，即属性值不接受object类型</li></ul>
+<ul><li>如果想要表达事件属性值空的含义，建议用“be_null”，不建议使用&quot;&quot;或&quot; &quot;</li></ul>
+<p>示例</p>
+<pre><code>// 参数：name: string, params: object
+// 返回值：void
+$$Rangers.event(&#x27;start_event&#x27;, {
+    start_time: 1630986183813,
+    path: &#x27;...&#x27;
+});</code></pre>
+<p>&lt;span id=&quot;_6-5-sdk预设公共属性字段&quot;&gt;&lt;/span&gt;</p>
+<h2>6.5 SDK预设公共属性字段</h2>
+<p>SDK 会在 <code>config({})</code> 中默认给一些字段赋值，这些SDK 默认设置的字段可以被覆盖。</p>
+<p>请注意，增长分析产品中“分享用户”功能的昵称、头像、地域信息需您主动上报。</p>
+<table><thead><tr><th><strong>字段</strong></th><th><strong>类型</strong></th><th><strong>说明</strong></th><th><strong>是否自动设置</strong></th><th><strong>举例</strong></th></tr></thead><tbody><tr><td>platform</td><td>string</td><td>平台类型</td><td>自动采集</td><td>mp</td></tr><tr><td>device_brand</td><td>string</td><td>设备品牌</td><td>自动</td><td>&quot;iPhone&quot;</td></tr><tr><td>device_model</td><td>string</td><td>设备型号</td><td>自动</td><td>&quot;iPhone 7&quot;</td></tr><tr><td>os_name</td><td>string</td><td>客户端系统</td><td>自动</td><td>&quot;ios&quot;</td></tr><tr><td>os_version</td><td>string</td><td>客户端/操作系统版本</td><td>自动</td><td>&quot;iOS 10.0.1&quot;</td></tr><tr><td>screen_width</td><td>number</td><td>屏幕宽度</td><td>自动</td><td>375</td></tr><tr><td>screen_height</td><td>number</td><td>屏幕高度</td><td>自动</td><td>812</td></tr><tr><td>resolution</td><td>string</td><td>屏幕分辨率</td><td>自动</td><td>&quot;375x812&quot;</td></tr><tr><td>access</td><td>string</td><td>网络类型</td><td>自动</td><td>&quot;wifi&quot;</td></tr><tr><td>language</td><td>string</td><td>系统语言</td><td>自动</td><td>&quot;zh_CN&quot;</td></tr><tr><td>device_id</td><td>number</td><td>设备id</td><td>业务方设置</td><td>67834512</td></tr><tr><td>app_name</td><td>string</td><td>应用名称</td><td>业务方设置</td><td>&quot;xxx&quot;</td></tr><tr><td>app_version</td><td>string</td><td>应用版本</td><td>业务方设置</td><td>&quot;2.5.0&quot;</td></tr><tr><td>region</td><td>string</td><td>地区</td><td>业务方设置</td><td>&quot;cn&quot;</td></tr><tr><td>province</td><td>string</td><td>省份</td><td>业务方设置</td><td>&quot;江苏&quot;</td></tr><tr><td>city</td><td>string</td><td>城市</td><td>业务方设置</td><td>&quot;南京&quot;</td></tr><tr><td>nick_name</td><td>string</td><td>昵称</td><td>业务方设置</td><td>&quot;张三&quot;</td></tr><tr><td>gender</td><td>string</td><td>性别</td><td>业务方设置</td><td>&quot;male&quot;</td></tr><tr><td>avatar_url</td><td>string</td><td>头像</td><td>业务方设置</td><td>&quot;https://xxx&quot;</td></tr><tr><td>timezone</td><td>number</td><td>时区</td><td>业务方设置</td><td>8</td></tr><tr><td>tz_offset</td><td>number</td><td>时区偏移</td><td>业务方设置</td><td>\-28800</td></tr></tbody></table>
+<p>&lt;span id=&quot;_6-6-获取平台生成的各种id&quot;&gt;&lt;/span&gt;</p>
+<h2>6.6 获取平台生成的各种ID</h2>
+<p>获取SDK的token信息，里面包含web_id、ssid、user_unique_id信息。</p>
+<pre><code>App({
+  onLaunch: function () {
+    this.$$Rangers = $$Rangers; // 绑定到全局的app，以便其他页面调用。
+    this.$$Rangers.getToken(function(token) { 
+        //token数据内容例如：
+        // {
+        //    &quot;web_id&quot;:&quot;6748002161499735560&quot;,
+        //    &quot;ssid&quot;:&quot;579bc89a-bd45-4021-8314-669c35f38e3d&quot;,
+        //    &quot;user_unique_id&quot;:&quot;xxx&quot;,
+        // }
+    });
+  }
+});</code></pre>
+<p>&lt;span id=&quot;_6-7-自定义webid&quot;&gt;&lt;/span&gt;</p>
+<h2>6.7 获取实验版本ID</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;开展AB实验必须调用获取实验参数的api（详情请参见 &lt;strong&gt;&lt;ins&gt;获取实验参数&lt;/ins&gt;&lt;/strong&gt; 章节）。如需获取用户所有曝光或命中实验的版本ID（vid）时，可使用此API，此API不会上报abtest_exposure曝光事件。&lt;/div&gt;</p>
+<pre><code>$$Rangers.getAbSdkVersion();</code></pre>
+<p>&lt;span id=&quot;d6a8b538&quot;&gt;&lt;/span&gt;</p>
+<h2>6.8 自定义webid</h2>
+<p>如需更改SDK默认的webid，首先初始化时开启<code>enable_custom_webid: true</code>，然后再通过config设置web_id。</p>
+<pre><code>$$Rangers.init({
+    // 其他初始化配置
+    enable_custom_webid: true, // 初始化时开启enable_custom_webid
+});</code></pre>
+<p>开启后，可在其他时机config设置web_id。</p>
+<pre><code>$$Rangers.config({
+    web_id: &#x27;11111111111111&#x27;, // webid的值要求纯数字或全是数字的字符串类型
+});</code></pre>
+<p>需要注意的是，当开启了自定义webid后，必须主动设置webid，SDK才会真正初始化并继续执行后续的流程。此场景适合H5页面在微信小程序中打开，需要传递微信的unionID或者openID给H5页面。</p>
+<p>&lt;span id=&quot;_6-8-预置事件自动上报&quot;&gt;&lt;/span&gt;</p>
+<h2>6.9 预置事件自动上报</h2>
+<p>使用预置事件自动上报，需要在初始化时配置<code>auto_report</code>参数为true。建议您开启此事件。</p>
+<p>请注意：自定义事件的事件名请勿与预置事件重名。</p>
+<p>小程序预置事件请参考：<a href="https://www.volcengine.com/docs/6285/108567" target="_blank" rel="noopener">小程序预置事件及属性</a>。</p>
+<p>&lt;span id=&quot;_7-小程序第三方框架适配&quot;&gt;&lt;/span&gt;</p>
+<h1>7.小程序第三方框架适配</h1>
+<p>针对自动上报事件（app_launch、app_terminate等），SDK针对<code>taro</code>、<code>uni-app</code>第三方框架进行了兼容处理。此兼容需保证 SDK 版本高于 1.1.1。</p>
+<p>&lt;span id=&quot;_7-1-taro框架使用方式&quot;&gt;&lt;/span&gt;</p>
+<h2>7.1 taro框架使用方式</h2>
+<ul><li>在 app.jsx 中通过 import 引入 SDK</li></ul>
+<ul><li>在 App 类前初始化完成 SDK</li></ul>
+<p>&lt;span id=&quot;_7-2-uni-app框架使用方式&quot;&gt;&lt;/span&gt;</p>
+<h2>7.2 uni\-app框架使用方式</h2>
+<ul><li>在 main.js 中通过 import 引入 SDK</li></ul>
+<ul><li>在 App 类前初始化完成 SDK</li></ul>
+<p>&lt;span id=&quot;_7-3-预置事件上报排查&quot;&gt;&lt;/span&gt;</p>
+<h2>7.3 预置事件上报排查</h2>
+<p>如果发现有部分自动事件未上报情况，可以按照下面几种情况排查：</p>
+<ul><li>SDK版本需要1.1.1+，并且尽可能的将SDK的初始化放在工程入口最前面；</li></ul>
+<ul><li>第三方框架需要当前比较新的版本，taro:、uni\-app: （其他第三方框架目前还未做特别兼容处理，有可能不支持）；</li></ul>
+<ul><li>同时引入了其他类似功能的SDK，这种情况下尽量将我们的SDK放在其他SDK后面进行初始化（但是依然需要在App类前）。</li></ul>
+<p>&lt;span id=&quot;三、调试试验&quot;&gt;&lt;/span&gt;</p>
+<h1>三、调试试验</h1>
+<p>&lt;span id=&quot;_1-为什么要调试实验&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1. 为什么要调试实验</strong></h2>
+<p>实验上线前需要保证前面的集成过程无误，上线后才能保证实验结果的科学和有效 ！</p>
+<p>&lt;span id=&quot;_2-开启调试状态&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2. 开启调试状态</strong></h2>
+<p>参照“<a href="https://www.volcengine.com/docs/6287/65809" target="_blank" rel="noopener">创建实验</a>”章节，使实验处于“调试中” 状态，如下图所示：</p>
+<ul><li>实验状态一共分三种：调试中、运行中、已结束。</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_881e54384e796759d8d8ad92ee8c3288.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-通过接口获取调试设备的统计口径&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>3. 通过接口获取调试设备的统计口径</strong></h2>
+<p>分别在微信小程序SDK init和config中打开日志和A/B Test开关，并完成初始化：</p>
+<ul><li>通过6.6中getToken方法获取对应的ssid</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_0afabc23b54e705204c4e9e57cc56f41.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_4-添加至白名单&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>4. 添加至白名单</strong></h2>
+<p>将您的测试设备 ssid 到白名单中，并在右下角点击&quot;保存&quot;按钮。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_552a7bca57c2ab6eae992b3f1cd74ff3.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_5-微信小程序参数调试&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>5. 微信小程序参数调试</strong></h2>
+<p>设置完上述步骤后，清空缓存并编译，观察ab数据包（即abtest_config接口返回的实验数据），是否获取到了Tester 中的配置。下图中是成功获取到了实验参数：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_b5534d686298af26195b09c1667dd8de.png" loading="lazy"> &lt;/span&gt;</p>
+<p>如果您的微信小程序没有发出实验请求，或实验请求为空, 请按下面步骤排查：</p>
+<ul><li>初始化时是否正确设置 enable_ab_test: true；</li></ul>
+<ul><li>微信小程序是否将“A/B Test域名”和“事件上报域名”添加到 微信开发者后台/开发/开发者设置/服务器域名 &quot;request合法域名&quot; 中，具体域名参考1.2～1.4章节。</li></ul>
+<p>触发实验事件后，您可以在事件数据包头观察到 ab_sdk_version 字段和内容（下图以ab_exposed事件举例，其他事件以此类推）：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_3f1725d1d4d54f502bdc7d7dadc44529.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_6-真机或模拟器实验场景调试&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>6. 真机或模拟器实验场景调试</strong></h2>
+<p>在实验参数调试正常的情况下，开发或者是QA/PM/运营 同学需要观察实验所在的页面是否符合之前实验设计的预期。</p>
+<ul><li>关于实验设计和准备，请参照“<a href="https://www.volcengine.com/docs/6287/65809" target="_blank" rel="noopener">创建实验</a>”章节。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

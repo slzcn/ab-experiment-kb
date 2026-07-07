@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web/JS SDK 调试及数据验证 · A/B 实验知识库</title>
+<meta name="description" content="1. 检查项验证 （1）SDK文件是否引入，初始化集成代码是否增加 （2）appid是否是要上报应用的appid （3）数据上报地址是否正确 saas\ 国内：看channel是否为cn saas\ 海外：看channe">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/159260.html">
+<meta property="og:title" content="Web/JS SDK 调试及数据验证"><meta property="og:description" content="1. 检查项验证 （1）SDK文件是否引入，初始化集成代码是否增加 （2）appid是否是要上报应用的appid （3）数据上报地址是否正确 saas\ 国内：看channel是否为cn saas\ 海外：看channe">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/159260.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>Web/JS SDK 调试及数据验证</h1>
+<div class="meta">📄 1,798 字 · 🕐 2022-11-23</div>
+<article class="md"><p>&lt;span id=&quot;_1-检查项验证&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 检查项验证</h1>
+<p>（1）SDK文件是否引入，初始化集成代码是否增加</p>
+<p>（2）appid是否是要上报应用的appid</p>
+<p>（3）数据上报地址是否正确</p>
+<p>saas\-国内：看channel是否为cn</p>
+<p>saas\-海外：看channel是否为sg</p>
+<p>私有部署：init方法中看channel_domain参数是否添加，如果有添加，确定channel_domain配置的是否为数据上报地址，配置的数据上传地址本机是否可以访问的通（channel_domain: &#x27;https://xxxx.com&#x27;）。</p>
+<p>（4）是否开启AB开关：enable_ab_test: true</p>
+<p>（5）如果是私有部署，确定init方法，是否配置ab_channel_domain，如果配置了，确定ab_channel_domain是否为数据上报地址（ab_channel_domain: &#x27;https://xxx.com&#x27;）</p>
+<p>（6）如果是可视化实验，是否开启可视化开关：enable_ab_visual: true</p>
+<p>（7）如果是多链接实验，是否开启多链接实验开关及设置遮罩层：enable_multilink: true,multilink_timeout_ms:1000；</p>
+<p>（8）是否增加获取实验参数的方法getvar，调用此方法才会上报AB曝光事件。</p>
+<p>&lt;span id=&quot;_2-实验调试&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 实验调试</h1>
+<p>&lt;span id=&quot;_2-1-为什么要调试实验&quot;&gt;&lt;/span&gt;</p>
+<h2>2.1 为什么要调试实验</h2>
+<p>实验上线前需要保证前面的集成过程无误，上线后才能保证实验结果的科学和有效！</p>
+<p>&lt;span id=&quot;_2-2-开启调试状态&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 开启调试状态</h2>
+<p>参照<a href="https://www.volcengine.com/docs/6287/65809" target="_blank" rel="noopener">创建实验</a>，使实验处于“调试中” 状态，如下图所示：</p>
+<ul><li>实验状态一共分三种：调试中、运行中、已结束。</li></ul>
+<p>&amp;nbsp;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_3e258121d02e525f21f5b16d47fe095f.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-3-开始调试验证&quot;&gt;&lt;/span&gt;</p>
+<h2>2.3 开始调试验证</h2>
+<p>（1）【SDK初始化验证】打开开发者工具，在控制台可以看到“sdk is ready ”证明sdk初始化成功。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e2157d287cdf491b3e14f53046260e07.png" loading="lazy"> &lt;/span&gt;</p>
+<p>（2）【ssid获取】在浏览器中获取调试设备的统计口径（ssid） 在 Web/H5/Wap 端 SDK 打开A/B Test 和日志开关，并完成初始化：</p>
+<ul><li>在代码中调用getToken来获取ssid!</li></ul>
+<pre><code>window.collectEvent(&#x27;getToken&#x27;, (res)=&gt; {
+   console.log(res)
+})
+javascript</code></pre>
+<ul><li>在开发者工具中查询到ssid（chrome 举例）</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_c10c1a266404a991a5b44f1b35fc3d10.png" loading="lazy"> &lt;/span&gt;</p>
+<p>（3）获取到ssid后，将ssid添加到白名单的任意版本做测试，并在右下角点击&quot;保存&quot;按钮。如下：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_0b4ab34001c845e26792d5c86f52f434.png" loading="lazy"> &lt;/span&gt;</p>
+<p>白名单功能说明（详情请参考此文档：https://www.volcengine.com/docs/6287/65824）</p>
+<p>【1】白名单功能主要是用于测试调试实验/feature，添加白名单的用户会被强制命中实验，方便在测试的过程中可以测试实验版本和对照版本的效果。</p>
+<p>【2】白名单需要添加分流id，客户端实验分流id是ssid，服务端实验分流id使用的decisionid（也就是代码的第一个id），一般我们建议使用uuid，所以我们也会看到有些白名单是uuid。</p>
+<p>（4）ab分流接口验证</p>
+<p>选择网络找到abtest_config接口查看data里返回的是不是白名单里添加的实验版本信息，举例：测试中把ssid添加到实验版本，那么abtest_config应该返回的是实验版本的vid和value，如果看到获取到对应的实验版本信息，那么证明分流成功。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_52dba9fd5a201b35cb7f690dbd2e3df5.png" loading="lazy"> &lt;/span&gt;</p>
+<p>（5）【曝光事件验证】对于AB系统不管什么sdk，只要命中实验sdk侧都会上报一个预置事件（abtest_exposure）来记录这个用户的进组信息，因此我们可以在控制台\-网络中查看list接口有没有abtest_exposure事件触发，如果有触发看下曝光事件的ab_sdk_version是不是加白名单的实验vid。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_c1331dc52af449d81edf817025f1bae6.png" loading="lazy"> &lt;/span&gt;</p>
+<p>如果这五个步骤验证成功，那么就证明我们实验调试成功了。</p>
+<p>&lt;span id=&quot;_3-数据验证&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 数据验证</h1>
+<p>&lt;span id=&quot;_3-1-控制台验证&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 控制台验证</h2>
+<p>选择网络，当做了代码埋点，那么每点击一次就会上报一次list接口，查看list接口，接口是否为200，并且在载荷中看自定义的事件、属性上报及事件的ab_sdk_version。如果接口为200，并且可以看到自定义的事件及自定义属性证明事件上报成功。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_4cd9e5e0b0ecaccb6fe602f2569699c4.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-2-系统验证&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 系统验证</h2>
+<p>在指标管理\-数据管理验证，上报的自定义事件和自定义属性在事件列表、事件属性和用户属性列表是否存在。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_7596d637e327ced978fe12d371b8a702.png" loading="lazy"> &lt;/span&gt;</p>
+<p>在全局设置\-受众管理\-用户细查，查看上报用户的详细行为，当在用户细查验证数据都OK，整个集成及上报就验证完成。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_69f6bd071f67db4ca28967c01b0ca085.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_680162c3fd7948c57dcdabe689ef52fd.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_dcf8e19c17b9c0660c72257def4c752a.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>什么是A/B 实验 · A/B 实验知识库</title>
+<meta name="description" content="说明 A/B测试，也称A/B实验。 一.什么是A/B实验 1. A/B实验的基本思想 A/B实验的基本思想就是： 我们在线上流量中取出 一小部分 （较低风险），完全 随机 地分给原策略A和新策略B（排除干扰），再结合一定">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65794.html">
+<meta property="og:title" content="什么是A/B 实验"><meta property="og:description" content="说明 A/B测试，也称A/B实验。 一.什么是A/B实验 1. A/B实验的基本思想 A/B实验的基本思想就是： 我们在线上流量中取出 一小部分 （较低风险），完全 随机 地分给原策略A和新策略B（排除干扰），再结合一定">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65794.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">💡 AB通识科普</span></div>
+<h1>什么是A/B 实验</h1>
+<div class="meta">📄 1,624 字 · 🕐 2023-12-12</div>
+<article class="md"><p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_eee878aba57d0df3668173aed2584813.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;A/B测试，也称A/B实验。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;一-什么是a-b实验&quot;&gt;&lt;/span&gt;</p>
+<h1>一.什么是A/B实验</h1>
+<p>&lt;span id=&quot;_1-a-b实验的基本思想&quot;&gt;&lt;/span&gt;</p>
+<h2>1. A/B实验的基本思想</h2>
+<p>A/B实验的基本思想就是：</p>
+<p>我们在线上流量中取出<strong>一小部分</strong>（较低风险），完全<strong>随机</strong>地分给原策略A和新策略B（排除干扰），再结合一定的<strong>统计方法</strong>，得到对于两种策略相对效果的准确估计（量化结果）。</p>
+<p>这一套基于小样本的实验方法同时满足了<strong>低风险</strong>，<strong>抗干扰</strong>和<strong>量化结果</strong>的要求，因此不论在互联网产品研发还是科学研究中，都被广泛使用。</p>
+<p>&lt;span id=&quot;_2-a-b实验的应用一&quot;&gt;&lt;/span&gt;</p>
+<h2>2. A/B实验的应用一</h2>
+<blockquote>Instead of saying &#x27;I have an idea&#x27;, what if you said &#x27;I have a new <strong>hypothesis</strong> , let&#x27;s go <strong>test</strong> it, see if it&#x27;s valid, ask how quickly can we <strong>validate</strong> it.&#x27; And if it&#x27;s not valid, <strong>move on</strong> to the next one. —— Satya Nadella CEO, Microsoft</blockquote>
+<p>微软CEO *Satya Nadella* 在business insider采访中，关于假设检验的这一段回答简练地描述了微软基于<strong>实验\-分析\-决策</strong>的数据驱动文化。</p>
+<p>事实上，微软也是世界上最早采用A/B实验评估每一个重大feature的科技公司之一，从bing的搜索排序到MSN的交互设计，数据驱动的决策无处不在，每年为微软规避大量风险并创造可观回报。</p>
+<p>下图，从bing这一侧面展示了微软实验平台同时运行的实验数量十年以来的井喷式发展。</p>
+<p>&lt;span&gt;<img src="https://p9-volceps.byteimg.com/tos-cn-i-0000/1117ca140446482393c64509de9bb8fb~tplv-noop.image?width=700&amp;height=422" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-a-b实验的应用二&quot;&gt;&lt;/span&gt;</p>
+<h2>3. A/B实验的应用二</h2>
+<p>另外值得一提的是，这一套基于假设检验的实验方法并非科技公司首创，其影响远比我们想象得深远，可靠性也已经得到了长足的验证。</p>
+<p>比如，在医学界，每一种新型药物研发都会伴随着一系列动物实验和临床测试，这些实验的效果都会以类似但更为严格的假设检验方法进行评估，最终被认定安全有效的药品才会进入市场，造福患者。</p>
+<p>下图所示就节选自某种放射性疗法在乳腺癌治疗中的有效性报告，红框中的<strong>95%CI</strong>（95%置信区间）和<strong>p</strong>（p\-value）就是假设检验中常用的统计术语。</p>
+<p>&lt;span&gt;<img src="https://p9-volceps.byteimg.com/tos-cn-i-0000/06b9f98855e949068c6d64e2bdde8320~tplv-noop.image?width=482&amp;height=554" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;二-为什么要开启ab实验？&quot;&gt;&lt;/span&gt;</p>
+<h1>二. 为什么要开启AB实验？</h1>
+<p>如今，大多数互联网产品野蛮生长的时代已经过去，人口红利到顶，产品策略需要从快糙猛的跑马圈地方式转向深耕细作的精细化运营方式，要精细化运营，就需要采用数据来驱动。</p>
+<p>何为数据驱动？试想以下几种场景：</p>
+<ol><li>小A凭着丰富的经验直接修改了产品的线上策略，一周后发现效果不升反降，遂下线。</li></ol>
+<ol><li>小B和小C同时上线了两个产品功能，一周后产品数据有下降，都认为是对方的问题，谁也不肯接锅。</li></ol>
+<ol><li>小D上线了一个新策略，随后进入十一黄金周，用户交互有所下降，小D觉得一定是假期埋没了自己的辛苦贡献，但也辩不明白，无处申冤。</li></ol>
+<ol><li>小E辛苦工作一整年，开发了365个不同的功能上线，年终写总结时却写不出到底在哪些方面究竟贡献了多少。</li></ol>
+<p>想必不论是研发还是产品运营，都不希望自己辛苦工作过后落入上述的几种尴尬的境地中，因此数据驱动业务增长就显得很有必要。</p>
+<p>那么数据变化和产品动作之间到底存在什么样的因果关系呢？&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/c87f60bf826f4ec1a4ab0749b4d38fb2~tplv-em5hxbkur4-noop.image?width=1600&amp;height=742" loading="lazy"> &lt;/span&gt;</p>
+<p>假设，某互联网公司承载了上百万规模的DAU，每天大量新特性等待上线，一方面业务人员无法承担其中任何一个错误特性直接影响用户体验的严重后果，另一方面业务人员又希望能够分离并量化每个特性的影响。</p>
+<p>因此，我们需要设计并坚持使用<strong>一套数据驱动的方法</strong>，使得业务人员可以以<strong>较小的风险</strong>对新feature进行评估，积极试错积累经验；并且我们设计的该方法有能力<strong>排除其他因素</strong>（比如同时开发的其他feature以及时间因素等）的干扰；最后，除了“好”或者“不好”，我们希望这个方法最好也能够给出<strong>定量</strong>的结果。</p>
+<p>为了解决上述问题，普遍使用的方法论是<strong>小流量随机实验</strong>，也就是我们常说的<strong>A/B实验。</strong> </p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_2883f93a70aff96851648a1ed98ef4ea.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

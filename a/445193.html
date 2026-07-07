@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Go SDK · A/B 实验知识库</title>
+<meta name="description" content="1. 安装SDK 1. 当前SDK版本：v1.0.13 2. Go版本要求：go1.14及以上版本 2. 使用示例 准备工作：获取数据上送地址 进行数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/445193.html">
+<meta property="og:title" content="Go SDK"><meta property="og:description" content="1. 安装SDK 1. 当前SDK版本：v1.0.13 2. Go版本要求：go1.14及以上版本 2. 使用示例 准备工作：获取数据上送地址 进行数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/445193.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>Go SDK</h1>
+<div class="meta">📄 5,237 字 · 🕐 2026-01-29</div>
+<article class="md"><p>&lt;span id=&quot;_1-安装sdk&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 安装SDK</h1>
+<pre><code>go get github.com/volcengine/datatester-go-sdk@v1.0.13</code></pre>
+<ol><li>当前SDK版本：v1.0.13</li></ol>
+<ol><li>Go版本要求：go1.14及以上版本</li></ol>
+<p>&lt;span id=&quot;_2-代码示例&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 使用示例</h1>
+<p>&lt;span id=&quot;662e8f42&quot;&gt;&lt;/span&gt;</p>
+<h2>准备工作：获取数据上送地址</h2>
+<p>进行数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如果上报地址设置错误，后续会导致您无法查询到上报的数据。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请在上报数据前，务必确认您当前使用的环境类型，根据环境类型配置上报地址。查看当前的环境类型请参见&lt;a href=&quot;https://www.volcengine.com/docs/84129/1261497&quot;&gt;SaaS云原生/非云原生&amp;私有化环境&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果您使用的是SaaS\-云原生环境，您也需确认您的服务所在的地域，（通常您的服务会在华北2\-北京地域，部分用户可能会使用其他地域）。SaaS\-云原生用户查看服务所在地域请参见&lt;a href=&quot;https://www.volcengine.com/docs/84129/1527757&quot;&gt;支持的地域&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;9a04a191&quot;&gt;&lt;/span&gt;</p>
+<h3>SaaS\-云原生 &amp; SaaS\-非云原生</h3>
+<table><thead><tr><th>地址类型</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（国内：华北2\-北京）</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（海外：亚太东南\-柔佛）</th><th>SaaS\-非云原生环境 国内环境</th><th>SaaS\-非云原生 海外BytePlus环境&lt;br&gt;&lt;br&gt;（以下 SG 指新加坡）</th></tr></thead><tbody><tr><td>数据上报地址</td><td>* SaaS\-云原生（华北）：&lt;br&gt;&lt;br&gt;   https://gator.volces.com</td><td>https://gator.uba.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>https://mcs.tobsnssdk.com</td></tr><tr><td>分流地址&lt;br&gt;&lt;br&gt;（meta信息地址）</td><td>https://tab.volces.com</td><td>https://tab.ab.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>https://tab.abtest.bytepluses.com</td></tr></tbody></table>
+<p>&lt;span id=&quot;9a82155e&quot;&gt;&lt;/span&gt;</p>
+<h3>私有化环境</h3>
+<p>私有化部署场景下，您需要获取部署私有化环境时，自行规划配置的数据上送地址。如您不清楚此地址，请联系您的项目经理或客户成功经理。</p>
+<p>&lt;span id=&quot;86bad8ea&quot;&gt;&lt;/span&gt;</p>
+<h2>2.1 SaaS\-云原生</h2>
+<pre><code>package main
+import (
+        &quot;github.com/volcengine/datatester-go-sdk/client&quot;
+        &quot;github.com/volcengine/datatester-go-sdk/config&quot;
+)
+func main() {
+        // token获取方式详见接口描述-AbClient
+        abClient := client.NewClient(&quot;token&quot;,
+        config.WithMetaHost(&quot;https://tab.volces.com&quot;), // 默认使用国内SAAS-非云原生环境的域名，私有化/SaaS-云原生用户需要修改，详情请参见上文的 获取数据上送地址 章节。
+        config.WithTrackHost(&quot;https://gator.volces.com&quot;) // 默认使用国内SAAS域名-非云原生环境的，私有化/SaaS-云原生用户需要修改，详情请参见上文的 获取数据上送地址 章节。
+        )
+        /*
+           client.NewClient(&quot;appKey&quot;),
+           config.WithWorkerNumOnce(20), // 事件上报协程数，一般不需要设置
+           config.WithFetchInterval(60 * time.Second), // meta更新间隔，默认为60s，一般不需要设置
+           config.WithAnonymousConfig(true, true), // 匿名上报配置，第一个参数为开启关闭，第二个参数区分SaaS-非云原生和SaaS-云原生
+           config.WithLogger(log.NewLogrusAdapt(logrus.New()))) // 自定义日志接口，提供默认实现
+        */
+
+        // attributes: 用户属性，仅用于分流，不随埋点上报，可参考https://www.volcengine.com/docs/6287/65826
+        attributes := map[string]interface{}{
+        }
+        // decisionId(ssid): 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+        // trackId(uuid): 事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+        value, err := abClient.Activate(&quot;${experiment_key}&quot;, &quot;decisionId&quot;, &quot;trackId&quot;, true, attributes)
+        // 未命中实验和ff的场景下返回固定err且不为空，value返回传入的默认值，可按需使用
+        // if err != nil {
+        //   
+        //}
+}</code></pre>
+<p>&lt;span id=&quot;2d12a6c2&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 SaaS\-非云原生(老客)</h2>
+<pre><code>package main
+import (
+        &quot;github.com/volcengine/datatester-go-sdk/client&quot;
+        &quot;github.com/volcengine/datatester-go-sdk/config&quot;
+)
+func main() {
+        // token获取方式详见接口描述-AbClient
+        abClient := client.NewClient(&quot;token&quot;)
+        /*
+           client.NewClient(&quot;appKey&quot;),
+           config.WithWorkerNumOnce(20), // 事件上报协程数，一般不需要设置
+           config.WithFetchInterval(60 * time.Second), // meta更新间隔，默认为60s，一般不需要设置
+           config.WithAnonymousConfig(true, true), // 匿名上报配置，第一个参数为开启关闭，第二个参数区分SaaS-非云原生和SaaS-云原生
+           config.WithLogger(log.NewLogrusAdapt(logrus.New()))) // 自定义日志接口，提供默认实现
+        */
+
+        // attributes: 用户属性，仅用于分流，不随埋点上报，可参考https://www.volcengine.com/docs/6287/65826
+        attributes := map[string]interface{}{
+        }
+        // decisionId(ssid): 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+        // trackId(uuid): 事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+        value, err := abClient.Activate(&quot;${experiment_key}&quot;, &quot;decisionId&quot;, &quot;trackId&quot;, true, attributes)
+        // 未命中实验和ff的场景下返回固定err且不为空，value返回传入的默认值，可按需使用
+        // if err != nil {
+        //   
+        //}
+}</code></pre>
+<p>&lt;span id=&quot;ba4030b2&quot;&gt;&lt;/span&gt;</p>
+<h2>2.3 私有化</h2>
+<pre><code>package main
+import (
+        &quot;github.com/volcengine/datatester-go-sdk/client&quot;
+        &quot;github.com/volcengine/datatester-go-sdk/config&quot;
+)
+func main() {
+        // token获取方式详见接口描述-AbClient
+        abClient := client.NewClient(&quot;token&quot;,
+        config.WithMetaHost(&quot;&quot;), // 私有化部署客户一般为产品域名，请根据实际的域名进行替换
+        config.WithTrackHost(&quot;&quot;),// 私有化部署客户为埋点数据上报申请的域名，请根据实际的域名进行替换
+        )
+        /*
+           client.NewClient(&quot;appKey&quot;),
+           config.WithWorkerNumOnce(20), // 事件上报协程数，一般不需要设置
+           config.WithFetchInterval(60 * time.Second), // meta更新间隔，默认为60s，一般不需要设置
+           config.WithAnonymousConfig(true, true), // 匿名上报配置，第一个参数为开启关闭，第二个参数区分SaaS-非云原生和SaaS-云原生
+           config.WithLogger(log.NewLogrusAdapt(logrus.New()))) // 自定义日志接口，提供默认实现
+        */
+
+        // attributes: 用户属性，仅用于分流，不随埋点上报，可参考https://www.volcengine.com/docs/6287/65826
+        attributes := map[string]interface{}{
+        }
+        // decisionId(ssid): 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+        // trackId(uuid): 事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+        value, err := abClient.Activate(&quot;${experiment_key}&quot;, &quot;decisionId&quot;, &quot;trackId&quot;, true, attributes)
+        // 未命中实验和ff的场景下返回固定err且不为空，value返回传入的默认值，可按需使用
+        // if err != nil {
+        //   
+        //}
+}</code></pre>
+<p>&lt;span id=&quot;_3-接口描述&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 接口描述</h1>
+<p>&lt;span id=&quot;_3-1-newclient&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 NewClient</h2>
+<p><strong>接口：</strong> </p>
+<p>NewClient(token string, configs ...config.Func) \*AbClient</p>
+<p><strong>描述：</strong>  初始化ABTest分流</p>
+<p><strong>参数：</strong> </p>
+<ul><li>token：表明您的Tester应用。出于安全考虑，此处使用的token=appKey，而非appId。</li></ul>
+<p>   在集团中接入一个应用后，您可以在集团相关页面查看应用的AppKey等信息，详情请参考：<a href="https://www.volcengine.com/docs/6287/66984" target="_blank" rel="noopener">如何创建应用</a>。</p>
+<ul><li>SaaS\-云原生</li></ul>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/eba094f44e174faea6c7cdcdc7447d2d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>SaaS\-非云原生</li></ul>
+<p>      &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b55e61ee067544deaff4939685d1475c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;请尽早初始化AbClient，以免影响您的分流服务和埋点上报服务。   &lt;/div&gt;</p>
+<ul><li>config.WithMetaHost：获取元信息的地址，默认为SaaS\-非云原生国内地址；海外Saas域名：config.MetaHostSG；SaaS\-云原生/私有化需要设置为产品域名</li></ul>
+<ul><li>config.WithTrackHost：事件上报的地址，默认为SaaS\-非云原生国内地址；海外Saas域名：config.TrackHostSG；SaaS\-云原生/私有化需要设置为上报域名</li></ul>
+<ul><li>config.WithFetchInterval(60 \* time.Second)：meta更新间隔，默认为60s，一般不需要设置</li></ul>
+<ul><li>config.WithWorkerNumOnce(20)：事件上报协程数，一般不需要设置</li></ul>
+<ul><li>config.WithAnonymousConfig(true, true)：匿名上报配置，第一个参数为开启关闭，第二个参数区分saas和私有化；不使用匿名上报的场景下不需要设置</li></ul>
+<ul><li>config.WithLogger(log.NewLogrusAdapt(logrus.New()))：自定义日志接口，提供默认实现</li></ul>
+<p>&lt;span id=&quot;_3-2-newclientwithuserabinfo&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 NewClientWithUserAbInfo</h2>
+<p><strong>接口：</strong> </p>
+<p>NewClientWithUserAbInfo(token string, userAbInfoHandler handler.UserAbInfoHandler, configs ...config.Func) \*AbClient</p>
+<p><strong>描述：</strong>  初始化ABTest分流类，传入自定义的userAbInfoHandler，userAbInfoHandler详见文档末尾</p>
+<p>&lt;span id=&quot;_3-3-activate&quot;&gt;&lt;/span&gt;</p>
+<h2>3.3 Activate</h2>
+<p><strong>接口：</strong>  func (t \*AbClient) Activate(variantKey, decisionId, trackId string, defaultValue interface{}, attributes map[string]interface{}) (interface{}, error)</p>
+<p><strong>描述：</strong>  获取特定key的分流结果，并上报曝光事件。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;批量获取分流结果，并上报曝光事件可使用GetExperimentConfigsWithImpressionWithVariantKeys接口，详情请参见下文对应接口的文档。&lt;/div&gt;</p>
+<p><strong>参数：</strong> </p>
+<p>variantKey：变体的key</p>
+<p>decisionId：本地分流用户标识</p>
+<p>trackId：事件上报用户标识</p>
+<p>defaultValue：变体默认值</p>
+<p>attributes：用户属性</p>
+<p><strong>返回值：</strong>  该函数返回命中变体对象，未命中时返回默认值对象</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1、该接口与所有含有“WithImpression”字样的接口均会自动上报曝光事件，用户可在AbClient初始化时指定domain，调整事件上报地址。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;2、请务必填写trackId字段，否则上报失效&lt;/div&gt;</p>
+<p>&lt;span id=&quot;_3-4-getexperimentvariantname&quot;&gt;&lt;/span&gt;</p>
+<h2>3.4 GetExperimentVariantName</h2>
+<p><strong>接口：</strong>  func (t \*AbClient) GetExperimentVariantName(experimentId, decisionId string, attributes map[string]interface{}) (string, error)</p>
+<p><strong>描述：</strong>  获取用户命中的特定实验的版本名称</p>
+<p><strong>参数：</strong> </p>
+<p>experimentId：指定分流的实验Id</p>
+<p>decisionId：本地分流用户标识</p>
+<p>attributes：用户属性</p>
+<p><strong>返回值：</strong>  该函数返回用户命中的特定实验的版本名称</p>
+<p>&lt;span id=&quot;_3-5-getexperimentconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.5 GetExperimentConfigs</h2>
+<p><strong>接口：</strong>  func (t \*AbClient) GetExperimentConfigs(experimentId, decisionId string, attributes map[string]interface{}) (map[string]map[string]interface{}, error)</p>
+<p><strong>描述：</strong>  获取用户命中的特定实验的变体详情</p>
+<p><strong>参数：</strong> </p>
+<p>experimentId：指定分流的实验Id</p>
+<p>decisionId：本地分流用户标识</p>
+<p>attributes：用户属性</p>
+<p><strong>返回值：</strong>  该函数返回用户命中某个实验的变体详情，通常仅能命中一个变体</p>
+<p><strong>返回值示例</strong>：</p>
+<pre><code>{
+    &quot;1324&quot;: {
+       &quot;val&quot;: &quot;3&quot;,
+       &quot;vid&quot;: &quot;27028&quot;
+    },
+    &quot;father_code&quot;: {
+       &quot;val&quot;: &quot;father_code_2&quot;,
+       &quot;vid&quot;: &quot;27028&quot;
+    },
+    &quot;grey_rollout&quot;: {
+        &quot;val&quot;: false,
+        &quot;vid&quot;: &quot;27028&quot;
+    },
+    &quot;os_name&quot;: {
+         &quot;val&quot;: &quot;android_f&quot;,
+         &quot;vid&quot;: &quot;27028&quot;
+     }
+ }</code></pre>
+<p>&lt;span id=&quot;_3-6-getallexperimentconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.6 GetAllExperimentConfigs</h2>
+<p><strong>接口：</strong>  func (t \*AbClient) GetAllExperimentConfigs(decisionId string, attributes map[string]interface{}) (map[string]map[string]interface{}, error)</p>
+<p><strong>描述：</strong>  获取用户命中的所有实验的变体详情</p>
+<p><strong>参数：</strong> </p>
+<p>decisionId：本地分流用户标识</p>
+<p>attributes：用户属性</p>
+<p><strong>返回值：</strong>  该函数返回用户命中所有实验的变体详情，通常命中多个变体</p>
+<p><strong>返回值示例：</strong> </p>
+<p>与GetExperimentConfigs返回结构相同</p>
+<p>&lt;span id=&quot;_3-7-getfeatureconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.7 GetFeatureConfigs</h2>
+<p><strong>接口：</strong>  func (t \*AbClient) GetFeatureConfigs(featureId, decisionId string, attributes map[string]interface{}) (map[string]map[string]interface{}, error)</p>
+<p><strong>描述：</strong>  获取用户命中的特定feature的变体详情</p>
+<p><strong>参数：</strong> </p>
+<p>featureId：feature Id</p>
+<p>decisionId：本地分流用户标识</p>
+<p>attributes：用户属性</p>
+<p><strong>返回值：</strong>  该函数返回用户命中某个feature的变体详情，通常仅能命中一个变体</p>
+<p><strong>返回值示例：</strong> </p>
+<pre><code>{
+   &quot;feature_key&quot;:{
+        &quot;val&quot; : &quot;prod&quot;,
+        &quot;vid&quot; : &quot;20006421&quot;
+    }
+}</code></pre>
+<p>&lt;span id=&quot;_3-8-getallfeatureconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.8 GetAllFeatureConfigs</h2>
+<p><strong>接口：</strong>  func (t \*AbClient) GetAllFeatureConfigs(decisionId string, attributes map[string]interface{}) (map[string]map[string]interface{}, error)</p>
+<p><strong>描述：</strong>  获取用户命中的所有feature的变体详情</p>
+<p><strong>参数：</strong> </p>
+<p>decisionId：本地分流用户标识</p>
+<p>attributes：用户属性</p>
+<p><strong>返回值：</strong>  该函数返回用户命中所有feature的变体详情，通常命中多个变体</p>
+<p><strong>返回值示例：</strong> </p>
+<p>与GetFeatureConfigs返回结构相同</p>
+<p>&lt;span id=&quot;_3-9-getexperimentvariantnamewithimpression&quot;&gt;&lt;/span&gt;</p>
+<h2>3.9 GetExperimentVariantNameWithImpression</h2>
+<p>同接口“GetExperimentVariantName”（上报曝光事件）</p>
+<p>&lt;span id=&quot;_3-10-getallexperimentconfigswithimpression&quot;&gt;&lt;/span&gt;</p>
+<h2>3.10 GetAllExperimentConfigsWithImpression</h2>
+<p>同接口“GetAllExperimentConfigs”（上报曝光事件）</p>
+<p>&lt;span id=&quot;_3-11-getexperimentconfigswithimpression&quot;&gt;&lt;/span&gt;</p>
+<h2>3.11 GetExperimentConfigsWithImpression</h2>
+<p>同接口“GetExperimentConfigs”（上报曝光事件）</p>
+<p>&lt;span id=&quot;_3-12-getfeatureconfigswithimpression&quot;&gt;&lt;/span&gt;</p>
+<h2>3.12 GetFeatureConfigsWithImpression</h2>
+<p>同接口“GetFeatureConfigs”（上报曝光事件）</p>
+<p>&lt;span id=&quot;53ff585a&quot;&gt;&lt;/span&gt;</p>
+<h2>3.13 GetExperimentConfigsWithImpressionWithVariantKeys</h2>
+<ul><li><strong>接口</strong>：func (t \*AbClient) GetExperimentConfigsWithImpressionWithVariantKeys(decisionId string, trackId string,variantKeys []string, attributes map[string]interface{}) (map[string]interface{}, error)</li></ul>
+<ul><li><strong>描述</strong>：获取指定变体list的实验配置，并返回指定变体键的值，主要适用于批量获取分流结果，并上报曝光事件</li></ul>
+<ul><li><strong>请求参数</strong>：</li></ul>
+<table><thead><tr><th>请求参数</th><th>是否必填</th><th>数据类型</th><th>参数说明</th></tr></thead><tbody><tr><td>decisionId</td><td>是</td><td>string</td><td>分流ID</td></tr><tr><td>trackId</td><td>是</td><td>string</td><td>上报ID</td></tr><tr><td>variantKeys</td><td>是</td><td>[]string</td><td>变体列表</td></tr><tr><td>attributes</td><td>否</td><td>map</td><td>属性映射</td></tr></tbody></table>
+<ul><li><strong>返回参数</strong>：</li></ul>
+<table><thead><tr><th>返回参数</th><th>数据类型</th><th>参数说明</th></tr></thead><tbody><tr><td>variantsResult</td><td>map[string]interface{}</td><td>变体对应的值映射，如果变体没有命中任何实验，则变体的值为nil</td></tr><tr><td>error</td><td>error</td><td>错误信息</td></tr></tbody></table>
+<ul><li><strong>使用示例</strong>：</li></ul>
+<ul><li>请求示例：</li></ul>
+<p>   ``<code>Go    func main() {     // client初始化，具体参考NewClient     abClient := client.NewClient(&quot;123&quot;)     attributes := make(map[string]interface{})     // 变体数组     variantKeys := []string{&quot;father&quot;, &quot;filter_param&quot;, &quot;no_hit&quot;}     c, _ := abClient.GetExperimentConfigsWithImpressionWithVariantKeys(&quot;test1&quot;, &quot;729212309341513****&quot;, variantKeys, attributes)    }    </code>``</p>
+<ul><li>返回示例</li></ul>
+<p>   ``<code>Go    {     &quot;father&quot;: &quot;a&quot;,     &quot;filter_param&quot;: 123,     &quot;no_hit&quot;: nil    }    </code>``</p>
+<p>&lt;span id=&quot;_4-其他&quot;&gt;&lt;/span&gt;</p>
+<h1>4. 其他</h1>
+<p>&lt;span id=&quot;_4-1-userabinfohandler&quot;&gt;&lt;/span&gt;</p>
+<h2>4.1 UserAbInfoHandler</h2>
+<p>用户信息处理接口，冻结实验、进组不出组场景下使用</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;冻结实验和进组不出组需要持久化用户的进组信息，SDK提供的默认实现不进行数据持久化；&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;如有业务需要，则实现UserAbInfoHandler接口，结合Redis或其他外部存储对用户进组信息进行持久化处理，初始化AbClient时传入。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;使用方式：&lt;/div&gt;</p>
+<ol><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;使用NewClient初始化AbClient时默认使用空实现，不启用“进组不出组”功能&lt;/div&gt;</li></ol>
+<ol><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;继承UserAbInfoHandler接口，自行实现持久化存储；使用NewClientWithUserAbInfo初始化AbClient，并传入自行实现的UserAbInfoHandler类，则可启用“进组不出组”功能&lt;/div&gt;</li></ol>
+<p>使用Redis缓存示例（仅供参考）</p>
+<pre><code>client.NewClientWithUserAbInfo(&quot;token&quot;, NewRedisUserAbInfoHandler())
+
+type RedisAbInfoHandler struct{}
+
+func (u *RedisAbInfoHandler) Query(decisionID string) string {
+    // need to implement it yourself
+    return redis.get(decisionID);
+}
+
+func (u *RedisAbInfoHandler) CreateOrUpdate(decisionID, experiment2Variant string) bool {
+    // need to implement it yourself
+    return redis.set(decisionID, experiment2Variant);
+}
+
+func (u *RedisAbInfoHandler) NeedPersistData() bool {
+    // return true if customize this interface
+    return true
+}
+
+func NewRedisUserAbInfoHandler() *RedisAbInfoHandler {
+        return &amp;RedisAbInfoHandler{}
+}</code></pre>
+<p>&lt;span id=&quot;_4-2-匿名上报&quot;&gt;&lt;/span&gt;</p>
+<h2>4.2 匿名上报</h2>
+<p>获取不到uuid的用户，可以通过填充device_id或者web_id进行事件上报</p>
+<ol><li>NewClient时设置匿名上报配置，第一个参数（true/开启，false/关闭）匿名上报，第二个参数（true/saas，false/私有化）</li></ol>
+<pre><code>client.NewClient(&quot;appKey&quot;, config.WithAnonymousConfig(true, true))</code></pre>
+<ol><li>添加device_id, web_id, bddid到用户属性attributes，trackId固定传入空字符串&quot;&quot;</li></ol>
+<pre><code>trackId = &quot;&quot;;
+attributes[&quot;device_id&quot;] = 1234; int64
+attributes[&quot;web_id&quot;] = 5678; int64
+attributes[&quot;bddid&quot;] = &quot;91011&quot;; string</code></pre>
+<ol><li>请求Activate或其他&#x27;WithImpression&#x27;接口即可匿名上报</li></ol></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

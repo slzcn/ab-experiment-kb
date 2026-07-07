@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>指标分析：事件指标&amp;留存指标 · A/B 实验知识库</title>
+<meta name="description" content="事件指标 添加过滤条件 支持添加时间、属性维度的过滤条件。如下： 时间过滤条件： 对于 进行中 的实验：支持天级、小时级、5分钟级的时间粒度过滤。小时级支持查看最近7天的数据，5分钟级支持查看最近1天的数据。 对于 已结">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1264721.html">
+<meta property="og:title" content="指标分析：事件指标&amp;留存指标"><meta property="og:description" content="事件指标 添加过滤条件 支持添加时间、属性维度的过滤条件。如下： 时间过滤条件： 对于 进行中 的实验：支持天级、小时级、5分钟级的时间粒度过滤。小时级支持查看最近7天的数据，5分钟级支持查看最近1天的数据。 对于 已结">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1264721.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📊 实验报告与分析</span></div>
+<h1>指标分析：事件指标&amp;留存指标</h1>
+<div class="meta">📄 3,349 字 · 🕐 2025-03-07</div>
+<article class="md"><p>&lt;span id=&quot;d5b7459e&quot;&gt;&lt;/span&gt;</p>
+<h3>事件指标</h3>
+<p>&lt;span id=&quot;829481f6&quot;&gt;&lt;/span&gt;</p>
+<h4>添加过滤条件</h4>
+<p>支持添加时间、属性维度的过滤条件。如下：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/95b14b1947d54780ad11c4768c81f63c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>时间过滤条件：</li></ul>
+<ul><li>对于<strong>进行中</strong>的实验：支持天级、小时级、5分钟级的时间粒度过滤。小时级支持查看最近7天的数据，5分钟级支持查看最近1天的数据。</li></ul>
+<ul><li>对于<strong>已结束</strong>的实验：实验结束当天仍然支持小时级、5分钟级的粒度过滤，支持天级时间粒度过滤。非实验结束当天的话，仅能查看天级的数据。</li></ul>
+<ul><li>属性过滤条件：支持通过属性和用户分群来过滤，属性与用户分群的过滤条件为“且”的逻辑关系。</li></ul>
+<p>&lt;span id=&quot;9b557572&quot;&gt;&lt;/span&gt;</p>
+<h4>指标视图</h4>
+<p>实验指标支持以单个指标或指标组维度查看数据，单指标视图展示版本进组人数、指标值、实验版本相对指标的diff值以及相对变化和置信区间等信息，并支持查看天级趋势、概率分布和箱型图，如下：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_af6640ee31cf232a8ad5303c9c01ffe9.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;5725c0b2&quot;&gt;&lt;/span&gt;</p>
+<h3>指标组视图</h3>
+<p>指标组视图下将会展示对照组的<strong>指标值</strong>，以及各实验组指标相对对照组的<strong>变化率</strong>以及置信区间，可以通过hover置信区间查看指标的详细信息</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_475e364c212d8ff6d05d5ed6bf3ea55a.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;bed22685&quot;&gt;&lt;/span&gt;</p>
+<h3>查看PreAA数据</h3>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;当前仅SaaS\-云原生环境支持查看PreAA数据。&lt;/div&gt;</p>
+<p>SaaS\-云原生环境支持PreAA实验指标数据查看能力。PreAA是指两个实验分组用户在实验开始之前的指标对比情况。用户进入实验前14天的指标表现是怎么样的？如果用户在进入实验前的指标波动就比较大，那进入实验后的数据参考意义也会变小。PreAA可以直接帮您观察用户进入实验前14天的数据表现情况。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7ea3cd176ffc480e8da54c1ecda41f3d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>您可以在实验报告的数据指标页面中，单击切换为PreAA数据，查看用户进入实验前14天的数据表现情况。</p>
+<p>&lt;span id=&quot;1bce8521&quot;&gt;&lt;/span&gt;</p>
+<h3>时间趋势</h3>
+<p>根据实验报告的时间颗粒度，展示某个指标的「天级趋势」、「时级趋势」、「分钟趋势」。 以「天级趋势」举例：</p>
+<ul><li>可查看当日指标的实际取值和p\-value，以及当日数值的范围。日均定义口径为当前所有已经进组的用户在当日的指标表现，并非当日新进组用户。</li></ul>
+<ul><li>当打开「范围展示」，出现范围，会产出重叠效果，并查看各个版本的核心指标范围随时间变化的情况。</li></ul>
+<ul><li>理想情况下，范围会随着时间而变小，并且在图中反映出来。</li></ul>
+<ul><li>如果范围扩大，则表明数据波动。</li></ul>
+<ul><li>如果范围重叠，则表示不确定哪个版本效果更好。</li></ul>
+<p>      &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_1c9b020bca731c4ef9759395561acaf6.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;949c1c3c&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>概率分布</strong></h3>
+<p>概率分布，展示的是指标的取值及其出现的概率分布，横轴是指标值，纵轴是指标值出现的概率密度，通过均值和方差反映指标的分布情况。实验组和对照组的概率分布对比，可辅助判断实验组和对照组的差异情况。</p>
+<ul><li>默认对照版本采用灰色系，其他版本采用彩色系。</li></ul>
+<ul><li>在不同实验版本的正态分布曲线上，鼠标hover会显示各个版本的“进组人数、p\-value、指标方差、MDE、置信区间”信息。</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_c95e6e09674e29696657dadf7b082902.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;06a53665&quot;&gt;&lt;/span&gt;</p>
+<h3>箱型图</h3>
+<p>盒须快照，又称为箱型图，是通过数据的最大值、最小值、中位数和两个四分位数，反映原始数据分布特征。通过实验组和对照组的盒须快照对比，可以进行两组数据分布特征的比较。</p>
+<p>应用说明：</p>
+<ul><li>针对人均类型（PV/AU、PV/UV、SUM/AU、SUM/UV）、PV类型、SUM类型、CTR点击率类型、PV/SUM &amp; SUM/PV &amp; SUM/SUM &amp; PV/PV等类型指标均可适用。</li></ul>
+<ul><li>「CVR转化率类型」因对单个个体是二元值（即取值仅为0或1），目前不支持盒须图。</li></ul>
+<ul><li>小时级/分钟级的粒度展示，不提供盒须图。</li></ul>
+<p>重叠区域说明：各颜色的阴影区域为对应实验组和基准组的重叠区域，重叠区域表示有重叠部分的实验版本，指标表现类似，无法确定哪种版本效果更佳。如果您表现最好的版本有很多不确定性重叠，我们建议您将实验运行时间调的更长。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_03199854c273ab3e4012a091d4429fde.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;fe316742&quot;&gt;&lt;/span&gt;</p>
+<h2>留存指标</h2>
+<p>&lt;span id=&quot;b4604528&quot;&gt;&lt;/span&gt;</p>
+<h3>同期群留存趋势</h3>
+<p>同期群留存趋势，指的是将实验用户以首次进入实验的日期拆分，观察不同天首次进组的用户在后续的留存趋势。 支持细分群组的累计趋势图，支持1日留存率至30日留存率的天级趋势图。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_d34a07208ffae18bf5a49f0d077dbd07.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;ec8a4955&quot;&gt;&lt;/span&gt;</p>
+<h3>N日留存日趋势</h3>
+<p>表示筛选时间范围内进组用户的第N日留存趋势。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_97c058cf1f2aed9001bf9435668c53e0.png" loading="lazy"> &lt;/span&gt;</p>
+<p><strong>留存率是系统默认配置的，如何计算留存率？</strong> </p>
+<table><thead><tr><th>规则</th><th>处理逻辑</th></tr></thead><tbody><tr><td>分组方式</td><td>首次进入实验组的用户（不一定是新用户）</td></tr><tr><td>归因方式</td><td>把留存用户按照进组时间划分，分别归因到首次进组的时间</td></tr><tr><td>回访规则</td><td>回到APP即视为回访</td></tr></tbody></table>
+<p>举个例子说明：</p>
+<ul><li>第一天实验组A的用户数为：10000，第一天base_user为10000；</li></ul>
+<ul><li>第二天实验组A的用户数为：10400，其中9200用户是第一天便已经在A中的用户，1200用户为当天新进组用户；第二天base_user为1200，第一天的次日留存为9200/10000=92%；</li></ul>
+<ul><li>第三天实验组A的用户数为：10200，其中8000用户为第一天便已经在A中的用户，1100用户为第二天进入A中的用户，1100为第三天进入A的用户；第三天的base_user为1100， 第一天的2日留存为8000/10000=80%， 第二天的次日留存为1100/1200=91.67%；</li></ul>
+<ul><li>然后分别把每个进入实验日期的指标用base_user进行加权平均，得到次日留存率、第2天留存率等。</li></ul>
+<p><strong>如何计算「同期群留存趋势」每日每个实验版本的详细数据？</strong> </p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_9361f9135c1a7ab31cca14abbd1efc2c.png" loading="lazy"> &lt;/span&gt;</p>
+<p>示例如下：</p>
+<table><thead><tr><th>日期</th><th>新进组人数</th><th>1天后</th><th>2天后</th><th>3天后</th><th>4天后</th><th>5天后</th><th>6天后</th><th>7天后</th><th>8天后</th><th>9天后</th><th>10天后</th><th>11天后</th><th>12天后</th><th>13天后</th><th>14天后</th></tr></thead><tbody><tr><td>全部新进组用户</td><td>317907</td><td>4.99%</td><td>5.11%</td><td>5.24%</td><td>5.42%</td><td>5.58%</td><td>5.81%</td><td>6.11%</td><td>6.49%</td><td>6.93%</td><td>7.44%</td><td>8.48%</td><td>10.06%</td><td>13.77%</td><td>15.96%</td></tr><tr><td>20200715</td><td>24,230</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200714</td><td>23,941</td><td>1.60%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200713</td><td>23,551</td><td>1.70%</td><td>1.70%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200712</td><td>23,160</td><td>1.82%</td><td>1.85%</td><td>1.89%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200711</td><td>22,725</td><td>1.74%</td><td>1.64%</td><td>1.70%</td><td>1.69%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200710</td><td>22,391</td><td>1.79%</td><td>1.87%</td><td>1.73%</td><td>1.85%</td><td>1.76%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200709</td><td>22,014</td><td>1.83%</td><td>1.91%</td><td>1.86%</td><td>1.93%</td><td>1.89%</td><td>1.84%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200708</td><td>21,631</td><td>1.89%</td><td>1.83%</td><td>1.90%</td><td>1.75%</td><td>1.87%</td><td>1.76%</td><td>1.90%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200707</td><td>21,237</td><td>1.93%</td><td>1.96%</td><td>1.87%</td><td>1.90%</td><td>1.86%</td><td>1.80%</td><td>1.91%</td><td>1.92%</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200706</td><td>20,857</td><td>1.97%</td><td>1.80%</td><td>1.87%</td><td>1.84%</td><td>1.86%</td><td>1.84%</td><td>1.78%</td><td>1.91%</td><td>1.90%</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20200705</td><td>20,480</td><td>1.98%</td><td>1.98%</td><td>1.90%</td><td>2.01%</td><td>2.01%</td><td>2.02%</td><td>2.06%</td><td>2.03%</td><td>1.97%</td><td>1.91%</td><td></td><td></td><td></td><td></td></tr><tr><td>20200704</td><td>20,104</td><td>2.01%</td><td>2.04%</td><td>2.05%</td><td>2.05%</td><td>2.06%</td><td>2.20%</td><td>2.21%</td><td>2.23%</td><td>2.12%</td><td>1.88%</td><td>2.09%</td><td></td><td></td><td></td></tr><tr><td>20200703</td><td>19,813</td><td>2.44%</td><td>2.40%</td><td>2.47%</td><td>2.51%</td><td>2.27%</td><td>2.17%</td><td>2.17%</td><td>2.29%</td><td>2.24%</td><td>2.06%</td><td>2.04%</td><td>1.96%</td><td></td><td></td></tr><tr><td>20200702</td><td>27,373</td><td>30.55%</td><td>29.08%</td><td>27.47%</td><td>26.19%</td><td>24.61%</td><td>23.36%</td><td>21.84%</td><td>20.36%</td><td>18.99%</td><td>17.42%</td><td>16.04%</td><td>14.56%</td><td>13.16%</td><td></td></tr><tr><td>20200701</td><td>4,400</td><td>30.93%</td><td>29.73%</td><td>28.70%</td><td>27.48%</td><td>26.59%</td><td>25.32%</td><td>24.25%</td><td>23.23%</td><td>21.89%</td><td>20.77%</td><td>19.68%</td><td>18.57%</td><td>17.52%</td><td>15.95%</td></tr></tbody></table>
+<p>1天后：4.99%=（23941 \* 1.60% + 23551 \* 1.70% + 23160 \* 1.82% + … + 27373 \* 30.55% + 4400 \* 30.93%）/（23941 + 23551 + … + 27373 + 4400）</p>
+<p>4天后：5.42%=（22725 \* 1.69% + 22391 \* 1.85% + 22014 \* 1.93% + … + 27373 \* 26.19% + 4400 \* 27.48%）/（22725 + 22391+…+27373 + 4400）</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

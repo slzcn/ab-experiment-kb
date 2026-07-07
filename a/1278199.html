@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web/JS SDK埋点与属性（实验指标） · A/B 实验知识库</title>
+<meta name="description" content="上报事件和属性前，请先阅读[数据格式](https://www.volcengine.com/docs/6287/1149795)介绍。 1. 用户与用户属性 1.1 登录态变化调用 1.1.1 账户登录 如您的产品中有">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1278199.html">
+<meta property="og:title" content="Web/JS SDK埋点与属性（实验指标）"><meta property="og:description" content="上报事件和属性前，请先阅读[数据格式](https://www.volcengine.com/docs/6287/1149795)介绍。 1. 用户与用户属性 1.1 登录态变化调用 1.1.1 账户登录 如您的产品中有">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1278199.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>Web/JS SDK埋点与属性（实验指标）</h1>
+<div class="meta">📄 4,936 字 · 🕐 2025-12-03</div>
+<article class="md"><blockquote>上报事件和属性前，请先阅读<a href="https://www.volcengine.com/docs/6287/1149795" target="_blank" rel="noopener">数据格式</a>介绍。</blockquote>
+<p>&lt;span id=&quot;e9405076&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 用户与用户属性</h1>
+<p>&lt;span id=&quot;573aa948&quot;&gt;&lt;/span&gt;</p>
+<h2>1.1 登录态变化调用</h2>
+<p>&lt;span id=&quot;1133229f&quot;&gt;&lt;/span&gt;</p>
+<h3>1.1.1 账户登录</h3>
+<p>如您的产品中有账户体系，请在用户登录后立即设置uuid，以保证用户登录前后口径一致性。</p>
+<pre><code>window.collectEvent(&#x27;config&#x27;, {
+    user_unique_id: &quot;{{USER_UNIQUE_ID}}&quot;  
+});</code></pre>
+<p>&lt;span id=&quot;b6025414&quot;&gt;&lt;/span&gt;</p>
+<h3>1.1.2 账户登出</h3>
+<p>在账户登出时调用。</p>
+<pre><code>window.collectEvent(&#x27;config&#x27;, {
+    user_unique_id: null 
+});</code></pre>
+<p>&lt;span id=&quot;e717d81e&quot;&gt;&lt;/span&gt;</p>
+<h2>1.2 设置用户属性</h2>
+<p>&lt;span id=&quot;04f4a6fb&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.1 profileSet</h3>
+<p>设置用户属性，存在则覆盖，不存在则创建。</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为value
+window.collectEvent(&#x27;profileSet&#x27;, {
+    key: &#x27;value&#x27; // 值支持字符串，数字，数组
+})</code></pre>
+<p>&lt;span id=&quot;4d9f2074&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.2 profileSetOnce</h3>
+<p>设置用户属性，存在则不设置，不存在则创建，适合首次相关的用户属性，比如首次访问时间等。</p>
+<pre><code>// 示例：设置用户属性，属性名为key_once，属性值为value_once
+window.collectEvent(&#x27;profileSetOnce&#x27;, {
+    key_once: &#x27;value_once&#x27; // 值支持字符串，数字，数组
+})</code></pre>
+<p>&lt;span id=&quot;b70e1254&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.3 profileIncrement</h3>
+<p>设置数值类型的属性，可进行累加。</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为1
+window.collectEvent(&#x27;profileIncrement&#x27;, {
+    key: 1
+})</code></pre>
+<p>&lt;span id=&quot;9c91a9ef&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.4 profileAppend</h3>
+<p>设置List类型的用户属性，可持续向List内添加。</p>
+<pre><code>// 示例：设置用户属性，属性名为key，原本已有属性值，现添加属性值为value_append
+window.collectEvent(&#x27;profileAppend&#x27;, {
+    key: &#x27;value_append&#x27;
+})</code></pre>
+<p>&lt;span id=&quot;b98f8b8d&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.5 profileUnset</h3>
+<p>删除用户的属性。</p>
+<pre><code>// 示例：删除用户属性，属性名为key
+window.collectEvent(&#x27;profileUnset&#x27;, &#x27;key&#x27;)</code></pre>
+<p>&lt;span id=&quot;870a4361&quot;&gt;&lt;/span&gt;</p>
+<h2>1.3 匿名ID</h2>
+<p>匿名用户ID，用于代替webid的功能。开启匿名用户ID的设置后，不再请求和上报webid，统一由匿名ID代替。</p>
+<p>&lt;span id=&quot;3c8fceb4&quot;&gt;&lt;/span&gt;</p>
+<h3>1.3.1 开启匿名ID</h3>
+<pre><code>// 示例
+window.collectEvent(&#x27;init&#x27;, {
+   enable_anonymousid: true
+})</code></pre>
+<p>&lt;span id=&quot;a64e7f2f&quot;&gt;&lt;/span&gt;</p>
+<h3>1.3.2 设置匿名ID</h3>
+<pre><code>// 示例
+window.collectEvent(&#x27;setAnonymousId&#x27;, &#x27;xxxx&#x27;)</code></pre>
+<p>&lt;span id=&quot;be1ae5b2&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 获取实验参数</h1>
+<p>「A/B 测试」通常在SDK 初始化后会向分流服务发送一个分流请求（&#x27;/service/2/abtest_config/&#x27;），在获取到分流服务的结果后，客户端开发可以根据分流的结果参数完成代码分支。</p>
+<ul><li>请注意此步骤的前置条件：已经根据实验的需求方创建好了实验及相关的参数，请参照：<a href="https://www.volcengine.com/docs/6287/65809#_4-1-%E5%88%9B%E5%BB%BA%E5%AE%9E%E9%AA%8C" target="_blank" rel="noopener">创建实验</a></li></ul>
+<pre><code>window.collectEvent(&#x27;getVar&#x27;, &#x27;ab-key&#x27;, &#x27;ab-default-value&#x27;, (value) =&gt; { 
+//ab-key 为实验参数的 key ，用户开发做代码分支，ab-default-value 为异常时的兜底方案，建议和对照组 value 一致
+    // 以下为业务代码
+    window.collectEvent(&#x27;发送业务指标事件&#x27;)
+})</code></pre>
+<p>getVar是一个异步方法，getVar的回调只有在ab实验结果返回之后才会执行，所以如果想要业务自定义的事件指标也能带上ab_sdk_version，那么需要在getVar的回调中调用业务自定义事件。完整代码如下：</p>
+<pre><code>window.collectEvent(&#x27;getVar&#x27;, &#x27;abcdefg&#x27;, &#x27;default&#x27;, (res)=&gt; {
+   window.collectEvent(&#x27;自定义事件&#x27;)
+   // 这样，你的自定义事件上报时就会有对应的ab_sdk_version
+})</code></pre>
+<p>注意：在web端和小程序中，「A/B 测试」在调用getVar成功后，会自动上报一个曝光事件（<strong>abtest_exposure</strong>），如果业务并没有自定义的指标事件作为统计，可以使用<strong>abtest_exposure</strong>作为内部处理进组用户的相关统计。</p>
+<p>&lt;span id=&quot;cb63ea05&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 上报实验指标（行为事件）</h1>
+<p>「A/B 测试」 中的实验指标计算依赖Finder中的事件日志，示例代码如下：</p>
+<ul><li>也可参见Finder SDK 集成文档 “上报埋点日志” 部分：</li></ul>
+<p>&lt;span id=&quot;8c7c306a&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 上报事件</h2>
+<p>用户行为日志采用事件event+属性params的形式，事件一般对应多个属性，也可以仅有事件没有属性。代码埋点方案一般由数据分析师或产品运营设计。</p>
+<p>仅上报事件的代码埋点，示例如下：</p>
+<pre><code>// 示例：上报事件event，该事件不包含属性
+// 置于业务逻辑对应位置
+window.collectEvent(&#x27;event&#x27;);</code></pre>
+<p>上报事件和对应属性的代码埋点，示例如下：</p>
+<pre><code>// 示例：上报事件event，该事件包含两个属性
+//      一个string类型的属性，属性名为key_string，属性值为value_string
+//.     一个int类型的属性，属性名为key_int，属性值为10
+// 置于业务逻辑对应位置
+window.collectEvent(&#x27;event&#x27;, {
+   key_string: &#x27;value_string&#x27;,
+   key_int: 10
+});</code></pre>
+<p>&lt;span id=&quot;96e2997b&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 事件公共属性</h2>
+<p>如需在每个事件中都包括某属性，可通过公共属性设置，无需在每个事件中重复设置。公共属性只需设置一次，即可包括在所有代码埋点事件、预置事件和全埋点事件中。</p>
+<p>&lt;span id=&quot;b0afdc59&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.1 设置公共属性</h3>
+<pre><code>// 示例：设置自定义的公共属性，属性名为key_public，属性值为value_public
+window.collectEvent(&#x27;config&#x27;, {
+   key_public: &#x27;value_public&#x27;
+});</code></pre>
+<p>&lt;span id=&quot;8ac290f0&quot;&gt;&lt;/span&gt;</p>
+<h2>3.3 页面跳转前上报埋点</h2>
+<p>请注意，在埋点设计时，不建议在发送事件后紧接着进行页面跳转。这种情况下，上报请求可能会失败，统计数据可能缺失。请考虑以下两种方式之一：</p>
+<p>1）使用<code>beconEvent</code>。</p>
+<p><code>beconEvent</code>会将埋点通过浏览器的特性<code>sendbeacon</code>来发送，尽可能补偿数据上报。</p>
+<pre><code>window.collectEvent(&#x27;beconEvent&#x27;, &#x27;event&#x27;, {})
+window.location.href = &#x27;https://xxx.com&#x27;;</code></pre>
+<p>2）添加延时，给<code>ajax</code>一些时间。</p>
+<pre><code>window.collectEvent(&#x27;event&#x27;);
+setTimeout(()=&gt;{
+    window.location.href = &#x27;https://xxx.com&#x27;
+}, 150)</code></pre>
+<p>&lt;span id=&quot;449d9a18&quot;&gt;&lt;/span&gt;</p>
+<h1>4. API说明</h1>
+<p>&lt;span id=&quot;ba36a13f&quot;&gt;&lt;/span&gt;</p>
+<h2>4.1 config(paramsObj)</h2>
+<p>config 命令用于设置上报自定义字段和一些配置项。</p>
+<ul><li>需在 init 之后调用</li></ul>
+<ul><li>可多次调用，新的配置会和旧的配置合并，同名的设置会被覆盖（等同 Object.assign）</li></ul>
+<ul><li>参数为一个对象</li></ul>
+<ul><li>参数分类：</li></ul>
+<ul><li>SDK自身配置项及调试相关字段</li></ul>
+<ul><li>用户标识相关字段</li></ul>
+<ul><li>用户属性（公共属性），</li></ul>
+<ul><li>预设</li></ul>
+<ul><li>自定义</li></ul>
+<ul><li>事件共有的事件属性</li></ul>
+<pre><code>// 1. 第1次调用，此时发送的事件都包含 cn ， Monday
+
+window.collectEvent(&#x27;config&#x27;, {
+    language: &#x27;cn&#x27;,
+    weeks: &#x27;Monday&#x27;,
+})
+// 2.  第2次调用，此时发送的事件都包含 en ， Monday
+
+window.collectEvent(&#x27;config&#x27;, {
+    language: &#x27;en&#x27;,
+})</code></pre>
+<p>config中包含预设字段，例如用户标识、用户属性、公共属性、系统占用等。以下字段为被SDK占用的字段，每个字段有特定的含义，可设置字段的优先级高于SDK默认的赋值。</p>
+<table><thead><tr><th>类型</th><th>字段</th><th>值类型</th><th>字段说明</th><th>实例</th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td>用户标识</td><td>user_unique_id</td><td>string</td><td>用户唯一标识。 没有设置 user_unique_id 时，则设置为 web_id。</td><td>业务方自行设置 \* 设置为以下值时，会被忽略。 【&#x27;null&#x27;, &#x27;undefined&#x27;, &#x27;0&#x27;, &#x27;&#x27;, &#x27;None&#x27;】</td></tr><tr><td>公共属性</td><td>device_model</td><td>string</td><td>设备机型</td><td>3.3.4开始，针对移动端做简单的ua解析。如：（iphone/ipad/mi1 metal/SM\-A8000/等）</td></tr><tr><td>公共属性</td><td>os_name</td><td>string</td><td>操作系统</td><td>sdk 默认上报：windows/mac/android/ios</td></tr><tr><td>公共属性</td><td>os_version</td><td>string</td><td>操作系统版本</td><td>sdk 默认上报</td></tr><tr><td>公共属性</td><td>platform</td><td>string</td><td>平台类型</td><td>默认上报 wap/web</td></tr><tr><td>公共属性</td><td>browser</td><td>string</td><td>浏览器名</td><td>默认上报</td></tr><tr><td>公共属性</td><td>browser_version</td><td>string</td><td>浏览器版本</td><td>默认上报</td></tr><tr><td>公共属性</td><td>language</td><td>string</td><td>浏览器语言</td><td>默认上报</td></tr><tr><td>公共属性</td><td>referrer</td><td>string</td><td>前向地址</td><td>默认上报</td></tr><tr><td>公共属性</td><td>referrer_host</td><td>string</td><td>前向域名</td><td>默认上报</td></tr><tr><td>公共属性</td><td>resolution</td><td>string</td><td>分辨率</td><td>默认上报</td></tr><tr><td>公共属性</td><td>screen_height</td><td>number</td><td>屏幕高度</td><td>默认上报</td></tr><tr><td>公共属性</td><td>screen_width</td><td>number</td><td>屏幕宽度</td><td>默认上报</td></tr><tr><td>公共属性</td><td>sdk_version</td><td>string</td><td>ByteFinder\-sdk版本</td><td>默认上报</td></tr><tr><td>公共属性</td><td>timezone</td><td>int</td><td>时区</td><td>默认上报</td></tr><tr><td>公共属性</td><td>region</td><td>string</td><td>地域</td><td>业务方自行设置</td></tr><tr><td>公共属性</td><td>traffic_type</td><td>string</td><td>流量类型</td><td></td></tr><tr><td>公共属性</td><td>utm_source</td><td>string</td><td>推广来源</td><td>SDK默认采集</td></tr><tr><td>公共属性</td><td>utm_campaign</td><td>string</td><td>推广活动</td><td>SDK默认采集</td></tr><tr><td>公共属性</td><td>utm_medium</td><td>string</td><td>推广媒介</td><td>SDK默认采集</td></tr><tr><td>公共属性</td><td>utm_content</td><td>string</td><td>推广内容</td><td>SDK默认采集</td></tr><tr><td>公共属性</td><td>utm_term</td><td>string</td><td>推广关键词</td><td>SDK默认采集</td></tr><tr><td>系统占用</td><td>custom</td><td></td><td></td><td></td></tr></tbody></table>
+<p>&lt;span id=&quot;6b96e52f&quot;&gt;&lt;/span&gt;</p>
+<h2>4.2 页面浏览事件</h2>
+<p>&lt;span id=&quot;d262aee6&quot;&gt;&lt;/span&gt;</p>
+<h3>4.2.1 SDK 默认调用</h3>
+<p>predefine_pageview事件默认调用，如需关闭，请参考3.4节。</p>
+<p>&lt;span id=&quot;a58e3cef&quot;&gt;&lt;/span&gt;</p>
+<h3>4.2.2 业务手动调用</h3>
+<p>调用该方法以主动上报一次 pv 事件，参数类型同普通事件的事件属性。</p>
+<p>如果传入了自定义的事件属性，会和预设的事件属性进行合并；如果有同名属性，则会覆盖掉预设属性。</p>
+<pre><code>window.collectEvent(&quot;predefinePageView&quot;)
+window.collectEvent(&quot;predefinePageView&quot;, {/**...*/})
+// 覆盖默认的属性
+
+window.collectEvent(&quot;predefinePageView&quot;, {
+    url: &#x27;xxx&#x27;,
+    url_path: &#x27;xxx&#x27;
+    // ...
+})</code></pre>
+<p>&lt;span id=&quot;bdc511c3&quot;&gt;&lt;/span&gt;</p>
+<h3>4.2.3 事件预置属性</h3>
+<table><thead><tr><th>字段</th><th>类型</th><th>必传</th><th>说明</th><th>取值示例</th></tr></thead><tbody><tr><td>url</td><td>string</td><td>否</td><td>当前页面地址</td><td></td></tr><tr><td>url_path</td><td>string</td><td>否</td><td>当前页面路径，不含协议和主机头部分</td><td>/tea/app/10000/behaviorDetail</td></tr><tr><td>title</td><td>string</td><td>否</td><td>页面标题</td><td>首页</td></tr><tr><td>time</td><td>number</td><td>是</td><td>时间戳</td><td></td></tr><tr><td>referrer</td><td>string</td><td>否</td><td>页面来源，document.referrer的值</td><td></td></tr></tbody></table>
+<p>&lt;span id=&quot;790c11d7&quot;&gt;&lt;/span&gt;</p>
+<h3>4.2.4 对SPA的支持</h3>
+<p>因为默认情况下，SDK只会在页面加载后，并初始化完成后上报一次 pv 事件，但SPA页面会存在多个页面路由，SDK只会在主页面加载一次，所以在切换页面的时候不会再发起pv，造成后续的页面没有pv数据。因此可以开启SPA参数，SDK会在路由变化时重新上报PV：</p>
+<pre><code>window.collectEvent(&quot;init&quot;, {
+    spa: true
+})</code></pre>
+<p>当然，可能会存在SDK监听到路由变化时，一些页面参数并不是最新的，您也可以手动在路由变化时去上报PV。以react示例：</p>
+<pre><code>// &lt;Router history={history} onUpdate={onUpdate}&gt;
+
+function onUpdate() {
+    window.collectEvent(&quot;predefinePageView&quot;)
+}</code></pre>
+<p>&lt;span id=&quot;dcaf3422&quot;&gt;&lt;/span&gt;</p>
+<h2>4.3 获取平台生成的各种ID</h2>
+<p>获取SDK的token信息，里面包含web_id、ssid、user_unique_id信息。 如果您需要获取SDK的ID信息，进行其他设置的话，可以如下：</p>
+<pre><code>window.collectEvent(&#x27;getToken&#x27;, (token) =&gt; {
+    //token数据内容类似如下：
+    {
+        &quot;web_id&quot;:&quot;6748002161499735560&quot;,
+        &quot;ssid&quot;:&quot;579bc89a-bd45-4021-8314-669c35f38e3d&quot;,
+        &quot;user_unique_id&quot;:&quot;xxx&quot;,
+    }
+    window.collectEvent(&#x27;test&#x27;, {
+      id: web_id/ssid
+    })
+});</code></pre>
+<p>&lt;span id=&quot;db37913f&quot;&gt;&lt;/span&gt;</p>
+<h2>4.4 开启实验及实验相关方法</h2>
+<p>&lt;span id=&quot;bed8d66a&quot;&gt;&lt;/span&gt;</p>
+<h3>开启模块</h3>
+<p>使用此模块，在SDK初始化时，在init接口中除了通用参数需要配置外，还需打开A/B实验的模块开关：<code>enable_ab_test: true</code>，同时配置A/B实验的分流地址（ab_channel_domain字段）。</p>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+    enable_ab_test: true,
+    ab_channel_domain: &#x27;https://tab.volces.com&#x27;,
+    enable_multilink: false,// 是否开启多链接实验，默认false
+    enable_ab_visual: false, //是否开启可视化实验，默认false
+    ab_timeout: 10000// 分流请求的超时时间，默认10000ms
+    disable_ab_reset: false // 是否禁止切换用户时重新获取A/B实验的配置信息，默认false
+    ...
+});</code></pre>
+<p>&lt;span id=&quot;098c187a&quot;&gt;&lt;/span&gt;</p>
+<h3>getVar：获取实验参数</h3>
+<ul><li>方法：getVar</li></ul>
+<ul><li><strong>作用：</strong> 获取AB实验配置中的实验对应的配置项值，同时SDK会收集对应的vid（业务一般不用直接关心该vid），命中实验后，会自动上报一个<code>abtest_exposure</code>事件。</li></ul>
+<ul><li><strong>参数：</strong> </li></ul>
+<table><thead><tr><th>参数名</th><th>类型</th><th>必填</th><th>说明</th></tr></thead><tbody><tr><td>name</td><td>string</td><td>是</td><td>实验配置中的key。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;提示：业务调用getVar方法，SDK发现实验配置中有对应的key时，会上报一个预置事件&lt;code&gt;abtest_exposure&lt;/code&gt;。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td>defaultValue</td><td>any</td><td>是</td><td>兜底值，当实验配置中没有相应的key的配置项，该方法会返回这个兜底值。</td></tr><tr><td>callback</td><td>(value: any) =\&gt; void</td><td>否</td><td>当获取到实验配置项值时，如果有设置callback就会执行该callback，并把实验配置项值作为callback的参数。</td></tr></tbody></table>
+<ul><li><strong>示例：</strong> </li></ul>
+<p>   ```TypeScript</p>
+<p>   ``<code>Plain Text    window.collectEvent(&#x27;getVar&#x27;,&#x27; color&#x27;, &#x27;red&#x27;, (value) =&gt; {        // 当配置中存在color实验，value值为配置中的color对应的值，否则值为red    });    </code>`<code>    </code>``</p>
+<p>&lt;span id=&quot;b03385f0&quot;&gt;&lt;/span&gt;</p>
+<h3>getAllVars：获取实验所有配置信息</h3>
+<ul><li>方法：getAbSdkVersion</li></ul>
+<ul><li><strong>作用：</strong> 获取已曝光的实验，返回的结果是所有曝光实验的vid，使用逗号连接起来，格式例如：123,234,678</li></ul>
+<ul><li><strong>返回值：</strong> </li></ul>
+<table><thead><tr><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>string</td><td>所有曝光实验的vid，使用逗号连接起来，格式例如：123,234,678</td></tr></tbody></table>
+<ul><li><strong>示例：</strong> </li></ul>
+<p>   ``<code>TypeScript    // vids值类似 123,234,678    const vids = window.collectEvent(&#x27;getAbSdkVersion&#x27;);    </code>``</p>
+<p>&lt;span id=&quot;77c5c476&quot;&gt;&lt;/span&gt;</p>
+<h3>getAbSdkVersion：获取实验版本ID</h3>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;开展AB实验必须调用获取实验参数的api（详情请参见 &lt;strong&gt;&lt;ins&gt;获取实验参数&lt;/ins&gt;&lt;/strong&gt; 章节）。如需获取用户所有曝光或命中实验的版本ID（vid）时，可使用此API，此API不会上报abtest_exposure曝光事件。&lt;/div&gt;</p>
+<pre><code>window.collectEvent(&#x27;getAbSdkVersion&#x27;, function(vids) {
+    // vids
+});</code></pre>
+<p>&lt;span id=&quot;c09d8338&quot;&gt;&lt;/span&gt;</p>
+<h3>setExternalAbVersion：手动设置额外的AB实验配置</h3>
+<ul><li>方法：setExternalAbVersion</li></ul>
+<ul><li><strong>作用：</strong> 手动设置额外的AB实验配置。</li></ul>
+<ul><li><strong>参数：</strong> </li></ul>
+<table><thead><tr><th>参数名</th><th>类型</th><th>必填</th><th>说明</th></tr></thead><tbody><tr><td>vids</td><td>string 或 null</td><td>是</td><td>vids的格式要求：使用逗号将vids值连接起来，大概这样&#x27;123,234,678&#x27;。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 通过此方式设置的额外的实验配置vids，会合并到通过getVar处理获得到的vids中。&lt;br&gt;&lt;br&gt;* 多次调用时，最后一次设置的额外的实验配置vids会覆盖之前的。&lt;br&gt;&lt;br&gt;* 当设置null时，SDK会清空设置的额外的实验配置vids，并且不会影响通过getVar处理获得到的vids。</td></tr></tbody></table>
+<ul><li><strong>示例：</strong> </li></ul>
+<ul><li>设置额外的实验配置</li></ul>
+<p>      ``<code>TypeScript       // 手动设置额外的       window.collectEvent(&#x27;setExternalAbVersion&#x27;, &#x27;25,225,2225&#x27;);       </code>``</p>
+<p>&lt;span id=&quot;44a2faaf&quot;&gt;&lt;/span&gt;</p>
+<h2>4.5 自定义webid</h2>
+<p>如需更改SDK默认的webid，请在SDK初始化的时候设置<code>enableCustomWebid: true</code>，然后通过setWebIDviaUnionID或者setWebIDviaOpenID设置，示例如下：</p>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+    enableCustomWebid: true
+});
+window.collectEvent(&#x27;setWebIDviaUnionID&#x27;, &#x27;ssss&#x27;)
+window.collectEvent(&#x27;setWebIDviaOpenID&#x27;, &#x27;ssss&#x27;)</code></pre>
+<p>需要注意的是，当设置了enableCustomWebid，必须调用setWebIDviaUnionID或者setWebIDviaOpenID其中的一个设置了webid后，SDK才会继续执行后续的流程。</p>
+<p>这种场景适合H5页面在微信小程序中打开，需要传递微信的unionID或者openID给H5页面。</p>
+<p>&lt;span id=&quot;b065608d&quot;&gt;&lt;/span&gt;</p>
+<h2>4.6 打开遮罩层</h2>
+<p>在页面上打开一个全局的遮罩层（相当于白屏），当你需要用AB实验修改页面的UI时，防止用户看到明显的UI变化，可以进行使用。注，当你手动打开遮罩层后，一定记得手动关闭。</p>
+<p>开启遮罩层</p>
+<pre><code>window.collectEvent(&#x27;openOverlayer&#x27;)</code></pre>
+<p>关闭遮罩层</p>
+<pre><code>window.collectEvent(&#x27;closeOverlayer&#x27;)</code></pre></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>用户命中实验查询（SaaS-非云原生） · A/B 实验知识库</title>
+<meta name="description" content="1.工具能力 通过用户ssid查询用户命中的实验详情、命中时间和命中次数，辅助排查定位跟实验相关的问题 1. 查询单个、多个用户ssid命中的实验，可查询在近七天时间范围内的实验，建议选择单天进行查询 2. 增加查询条件">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1167927.html">
+<meta property="og:title" content="用户命中实验查询（SaaS-非云原生）"><meta property="og:description" content="1.工具能力 通过用户ssid查询用户命中的实验详情、命中时间和命中次数，辅助排查定位跟实验相关的问题 1. 查询单个、多个用户ssid命中的实验，可查询在近七天时间范围内的实验，建议选择单天进行查询 2. 增加查询条件">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1167927.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>用户命中实验查询（SaaS-非云原生）</h1>
+<div class="meta">📄 1,781 字 · 🕐 2025-08-28</div>
+<article class="md"><p>&lt;span id=&quot;_1-工具能力&quot;&gt;&lt;/span&gt;</p>
+<h1>1.工具能力</h1>
+<p>通过用户ssid查询用户命中的实验详情、命中时间和命中次数，辅助排查定位跟实验相关的问题</p>
+<ol><li>查询单个、多个用户ssid命中的实验，可查询在近七天时间范围内的实验，建议选择单天进行查询</li></ol>
+<ol><li>增加查询条件，可根据实验名称、实验组配置参数、实验标签、操作系统、实验owner、实验ID、实验组ID（版本ID)、实验状态、流量区间等过滤符合需求的实验</li></ol>
+<ol><li>可将查询条件存为模板，后需查询同一批用户命中实验情况可直接调用模板</li></ol>
+<ol><li>对查询结果支持自定义排序，可使用“查询id命中数”、“实验总命中用户数”、“查询用户分布情况”、“实验放量时间”、“实验暂停时间”、“实验关闭时间”来进行排序，找到最有可能的实验</li></ol>
+<ol><li>支持下载数据，导出实验数据和实验组数据</li></ol>
+<p>&lt;span id=&quot;_2-适用场景&quot;&gt;&lt;/span&gt;</p>
+<h1>2.适用场景</h1>
+<ol><li>个体问题排查：通过查询用户是否命中某个实验的实验组，来定位是否是某个实验引起的问题。</li></ol>
+<ol><li>常见使用场景</li></ol>
+<ol><li>开发测试实验阶段：确认用户是否正确进组且被正确记录。</li></ol>
+<ol><li>根因定位&amp;Debug：快速查找符合预期的case，定位和排查问题。</li></ol>
+<ol><li>多用户查询：遇到相似问题的用户反馈集中爆发，怀疑可能跟某实验有关，可以通过此工具来定位问题。</li></ol>
+<ol><li>常见使用场景</li></ol>
+<ol><li>线上排障：通过用户反馈信息，批量查询，找出最可疑的实验。</li></ol>
+<p>&lt;span id=&quot;_3-如何使用？&quot;&gt;&lt;/span&gt;</p>
+<h1>3.如何使用？</h1>
+<p>&lt;span id=&quot;工具入口&quot;&gt;&lt;/span&gt;</p>
+<h2>工具入口</h2>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_b3c73e6b0b1301490ff7178aa97b9180.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;查询方式&quot;&gt;&lt;/span&gt;</p>
+<h2>查询方式</h2>
+<ol><li>通过输入用户ssid点击查询</li></ol>
+<ul><li>查询范围为有权限产品的全部接入来源</li></ul>
+<ul><li>默认时间范围为最近七天，可选择范围为最近7天内的数据，可查询用户在该时间范围内命中的实验</li></ul>
+<ul><li>默认勾选“过滤100%单组实验”和“过滤对照组”</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_618c116389b27fac9805ce680e3bd4c2.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>可按需增加查询条件</li></ol>
+<p>通过增加查询条件，选择条件类型，过滤出你需要的实验list。支持条件如下：</p>
+<ul><li>实验名称：可输入多个关键词，用,英文逗号分割</li></ul>
+<ul><li>实验组配置参数：过滤实验配置参数，可输入key或value值</li></ul>
+<ul><li>实验标签：可选择对应的标签</li></ul>
+<ul><li>操作系统：目前支持全部、iphone和android</li></ul>
+<ul><li>实验owner：支持owner和群组</li></ul>
+<ul><li>实验ID：输入单个实验ID</li></ul>
+<ul><li>实验组ID（版本ID)：输入单个实验组ID</li></ul>
+<ul><li>实验状态：支持全部状态、已结束、进行中、调试中等</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_3580a76903d02e191e251a7d9ba3a92e.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>其他说明</li></ol>
+<ul><li>当查询中遇到希望取消的情况，可以点击取消按钮进行取消</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_6d7977db9992c3967632c732ecdcf1e1.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>可将查询条件存为模板，后需查询同一批用户命中实验情况可直接调用模板</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_09a17574db9ffe086596ec57f6144cce.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;查询结果&quot;&gt;&lt;/span&gt;</p>
+<h2>查询结果</h2>
+<ol><li>排序功能</li></ol>
+<p>   对查询结果提供自定义排序功能</p>
+<ul><li>查询id命中数/实验总命中用户数：从大到小（默认值）/从小到大</li></ul>
+<ul><li>查询用户分布情况：优先展示不均等（默认值）/优先展示均等</li></ul>
+<ul><li>实验放量时间/实验暂停时间/实验关闭时间：从远到近（默认值）/从近到远</li></ul>
+<ul><li>通过左侧四条杠，可以实现排序优先级的调整，1为最高优先级，3为最低优先级。</li></ul>
+<ul><li>通过右侧开关，可将该排序功能关闭。</li></ul>
+<ul><li>任意排序数据如无，则置底。</li></ul>
+<ul><li>可一键恢复默认排序规则。</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_4850604e1f2b4a389c9b1d116a421a53.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>结果展示</li></ol>
+<p>查询结果会以实验粒度进行展示，结果中也将显示</p>
+<p>(1) 实验信息：实验名称，运行状态，实验命中人数，流量比例，实验开始和结束时间</p>
+<ul><li>鼠标在实验名称上将浮层展示具体信息：实验描述、实验类型、实验层等信息</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_ce91b9b315df6c2ceb4d3745a978cbd3.png" loading="lazy"> &lt;/span&gt;</p>
+<p>(2) 点击左侧箭头，将展示和查询结果相关的实验组信息：实验组名称，实验组ID，实验组命中人数，流量比例</p>
+<ul><li>鼠标在实验组上将浮层展示实验配置信息：</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_8070f79fcb6e04ccca97948912b9d7b9.png" loading="lazy"> &lt;/span&gt;</p>
+<p>(3) 查询id命中数：当前查询id中，与本实验命中的数量（多组将去重）</p>
+<ul><li>鼠标在实验组数值上将浮层展示命中用户明细数据：用户id，命中次数，首次命中时间，最新命中时间</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_67e31e8d13dde3f4892de0ff27590837.png" loading="lazy"> &lt;/span&gt;</p>
+<p>(4) 点击最近一次操作：实验放量（开始时间为准），实验暂停，实验关闭（结束时间为准），实验开启，实验恢复（开始时间为准），点击后可展示当前实验日志信息。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_93a8a11e9783fafedd4fdcb2d2d35557.png" loading="lazy"> &lt;/span&gt;</p>
+<p>(5) 结果中的id命中数下提示了各组均等的结果提示，便于用户快速定位。</p>
+<ul><li>点击提示可查看id命中数计算公式</li></ul>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_021d55780d8b1fa0453ac9dda87892b4.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>实验中任意实验组结果为不均等，实验则为不均等</li></ul>
+<ul><li>过滤对照组时，对照组不计算在内；反之需要加入计算。</li></ul>
+<p>（6）点击【下载数据】支持将查询结果导出</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_77c42214b00e80e9d0bc703017f223d2.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>导出格式为csv</li></ul>
+<ul><li>可导出两张表格</li></ul>
+<ul><li>实验数据（实验ID，实验名称，实验查询id命中数，实验人数，实验流量，实验owner，实验起止时间，实验最近一次操作，实验生效方式）</li></ul>
+<ul><li>实验组数据（实验ID，实验名称，实验组名称，实验组id，命中人数，流量，实验查询id命中数 ）</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

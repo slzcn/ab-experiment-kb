@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>邀请用户及权限管理 · A/B 实验知识库</title>
+<meta name="description" content="在首次使用DataTester产品时，需要管理员角色完成的账号准备、产品购买等准备工作的操作，并完成为后续实验员、开发者的账号进行邀请/授权等管理操作。本文为您介绍管理邀请用户及权限管理的注意事项及操作指导。 背景信息">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/489210.html">
+<meta property="og:title" content="邀请用户及权限管理"><meta property="og:description" content="在首次使用DataTester产品时，需要管理员角色完成的账号准备、产品购买等准备工作的操作，并完成为后续实验员、开发者的账号进行邀请/授权等管理操作。本文为您介绍管理邀请用户及权限管理的注意事项及操作指导。 背景信息">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/489210.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>邀请用户及权限管理</h1>
+<div class="meta">📄 2,241 字 · 🕐 2024-07-15</div>
+<article class="md"><p>在首次使用DataTester产品时，需要管理员角色完成的账号准备、产品购买等准备工作的操作，并完成为后续实验员、开发者的账号进行邀请/授权等管理操作。本文为您介绍管理邀请用户及权限管理的注意事项及操作指导。</p>
+<p>&lt;span id=&quot;需要了解基本概念有哪些？&quot;&gt;&lt;/span&gt;</p>
+<h1>背景信息</h1>
+<p>&lt;span id=&quot;faebb1c1&quot;&gt;&lt;/span&gt;</p>
+<h2>了解基本信息</h2>
+<ul><li>在开始使用DataTester时，管理员需要了解一些基本的概念，比如集团、应用、appid是什么，这样更方便我们更加快速熟悉产品。详细的内容，可以查看<a href="https://www.volcengine.com/docs/6287/66981" target="_blank" rel="noopener">基本概念</a>。</li></ul>
+<ul><li>作为管理员需要了解DataTester的权限管理策略，DataTester的权限系统是以角色为基础的权限管理设计（RBAC），通过用户关联角色、角色关联权限的方法来间接地赋予用户权限。</li></ul>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_8b8d2588fa62149b2d192f964352f3fa.png" loading="lazy"> &lt;/span&gt;</p>
+<p>   DataTester默认提供了4个角色，其中管理员可以根据业务需要，修改系统默认角色的权限范围，或增加新的角色。</p>
+<table><thead><tr><th>角色名称</th><th>角色描述</th></tr></thead><tbody><tr><td>管理员</td><td>可以对产品成员、角色进行管理</td></tr><tr><td>安全员</td><td>可以关闭所有实验，一般用于当实验影响用户正常使用时，紧急暂停实验。</td></tr><tr><td>实验人员</td><td>可以创建实验、查看实验详情、实验报告等。一般推荐需要涉及开实验、修改实验信息的同学申请。</td></tr><tr><td>分析人员</td><td>对于产品下实验拥有只读权限，可以编辑测试用户，无法创建实验。一般用于实验分析、实验功能验收测试等场景。</td></tr></tbody></table>
+<p>   更多详细的内容，可以查看<a href="https://www.volcengine.com/docs/6287/69594" target="_blank" rel="noopener">权限管理</a>。</p>
+<p>&lt;span id=&quot;管理员一般需要做的事项有哪些？&quot;&gt;&lt;/span&gt;</p>
+<h2>了解管理员工作流程</h2>
+<p>通常管理员需要完成最初账号准备、下单购买、账号资源创建、项目集团等资源创建、用户及权限管理等操作，以SaaS\-云原生场景为例，主要的工作流程如下，管理员的快速入门操作指导可参见<a href="https://www.volcengine.com/docs/6287/166070" target="_blank" rel="noopener">快速入门：管理员（云原生）</a>。</p>
+<p>&lt;img src=&quot;data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxMDI1cHgiIGhlaWdodD0iNjVweCIgdmlld0JveD0iLTAuNSAtMC41IDEwMjUgNjUiPjxkZWZzLz48Zz48cGF0aCBkPSJNIDE4MiAzMiBMIDIwMiAzMiBMIDE4OSAzMiBMIDIwMi42MyAzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJzdHJva2UiLz48cGF0aCBkPSJNIDIwNy44OCAzMiBMIDIwMC44OCAzNS41IEwgMjAyLjYzIDMyIEwgMjAwLjg4IDI4LjUgWiIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjYwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iIzAwMDAwMCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0wLjUgLTAuNSkiPjxmb3JlaWduT2JqZWN0IHN0eWxlPSJvdmVyZmxvdzogdmlzaWJsZTsgdGV4dC1hbGlnbjogbGVmdDsiIHBvaW50ZXItZXZlbnRzPSJub25lIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj48ZGl2IHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IHVuc2FmZSBjZW50ZXI7IGp1c3RpZnktY29udGVudDogdW5zYWZlIGZsZXgtc3RhcnQ7IHdpZHRoOiAxNzhweDsgaGVpZ2h0OiAxcHg7IHBhZGRpbmctdG9wOiAzMnB4OyBtYXJnaW4tbGVmdDogNHB4OyI+PGRpdiBzdHlsZT0iYm94LXNpemluZzogYm9yZGVyLWJveDsgZm9udC1zaXplOiAwOyB0ZXh0LWFsaWduOiBsZWZ0OyAiPjxkaXYgc3R5bGU9ImRpc3BsYXk6IGlubGluZS1ibG9jazsgZm9udC1zaXplOiAxMnB4OyBmb250LWZhbWlseTogSGVsdmV0aWNhOyBjb2xvcjogIzAwMDAwMDsgbGluZS1oZWlnaHQ6IDEuMjsgcG9pbnRlci1ldmVudHM6IGFsbDsgd2hpdGUtc3BhY2U6IG5vcm1hbDsgd29yZC13cmFwOiBub3JtYWw7ICI+PHVsPjxsaT7ms6jlhozngavlsbHlvJXmk47otKblj7c8L2xpPjxsaT7otK3kubBEYXRhVGVzdGVyPC9saT48L3VsPjwvZGl2PjwvZGl2PjwvZGl2PjwvZm9yZWlnbk9iamVjdD48L2c+PHBhdGggZD0iTSAzODkgMzIgTCA0MDkgMzIgTCA0MDIgMzIgTCA0MTUuNjMgMzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0ic3Ryb2tlIi8+PHBhdGggZD0iTSA0MjAuODggMzIgTCA0MTMuODggMzUuNSBMIDQxNS42MyAzMiBMIDQxMy44OCAyOC41IFoiIGZpbGw9IiMwMDAwMDAiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PHJlY3QgeD0iMjA5IiB5PSIyIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjYwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiNmOGNlY2MiIHN0cm9rZT0iI2Y4Y2VjYyIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0wLjUgLTAuNSkiPjxmb3JlaWduT2JqZWN0IHN0eWxlPSJvdmVyZmxvdzogdmlzaWJsZTsgdGV4dC1hbGlnbjogbGVmdDsiIHBvaW50ZXItZXZlbnRzPSJub25lIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj48ZGl2IHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IHVuc2FmZSBjZW50ZXI7IGp1c3RpZnktY29udGVudDogdW5zYWZlIGZsZXgtc3RhcnQ7IHdpZHRoOiAxNzhweDsgaGVpZ2h0OiAxcHg7IHBhZGRpbmctdG9wOiAzMnB4OyBtYXJnaW4tbGVmdDogMjExcHg7Ij48ZGl2IHN0eWxlPSJib3gtc2l6aW5nOiBib3JkZXItYm94OyBmb250LXNpemU6IDA7IHRleHQtYWxpZ246IGxlZnQ7ICI+PGRpdiBzdHlsZT0iZGlzcGxheTogaW5saW5lLWJsb2NrOyBmb250LXNpemU6IDEycHg7IGZvbnQtZmFtaWx5OiBIZWx2ZXRpY2E7IGNvbG9yOiAjMDAwMDAwOyBsaW5lLWhlaWdodDogMS4yOyBwb2ludGVyLWV2ZW50czogYWxsOyB3aGl0ZS1zcGFjZTogbm9ybWFsOyB3b3JkLXdyYXA6IG5vcm1hbDsgIj48dWw+PGxpPu+8iOWPr+mAie+8ieWIm+W7uuWtkOi0puWPtzwvbGk+PC91bD48L2Rpdj48L2Rpdj48L2Rpdj48L2ZvcmVpZ25PYmplY3Q+PC9nPjxwYXRoIGQ9Ik0gNjAyIDMyIEwgNjIyIDMyIEwgNjEyIDMyIEwgNjI1LjYzIDMyIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9InN0cm9rZSIvPjxwYXRoIGQ9Ik0gNjMwLjg4IDMyIEwgNjIzLjg4IDM1LjUgTCA2MjUuNjMgMzIgTCA2MjMuODggMjguNSBaIiBmaWxsPSIjMDAwMDAwIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjxyZWN0IHg9IjQyMiIgeT0iMiIgd2lkdGg9IjE4MCIgaGVpZ2h0PSI2MCIgcng9IjkiIHJ5PSI5IiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiMwMDAwMDAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC41IC0wLjUpIj48Zm9yZWlnbk9iamVjdCBzdHlsZT0ib3ZlcmZsb3c6IHZpc2libGU7IHRleHQtYWxpZ246IGxlZnQ7IiBwb2ludGVyLWV2ZW50cz0ibm9uZSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSI+PGRpdiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCIgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGFsaWduLWl0ZW1zOiB1bnNhZmUgY2VudGVyOyBqdXN0aWZ5LWNvbnRlbnQ6IHVuc2FmZSBmbGV4LXN0YXJ0OyB3aWR0aDogMTc4cHg7IGhlaWdodDogMXB4OyBwYWRkaW5nLXRvcDogMzJweDsgbWFyZ2luLWxlZnQ6IDQyNHB4OyI+PGRpdiBzdHlsZT0iYm94LXNpemluZzogYm9yZGVyLWJveDsgZm9udC1zaXplOiAwOyB0ZXh0LWFsaWduOiBsZWZ0OyAiPjxkaXYgc3R5bGU9ImRpc3BsYXk6IGlubGluZS1ibG9jazsgZm9udC1zaXplOiAxMnB4OyBmb250LWZhbWlseTogSGVsdmV0aWNhOyBjb2xvcjogIzAwMDAwMDsgbGluZS1oZWlnaHQ6IDEuMjsgcG9pbnRlci1ldmVudHM6IGFsbDsgd2hpdGUtc3BhY2U6IG5vcm1hbDsgd29yZC13cmFwOiBub3JtYWw7ICI+PHVsPjxsaT7liJvlu7rpobnnm648L2xpPjxsaT7mjqXlhaXpobnnm67oh7Ppm4blm6I8L2xpPjxsaT7mn6XnnItBcHBpZOetieS/oeaBrzwvbGk+PC91bD48L2Rpdj48L2Rpdj48L2Rpdj48L2ZvcmVpZ25PYmplY3Q+PC9nPjxwYXRoIGQ9Ik0gODEyIDMyIEwgODMyIDMyIEwgODIyIDMyIEwgODM1LjYzIDMyIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9InN0cm9rZSIvPjxwYXRoIGQ9Ik0gODQwLjg4IDMyIEwgODMzLjg4IDM1LjUgTCA4MzUuNjMgMzIgTCA4MzMuODggMjguNSBaIiBmaWxsPSIjMDAwMDAwIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjxyZWN0IHg9IjYzMiIgeT0iMiIgd2lkdGg9IjE4MCIgaGVpZ2h0PSI2MCIgcng9IjkiIHJ5PSI5IiBmaWxsPSIjZjhjZWNjIiBzdHJva2U9IiMwMDAwMDAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC41IC0wLjUpIj48Zm9yZWlnbk9iamVjdCBzdHlsZT0ib3ZlcmZsb3c6IHZpc2libGU7IHRleHQtYWxpZ246IGxlZnQ7IiBwb2ludGVyLWV2ZW50cz0ibm9uZSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSI+PGRpdiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCIgc3R5bGU9ImRpc3BsYXk6IGZsZXg7IGFsaWduLWl0ZW1zOiB1bnNhZmUgY2VudGVyOyBqdXN0aWZ5LWNvbnRlbnQ6IHVuc2FmZSBmbGV4LXN0YXJ0OyB3aWR0aDogMTc4cHg7IGhlaWdodDogMXB4OyBwYWRkaW5nLXRvcDogMzJweDsgbWFyZ2luLWxlZnQ6IDYzNHB4OyI+PGRpdiBzdHlsZT0iYm94LXNpemluZzogYm9yZGVyLWJveDsgZm9udC1zaXplOiAwOyB0ZXh0LWFsaWduOiBsZWZ0OyAiPjxkaXYgc3R5bGU9ImRpc3BsYXk6IGlubGluZS1ibG9jazsgZm9udC1zaXplOiAxMnB4OyBmb250LWZhbWlseTogSGVsdmV0aWNhOyBjb2xvcjogIzAwMDAwMDsgbGluZS1oZWlnaHQ6IDEuMjsgcG9pbnRlci1ldmVudHM6IGFsbDsgd2hpdGUtc3BhY2U6IG5vcm1hbDsgd29yZC13cmFwOiBub3JtYWw7ICI+PHVsPjxsaT7pgoDor7flhbbku5bnlKjmiLc8YnIgLz7vvIjlrZDotKblj7cv5Li76LSm5Y+377yJPC9saT48bGk+5p2D6ZmQ566h5o6nPC9saT48L3VsPjwvZGl2PjwvZGl2PjwvZGl2PjwvZm9yZWlnbk9iamVjdD48L2c+PHJlY3QgeD0iODQyIiB5PSIyIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjYwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiNmOGNlY2MiIHN0cm9rZT0iIzAwMDAwMCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0wLjUgLTAuNSkiPjxmb3JlaWduT2JqZWN0IHN0eWxlPSJvdmVyZmxvdzogdmlzaWJsZTsgdGV4dC1hbGlnbjogbGVmdDsiIHBvaW50ZXItZXZlbnRzPSJub25lIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj48ZGl2IHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIiBzdHlsZT0iZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IHVuc2FmZSBjZW50ZXI7IGp1c3RpZnktY29udGVudDogdW5zYWZlIGZsZXgtc3RhcnQ7IHdpZHRoOiAxNzhweDsgaGVpZ2h0OiAxcHg7IHBhZGRpbmctdG9wOiAzMnB4OyBtYXJnaW4tbGVmdDogODQ0cHg7Ij48ZGl2IHN0eWxlPSJib3gtc2l6aW5nOiBib3JkZXItYm94OyBmb250LXNpemU6IDA7IHRleHQtYWxpZ246IGxlZnQ7ICI+PGRpdiBzdHlsZT0iZGlzcGxheTogaW5saW5lLWJsb2NrOyBmb250LXNpemU6IDEycHg7IGZvbnQtZmFtaWx5OiBIZWx2ZXRpY2E7IGNvbG9yOiAjMDAwMDAwOyBsaW5lLWhlaWdodDogMS4yOyBwb2ludGVyLWV2ZW50czogYWxsOyB3aGl0ZS1zcGFjZTogbm9ybWFsOyB3b3JkLXdyYXA6IG5vcm1hbDsgIj48dWw+PGxpPuWFtuS7lueuoeeQhuaTjeS9nO+8mue7ree6puWQiOWQjOOAgeWinui0reeUqOmHj+etiTwvbGk+PC91bD48L2Rpdj48L2Rpdj48L2Rpdj48L2ZvcmVpZ25PYmplY3Q+PC9nPjwvZz48L3N2Zz4=&quot; /&gt;</p>
+<p>下文为您详细介绍其中与账号资源及权限管理等管理操作相关的操作指导。</p>
+<p>&lt;span id=&quot;733e351b&quot;&gt;&lt;/span&gt;</p>
+<h1>创建子账号</h1>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;也存在后续需要邀请其他主账号来使用DataTester的场景，此场景下，被邀请的主账号需提前完成注册，主账号注册的操作指导可查看：&lt;a href=&quot;https://www.volcengine.com/docs/6261/64925&quot;&gt;账号注册流程&lt;/a&gt;。&lt;/div&gt;</p>
+<p>火山引擎官网提供访问控制产品能力，支持在一个主账号下创建多个子账号，可满足企业中，为不同业务团队创建不同权限限制的子账号，分别使用已购买的产品的场景。</p>
+<p>例如，管理员购买DataTester后，可为产品团队、运营团队等业务团队分别创建子账号，并为子账号授权，后续由业务团队使用子账号来操作DataTester。</p>
+<p>创建子账号的操作指导如下。</p>
+<ol><li>登录火山引擎控制台后，单击右上角的<strong>账号名称</strong>\&gt;<strong>访问控制</strong>，进入访问控制控制台。</li></ol>
+<ol><li>参考<a href="https://www.volcengine.com/docs/6257/64977" target="_blank" rel="noopener">访问控制-用户管理</a>文档，新建一个用户，后续将子账号分配给其他研发、实验人员等角色，用于后续的操作。</li></ol>
+<ul><li>如果后续需使用子账号创建项目，则创建子账号时，需给子账号项目全局权限。</li></ul>
+<ul><li>如果后续需使用子账号进入DataTester产品，则需添加子账号至DataTester项目并授予DataTester的操作权限。</li></ul>
+<p>详情请参见下文的操作步骤。</p>
+<p>&lt;span id=&quot;_1-邀请新的用户-给其他账号授权&quot;&gt;&lt;/span&gt;</p>
+<h1>邀请其他账号并授权</h1>
+<p>一般一个产品会有多个不同角色的用户需要使用，如果有新用户计划使用DataTester产品，那么需要管理员邀请用户加入或者为该用户授权。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;管理员的账号在DataTester默认一定是主账号。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;_1-1-邀请用户：即通过账号邀请&quot;&gt;&lt;/span&gt;</p>
+<h2>SaaS\-云原生</h2>
+<p>登录DataTester控制台后，单击左侧导航栏的<strong>全局设置</strong>\&gt;<strong>系统管理</strong>\&gt;<strong>权限管理</strong>，在用户管理或角色管理页面添加子账号或主账号到当前项目中。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/14a59f2856224b099a820075f2824ba8~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;添加子账号或主账号至DataTester的项目时，可能会有时延，在操作完成后请您耐心等待几分钟，完成后被添加的账号即可进入对应DataTester项目，进行DataTester的相关操作。&lt;/div&gt;</p>
+<ul><li>添加主账号。</li></ul>
+<p>   您需要在用户管理页面添加其他主账号，格式为：<strong>主账号uid</strong>。添加完成后，后续可将邀请链接发送给对应主账号进行邀请验证。</p>
+<ul><li>添加子账号。</li></ul>
+<ul><li><strong>角色管理</strong>：在角色管理页面添加子账号时，可直接搜索当前主账号下的子账号名。添加当前主账号下的子账号时推荐使用此种方式，更为便捷。</li></ul>
+<ul><li><strong>用户管理</strong>：在用户管理页面添加子账号时，格式为：<strong>子账号名称@主账号uid</strong>。添加其他主账号下的子账号时，需使用此种方式。</li></ul>
+<p>&lt;span id=&quot;0310c00e&quot;&gt;&lt;/span&gt;</p>
+<h2>SaaS\-非云原生</h2>
+<ul><li>添加子账号：</li></ul>
+<p>   <strong>需要主账号或者集团管理员手动把子账号邀请到当前集团</strong></p>
+<p>   进入「集团设置」\-\-\-「用户管理」\-\-\-\-找到子账号的「用户名」\-\-\-\-复制「用户名」\-\-\-\-「邀请用户」——粘贴「用户名」\-\-\-根据实际情况配置角色的身份，如集团管理、管理员、成员\-\-\-\-确定后复制链接给到被邀请人\-\-\-\-\-被邀请人进入邮箱点击接受邀请</p>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_6057c349d35dad314ee86f417bd0d6f4.gif" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>添加主账号：</li></ul>
+<p>   集团设置\-\-\&gt;用户管理\-\-\&gt;邀请用户\-\-\&gt;输入账号id\-\-\&gt;授权「管理员/成员」\-\-\&gt;确定后复制链接给到被邀请人\-\-\&gt;被邀请人进入邮箱点击接受邀请</p>
+<p>&lt;span id=&quot;_2-续约合同-增购用量&quot;&gt;&lt;/span&gt;</p>
+<h1>续约合同/增购用量</h1>
+<p>管理员需要关注产品的用量和到期情况，以免影响使用。</p>
+<p>关于如何购买产品，详细内容可查看：<a href="https://www.volcengine.com/docs/6287/166062" target="_blank" rel="noopener">付费购买 A/B 测试</a></p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

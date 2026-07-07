@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实验进组用户口径说明 · A/B 实验知识库</title>
+<meta name="description" content="概述 实验指标是根据命中实验的用户进行过滤计算的，由于客户端实验和服务端实验在端上分流触发和数据上报逻辑天然存在差异，所以在统计实验指标时判定「命中实验的用户（即进组用户）」方法也存在一些差异。为了实现客户端实验和服务端">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1009098.html">
+<meta property="og:title" content="实验进组用户口径说明"><meta property="og:description" content="概述 实验指标是根据命中实验的用户进行过滤计算的，由于客户端实验和服务端实验在端上分流触发和数据上报逻辑天然存在差异，所以在统计实验指标时判定「命中实验的用户（即进组用户）」方法也存在一些差异。为了实现客户端实验和服务端">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1009098.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📊 实验报告与分析</span></div>
+<h1>实验进组用户口径说明</h1>
+<div class="meta">📄 1,821 字 · 🕐 2024-05-20</div>
+<article class="md"><p>&lt;span id=&quot;概述&quot;&gt;&lt;/span&gt;</p>
+<h1>概述</h1>
+<p>实验指标是根据命中实验的用户进行过滤计算的，由于客户端实验和服务端实验在端上分流触发和数据上报逻辑天然存在差异，所以在统计实验指标时判定「命中实验的用户（即进组用户）」方法也存在一些差异。为了实现客户端实验和服务端实验在判定「命中实验的用户」口径时逻辑保持一致，从而提升准确性，DataTester对实验进组用户判定逻辑进行了升级，本文档主要对此进行说明。</p>
+<p>&lt;span id=&quot;进组用户口径&quot;&gt;&lt;/span&gt;</p>
+<h1>进组用户口径</h1>
+<p>&lt;span id=&quot;前后对比&quot;&gt;&lt;/span&gt;</p>
+<h2>前后对比</h2>
+<table><thead><tr><th></th><th>更新前&lt;br&gt;&lt;br&gt;～2023年4月</th><th>更新后&lt;br&gt;&lt;br&gt;2023年4月～</th></tr></thead><tbody><tr><td>客户端实验</td><td>* 进组判定逻辑：某段时间内所有上报带ab_version事件的人&lt;br&gt;&lt;br&gt;* 计算方式：客户端触发分流的时候同时上报ab_version事件，仅使用用户行为埋点日志计算实验指标</td><td>二者保持一致，服务端实验口径不变，客户端实验部分口径升级，完成统一&lt;br&gt;&lt;br&gt;&lt;br&gt;* 进组判定逻辑：实验开始后上报过曝光事件的人&lt;br&gt;&lt;br&gt;* 计算方式：统一使用用户行为埋点日志作为左表、AB分流日志AB_Log表作为右表进行join计算实验指标&lt;br&gt;&lt;br&gt;&lt;br&gt;【注】AB_Log表逻辑：使用实验曝光事件来记录用户命中实验的情况，支持实时和天级，天级离线数据会基于人+实验组（即ab_version）的粒度进行聚合&lt;br&gt;&lt;br&gt;曝光事件统计依据：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 普通实验曝光字段：abtest_exposure&lt;br&gt;&lt;br&gt;* 推送实验曝光字段：rangers_push_send</td></tr><tr><td>服务端实验</td><td>* 进组判定逻辑：实验开始后上报过曝光事件并且在某段时间内上报过事件的人&lt;br&gt;&lt;br&gt;* 计算方式：使用用户行为埋点日志作为左表、服务端记录进组曝光ab_version事件的表作为右表进行join计算实验指标</td></tr></tbody></table>
+<p>&lt;span id=&quot;业务收益&quot;&gt;&lt;/span&gt;</p>
+<h2>业务收益</h2>
+<p><strong>口径统一升级前后的效果/收益：</strong> </p>
+<ol><li>客户端和服务端实验的进组口径统一</li></ol>
+<ol><li>随着客户端/服务端SDK的不断升级，实验曝光字段的收集准确率也逐步提升，原服务端口径的的优势逐步凸显，统一口径有明显收益</li></ol>
+<ol><li>客户端的进组口径更加精准，避免了客户端事件上报的过程中ab_version无法上报、或传递丢失等原因带来的数据失准。</li></ol>
+<ol><li>例如当客户端实验功能曝光链路长、实现方式特殊时，在事件上报的过程中ab_version传递丢失</li></ol>
+<ol><li>例如当客户端仅在某个较深的功能层级做实验，但想查看全局性指标或者其他相关模块指标时，无法上报ab_version进行指标统计</li></ol>
+<ol><li>另外，当进组人数非常小时会二者的相对差异会更大一些</li></ol>
+<p>&lt;span id=&quot;指标查询升级&quot;&gt;&lt;/span&gt;</p>
+<h1>指标查询升级</h1>
+<p>实验指标统一切换为采用新的进组用户口径来查询，具体逻辑和影响如下：</p>
+<p>&lt;span id=&quot;报告页查询逻辑说明&quot;&gt;&lt;/span&gt;</p>
+<h2>报告页查询逻辑说明</h2>
+<table><thead><tr><th><strong>报告页\-实验指标查询定义说明（假定实验运行时间为1月1日\-1月30日）</strong></th></tr></thead><tbody><tr><td><strong>模块</strong></td><td><strong>查询逻辑和指标定义说明</strong></td><td><strong>口径统一后指标查询结果是否发生变化（仅限客户端实验）</strong></td></tr><tr><td>报告概览</td><td><strong>定义</strong>：实验开始后截止当前所有完整天从头累积的实验数据，实验第一天为截止当前时间的累积数据&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>指标</strong>：仅核心指标&lt;br&gt;&lt;br&gt;* <strong>用户进组口径（去重）</strong> ：&lt;br&gt;&lt;br&gt;   * 实验运行第一天：从实验开启到打开报告的时候上报过实验曝光事件的人&lt;br&gt;&lt;br&gt;   * 实验运行中非首日：从实验开启到昨天累计上报过实验曝光事件的人&lt;br&gt;&lt;br&gt;   * 实验关闭：从实验开启到结束所有累计上报过实验曝光事件的人&lt;br&gt;&lt;br&gt;&lt;br&gt;<strong>用途</strong>：用于提供实验结论，因此仅计算核心指标、并需要采用完整天的累积数据，后续会拆解为独立的「实验结论」模块</td><td>有变化</td></tr><tr><td>实验关注指标</td><td><strong>定义</strong>：默认为实验开始后截止当前所有完整天从头累积的实验数据，实验第一天为截止当前时间的累积数据，支持按照不同时间区间、时间粒度进行查询&lt;br&gt;&lt;br&gt;<strong>用途和查询模式</strong>：&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>天级（默认）</strong> &lt;br&gt;&lt;br&gt;   * <strong>用途</strong>：用于查看实验已关注事件指标、漏斗指标、留存指标，以及进行其他高级分析功能来评估效果&lt;br&gt;&lt;br&gt;   * <strong>指标口径</strong>：&lt;br&gt;&lt;br&gt;      * 从头累计：从实验开启到所选截止日期内累计上报过实验曝光事件的人&lt;br&gt;&lt;br&gt;      * 区间累计（假定选定1月8日\-1月10日作为查询区间）&lt;br&gt;&lt;br&gt;         * 进组用户口径（去重）：1月1日（实验开始）\-1月10日累计上报过实验曝光事件的人（人均指标都采用此作为base user）&lt;br&gt;&lt;br&gt;         * 事件指标口径：1月8日\-1月10日发生过该事件的数据统计&lt;br&gt;&lt;br&gt;* <strong>小时级</strong>&lt;br&gt;&lt;br&gt;   * <strong>用途</strong>：在实验运行初期实时查询，及时发现实验设置、数据上报等问题，仅支持查询最近两天的小时级数据（最多48h）&lt;br&gt;&lt;br&gt;   * <strong>指标口径</strong>：所选时间区间内的指标数据统计&lt;br&gt;&lt;br&gt;* <strong>5分钟级</strong>&lt;br&gt;&lt;br&gt;   * <strong>用途</strong>：在实验运行初期实时查询，及时发现实验设置、数据上报等问题，仅支持查询最近24小时级的分钟级数据&lt;br&gt;&lt;br&gt;   * <strong>指标口径</strong>：所选时间区间内的指标数据统计</td><td>有变化</td></tr><tr><td>留存指标</td><td></td><td>无变化</td></tr><tr><td>同期群分析</td><td></td><td>无变化</td></tr><tr><td>热力图分析</td><td></td><td>有变化</td></tr><tr><td>漏斗指标</td><td></td><td>有变化</td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

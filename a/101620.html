@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>新建留存指标 · A/B 实验知识库</title>
+<meta name="description" content="留存指标一般是用来验证用户粘性的关键指标，衡量用户的粘性和忠诚度。一般情况下，留存的定义是用户活跃(到访APP或进入了网站)。火山引擎AB测试支持根据您的业务场景及需求，自定义创建留存指标，以分析不同策略对于具体业务或功">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/101620.html">
+<meta property="og:title" content="新建留存指标"><meta property="og:description" content="留存指标一般是用来验证用户粘性的关键指标，衡量用户的粘性和忠诚度。一般情况下，留存的定义是用户活跃(到访APP或进入了网站)。火山引擎AB测试支持根据您的业务场景及需求，自定义创建留存指标，以分析不同策略对于具体业务或功">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/101620.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🎯 指标体系</span></div>
+<h1>新建留存指标</h1>
+<div class="meta">📄 1,718 字 · 🕐 2024-07-31</div>
+<article class="md"><p>留存指标一般是用来验证用户粘性的关键指标，衡量用户的粘性和忠诚度。一般情况下，留存的定义是用户活跃(到访APP或进入了网站)。火山引擎AB测试支持根据您的业务场景及需求，自定义创建留存指标，以分析不同策略对于具体业务或功能的留存影响。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;留存指标类型的指标组，每个指标组仅限创建一个指标。&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;原因：相较于其他事件指标，本身即为一组指标的概念，留存指标默认是30日留存，会在报告页默认展示成30个指标一个组。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;一、概述&quot;&gt;&lt;/span&gt;</p>
+<h1>典型场景</h1>
+<ul><li>场景一：关注某个功能的留存情况——自定义同一事件的留存分析 以拍照App为例，产品更关注【拍摄】功能在用户中的使用情况。通过自定义留存功能，设置初始行为和留存行为都为【拍摄】，即可了解首次使用【拍摄】功能的用户，再次使用此功能的留存情况。</li></ul>
+<ul><li>场景二：关注某个功能或策略对用户的影响——自定义不同事件的留存分析 以短视频App为例， 短视频内容的好坏决定了用户是否会再次打开App。通过自定义留存功能，选择初始事件是 【播放短视频】，回访事件是【打开APP】，即可了解用户二次打开App的留存情况。</li></ul>
+<p>&lt;span id=&quot;d8333840&quot;&gt;&lt;/span&gt;</p>
+<h1>创建留存指标</h1>
+<p>&lt;span id=&quot;0fb9082e&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>方式1(推荐)：创建自定义留存指标</strong></h2>
+<p>适用场景：先创建自定义的留存指标，后续创建实验时，可选择创建的留存指标作为实验指标。</p>
+<ol><li>登录DataTester产品控制台后，单击左侧导航栏的<strong>指标管理</strong>\&gt;<strong>指标组列表</strong>，进入指标组列表页面后单击右上角的「创建指标组」进入指标组创建页面。</li></ol>
+<ol><li>配置基本信息。选择<strong>指标组类型</strong>为<strong>留存指标</strong>，并配置指标组名称、指标组描述、负责人信息。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/82c3d034d6644864a645661477aa365d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>配置指标。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/ef7707f08f6d417aaf6022e9e250b2e8~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>参数</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>指标名称</strong> &amp; <strong>指标描述</strong></td><td>* <strong>指标名称</strong>：必填，建议取与事件内容相关的名称，如“点击登录按钮人均次数”，便于快速知道是关于哪个事件的指标；名称指标组内唯一，最长不超过50个字符。&lt;br&gt;&lt;br&gt;* <strong>指标描述</strong>：选填，简述指标代表的含义、计算逻辑、用途等，可以让业务相关人员更加合理的使用指标。</td></tr><tr><td><strong>计算口径</strong></td><td>* 配置起始事件和回访事件。留存指标需定义起始事件和回访事件：&lt;br&gt;&lt;br&gt;   * 起始事件：即定义留存需要分析的目标用户群，如有使用拍摄功能的用户。&lt;br&gt;&lt;br&gt;   * 回访事件：在起始事件发生后的第 n 天做了回访事件的用户，为第 n 日留存用户，如在第n天再次使用拍摄功能&lt;br&gt;&lt;br&gt;* 添加过滤条件：起始事件和回访事件均支持对事件增加过滤条件，即对所选用户做进一步的圈选，如仅筛选出新用户查看新用户使用拍摄功能的留存情况。&lt;br&gt;&lt;br&gt;* 高级设置：配置灵活属性。详情请参见<a href="https://www.volcengine.com/docs/6287/1253449" target="_blank" rel="noopener">高级功能：指标灵活属性</a>。</td></tr><tr><td><strong>指标关系</strong></td><td>组合指标需要填写，指组合指标的计算公式，允许事件编号大写字母、支持一层括号()、加号+、减号\-、乘号\*、除号/计算公式可任意组合。</td></tr><tr><td><strong>数字格式</strong></td><td>可选择数字/百分比格式，并设置小数位数</td></tr><tr><td><strong>必看指标</strong></td><td>开启“设为必看指标”，则每个实验都会自动添加该指标。</td></tr></tbody></table>
+<ol><li>完成指标添加后，单击右上角的「保存」，完成指标组创建。</li></ol>
+<p>&lt;span id=&quot;130132a3&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>方式2：报告页自定义分析</strong></h2>
+<p>适用场景：在实验报告页添加起始事件和回访事件，进行自定义留存的分析，一般用于临时的查询分析场景。</p>
+<ol><li>登录DataTester产品控制台后，单击左侧导航栏的<strong>A/B测试</strong>\&gt;<strong>实验列表</strong>，进入实验列表页面后，单击实验名称进入实验详情页面。</li></ol>
+<ol><li>单击顶部的<strong>数据指标</strong>页签，然后单击左侧<strong>留存指标</strong>侧边栏，您可以在实验报告的流程指标页面进行临时的留存分析。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/4f1b4b22f0264b78821e00b8733ddebc~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>   您可以在左侧直接选择已创建的自定义留存指标，也可以在右侧配置页面直接配置流程分析的留存口径，进行临时查询分析。</p>
+<ul><li>在报告页留存指标下，可进行留存口径的自定义，留存指标需定义起始事件和回访事件</li></ul>
+<ul><li>起始事件: 即定义留存需要分析的目标用户群，如有使用拍摄功能的用户。</li></ul>
+<ul><li>回访事件: 在起始事件发生后的第 n 天做了回访事件的用户，为第 n 日留存用户，如在第n天再次使用拍摄功能。</li></ul>
+<ul><li>起始事件和回访事件均支持对事件增加过滤条件，即对所选用户做进一步的圈选，如仅筛选出新用户查看新用户使用拍摄功能的留存情况。</li></ul>
+<ol><li>定义好起始事件和回访事件后，点击查询，即可查看对应的留存指标。</li></ol>
+<p>&amp;nbsp;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

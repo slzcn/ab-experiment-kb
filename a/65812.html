@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>父子实验 · A/B 实验知识库</title>
+<meta name="description" content="父子实验，指的是在命中已有实验（父实验）某一实验组的用户中切分流量开一个新的实验（子实验）。本文为您介绍DataTester的父子实验应用场景和操作要点。 应用场景 核心场景： 需要基于一个已经开启的实验的「进组人群」，">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65812.html">
+<meta property="og:title" content="父子实验"><meta property="og:description" content="父子实验，指的是在命中已有实验（父实验）某一实验组的用户中切分流量开一个新的实验（子实验）。本文为您介绍DataTester的父子实验应用场景和操作要点。 应用场景 核心场景： 需要基于一个已经开启的实验的「进组人群」，">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65812.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>父子实验</h1>
+<div class="meta">📄 1,432 字 · 🕐 2025-06-17</div>
+<article class="md"><p>父子实验，指的是在命中已有实验（父实验）某一实验组的用户中切分流量开一个新的实验（子实验）。本文为您介绍DataTester的父子实验应用场景和操作要点。</p>
+<p>&lt;span id=&quot;应用场景&quot;&gt;&lt;/span&gt;</p>
+<h1>应用场景</h1>
+<p><strong>核心场景：</strong> </p>
+<p>需要基于一个已经开启的实验的「进组人群」，继续圈定用户进行新实验的探索。特点如下：</p>
+<ul><li>父实验不能关闭，用于圈定子实验的base用户。</li></ul>
+<ul><li>子实验能开多个，复用所选父实验组的流量。</li></ul>
+<ul><li>父子实验是不同的功能，即子实验的所有用户都继承了父实验的配置（功能），用子实验看叠加效果。</li></ul>
+<ul><li>父实验数据不可看，被子实验的策略影响，其结论不具备参考意义。</li></ul>
+<ul><li>在一个运行中的实验之上，想要同时验证第二个功能/策略的组合效果。</li></ul>
+<p><strong>业务场景：</strong> </p>
+<ul><li>新闻类App，父实验为是否向用户打开「娱乐」频道。后续在产品迭代进程中，在此基础上开启子实验，针对已打开「娱乐」频道的实验版本中的用户，提供不同功能布局和样式，以观测用户的使用时长和留存。</li></ul>
+<ul><li>电商平台，购物车设计三种按钮样式（A1、A2、A3），结算页面CTA按钮设计三种样式（B1、B2、B3），产品经理希望购物车和结算页面CTA的每种样式分别一一对应，如看见A1的用户进入结算页面后只能看到B1，以此类推。此时可在购物车开启父实验A，在结算页面CTA按钮上开启子实验B，实验版本流量逐一继承。</li></ul>
+<p>&lt;span id=&quot;创建父子实验&quot;&gt;&lt;/span&gt;</p>
+<h1>注意事项与前提条件</h1>
+<p>&lt;span id=&quot;b7bfc549&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>前提条件</strong></h2>
+<p>接入客户端SDK或者服务端SDK，详见<a href="https://www.volcengine.com/docs/6287/101762" target="_blank" rel="noopener">应用接入</a>。</p>
+<p>&lt;span id=&quot;基本原则&quot;&gt;&lt;/span&gt;</p>
+<h2>基本原则</h2>
+<ul><li>子实验生命周期须囊括在父实验生命周期之内，即有运行中的子实验，父实验不能关停。</li></ul>
+<ul><li>父实验与子实验为1对N关系，子实验和父实验、子实验间不能位于同一互斥组上。</li></ul>
+<ul><li>父子实验模式可不同。</li></ul>
+<p>&lt;span id=&quot;创建限制&quot;&gt;&lt;/span&gt;</p>
+<h2>创建限制</h2>
+<ul><li>当前仅支持以运行状态的「编程实验」作为父实验。</li></ul>
+<ul><li>父子实验类型需一致，客户端子实验只能继承客户端父实验，服务端子实验只能继承服务端父实验。</li></ul>
+<ul><li>不支持祖孙实验：父子关系当前只支持两级，不支持多级，不支持成环。</li></ul>
+<ul><li>权限限制：非实验的协作者，不能基于该实验开启子实验。</li></ul>
+<p>&lt;span id=&quot;ae1f772e&quot;&gt;&lt;/span&gt;</p>
+<h1>创建父子实验</h1>
+<p>&lt;span id=&quot;常规父子实验&quot;&gt;&lt;/span&gt;</p>
+<h2>常规父子实验</h2>
+<p>&lt;span id=&quot;_1-创建入口&quot;&gt;&lt;/span&gt;</p>
+<h3>1. 创建入口</h3>
+<p>父实验的协作者，在「实验列表」中点击目标父实验进入详情页，点击「更多」，从下拉列表中选择「开启父子实验」。如下：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_1b634afced576df25e688ba15ee8b965.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-填写基本信息&quot;&gt;&lt;/span&gt;</p>
+<h3>2. 填写基本信息</h3>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_54b201d0468835a8636ea2edf96ca6f2.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_3-设置生效策略&quot;&gt;&lt;/span&gt;</p>
+<h3>3. 设置生效策略</h3>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_bacab1a430019a122121defc37b395c1.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_4-配置实验版本&quot;&gt;&lt;/span&gt;</p>
+<h3>4. 配置实验版本</h3>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_22fc333fb9e21060e1cb78e04e636a9b.png" loading="lazy"> &lt;/span&gt;</p>
+<p><strong>关联父版本：</strong> </p>
+<ul><li>每个子实验的实验版本都可以关联多个父实验的具体版本，或选择「不继承实验版本」。</li></ul>
+<ul><li>父实验的实验版本参照filter受众过滤条件的实现机制，对进入子实验的流量进行过滤筛选。</li></ul>
+<p><strong>进组不出组，指的是勾选「流量变更不会影响已分配的进组用户，只会对尚未进组用户生效」。</strong> </p>
+<p><strong>父子实验，是否勾选「进组不出组」对子实验的流量影响如下：</strong> </p>
+<table><thead><tr><th><strong>序号</strong></th><th><strong>父实验</strong>  <strong>「进组不出组」</strong></th><th><strong>子实验</strong>  <strong>「进组不出组」</strong></th><th><strong>产品逻辑和行为</strong></th></tr></thead><tbody><tr><td>1</td><td>是</td><td>是</td><td>父子实验都记录用户进组状态，一旦进组，后续不论流量如何变更都不会导致用户出组。</td></tr><tr><td>2</td><td>是</td><td>否</td><td>父实验记录用户进组状态，子实验不记录。子实验进组流量必须命中父实验，当子实验流量变更时，子实验的进组用户可能发生出组。</td></tr><tr><td>3</td><td>否</td><td>是</td><td>父实验不记录用户进组状态，子实验记录用户进组状态。一旦子实验用户进组后，即使在父实验出组，子实验也会保持进组状态。</td></tr><tr><td>4</td><td>否</td><td>否</td><td>父子实验均不记录用户进组状态，父实验的流量变更及过滤条件引发的用户出组，同时也会影响子实验。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_5-添加实验指标&quot;&gt;&lt;/span&gt;</p>
+<h3>5. 添加实验指标</h3>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_0e220defbef21b8814a70fea8eb36175.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_6-查找父-子实验&quot;&gt;&lt;/span&gt;</p>
+<h2>查找父/子实验</h2>
+<p>在实验报告页报告概览可查找父/子实验，如下：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e8a75f6edc95ebc6934fd5e665958654.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

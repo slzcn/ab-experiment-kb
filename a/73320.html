@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>假设检验概述 · A/B 实验知识库</title>
+<meta name="description" content="A/B实验的核心统计学理论是（双样本）假设检验，是用来判断样本与样本、样本与总体的差异是由 抽样误差 引起还是 本质差别 造成的一种统计推断方法。 假设检验，顾名思义，是一种对自己做出的假设进行数据验证的过程。不严谨地说">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/73320.html">
+<meta property="og:title" content="假设检验概述"><meta property="og:description" content="A/B实验的核心统计学理论是（双样本）假设检验，是用来判断样本与样本、样本与总体的差异是由 抽样误差 引起还是 本质差别 造成的一种统计推断方法。 假设检验，顾名思义，是一种对自己做出的假设进行数据验证的过程。不严谨地说">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/73320.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">💡 AB通识科普</span></div>
+<h1>假设检验概述</h1>
+<div class="meta">📄 1,843 字 · 🕐 2025-06-05</div>
+<article class="md"><p>A/B实验的核心统计学理论是（双样本）假设检验，是用来判断样本与样本、样本与总体的差异是由 <strong>抽样误差</strong> 引起还是 <strong>本质差别</strong> 造成的一种统计推断方法。</p>
+<p>假设检验，顾名思义，是一种对自己做出的假设进行数据验证的过程。不严谨地说，假设检验是一门 <strong>做出拒绝</strong> 的理论，检验结果有两种：拒绝原假设(reject H0)，无法拒绝原假设(fail to reject H0)。实验者往往将主观不希望看到的结果（新策略没有效果）置于 <strong>原假设</strong> （从英文命名就可以看出来感情色彩 \- 它叫null hypothesis），而将原假设的互斥事件，即对事实本身有利的结果（新策略有提升）置于 <strong>备则假设</strong> （alternative hypothesis），如此构成的假设检验目的在于用现有的数据通过一系列理论演绎 <strong>拒绝原假设</strong> ，达到证明备择假设是正确的，即某项改进有效的目的，所以这一套方法也被称作 ***null hypothesis significance testing (NHST)* **  。</p>
+<p>由于我们永远只能抽取流量做 <strong>小样本</strong> 实验，所以每个假设检验都面临着 <strong>随机抽样误差</strong> ，因此在做出推论的过程中，一切都围绕 <strong>概率</strong> 展开。这意味着没有任何一个基于假设检验的演绎过程可以对结果100%确定。但所幸，统计理论可以告诉我们在每一步中犯错的机会。因此，事先知晓我们 <strong>可能犯什么错</strong> ，以及 <strong>有多大机会犯错</strong> 就成了设计和解读假设检验的关键所在。</p>
+<p>实验者在假设检验的过程中可能会做出 <strong>两类错误判断</strong> \- 不意外地 \- 它们被命名为 <strong>第一类错误</strong> （弃真）和 <strong>第二类错误</strong> （取伪）。</p>
+<p>第一类错误(Type I Error)：H0为真，拒绝H0。“本身没提升，但误判为有提升”</p>
+<p>第二类错误(Type II Error)：H1为真，接受H0。“本身有提升，但没有察觉提升”</p>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/a9c23bcba36644fdbc0ee759bdad8a9c~tplv-em5hxbkur4-noop.image?width=425&amp;height=218" loading="lazy"> &lt;/span&gt;</p>
+<p>对比上图，第一类错误指的是原假设正确但是我们做出了拒绝原假设的结论，这个错误在现实中常常表现为“我作出了统计显著的结论但是我的改动实际上没用”；相应地，第二类错误指的是原假设错误但是我们没能拒绝原假设，这个错误在现实中常常表现为“我的改动有效，但实验没能检测出来”。</p>
+<p>在AB实验的场景下，如果对某一个新feature是否有效进行假设检验，H0为新feature没有效果，第一类错误指的是“新feature实际无效但检测出存在显著性效果”，第二类错误则指的是“新feature实际有效但未能检测出效果”。如果犯了第一类错误，会导致新feature的错误上线，可能会带来实际利益损失，如果犯了第二类错误，实际有效的feature将不会上线，带来的是潜在利益的损失。两相比较，应该更严格地控制第一类错误发生的概率。</p>
+<p>定性知晓我们可能犯什么错以后，我们仍然需要定量地分析有多大机会犯错。在频率统计学中  <strong>，显著性水平（α）</strong>  以及  <strong>（1 \- 检验效力 power）（beta）</strong>  分别描述了实验者犯第一类错误和第二类错误的概率。这两个统计指标结合在一起比较完整地刻画一个假设检验的总体基本性能，也是进行一个假设检验所需统计指标的最小集。应该说，缺少任何一个，我们都没有足够的信息作出科学的推论，甚至可能错误影响产品的走向。</p>
+<p><strong>适用范围</strong></p>
+<p>可以对 单个总体参数(H0:μ=c) 或者 两个总体参数(H0: μ1= μ2) 进行检验，假设的内容可以是双侧检验 如参数是否等于某个值(H0:μ=c)，也可以为单侧检验如 参数是否大于或小于某个值(H0:μ\&gt;&lt;c)。在AB实验的背景下，我们通常进行的检验是 两总体双侧检验。</p>
+<p><strong>检验步骤</strong></p>
+<ol><li>提出假设：H0: μ1= μ2v.s. H1: μ1!= μ2</li></ol>
+<ol><li>构造统计量</li></ol>
+<ol><li>计算统计量、检验阈值、置信区间及p值</li></ol>
+<ol><li>得出结论：若p&lt;0.05或统计量绝对值\&gt;阈值或置信区间不包含0，则拒绝原假设；若p\&gt;0.05或统计量绝对值&lt;=阈值或置信区间包含0，则无法拒绝原假设。</li></ol>
+<p>Note：有些其他的计算公式会假定两组的总体方差相等，在方差的计算方式上有区别，这类公式不推荐，因为该假设在AB实验应用中并不常见。</p>
+<p><strong>p\-value</strong></p>
+<p>P值就是当原假设为真时，所得到的样本观察结果，或更极端结果出现的概率。如果P值很小，说明这种情况发生的概率很小，但如果出现了，根据小概率原理，我们就有理由拒绝原假设。P值越小，说明实验发现的差异是因为抽样误差导致的概率越小，极大程度上还是由于本质上存在差异造成，我们拒绝原假设的理由越充分。</p>
+<p>注： <strong>两样本均值差的置信区间包含0 等价于 P值大于0.05 ,此时接受原假设。</strong> </p>
+<p>思想上 与区间估计的原理中提到的“对称”有相通之处。</p>
+<p>两样本均值差的置信区间包含0</p>
+<p>等价于 均值差与0的距离小于1.96倍标准差</p>
+<p>等价于 统计量的绝对值小于1.96</p>
+<p>等价于 P值大于0.05</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

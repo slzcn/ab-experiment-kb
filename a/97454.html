@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>审批和工作流程 · A/B 实验知识库</title>
+<meta name="description" content="概述 为了追求稳定的迭代，不希望一些激进策略的实验开启或全量上线影响到产品，一般Feature发布这些影响线上的操作，是需要有审批和Review机制；而诸如一些快速迭代的业务、紧急bugfix，则希望能够快速上线，不希望">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/97454.html">
+<meta property="og:title" content="审批和工作流程"><meta property="og:description" content="概述 为了追求稳定的迭代，不希望一些激进策略的实验开启或全量上线影响到产品，一般Feature发布这些影响线上的操作，是需要有审批和Review机制；而诸如一些快速迭代的业务、紧急bugfix，则希望能够快速上线，不希望">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/97454.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>审批和工作流程</h1>
+<div class="meta">📄 1,076 字 · 🕐 2024-09-12</div>
+<article class="md"><p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>概述</h1>
+<p>为了追求稳定的迭代，不希望一些激进策略的实验开启或全量上线影响到产品，一般Feature发布这些影响线上的操作，是需要有审批和Review机制；而诸如一些快速迭代的业务、紧急bugfix，则希望能够快速上线，不希望有更多流程的阻塞。 综合不同业务安全性和灵活性的诉求，我们支持不同的业务可配置不同的工作流程，将审批等作为工作流程的一个环节。</p>
+<ul><li><strong>场景1：重要功能的实验固化为Feature</strong></li></ul>
+<p>   某短视频APP计划引入直播功能，先开实验运行一段时间后得出效果显著的结论，计划将实验固化为Feature发布全量上线。不过上线直播功能是一个大的功能迭代，需要谨慎操作，故希望这类重要功能的实验固化需要经过业务线管理员审批，审批通过后再逐步灰度放量。</p>
+<ul><li><strong>场景2：紧急bugfix的Feature发布</strong></li></ul>
+<p>   某APP的登录功能出现了闪退现象，经检查发现是有小bug，经过修复后在测试环境验证OK，想快速这个Feature发布全量，快速减少用户体验问题，需快速发布，不希望有审批等更多流程。</p>
+<p>&lt;span id=&quot;二-术语说明&quot;&gt;&lt;/span&gt;</p>
+<h1>术语说明</h1>
+<p>工作流程：由不同环节组成的不同业务的操作流程，比如实验开启、实验固化Feature、Feature都是不同的工作流程，示例如下：</p>
+<ul><li>实验开启：①新建实验—\&gt;②审批—\&gt;③开启成功</li></ul>
+<ul><li>实验固化Feature：①生成Feature—\&gt;②设置发布计划—\&gt;③审批</li></ul>
+<p>&lt;span id=&quot;三-如何使用&quot;&gt;&lt;/span&gt;</p>
+<h1>使用工作流</h1>
+<p>&lt;span id=&quot;f1305328&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1. 工作流程管理</strong></h2>
+<ul><li>功能入口：【全局设置】\-【工作流管理】\-【流程设置】</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_718de0d302c9a7244fe2893929cc8a0e.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>目前默认有以下四种工作流程。</li></ul>
+<ul><li>Feature发布流程</li></ul>
+<ul><li>实验开启流程</li></ul>
+<ul><li>实验固化Feature流程</li></ul>
+<ul><li>Feature 开启/关闭流程</li></ul>
+<ul><li>工作流程具体包含哪些环节，由应用的管理员统一配置</li></ul>
+<ul><li>可点击编辑，选择打开或关闭某些环节，默认打开的环节不可关闭。</li></ul>
+<p>      &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_cc86916562db3be749c6ac3b2d983713.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;85a18e57&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2. 工作流程生效</strong></h2>
+<p>应用管理员配置好工作流程后，该应用下的操作将会按照对应的设置执行。比如：发布Feature若设置了①设置发布计划—\&gt;②审批，则发布Feature时，会按照①设置发布计划—\&gt;②审批的流程进行，需走完该流程后，Feature发布才生效到线上。</p>
+<p>&lt;span id=&quot;ba9dff44&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>3. 审批</strong></h2>
+<p><strong>审批设置</strong></p>
+<ul><li>可在工作流程管理中，打开审批开关，即为该流程增加了审批环节。</li></ul>
+<ul><li>点击审批步骤，可设置审批的规划</li></ul>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_49611b6207e100911347beb1bc921e8c.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>审批层级：当前默认1级审批</li></ul>
+<ul><li>添加默认的审批成员：可按角色或人员添加，添加后，该类任务的流程均默认需这些审批成员审批</li></ul>
+<ul><li>通过机制：当前默认1人通过即通过</li></ul>
+<ul><li>驳回机制：当前默认驳回后需要重新发起审批</li></ul>
+<p><strong>审批任务管理</strong></p>
+<ul><li>发起审批的任务，可统一在系统管理\&gt;\&gt;审批管理中查看</li></ul>
+<ul><li>有审批权限的人员，可在对待审批任务进行审批</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_d7c8a5d1e16c8f1ee6073e1322de7f77.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

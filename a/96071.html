@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web/JS SDK集成 · A/B 实验知识库</title>
+<meta name="description" content="概述 「A/B 测试」 在 Web/H5/WAP 端不提供单独的SDK，而是依赖增长营销套件SDK 中的A/B Test 相关接口。增长营销套件 SDK 主要的和A/B Test 相关接口有两个： 实验组分流接口。 指标">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/96071.html">
+<meta property="og:title" content="Web/JS SDK集成"><meta property="og:description" content="概述 「A/B 测试」 在 Web/H5/WAP 端不提供单独的SDK，而是依赖增长营销套件SDK 中的A/B Test 相关接口。增长营销套件 SDK 主要的和A/B Test 相关接口有两个： 实验组分流接口。 指标">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/96071.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>Web/JS SDK集成</h1>
+<div class="meta">📄 4,993 字 · 🕐 2025-07-22</div>
+<article class="md"><p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>概述</h1>
+<p>「A/B 测试」 在 Web/H5/WAP 端不提供单独的SDK，而是依赖增长营销套件SDK 中的A/B Test 相关接口。增长营销套件 SDK 主要的和A/B Test 相关接口有两个：</p>
+<ul><li>实验组分流接口。</li></ul>
+<ul><li>指标上报（事件埋点上报）接口。</li></ul>
+<ul><li>和其他端不同，web/h5 做页面元素可视化编辑的相关实验（实验可视化实验，多变体可视化实验，多页可视化实验等），可能需要在实验参数返回前，对被实验页面或元素有进行遮罩，以免页面跳变影响用户体验。</li></ul>
+<p>该SDK支持编程实验、可视化实验，多链接实验，多变体可视化实验等客户端实验。</p>
+<p>&lt;span id=&quot;二-集成sdk&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 集成SDK</h1>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;&lt;strong&gt;此文档针对5.0版本以上的SDK阅读&lt;/strong&gt;&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果已经集成了RangerAppLog web SDK 可以跳过此部分；&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果没有，请参照下面：&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请注意5.0版本以上变量名称是LogAnalyticsObject，5.0之前版本为TeaAnalyticsObject&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;同时请注意，你的版本必须大于等于V5.0.0&lt;/div&gt;</li></ul>
+<p>复制对应的代码片段，放到标签内尽可能靠前的位置。如您使用SaaS版本，请参考1.1节；如您使用私有化版本，请参考1.2节。这段代码的作用是：</p>
+<ul><li>定义了一个全局函数<code>window.collectEvent</code>，可以用来配置和发送事件。（为了避免与其他全局变量名冲突，<code>collectEvent</code>可以被替换为任意自定义的变量名）</li></ul>
+<ul><li>引入一段 SDK 的脚本文件。</li></ul>
+<p>&lt;span id=&quot;_1-1-安装代码-saas版本&quot;&gt;&lt;/span&gt;</p>
+<h2>1.1 安装代码 (SaaS版本)</h2>
+<p>如您使用SaaS部署版本，请参照如下代码。</p>
+<pre><code>&lt;script&gt;    
+(function(win, export_obj) {
+    win[&#x27;LogAnalyticsObject&#x27;] = export_obj;
+    if (!win[export_obj]) {
+        function _collect() {
+            _collect.q.push(arguments);
+        }
+        _collect.q = _collect.q || [];
+        win[export_obj] = _collect;                
+    }
+    win[export_obj].l = +new Date();
+})(window, &#x27;collectEvent&#x27;);
+&lt;/script&gt;
+&lt;script async src=&quot;https://lf3-data.volccdn.com/obj/data-static/log-sdk/collect/5.0/collect-rangers-v5.1.12.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>&lt;span id=&quot;_1-2-安装代码-私有化版本&quot;&gt;&lt;/span&gt;</p>
+<h2>1.2 安装代码 (私有化版本)</h2>
+<p>私有化版本需要获取js文件的私部地址，一般在<code>{{domain}}/minio.byterangers.onpremise.docor.static/collect-privity-v5.1.12.js</code>，如您不清楚此地址，请联系您的项目经理或客户成功经理。</p>
+<p>如您使用私有化部署版本，请参照如下代码。</p>
+<pre><code>&lt;script&gt;    
+(function(win, export_obj) {
+    win[&#x27;LogAnalyticsObject&#x27;] = export_obj;
+    if (!win[export_obj]) {
+        var _collect = function() {
+            _collect.q.push(arguments);
+        }
+        _collect.q = _collect.q || [];
+        win[export_obj] = _collect;                
+    }
+    win[export_obj].l = +new Date();
+})(window, &#x27;collectEvent&#x27;);
+&lt;/script&gt;
+&lt;script async src=&quot;{{domain}}/minio.byterangers.onpremise.docor.static/collect-privity-v5.1.12.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>您也可使用火山提供的私部地址：</p>
+<pre><code>&lt;script async src=&quot;https://lf3-data.volccdn.com/obj/data-static/log-sdk/collect/5.0/collect-privity-v5.1.12.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>如果不能远程集成，请联系您的项目经理或客户成功经理，也可以直接把上方js文件下载下来做离线引入。</p>
+<p>&lt;span id=&quot;_2-初始化-sdk&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 初始化SDK</h1>
+<p>&lt;span id=&quot;_2-1-获取appid&quot;&gt;&lt;/span&gt;</p>
+<h2>2.1 获取appid</h2>
+<p>在开始集成前，首先需要在集团中拥有一个应用，请参考：<a href="https://www.volcengine.com/docs/6287/66984" target="_blank" rel="noopener">如何创建应用</a>。</p>
+<ul><li>SaaS\-云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/de1df7b557de438893f3013583ee3cfb~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>SaaS\-非云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/11d05eafc702439cb7bdd70059dc8bad~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-2-获取数据上送地址&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 获取数据上送地址</h2>
+<p>进行数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如果上报地址设置错误，后续会导致您无法查询到上报的数据。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请在上报数据前，务必确认您当前使用的环境类型，根据环境类型配置上报地址。查看当前的环境类型请参见&lt;a href=&quot;https://www.volcengine.com/docs/6287/1544686&quot;&gt;SaaS云原生/非云原生&amp;私有化环境&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果您使用的是SaaS\-云原生环境，您也需确认您的服务所在的地域，根据所在地域配置上报地址（通常您的服务会在华北2\-北京地域，部分用户可能会使用其他地域）。SaaS\-云原生用户查看服务所在地域请参见&lt;a href=&quot;https://www.volcengine.com/docs/6287/1544685&quot;&gt;支持的地域&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;7d03a6ed&quot;&gt;&lt;/span&gt;</p>
+<h3>SaaS\-云原生 &amp; SaaS\-非云原生</h3>
+<table><thead><tr><th>地址类型</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（国内：华北2\-北京）</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（海外：亚太东南\-柔佛）</th><th>SaaS\-非云原生环境 国内环境</th><th>SaaS\-非云原生 海外BytePlus环境&lt;br&gt;&lt;br&gt;（以下 SG 指新加坡）</th></tr></thead><tbody><tr><td>数据上报地址</td><td>* SaaS\-云原生（华北）：https://gator.volces.com</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td><code>channel: &#x27;cn&#x27;</code>，即使用默认的数据上报地址</td><td><code>channel: &#x27;sg&#x27;</code></td></tr><tr><td>分流地址</td><td>https://tab.volces.com</td><td>https://tab.ab.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>无需手动配置</td></tr></tbody></table>
+<p>&lt;span id=&quot;9f341c3b&quot;&gt;&lt;/span&gt;</p>
+<h3>私有化环境</h3>
+<p>私有化部署场景下，您需要获取部署私有化环境时，自行规划配置的数据上送地址。如您不清楚此地址，请联系您的项目经理或客户成功经理。</p>
+<p>&lt;span id=&quot;_2-3-初始化sdk&quot;&gt;&lt;/span&gt;</p>
+<h2>2.3 初始化SDK代码</h2>
+<p>&lt;span id=&quot;5078a9bb&quot;&gt;&lt;/span&gt;</p>
+<h3>2.3.1 SaaS\-云原生版本</h3>
+<p>如您使用SaaS云原生部署版本，请参照如下代码初始化SDK。</p>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+    app_id: {{APPID}}, // 参考2.1节获取，注意类型是number而非字符串
+    channel_domain: &#x27;https://****.****.com&#x27;, // 设置数据上送地址，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节。
+    ab_channel_domain: &#x27;https://***.****.com&#x27;, // 分流请求域名，各环境各地域的上送分流域名请参见上文的 获取数据上送地址 章节。
+    log: true, // true:开启日志，false:关闭日志
+    autotrack: false, // 全埋点开关，true开启，false关闭
+    enable_ab_test: true, // boolean类型，是否开启A/B实验功能
+    enable_ab_visual: false, // boolean类型，按需开启，默认关闭，是否开启A/B实验的可视化编辑模式功能
+    enable_multilink: false, //boolean类型，按需开启，默认关闭，是否开启A/B实验的多链接实验功能，默认为false
+    multilink_timeout_ms:1000 //number类型，A/B实验的多链接实验中关闭遮罩层的时间，默认500毫秒
+});
+// 此处可添加设置uuid、设置公共属性等代码
+window.collectEvent(&#x27;start&#x27;); // 通知SDK设置完毕，可以真正开始发送事件了</code></pre>
+<p>&lt;span id=&quot;_2-3-1-saas版本&quot;&gt;&lt;/span&gt;</p>
+<h3>2.3.2 SaaS\-非云原生版本</h3>
+<p>如您使用SaaS部署版本，请参照如下代码初始化SDK。</p>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+    app_id: {{APPID}}, // 参考2.1节获取，注意类型是number而非字符串
+    channel: &#x27;cn&#x27;, // 设置数据上送地址，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节。
+    log: true, // true:开启日志，false:关闭日志
+    autotrack: false, // 全埋点开关，true开启，false关闭
+    enable_ab_test: true, // boolean类型，是否开启A/B实验功能
+    enable_ab_visual: false, // boolean类型，按需开启，默认关闭，是否开启A/B实验的可视化编辑模式功能
+    enable_multilink: false, //boolean类型，按需开启，默认关闭，是否开启A/B实验的多链接实验功能，默认为false
+    multilink_timeout_ms:1000 //number类型，A/B实验的多链接实验中关闭遮罩层的时间，默认500毫秒
+});
+// 此处可添加设置uuid、设置公共属性等代码
+window.collectEvent(&#x27;start&#x27;); // 通知SDK设置完毕，可以真正开始发送事件了</code></pre>
+<p>&lt;span id=&quot;_2-3-2-私有化版本&quot;&gt;&lt;/span&gt;</p>
+<h3>2.3.3 私有化版本</h3>
+<p>如您使用私有化部署版本，请参照如下代码初始化SDK。</p>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+    app_id: {{APPID}}, // 参考2.1节获取，注意类型是number而非字符串
+    channel_domain: &#x27;{{REPORT_URL}}&#x27;, // 设置私有化部署数据上送地址，参考2.2节获取
+    ab_channel_domain: &#x27;{{REPORT_URL}}&#x27; // 设置私有化域名，通常为数据上送地址，参考2.2节获取
+    log: true, // true:开启日志，false:关闭日志
+    autotrack: false, // 全埋点开关，true开启，false关闭
+    enable_ab_test: true, // boolean类型，是否开启A/B实验功能
+    enable_ab_visual: false, // boolean类型，按需开启，默认关闭，是否开启A/B实验的可视化编辑模式功能
+    enable_multilink: false, //boolean类型，按需开启，默认关闭，是否开启A/B实验的多链接实验功能，默认为false
+    multilink_timeout_ms:1000 //number类型，A/B实验的多链接实验中关闭遮罩层的时间，默认500毫秒
+});
+// 此处可添加设置uuid、设置公共属性等代码
+window.collectEvent(&#x27;start&#x27;); // 通知SDK设置完毕，可以真正开始发送事件了</code></pre>
+<p>&lt;span id=&quot;50a93747&quot;&gt;&lt;/span&gt;</p>
+<h2>2.4 <strong>配置完毕</strong></h2>
+<p>初始化结束后，需要通知SDK设置完毕，可以真正开始发送事件了。</p>
+<p><strong>说明：</strong>  <code>start</code>方法调用前，同样可以上报事件，这些事件被缓存在内存中，没有真正的发送给服务端；直到<code>start</code>调用后，缓存的事件才会与设置的用户属性等参数合并成完整的事件结构，然后通过网络请求发送给服务端。<code>start</code>方法调用后发送的事件，则直接合并参数后然后发给服务端。</p>
+<pre><code>// 必须在初始化配置完成后，加入这行代码，否则SDK不会发送数据
+window.collectEvent(&#x27;start&#x27;);</code></pre>
+<p>&lt;span id=&quot;_2-5-使用调试工具&quot;&gt;&lt;/span&gt;</p>
+<h2>2.5 使用调试工具</h2>
+<p>5.1.4以上的版本支持调试埋点，详细请查看<a href="https://www.volcengine.com/docs/76880/1033615" target="_blank" rel="noopener">调试工具</a>。</p>
+<p>在初始化时设置以下参数：</p>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+  //....
+  enable_debug: true // 上线前关闭此参数
+})</code></pre>
+<p>同时在需要验证的页面URL后增加如下参数 （<strong>5.1.7以后的版本可以不加下面的参数</strong>）：</p>
+<pre><code>?open_devtool_web=true&amp;app_id=${appid} // 你的appid</code></pre>
+<p>&lt;span id=&quot;_3-初始化基本配置&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 初始化基本配置</h1>
+<p>以下为常用初始化配置。配置时需参考2.3/2.4节，添加到<code>window.collectEvent(&#x27;init&#x27;, {/</code> <code> *...* </code> <code>/})</code>中。</p>
+<p>&lt;span id=&quot;_3-1-全埋点设置开关&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 全埋点设置开关</h2>
+<p>全埋点开关默认关闭。</p>
+<pre><code>// 开启全埋点功能
+window.collectEvent(&#x27;init&#x27;, {
+    // ...... 其他初始化配置
+    autotrack: true
+})</code></pre>
+<p>&lt;span id=&quot;_3-2-查看日志打印&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 查看日志打印</h2>
+<p>日志打印默认关闭。</p>
+<pre><code>// 在控制台打印详细的log信息，协助排查
+window.collectEvent(&#x27;init&#x27;, {
+    // ...... 其他初始化配置
+    log: true
+})</code></pre>
+<p>&lt;span id=&quot;_3-3-ab功能相关&quot;&gt;&lt;/span&gt;</p>
+<h2>3.3 AB功能相关</h2>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+    enable_ab_test: true, // boolean类型，是否开启A/B实验功能
+    enable_ab_visual: false, // boolean类型，按需开启，默认关闭，是否开启A/B实验的可视化编辑模式功能
+    enable_multilink: false, //boolean类型，按需开启，默认关闭，是否开启A/B实验的多链接实验功能，默认为false
+    multilink_timeout_ms:1000 //number类型，A/B实验的多链接实验中关闭遮罩层的时间，默认500毫秒
+    auto_exposure_expriment: false // boolean类型，按需开启，默认关闭，是否自动曝光全量实验 5.1.10版本支持
+})</code></pre>
+<p>&lt;span id=&quot;6f829cf4&quot;&gt;&lt;/span&gt;</p>
+<h2>3.3 自动曝光全量</h2>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+    enable_ab_test: true, // boolean类型，是否开启A/B实验功能
+    auto_exposure_expriment: false // boolean类型，按需开启，默认关闭，是否自动曝光全量实验 5.1.10版本支持
+})</code></pre>
+<p><strong>开启后，SDK会根据下发的实验结果，自动曝光所有实验（除了多链接实验和可视化实验），不需要再额外调用getVar方法，5.1.10版本开始支持。</strong> </p>
+<p>&lt;span id=&quot;_3-4-禁止ab数据重置&quot;&gt;&lt;/span&gt;</p>
+<h2>3.4 禁止AB数据重置</h2>
+<p>是否在变更user_unique_id时，禁止AB数据的重置。通常用于匿名状态转为实名状态。多用户之间切换，请不要开启。</p>
+<pre><code>window.collectEvent(&#x27;init&#x27;, {
+    disable_ab_reset: true | false // 默认false
+})</code></pre>
+<p>&lt;span id=&quot;_3-5-关闭pv事件上报&quot;&gt;&lt;/span&gt;</p>
+<h2>3.5 关闭pv事件上报</h2>
+<p>当访问页面时，SDK会默认上报一次pv事件(事件名predefine_pageview)，此预置事件默认上报。如需关闭，请在初始化配置中禁用此事件。</p>
+<pre><code>// 在控制台打印详细的log信息，协助排查
+window.collectEvent(&#x27;init&#x27;, {
+    // ...... 其他初始化配置
+    disable_auto_pv: true // 开启禁用PV上报的开关
+})</code></pre>
+<p>&lt;span id=&quot;_3-6-内嵌h5页打通原生端&quot;&gt;&lt;/span&gt;</p>
+<h2>3.6 内嵌H5页打通原生端（客户端）</h2>
+<p>客户端开启内嵌H5页打通后，内嵌H5页上产生的事件将通过客户端SDK上报，不在js SDK上报，并复用客户端设置的<code>user_unique_id</code>和公共属性。此时，还需在集成js sdk的H5页上开启打通开关。</p>
+<pre><code>// H5内嵌到原生端并打通
+window.collectEvent(&#x27;init&#x27;, {
+    // ...... 其他初始化配置
+    enable_native: true 
+    // 5.1.3以下版本参数为Native，
+    // 5.1.3以上版本修改为enable_native，但仍然兼容了Native的设置
+})</code></pre>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;⚠️ 请注意，原生端也需做初始化适配，请分别参考Android和iOS集成开发指南。&lt;/div&gt;</p>
+<p><strong>如果客户端初始化的时候采用了多实例的方式，可能会导致打通失败。有以下两种方式来调整：</strong> </p>
+<ol><li>客户端调用上报方式，使用默认实例初始化，不用多实例。</li></ol>
+<ol><li>H5页面手动绑定以下多实例的appid。在init方法之后，start方法之前调用如下代码。</li></ol>
+<pre><code>window.collectEvent(&#x27;setNativeAppId&#x27;, appid)</code></pre>
+<p>&lt;span id=&quot;_3-7-初始化配置一览表&quot;&gt;&lt;/span&gt;</p>
+<h2>3.7 初始化配置一览表</h2>
+<table><thead><tr><th>字段</th><th>是否必须</th><th>字段值</th><th>字段说明</th><th>示例/备注</th></tr></thead><tbody><tr><td>app_id</td><td>是</td><td>预先申请。 number类型</td><td>业务产品的唯一标识</td><td></td></tr><tr><td>channel</td><td>否</td><td>可选值：cn,sg,va</td><td>上报通道标识。和channel_domain二选一。</td><td>国内，新加坡，美东</td></tr><tr><td>channel_domain</td><td>否</td><td>合法域名。字符串。</td><td>和channel二选一。设置该项后 channel 项会被忽略。 自定义上报的域名及其路径前缀。</td><td><a href="https://xx.ccc.yy" target="_blank" rel="noopener">https://xx.ccc.yy</a></td></tr><tr><td>ab_channel_domain</td><td>否</td><td>合法域名。字符串。</td><td>私有化域名&lt;br&gt;&lt;br&gt;设置此参数时，ab实验获取域名则会根据此参数来获取。</td><td><a href="https://xx.ccc.yy" target="_blank" rel="noopener">https://xx.ccc.yy</a></td></tr><tr><td>log</td><td>否</td><td>布尔类型。默认false。</td><td>是否在控制台打印详细的 log 信息。</td><td>建议开启</td></tr><tr><td>enable_ab_test</td><td>是</td><td>布尔类型。默认false。</td><td>是否开启A/B实验功能</td><td></td></tr><tr><td>enable_ab_visual</td><td>否</td><td>布尔类型。默认false。</td><td>是否开启可视化实验&lt;br&gt;&lt;br&gt;设置此参数时，ab实验读到可视化配置时会执行可视化逻辑&lt;br&gt;&lt;br&gt;前提是必须开启enable_ab_test的总开关</td><td></td></tr><tr><td>enable_multilink</td><td>否</td><td>布尔类型。默认false。</td><td>是否开启多链接实验&lt;br&gt;&lt;br&gt;注：开启多链接实验需要开启AB实验的前提，必须开启enable_ab_test的总开关</td><td></td></tr><tr><td>multilink_timeout_ms</td><td>否</td><td>number类型</td><td>多链接实验中默认的关闭遮罩层的时间&lt;br&gt;&lt;br&gt;默认：500毫秒&lt;br&gt;&lt;br&gt;前提是必须开启enable_ab_test的总开关</td><td>ebable_ab_test:true&lt;br&gt;&lt;br&gt;enable_multilink: true,&lt;br&gt;&lt;br&gt;multilink_timeout_ms:3000</td></tr><tr><td>disable_auto_pv</td><td>否</td><td>布尔类型。默认false。</td><td>是否禁止SDK上报默认PV</td><td></td></tr><tr><td>disable_sdk_monitor</td><td>否</td><td>布尔类型。默认false。</td><td>用于禁止SDK启动后自身监控事件的上报，（但目前并不会禁止错误日志的上报。）</td><td></td></tr><tr><td>autotrack</td><td>否</td><td>布尔类型。默认false。</td><td>开启无埋点上报。</td><td>具体能力请参考全埋点文档</td></tr><tr><td>enable_stay_duration</td><td>否</td><td>布尔类型。默认false。</td><td>开启停留时长。</td><td>具体请参考停留时长文档</td></tr><tr><td>cross_subdomain</td><td>否</td><td>布尔类型。默认false。</td><td>是否自动跨子域名识别用户，设置为true时多个子域名下使用同一浏览器访问的匿名用户会被自动识别为同一个用户，比如 a.<a href="http://yourdomain.com" target="_blank" rel="noopener">yourdomain.com</a> 和 b.<a href="http://yourdomain.com" target="_blank" rel="noopener">yourdomain.com</a>的情况。</td><td></td></tr><tr><td>cookie_domain</td><td>否</td><td>string类型</td><td>在开启上述配置后使用，可配置存储token或者utm参数的cookie域名，如你需要&#x27;a.<a href="http://bytedance.com" target="_blank" rel="noopener">bytedance.com</a>&#x27;和&#x27;b.<a href="http://bytedance.com" target="_blank" rel="noopener">bytedance.com</a>&#x27;串通，则传入&#x27;.<a href="http://bytedance.com" target="_blank" rel="noopener">bytedance.com</a>&#x27;,不传则默认存储在当前域名下</td><td></td></tr><tr><td>cookie_expire</td><td>否</td><td>number类型，默认7天（单位ms）</td><td>cookie过期时间</td><td></td></tr><tr><td>max_report</td><td>否</td><td>number类型,默认20</td><td>自定义埋点合并上报的条数</td><td></td></tr><tr><td>reportTime</td><td>否</td><td>number类型,默认30ms</td><td>埋点上报异步队列的时间间隔</td><td></td></tr><tr><td>configPersist</td><td>否</td><td>number类型，默认0</td><td>设置config参数是否需要持久化存储</td><td>0：不需要；1：session会话级存储；2：localstorage持久化存储</td></tr><tr><td>timeout</td><td>否</td><td>number类型，默认100000ms</td><td>埋点上报的超时时间</td><td></td></tr><tr><td>enable_native (5.1.3版本以下为Native)</td><td>否</td><td>boolean类型</td><td>是否走原生native sdk上报</td><td>开启后，所有的埋点和config设置都会通过原生native sdk完成</td></tr><tr><td>spa</td><td>否</td><td>boolean类型</td><td>是否开启路由变化的监控</td><td>开启后，当路由发生变化后，会重新上报PV和停留时长</td></tr><tr><td>disable_track_event</td><td>否</td><td>boolean类型</td><td>事件禁用参数</td><td>开启后，所有的埋点都不再上报</td></tr><tr><td>enable_custom_webid</td><td>否</td><td>boolean类型</td><td>是否使用自定义webid</td><td></td></tr><tr><td>allow_hash</td><td>否</td><td>boolean类型</td><td>是否支持监听hash路由</td><td>5.1.3以上支持</td></tr><tr><td>ab_cross</td><td>否</td><td>boolean类型</td><td>是否AB数据跨域名存储</td><td>5.1.3以上支持</td></tr><tr><td>ab_cookie_domain</td><td>否</td><td>string类型</td><td>AB数据跨域名存储开启后，存储的域名</td><td>5.1.3以上支持</td></tr><tr><td>disable_ab_reset</td><td>否</td><td>boolean类型</td><td>禁止切换uuid时的AB重置，注:切换uuid时，会清除之前uuid的缓存，并重发AB分流请求，在这个过程中，可能会造成vid不上报（uuid不匹配），请注意</td><td>5.1.4以上支持</td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

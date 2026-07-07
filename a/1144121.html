@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SQL 自定义查询 · A/B 实验知识库</title>
+<meta name="description" content="1. 使用说明 1.1 基本用法 前端展示1000条，下载可下载1000000条。 1.2 字段说明 1.2.1 events表 说明 原为all_data表，现更名为events表。 本表查询范围为：用户SSID/UU">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1144121.html">
+<meta property="og:title" content="SQL 自定义查询"><meta property="og:description" content="1. 使用说明 1.1 基本用法 前端展示1000条，下载可下载1000000条。 1.2 字段说明 1.2.1 events表 说明 原为all_data表，现更名为events表。 本表查询范围为：用户SSID/UU">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1144121.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>SQL 自定义查询</h1>
+<div class="meta">📄 13,883 字 · 🕐 2023-09-20</div>
+<article class="md"><p>&lt;span id=&quot;_1-使用说明&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 使用说明</h1>
+<p>&lt;span id=&quot;_1-1-基本用法&quot;&gt;&lt;/span&gt;</p>
+<h2>1.1 基本用法</h2>
+<pre><code>select event, event_time 
+from events 
+where event_date &gt;= &#x27;2020-08-10&#x27; 
+and event_date &lt;= &#x27;2020-08-18&#x27; 
+and event_time &gt; 1597161600
+limit 20;</code></pre>
+<p>前端展示1000条，下载可下载1000000条。</p>
+<p>&lt;span id=&quot;_1-2-字段说明&quot;&gt;&lt;/span&gt;</p>
+<h2>1.2 字段说明</h2>
+<p>&lt;span id=&quot;_1-2-1-events表&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.1 events表</h3>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;原为all_data表，现更名为events表。&lt;/div&gt;</p>
+<p><strong>本表查询范围为：用户SSID/UUID、事件、事件属性、事件公共属性、all_value类型的公共属性与业务对象属性。</strong> </p>
+<table><thead><tr><th>字段</th><th>说明</th></tr></thead><tbody><tr><td>stat_standard_id</td><td>* 统计口径ID，SSID或UUID，取决于app的统计口径。&lt;br&gt;&lt;br&gt;* 列名曾为user_unique_id，现已废弃。</td></tr><tr><td>user_profiles.user_id</td><td>* 用户ID，匿名时通过device_id/web_id填充。&lt;br&gt;&lt;br&gt;* 列名曾为user_profiles.uuid，先已废弃。</td></tr><tr><td>hash_uid</td><td>与users表进行join时，建议采用hash_uid以提升join效率，加速查询。</td></tr><tr><td>bddid</td><td>可以理解为处理后的device_id。该字段只支持in、not in、=、!=这四种运算符，不支持like、字符串函数等。</td></tr><tr><td>event</td><td>事件名</td></tr><tr><td>event_date</td><td>事件发生日期，任何SQL都建议指定事件发生时间，否则根据event_time进行推导。</td></tr><tr><td>event_time</td><td>* 事件发生时间戳，10位。&lt;br&gt;&lt;br&gt;* 当且仅当使用event_time作为约束条件时，会自动推导event_date；因此不建议使用time和server_time进行时间条件的约束。</td></tr><tr><td>time</td><td>事件发生时间戳，历史为10位，现为13位。</td></tr><tr><td>server_time</td><td>服务端接收到事件的时间戳，10位。</td></tr><tr><td>event_params.xxx.yyy</td><td>* 事件属性，格式为 <strong>event_params.事件名.事件属性名</strong> ，此时sql只会查询该事件相关的数据。&lt;br&gt;&lt;br&gt;* 事件名可省略，写作 <strong>event_params.事件属性名</strong> ，此时sql会查询所有事件。</td></tr><tr><td>user_profiles.xxx</td><td>公共属性，格式为 <strong>user_profiles.公共属性名</strong>。user_profiles.user_id 对应产品中的user_unique_id。</td></tr><tr><td>item_profiles.xxx.yyyy</td><td>* 业务对象属性，格式为 <strong>item_profiles.业务对象名.业务对象属性名</strong>。&lt;br&gt;&lt;br&gt;* 查出来的值均为array类型，使用方法可见FAQ。</td></tr><tr><td>其他字段</td><td>\-</td></tr></tbody></table>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;event_params.xxx.yyy、user_profiles.xxx 、item_profiles.xxx.yyy三种字段建议起别名，否则查询可能存在问题。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;_1-2-2-users表&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.2 users表</h3>
+<p><strong>本表查询范围为：用户SSID/UUID、all_value/last_value类型的公共属性与业务对象属性。</strong> </p>
+<table><thead><tr><th>字段</th><th>说明</th></tr></thead><tbody><tr><td>stat_standard_id</td><td>统计口径ID，与events表含义相同。</td></tr><tr><td>user_id</td><td>用户ID。</td></tr><tr><td>ssid</td><td>ssid</td></tr><tr><td>bddid</td><td>可以理解为处理后的device_id。该字段只支持in、not in、=、!=这四种运算符，不支持like、字符串函数等。</td></tr><tr><td>last_active_date</td><td>* 表示该用户的最后活跃时间，可以理解为users表该记录的最后刷新时间。目前支持“YYYY\-MM\-dd”与“YYYYMMdd”的格式，例如：last_active_date=&#x27;2020\-08\-10&#x27;。&lt;br&gt;&lt;br&gt;* events表和users表进行join时，会自动根据events表的event_date限制推导last_active_date；比如查询事件发生事件为2021\-08\-01，那么last_active_date将会自推导为大于等于2021\-08\-01（因为如果last_active_date小于2021\-08\-01，那么该用户在2021\-08\-01之后必然没有发生过任何事件）。</td></tr><tr><td>user_profiles.xxxx</td><td>* 公共属性，格式为 <strong>user_profiles.公共属性名</strong>。&lt;br&gt;&lt;br&gt;* all_value和last_value均可，但是users表中保存的值都是最新值；如需查询all_value类型的公共属性的历史值，可以在events表中进行查询。</td></tr><tr><td>其他字段</td><td>\-</td></tr></tbody></table>
+<p>&lt;span id=&quot;_1-2-3-items表&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.3 items表</h3>
+<p><strong>本表查询范围为：all_value/last_value类型的业务对象相关信息</strong>。</p>
+<table><thead><tr><th>字段</th><th>说明</th></tr></thead><tbody><tr><td>item_name</td><td>业务对象名。</td></tr><tr><td>last_active_date</td><td>表示该业务对象属性最后的刷新时间。</td></tr><tr><td>item_profiles.xxx.yyyy</td><td>业务对象属性，格式为 <strong>item_profiles.业务对象名.业务对象属性名</strong>。</td></tr><tr><td>其他字段</td><td>\-</td></tr></tbody></table>
+<p>&lt;span id=&quot;_1-2-4-cohorts表&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.4 cohorts表</h3>
+<p><strong>本表查询范围为：分群中包含的用户统计口径id、hash_uid、分群id等</strong>。</p>
+<table><thead><tr><th>字段</th><th>说明</th></tr></thead><tbody><tr><td>stat_standard_id</td><td>统计口径id。</td></tr><tr><td>hash_uid</td><td>对统计口径id进行了hash处理，通常用于join和in子查询，查询速度比用stat_standard_id更快。</td></tr><tr><td>cohort_id</td><td>分群id。</td></tr></tbody></table>
+<ul><li>在&quot;元数据&quot;标签下，可以查看所有的分群名、分群id以及分群人数。</li></ul>
+<ul><li>当前暂不支持查询分群历史版本，因此目前通过分群id查询的是 <strong>最近一次成功刷新的分群，和其他高级分析场景一致。</strong> </li></ul>
+<p>&lt;span id=&quot;_1-3-查询范围&quot;&gt;&lt;/span&gt;</p>
+<h2>1.3 查询范围</h2>
+<ul><li>时间范围：近一年（包含今天）</li></ul>
+<ul><li>数据范围：事件、事件属性、公共属性与业务对象属性。</li></ul>
+<p>&lt;span id=&quot;_1-4-日期过滤&quot;&gt;&lt;/span&gt;</p>
+<h2>1.4 日期过滤</h2>
+<p><strong>针对event_date与last_active_date，目前支持以下函数，如对其他函数有需求，可向客服反馈。</strong> </p>
+<ul><li><strong>支持函数：</strong>  subtractMonths,subtractWeeks,subtractDaysaddMonths, addWeeks, addDaystoStartOfQuarter,toStartOfMonth,toStartOfISOYear,toMonday,toStartOfWeek</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;toStartOfWeek函数，mode为偶数时，起始为周一，否则为周日。   &lt;/div&gt;</p>
+<ul><li><strong>错误用法：</strong> </li></ul>
+<p>   ``<code>sql    select event from events where toMonth(event_date) = 9；    select event from events where subtractDays(event_date, 10) = &#x27;2021-09-20&#x27;；    </code>``</p>
+<p>   上述写法，自定义查询会提示无法推导出event_date。</p>
+<ul><li><strong>正确用法:</strong> </li></ul>
+<p>   ``<code>sql    select event from events where event_date &gt;= subtractDays(today(), 10)；    </code>``</p>
+<p>&lt;span id=&quot;_1-4-1-events表&quot;&gt;&lt;/span&gt;</p>
+<h3>1.4.1 events表</h3>
+<p>在任何情况下，都强烈建议采用event_date作为日期过滤条件，如需更加精确的时间区间，可采用event_date+event_time进行限制。</p>
+<ul><li>event_dateevent_date表示事件发生的日期，精确到天，可用于加快查询速度，缺省时默认为过去7天(包含今天)。目前仅支持“YYYY\-MM\-dd”的格式，例如：event_date=&#x27;2020\-08\-10&#x27;。</li></ul>
+<ul><li>event_timeevent_time表示事件的发生时间，为10位时间戳，精确到秒，可用于提供更精确的时间区间。</li></ul>
+<ul><li>时区国内站接入应用的event_date均为UTC+8（东八区）时间，国际站接入应用的event_date均为UTC（零时区）时间。例如：event_time = 1597273200，国内站event_date为&#x27;2020\-08\-13&#x27;event_time = 1597273200，国际站event_date为&#x27;2020\-08\-12&#x27;国内站接入应用: 查询北京时间2020年8月10日6：00至2020年8月12日14:00所发生的事件</li></ul>
+<p>   ``<code>Plain Text    select event    from events     where     event_time &gt;= 1597010400    and event_time &lt;= 1597212000    and event_date &gt;= &#x27;2020-08-10&#x27;    and event_date &lt;= &#x27;2020-08-12&#x27;    </code>``</p>
+<p>   国际站接入应用，应用的时区为UTC时间: 查询UTC时间2020年8月10日6：00至2020年8月12日14:00所发生的事件</p>
+<p>   ``<code>Plain Text    select event    from events     where     event_time &gt;= 1597039200    and event_time &lt;= 1597240800    and event_date &gt;= &#x27;2020-08-10&#x27;    and event_date &lt;= &#x27;2020-08-12&#x27;    </code>``</p>
+<p>   国际站接入应用，应用的时区为UTC+7时间: 查询UTC+7时间2020年8月10日6：00至2020年8月12日14:00所发生的事件，相当于查询UTC时间2020年8月9日23:00至2020年8月12日7:00所发生的事件:</p>
+<p>   ``<code>Plain Text    select event    from events     where     event_time &gt;= 1597014000    and event_time &lt;= 1597215600    and event_date &gt;= &#x27;2020-08-09&#x27;    and event_date &lt;= &#x27;2020-08-12&#x27;    </code>``</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;注意   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-wrapper-indent=&quot;1&quot;&gt;无论何时，都建议您在SQL中指定event_date的起、止时间，以此加速查询速度。如果您未添加，SQL自定义查询功能会自动拼装时间限制，可能会产生与您预计时间段不同的数据。   &lt;/div&gt;</p>
+<p>&lt;span id=&quot;_1-4-2-users、items表&quot;&gt;&lt;/span&gt;</p>
+<h3>1.4.2 users、items表</h3>
+<p>与events表进行join时，last_active_date可以通过event_date进行自动推导，其他情况建议用户指定last_active_date范围。</p>
+<p><strong>语义举例：</strong> </p>
+<ol><li>查询2020年8月10日 <strong>后</strong> 的活跃用户的性别。</li></ol>
+<p>   ``<code>sql    select user_profiles.gender from users where last_active_date &gt;= &#x27;2020-08-10&#x27;    </code>``</p>
+<ol><li>查询2020年8月10日 <strong>前</strong> 的做过A事件的用户的性别</li></ol>
+<p>   ``<code>sql    select gender, hash_uid, user_id        from events as table_a                left join                (                       select hash_uid, user_profiles.gender as gender from users                    where user_profiles.gender is not null                ) as table_b         on table_a.hash_uid == table_b.hash_uid       where event_date &lt;= &#x27;2020-08-10&#x27; and event = &#x27;A&#x27;        limit 500;    </code>``</p>
+<p>该sql未指定事件的起始event_date，因此默认起始event_date为今日的365天前，假设为&#x27;2019\-10\-11&#x27;。此时，join子句中，也默认查询last_active_date\&gt;=&#x27;2019\-10\-11&#x27;的用户。</p>
+<p>值得注意的是，该案例的 <strong>典型错误写法</strong> 为：</p>
+<pre><code>select gender, hash_uid, user_id
+    from events as table_a
+            left join
+            (   
+                select hash_uid, user_profiles.gender as gender from users
+                where user_profiles.gender is not null where last_active_date &lt;= &#x27;2020-08-10&#x27;
+            ) as table_b 
+    on table_a.hash_uid == table_b.hash_uid
+   where event_date &lt;= &#x27;2020-08-10&#x27;
+    limit 500;</code></pre>
+<p>如果用户填写last_active_date &lt;= &#x27;2020\-08\-10&#x27;，其join子句的语义就变为——查询2020年8月10号之后就没有事件的那些用户，而不是查询2020年8月10号之前有活动的用户。</p>
+<p>&lt;span id=&quot;_1-5-常用函数&quot;&gt;&lt;/span&gt;</p>
+<h2>1.5 常用函数</h2>
+<ol><li>近似分位数函数 quantile 与 近似中位数 medianquantile(level)(expr)参数</li></ol>
+<ul><li>Level —— 分位数层次。可选参数，level的推荐取值范围为[0.01, 0.99]，默认值level=0.5，即为计算中位数。</li></ul>
+<ul><li>expr —— 表达式。 可选数值、日期或时间数据类型</li></ul>
+<p>   median(expr)相当于是quantile(0.5)(expr)注意: 该函数采用Reservoir_sampling随机算法，因此结果是近似且非确定的。举例：查询2020年8月10日的订单事件中，分位数为0.2的金额。</p>
+<p>   ``<code>Plain Text    select quantile(0.2)(event_params.order.money) from events where event = &#x27;order&#x27; and event_date = &#x27;2020-08-10&#x27; limit 1;    </code>``</p>
+<ol><li>方差函数 varSamp计算 <code>Σ((x - x̅)^2) / (n - 1)</code>，这里 <code>n</code> 是样本大小， <code>x̅</code>是<code>x</code>的平均值。</li></ol>
+<p>&amp;nbsp;</p>
+<p>   举例: 查询2020年8月10日的订单事件中，金额的方差</p>
+<p>   ``<code>Plain Text    select varSamp(event_params.order.money) from events where event = &#x27;order&#x27; and event_date = &#x27;2020-08-10&#x27; limit 1;    </code>``</p>
+<ol><li>条件函数 if语法：</li></ol>
+<p>   ``<code>Plain Text    SELECT if(cond, then, else)    如果条件cond的计算结果为非零值，则返回表达式then的结果，并且跳过表达式else的结果（如果存在）。如果cond为零或NULL，则跳过then表达式的结果，并返回else表达式的结果（如果存在）。、    </code>``</p>
+<p>   参数：</p>
+<ul><li>cond: 条件表达式</li></ul>
+<ul><li>then: 条件满足时返回的表达式</li></ul>
+<ul><li>else: 条件不满足时返回的表达式</li></ul>
+<p>   举例：查询2020年10月6日至12日中，触发A事件比触发B事件次数多的人。</p>
+<p>   ``<code>Plain Text    select distinct user_unique_id    from (select user_unique_id                      as </code>user_unique_id<code>,               if(event = &#x27;A&#x27;, count(1), 0) as </code>event1_cnt<code>,               if(event = &#x27;B&#x27;, count(1), 0) as </code>event2_cnt<code>        from events        where event in (&#x27;A&#x27;, &#x27;B&#x27;)          and event_date &gt;= &#x27;2020-10-06&#x27;          and event_date &lt;= &#x27;2020-10-12&#x27;        group by user_unique_id, event        limit 1000)    group by user_unique_id    having sum(event1_cnt) &gt; sum(event2_cnt)    </code>``</p>
+<ol><li>数组函数 arrayEnumerate(arr)返回与源数组大小相同的数组，其中每个元素表示与其下标对应的原数组元素在原数组中出现的次数。常用用法类似hive中的开窗函数row_number()参数：</li></ol>
+<ul><li>arr 数组举例：查询2020年10月25日至11月1日中，不同事件的前三次发生时间</li></ul>
+<p>      ``<code>Plain Text       select *       from (             select event, time_arr, row_number             from (                   select event,                          groupArray(time)         as time_arr,                          arrayEnumerate(time_arr) as row_number                   from (select distinct event, event_time as time                         from events                         where event_date &gt;= &#x27;2020-10-25&#x27;                           and event_date &lt;= &#x27;2020-11-01&#x27;                         order by time) a                   group by event                 )                 array join                 time_arr                , row_number                )       where row_number &lt;= 3;       </code>``</p>
+<p>      结果集：</p>
+<table><thead><tr><th>event</th><th>time_arr</th><th>row_number</th></tr></thead><tbody><tr><td>wechat_unsubscribe</td><td>1603967567</td><td>1</td></tr><tr><td>wechat_unsubscribe</td><td>1603968269</td><td>2</td></tr><tr><td>wechat_unsubscribe</td><td>1603968275</td><td>3</td></tr><tr><td>goods_detail_view</td><td>1603469824</td><td>1</td></tr><tr><td>goods_detail_view</td><td>1603473124</td><td>2</td></tr><tr><td>goods_detail_view</td><td>1603479424</td><td>3</td></tr></tbody></table>
+<p>      补充：该用法类似于HQL的row_number()，在上述例子中的HQL写法为：</p>
+<p>      ``<code>Plain Text       select *       from             (                select event,                        row_number() over(partition by event order by event_time) as row_number                from events            ) a       where a.row_number &lt;= 3;       </code>``</p>
+<ul><li>类似函数：arrayEnumerateUniq、arrayEnumerateDense</li></ul>
+<ol><li>match、multiMatchAny、multiMatchAnyIndexmatch(haystack, pattern)</li></ol>
+<ul><li>haystack 需要匹配的字段</li></ul>
+<ul><li>pattern 符合RE2语法的正则表达式 re2: https://github.com/google/re2/wiki/Syntax</li></ul>
+<ul><li>返回值为0表示未匹配，1表示匹配。</li></ul>
+<p>   举例：</p>
+<p>   ``<code>sql    select distinct user_profiles.user_id, multiMatchAny(user_profiles.user_id, [&#x27;^[0-9]*$&#x27;, &#x27;^d{10}$&#x27;]) as is_match from events where event_date &gt; &#x27;2021-03-01&#x27; limit 20;    </code>``</p>
+<p>   结果集：</p>
+<table><thead><tr><th>user_profiles.user_id</th><th>is_match</th></tr></thead><tbody><tr><td>209041</td><td>1</td></tr><tr><td>unknown</td><td>0</td></tr></tbody></table>
+<p>   multiMatchAny(haystack, [pattern1, pattern2, ...])</p>
+<ul><li>[pattern1, pattern2, ...] 任意符合PCRE语法的正则表达式。</li></ul>
+<ul><li>返回值为0表示均为匹配，1表示至少存在一个pattern匹配。</li></ul>
+<ul><li>在匹配子串时，该函数匹配速度更快。</li></ul>
+<ul><li>haystack字符串需要小于2^32字节。</li></ul>
+<p>&amp;nbsp;</p>
+<p>      multiMatchAnyIndex(haystack, [pattern1, pattern2, ...])</p>
+<ul><li>与multiMatchAny类似</li></ul>
+<ul><li>返回值为与haystack匹配的索引，索引从1开始，无匹配返回0，</li></ul>
+<p>   举例：</p>
+<p>   ``<code>Plain Text    select distinct user_profiles.user_id, multiMatchAnyIndex(user_profiles.user_id, [&#x27;^[0-9]*$&#x27;, &#x27;^([a-zA-Z0-9_-].)+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$&#x27;, &#x27;(.[a-zA-Z0-9_-]@)+&#x27;]) as regex_index from events where event_date &gt; &#x27;2021-03-01&#x27; limit 2;    </code>``</p>
+<p>   结果集：</p>
+<table><thead><tr><th>user_profiles.user_id</th><th>regex_index</th></tr></thead><tbody><tr><td>209041</td><td>1</td></tr><tr><td>xxxx.xxx@xxx.com</td><td>3</td></tr><tr><td>aaa@aaa.com</td><td>2</td></tr><tr><td>unknown</td><td>0</td></tr></tbody></table>
+<p>&lt;span id=&quot;_1-6-常见用法举例&quot;&gt;&lt;/span&gt;</p>
+<h2>1.6 常见用法举例</h2>
+<ul><li><strong>根据uuid查询用户在某一天的行为</strong></li></ul>
+<p>   ``<code>Plain Text    select event     from events     where user_profiles.user_id = &#x27;datafinder@datarangers.com&#x27;     and event_date = &#x27;2020-08-10&#x27;    limit 20    </code>``</p>
+<ul><li><strong>查询在某一时间段内的用户的某个事件的发生总量</strong></li></ul>
+<p>   ``<code>Plain Text    select count(event)    from events    where     event = &#x27;event_name&#x27;    and event_time &gt; 1596988800    and event_time &lt; 1597161600    limit 20    </code>``</p>
+<ul><li><strong>查询发生过行为1和行为2，但是没有发生过行为3的用户数</strong></li></ul>
+<p>   ``<code>Plain Text    select count(distinct hash_uid)    from events    where     (event = &#x27;event_1&#x27; or event = &#x27;event_2&#x27; and event != &#x27;event_3&#x27;)    and event_time &gt; 1596988800    and event_time &lt; 1597161600    limit 20    </code>``</p>
+<ul><li><strong>查询用户的首次行为属性</strong></li></ul>
+<p>   ``<code>plain    select user_profiles.user_id, event_params.{event_name}.{event_param_name} from events    where event = &#x27;sogo&#x27;    and event_date &gt; &#x27;2020-01-01&#x27;    order by event_time desc    limit 10;    </code>``</p>
+<ul><li><strong>查询一段时间内用户购买数量分布情况</strong></li></ul>
+<p>   ``<code>plain    select         case            when amount &gt; 10 then &#x27;x&gt;10&#x27;            when amount &gt;5 and amount &lt;= 10 then &#x27;5&lt;x&lt;=10&#x27;            else &#x27;x&lt;=5&#x27;        end    from    (        select event_params.buy.amount as amount        from events        where event = &#x27;buy&#x27;        and event_date &gt; &#x27;2020-06-01&#x27; and event_date &lt; &#x27;2020-08-02&#x27;        limit 200    )    </code>``</p>
+<p>   查询事件相关信息时，把分群作为条件。</p>
+<p>   ``<code>sql    select event from events where hash_uid in (select hash_uid from cohorts where cohort_id = 154) and event_date = yesterday()    sql    </code>``</p>
+<ul><li><strong>查询分群中用户的user_id</strong></li></ul>
+<p>   ``<code>sql    select user_id from users where hash_uid in (select hash_uid from cohorts where cohort_id = 154) and last_active_date &gt;= &#x27;2021-01-01&#x27;    sql    </code>``</p>
+<p>&lt;span id=&quot;_2-函数列表&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 函数列表</h1>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;“自定义查询”目前仅支持如下函数，如果您需求其他函数，请联系客服。&lt;/div&gt;</p>
+<table><thead><tr><th><strong>函数类型</strong></th><th><strong>支持的函数</strong></th></tr></thead><tbody><tr><td>聚合函数</td><td>&#x27;avg&#x27;, &#x27;count&#x27;, &#x27;min&#x27;, &#x27;max&#x27;, &#x27;sum&#x27;, &#x27;varSamp&#x27;, &#x27;quantile&#x27;, &#x27;median&#x27;, &#x27;groupArray&#x27;,&#x27;any&#x27;</td></tr><tr><td>条件函数</td><td>&#x27;if&#x27;, &#x27;multiIf&#x27;</td></tr><tr><td>其他函数</td><td>&#x27;isNaN&#x27;, &#x27;isFinite&#x27;, &#x27;least&#x27;, &#x27;isInfinite&#x27;, &#x27;greatest&#x27;,&#x27;toTypeName&#x27;,&#x27;neighbor&#x27;,</td></tr><tr><td>Nullable处理函数</td><td>&#x27;coalesce&#x27;, &#x27;nullIf&#x27;, &#x27;ifNull&#x27;, &#x27;isNull&#x27;, &#x27;assumeNotNull&#x27;, &#x27;toNullable&#x27;, &#x27;isNotNull&#x27;</td></tr><tr><td>数组函数</td><td>&#x27;indexOf&#x27;, &#x27;emptyArrayUInt16&#x27;, &#x27;arrayEnumerate&#x27;, &#x27;emptyArrayFloat32&#x27;, &#x27;arrayDifference&#x27;, &#x27;empty&#x27;, &#x27;emptyArrayDate&#x27;, &#x27;notEmpty&#x27;, &#x27;has&#x27;, &#x27;arrayResize&#x27;, &#x27;emptyArrayString&#x27;, &#x27;emptyArrayInt64&#x27;, &#x27;arraySlice&#x27;, &#x27;arrayElement&#x27;, &#x27;arrayUniq&#x27;, &#x27;arrayPopFront&#x27;, &#x27;arrayPushBack&#x27;, &#x27;hasAny&#x27;, &#x27;arrayReduce&#x27;, &#x27;length&#x27;, &#x27;hasAll&#x27;, &#x27;array&#x27;, &#x27;countEqual&#x27;, &#x27;arrayIntersect&#x27;, &#x27;emptyArrayDateTime&#x27;, &#x27;arrayJoin&#x27;, &#x27;emptyArrayFloat64&#x27;, &#x27;emptyArrayInt32&#x27;, &#x27;emptyArrayToSingle&#x27;, &#x27;emptyArrayInt8&#x27;, &#x27;range&#x27;, &#x27;arrayPushFront&#x27;, &#x27;arraySort&#x27;, &#x27;emptyArrayUInt64&#x27;, &#x27;arrayEnumerateDense&#x27;, &#x27;arrayConcat&#x27;, &#x27;arrayPopBack&#x27;, &#x27;emptyArrayUInt32&#x27;, &#x27;arrayDistinct&#x27;, &#x27;emptyArrayInt16&#x27;, &#x27;arrayEnumerateUniq&#x27;, &#x27;emptyArrayUInt8&#x27;, &#x27;arrayReverseSort&#x27;, &#x27;arrayReverse&#x27;</td></tr><tr><td>取整函数</td><td>&#x27;floor&#x27;, &#x27;ceil&#x27;, &#x27;trunc&#x27;, &#x27;roundAge&#x27;, &#x27;roundDuration&#x27;, &#x27;round&#x27;, &#x27;roundDown&#x27;</td></tr><tr><td>数学函数</td><td>&#x27;cbrt&#x27;, &#x27;erf&#x27;, &#x27;pow&#x27;, &#x27;tan&#x27;, &#x27;atan&#x27;, &#x27;pi&#x27;, &#x27;ln&#x27;, &#x27;power&#x27;, &#x27;sin&#x27;, &#x27;asin&#x27;, &#x27;erfc&#x27;, &#x27;lgamma&#x27;, &#x27;tgamma&#x27;, &#x27;cos&#x27;, &#x27;sqrt&#x27;, &#x27;e&#x27;, &#x27;acos&#x27;</td></tr><tr><td>算数函数</td><td>&#x27;gcd&#x27;, &#x27;negate&#x27;, &#x27;plus&#x27;, &#x27;intDivOrZero&#x27;, &#x27;intDiv&#x27;, &#x27;divide&#x27;, &#x27;lcm&#x27;, &#x27;modulo&#x27;, &#x27;minus&#x27;</td></tr><tr><td>字符串搜索</td><td>&#x27;position&#x27;,&#x27;locate&#x27;,&#x27;positionUTF8&#x27;,&#x27;multiSearchAllPositions&#x27;,&#x27;multiSearchFirstPosition&#x27;,&#x27;multiSearchFirstIndex&#x27;,&#x27;multiSearchAny&#x27;,&#x27;match&#x27;,&#x27;multiMatchAny&#x27;,&#x27;multiMatchAnyIndex&#x27;,&#x27;multiFuzzyMatchAny&#x27;,&#x27;multiFuzzyMatchAnyIndex&#x27;,&#x27;extract&#x27;,&#x27;extractAll&#x27;,&#x27;like&#x27;,&#x27;notLike&#x27;,&#x27;ngramDistance&#x27;,&#x27;ngramSearch&#x27;,</td></tr><tr><td>类型转化函数</td><td>&#x27;toDateTimeOrNull&#x27;, &#x27;toFloat64OrNull&#x27;, &#x27;toIntervalDay&#x27;, &#x27;reinterpretAsFloat32&#x27;, &#x27;toIntervalMinute&#x27;, &#x27;toDateTimeOrZero&#x27;, &#x27;toDecimal32&#x27;, &#x27;toDecimal64&#x27;, &#x27;toDateOrNull&#x27;, &#x27;parseDateTimeBestEffortOrZero&#x27;, &#x27;reinterpretAsInt32&#x27;, &#x27;toUInt32OrNull&#x27;, &#x27;reinterpretAsUInt64&#x27;, &#x27;reinterpretAsInt64&#x27;, &#x27;toUInt16OrZero&#x27;, &#x27;toDate&#x27;, &#x27;toUInt64&#x27;, &#x27;toInt32OrNull&#x27;, &#x27;toIntervalMonth&#x27;, &#x27;toUInt32OrZero&#x27;, &#x27;toIntervalHour&#x27;, &#x27;CAST&#x27;, &#x27;toInt64OrNull&#x27;, &#x27;toUInt32&#x27;, &#x27;toIntervalWeek&#x27;, &#x27;toDateOrZero&#x27;, &#x27;reinterpretAsString&#x27;, &#x27;toUInt16&#x27;, &#x27;reinterpretAsUInt32&#x27;, &#x27;reinterpretAsUInt16&#x27;, &#x27;toUInt64OrNull&#x27;, &#x27;toInt8&#x27;, &#x27;reinterpretAsDate&#x27;, &#x27;reinterpretAsInt8&#x27;, &#x27;parseDateTimeBestEffortOrNull&#x27;, &#x27;toIntervalYear&#x27;, &#x27;toInt16&#x27;, &#x27;toUInt16OrNull&#x27;, &#x27;reinterpretAsFloat64&#x27;, &#x27;toFloat32OrNull&#x27;, &#x27;toInt32OrZero&#x27;, &#x27;toUInt8&#x27;, &#x27;toString&#x27;, &#x27;reinterpretAsUInt8&#x27;, &#x27;parseDateTimeBestEffort&#x27;, &#x27;toFloat64&#x27;, &#x27;toInt16OrNull&#x27;, &#x27;toUInt64OrZero&#x27;, &#x27;toInt8OrZero&#x27;, &#x27;toInt8OrNull&#x27;, &#x27;toIntervalQuarter&#x27;, &#x27;toInt16OrZero&#x27;, &#x27;toUInt8OrNull&#x27;, &#x27;toDecimal128&#x27;, &#x27;toStringCutToZero&#x27;, &#x27;toUInt8OrZero&#x27;, &#x27;toInt64OrZero&#x27;, &#x27;reinterpretAsDateTime&#x27;, &#x27;reinterpretAsFixedString&#x27;, &#x27;toFloat64OrZero&#x27;, &#x27;toInt32&#x27;, &#x27;toFixedString&#x27;, &#x27;toFloat32&#x27;, &#x27;toInt64&#x27;, &#x27;reinterpretAsInt16&#x27;, &#x27;toDateTime&#x27;, &#x27;toIntervalSecond&#x27;, &#x27;toFloat32OrZero&#x27;, &#x27;cast&#x27;,&#x27;toInt64OrZero&#x27;</td></tr><tr><td>事件日期函数</td><td>&#x27;toYear&#x27;, &#x27;toStartOfInterval&#x27;, &#x27;toStartOfFifteenMinutes&#x27;, &#x27;toYYYYMM&#x27;, &#x27;subtractSeconds&#x27;, &#x27;addDays&#x27;, &#x27;addMinutes&#x27;, &#x27;toStartOfMinute&#x27;, &#x27;toStartOfFiveMinute&#x27;, &#x27;toTimeZone&#x27;, &#x27;subtractQuarters&#x27;, &#x27;addSeconds&#x27;, &#x27;addYears&#x27;, &#x27;toDayOfMonth&#x27;, &#x27;toDayOfYear&#x27;, &#x27;toDayOfWeek&#x27;, &#x27;addWeeks&#x27;, &#x27;now&#x27;, &#x27;toStartOfQuarter&#x27;, &#x27;toStartOfMonth&#x27;, &#x27;toMinute&#x27;, &#x27;toRelativeQuarterNum&#x27;, &#x27;subtractMonths&#x27;, &#x27;toStartOfTenMinutes&#x27;, &#x27;subtractHours&#x27;, &#x27;timeSlot&#x27;, &#x27;toTime&#x27;, &#x27;toSecond&#x27;, &#x27;formatDateTime&#x27;, &#x27;toStartOfDay&#x27;, &#x27;today&#x27;, &#x27;subtractMinutes&#x27;, &#x27;toRelativeMinuteNum&#x27;, &#x27;addMonths&#x27;, &#x27;toMonday&#x27;, &#x27;toRelativeHourNum&#x27;, &#x27;toQuarter&#x27;, &#x27;toStartOfHour&#x27;, &#x27;toUnixTimestamp&#x27;, &#x27;toRelativeMonthNum&#x27;, &#x27;toRelativeSecondNum&#x27;, &#x27;addQuarters&#x27;, &#x27;toRelativeDayNum&#x27;, &#x27;toHour&#x27;, &#x27;toStartOfISOYear&#x27;, &#x27;toISOWeek&#x27;, &#x27;addHours&#x27;, &#x27;toStartOfYear&#x27;, &#x27;timeSlots&#x27;, &#x27;toYYYYMMDD&#x27;, &#x27;yesterday&#x27;, &#x27;toMonth&#x27;, &#x27;subtractWeeks&#x27;, &#x27;dateDiff&#x27;, &#x27;subtractYears&#x27;, &#x27;toRelativeYearNum&#x27;, &#x27;toISOYear&#x27;, &#x27;toRelativeWeekNum&#x27;, &#x27;subtractDays&#x27;, &#x27;toYYYYMMDDhhmmss&#x27;&#x27;toStartOfWeek&#x27;,&#x27;toWeek&#x27;,&#x27;toYearWeek&#x27;,</td></tr><tr><td>拆分字符串函数</td><td>&#x27;splitByChar&#x27;, &#x27;splitByString&#x27;</td></tr><tr><td>字符串替换函数</td><td>&#x27;replaceOne&#x27;, &#x27;replaceOne&#x27;,&#x27;replaceAll&#x27;, &#x27;replace&#x27;,&#x27;replaceRegexpOne&#x27;replaceRegexpAll&#x27;&#x27;regexpQuoteMeta&#x27;</td></tr><tr><td>字符串函数</td><td>&#x27;empty&#x27;,&#x27;notEmpty&#x27;,&#x27;length&#x27;,&#x27;lengthUTF8&#x27;,&#x27;char_length&#x27;,&#x27;character_length&#x27;,&#x27;lower, &#x27;lcase&#x27;,&#x27;upper,&#x27;ucase&#x27;,&#x27;lowerUTF8&#x27;,&#x27;upperUTF8&#x27;,&#x27;isValidUTF8&#x27;,&#x27;toValidUTF8&#x27;,&#x27;reverse&#x27;,&#x27;reverseUTF8&#x27;,&#x27;format&#x27;,&#x27;concat&#x27;,&#x27;concatAssumeInjective&#x27;,&#x27;substring&#x27;,&#x27;mid&#x27;,&#x27;substr&#x27;,&#x27;substringUTF8&#x27;,&#x27;appendTrailingCharIfAbsent&#x27;,&#x27;convertCharset&#x27;,&#x27;base64Encode&#x27;,&#x27;base64Decode&#x27;,&#x27;tryBase64Decode&#x27;,&#x27;endsWith&#x27;,&#x27;startsWith&#x27;,&#x27;trimLeft&#x27;,&#x27;trimRight&#x27;,&#x27;trimBoth&#x27;,</td></tr><tr><td>高阶函数</td><td>&#x27;arrayCount&#x27;,&#x27;arrayEqual&#x27;,&#x27;arrayMap&#x27;,&#x27;arraySplit&#x27;,&#x27;arrayFirst&#x27;,&#x27;arrayFirstIndex&#x27;,&#x27;arrayMin&#x27;,&#x27;arrayMax&#x27;,&#x27;arraySum&#x27;,&#x27;arrayAvg&#x27;,&#x27;arrayExists&#x27;,&#x27;arrayFilter&#x27;,</td></tr><tr><td>JSON函数</td><td>&#x27;JSONExtractUInt&#x27;,&#x27;JSONExtractInt&#x27;,&#x27;JSONExtractFloat&#x27;,&#x27;JSONExtractBool&#x27;,&#x27;JSONExtractString&#x27;</td></tr><tr><td>URL函数</td><td>&#x27;protocol&#x27;,&#x27;domain&#x27;,&#x27;topLevelDomain&#x27;,&#x27;path&#x27;,&#x27;pathFull&#x27;,&#x27;queryString&#x27;,&#x27;extractURLParameters&#x27;,&#x27;extractURLParameterNames&#x27;</td></tr><tr><td>取整函数</td><td>&#x27;floor&#x27;,&#x27;ceil&#x27;,&#x27;trunc&#x27;,&#x27;round&#x27;,</td></tr><tr><td>IN运算符</td><td>&#x27;tuple&#x27;, &#x27;tupleElement&#x27;</td></tr><tr><td>IP函数</td><td>&#x27;IPv4NumToString&#x27;,&#x27;IPv4StringToNum&#x27;,&#x27;IPv4NumToStringClassC&#x27;,&#x27;IPv6StringToNum&#x27;,&#x27;IPv4ToIPv6&#x27;,&#x27;cutIPv6&#x27;,&#x27;IPv4CIDRToRange,&#x27;IPv6CIDRToRange&#x27;,&#x27;toIPv4&#x27;,&#x27;toIPv6&#x27;,</td></tr><tr><td>随机函数</td><td>&#x27;rand&#x27;, &#x27;rand32&#x27;，&#x27;rand64&#x27;，&#x27;randConstant&#x27;</td></tr><tr><td>编码函数</td><td>&#x27;hex&#x27;,&#x27;unhex&#x27;,&#x27;UUIDStringToNum&#x27;,&#x27;UUIDNumToStrin&#x27;,&#x27;bitmaskToList&#x27;,&#x27;bitmaskToArray&#x27;,</td></tr><tr><td>Hash函数</td><td>&#x27;halfMD5&#x27;,&#x27;MD5&#x27;,&#x27;sipHash64&#x27;,&#x27;sipHash128&#x27;,&#x27;cityHash64&#x27;,&#x27;intHash32&#x27;,&#x27;intHash64&#x27;,&#x27;SHA1&#x27;,&#x27;SHA224&#x27;,&#x27;SHA256&#x27;,&#x27;URLHash&#x27;,&#x27;farmHash64&#x27;,&#x27;javaHash&#x27;,&#x27;hiveHash&#x27;,&#x27;metroHash64&#x27;,&#x27;jumpConsistentHash&#x27;,&#x27;murmurHash2_32&#x27;,&#x27;murmurHash2_64&#x27;,&#x27;murmurHash3_32&#x27;,&#x27;murmurHash3_64,&#x27;murmurHash3_128&#x27;,&#x27;xxHash32&#x27;,&#x27;xxHash64&#x27;,</td></tr></tbody></table>
+<p>函数使用方法详见：https://clickhouse.com/docs/zh/sql\-reference/functions</p>
+<p>&lt;span id=&quot;_3-错误类型&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 错误类型</h1>
+<table><thead><tr><th></th><th></th><th></th></tr></thead><tbody><tr><td><strong>错误</strong></td><td><strong>严重程度</strong></td><td><strong>修改建议</strong></td></tr><tr><td>请增加 WHERE 子句，否则查询可能会超时。</td><td>中</td><td>增加WHERE子句，否则默认查询过去7日的数据。</td></tr><tr><td>缺少 event_time 或 event_date 时间限定，默认查询过去7日的数据。</td><td>中</td><td>WHERE子句中增加event_date或event_time条件，否则默认查询过去7日的数据。</td></tr><tr><td>发现多条SQL，只有第一条会执行。</td><td>中</td><td>将需要执行的SQL语句放于第一条，或注释掉其他SQL。（支持/\*\*/多行注释与\-\-单行注释。）</td></tr><tr><td>存在SQL不支持的的字符，已忽略。</td><td>中</td><td>删除SQL查询里不支持的字符。</td></tr><tr><td>缺少 LIMIT 子句，最多返回1000条。</td><td>中</td><td>增加LIMIT子句。</td></tr><tr><td>查询结果最多返回1000条。</td><td>中</td><td>LIMIT子句限制在1000以内。</td></tr><tr><td>表名 {table_name} 不正确，请检查您的SQL。</td><td>高</td><td>表名修改为events</td></tr><tr><td>仅支持查询过去 365 天的数据，超出这个范围的数据将不会被查询。</td><td>中</td><td>将查询时间限定为近365天。</td></tr><tr><td>您查询的数据不在过去365天之间。</td><td>高</td><td>将查询时间限定为近365天。</td></tr><tr><td>最多支持 2 条join子句，请检查您的 SQL。</td><td>高</td><td>降低JOIN子句数量</td></tr><tr><td>仅支持 SELECT 语句，请检查您的 SQL。</td><td>高</td><td>仅保留SELECT语句。</td></tr><tr><td>没有查询语句，请检查您的 SQL。</td><td>高</td><td>\-</td></tr><tr><td>不支持 SELECT \* 查询，请检查您的 SQL。</td><td>高</td><td>仅查询需要查询的列。</td></tr><tr><td>不支持超过4层的子查询，请检查您的 SQL。</td><td>高</td><td>降低子查询层数。</td></tr><tr><td>查询的列名 {column} 不存在，请检查您的 SQL。</td><td>高</td><td>检查列名 {column} 是否在数据表中。</td></tr><tr><td>最多支持对4列进行 GROUP BY，请检查您的 SQL。</td><td>高</td><td>降低GROUP BY后列的数量。</td></tr><tr><td>不支持表函数 {table_function} ，请检查您的 SQL。</td><td>高</td><td>将表名改为events</td></tr><tr><td>存在不支持的函数 {function_name} ，请检查您的SQL。</td><td>高</td><td>查询该 {function_name} 是否在支持的函数列表中，如果您需要使用该函数，请联系客服。</td></tr><tr><td>不支持SETTINGS，请检查您的 SQL。</td><td>中</td><td>删除SETTINGS语句，否则默认忽略。</td></tr><tr><td>查询存在错误:</td><td>高</td><td>根据 {error_message} 修改您的SQL语句。</td></tr><tr><td>最多支持 1 条UNION ALL子句，请检查您的 SQL。</td><td>高</td><td>降低UNION ALL子句数量</td></tr><tr><td>不支持INTO OUTFILE, 请检查您的SQL。</td><td>高</td><td>删除INTO OUTFILE子句。</td></tr><tr><td>不支持FORMAT, 请检查您的SQL。</td><td>高</td><td>删除FORMAT子句。</td></tr><tr><td>不支持的时间条件 {time_condition}, 请检查您的SQL。</td><td>高</td><td>event_time时间条件请用整型10位时间戳，event_date时间条件请用“YYYY\-MM\-dd”，e.g. “2020\-08\-01”。</td></tr><tr><td>查询并发量超过限制。</td><td>高</td><td>降低查询的并发量。如果您有更大的并发需求，请联系客服。</td></tr><tr><td>SQL存在语法错误: {syntax_error_msg}。</td><td>高</td><td>根据详细的语法错误信息对SQL语句进行修正。</td></tr><tr><td>请使用 event_time 作为事件发生时间，而不是{time_condition}。</td><td>高</td><td>采用event_time作为事件发生时间。</td></tr><tr><td>请使用{new_column}代替{old_column}。</td><td>中</td><td>高</td></tr><tr><td>时间条件不合法 (详情: {cause})。举例：时间条件不合法 (详情: 时间限制推导为空)。</td><td>高</td><td>未写或时间条件存在问题，比如event_date\&gt;=&#x27;2020\-08\-05&#x27; and event_date=&#x27;2020\-08\-01&#x27;</td></tr><tr><td>无法推导出{target_condition}，请补充{target_condition}限制条件。举例：无法推导出event_date，请补充event_date限制条件。</td><td>高</td><td>1. 没写event_date且没写event_date限制2. 根据event_time无法推导出event_date，比如toDate(event_time) = today()。暂不支持对时间函数进行推导。</td></tr><tr><td>请为{column}起个别名，否则可能查询报错。</td><td>中</td><td>对于user_profiles.xxx、event_param.xxx.yyy、item_profiles.xxxx.yyy等列，建议起别名，否则可能存在错误。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_4-常见查询错误&quot;&gt;&lt;/span&gt;</p>
+<h1>4. 常见查询错误</h1>
+<table><thead><tr><th><strong>错误码</strong></th><th><strong>错误信息</strong></th><th><strong>常见错误原因</strong></th></tr></thead><tbody><tr><td>215</td><td>xxxxxx is not under aggregate function and not in GROUP BY</td><td>SQL的查询列不在GROUP BY中，比如：select event, user_profiles.user_id from events group by event;将其修改为：select event, user_profiles.user_id from events group by event, user_profiles.user_id;或者：select event, any(user_profiles.user_id) from events group by event;</td></tr><tr><td>43</td><td>Illegal types of arguments （xxx, yyy）of function [equals</td><td>greater</td></tr><tr><td>53</td><td>ARRAY JOIN requires array argument</td><td>类型不匹配，比如：select *arrayJoin(event_params.force.$target_uuid_list)*</td></tr><tr><td>62</td><td>Syntax error: failed at position xxxx</td><td>查看详细报错，比如：select event from events where event as e = &#x27;app_launch&#x27; limit 20;报错信息为：查询存在错误: code: 62, detail_message: DB::ExceptionDB::Exception: Syntax error: failed at position 239: = &#x27;app_launch&#x27; ) and ( tea_app_id = 41514 and event_date \&gt;= &#x27;2021\-03\-09&#x27; and event_date &lt;= &#x27;2021\-03\-15&#x27; ) limit 20 ;. Expected one of: token, Comma.观察后发现，报错发生在  <strong>= &#x27;app_launch&#x27;</strong>   周围，排查后发现，event as e语法有误，应改为：select event from events where event = &#x27;app_launch&#x27; limit 20;</td></tr><tr><td>202</td><td>Too many simultaneous queries.</td><td>当前数据库查询繁忙，请稍后再试。</td></tr><tr><td>42</td><td>Number of arguments for function xxxx doesn&#x27;t match</td><td>参数个数不匹配，比如：select least(user_profiles.user_id) from events limit 20;报错信息为：查询存在错误: code: 42, detail_message: DB::ExceptionDB::Exception: Number of arguments for function least doesn&#x27;t match: passed 1, should be 2.查询手册后发现least函数需要2个参数，返回两个参数中较小的值。\*具体函数用法可查阅 https://clickhouse.tech/docs/v19.14/zh/</td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

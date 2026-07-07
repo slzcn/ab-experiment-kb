@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>小程序SDK集成（通用） · A/B 实验知识库</title>
+<meta name="description" content="支持的小程序 当前主流小程序均可参考本文进行SDK集成，接入并上报对应小程序的数据，主要包括： 微信小程序 支付宝小程序 百度小程序 京东小程序 QQ小程序 钉钉小程序 小红书小程序 字节跳动小程序 We码小程序 各类小">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65804.html">
+<meta property="og:title" content="小程序SDK集成（通用）"><meta property="og:description" content="支持的小程序 当前主流小程序均可参考本文进行SDK集成，接入并上报对应小程序的数据，主要包括： 微信小程序 支付宝小程序 百度小程序 京东小程序 QQ小程序 钉钉小程序 小红书小程序 字节跳动小程序 We码小程序 各类小">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65804.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>小程序SDK集成（通用）</h1>
+<div class="meta">📄 2,269 字 · 🕐 2025-10-17</div>
+<article class="md"><p>&lt;span id=&quot;ce298622&quot;&gt;&lt;/span&gt;</p>
+<h1>支持的小程序</h1>
+<p>当前主流小程序均可参考本文进行SDK集成，接入并上报对应小程序的数据，主要包括：</p>
+<ul><li>微信小程序</li></ul>
+<ul><li>支付宝小程序</li></ul>
+<ul><li>百度小程序</li></ul>
+<ul><li>京东小程序</li></ul>
+<ul><li>QQ小程序</li></ul>
+<ul><li>钉钉小程序</li></ul>
+<ul><li>小红书小程序</li></ul>
+<ul><li>字节跳动小程序</li></ul>
+<ul><li>We码小程序</li></ul>
+<p>各类小程序的数据接入操作基本一致，后续以微信小程序为例为您介绍小程序的数据集成操作指导，如果各类小程序平台的操作有差异的地方，会在对应文档中标注出来。</p>
+<p>&lt;span id=&quot;_1-集成&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 集成SDK</h1>
+<p>&lt;span id=&quot;_1-1-安装sdk&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1.1 安装SDK</strong></h2>
+<blockquote>使用npm方式安装</blockquote>
+<pre><code>npm install @datarangers/sdk-mp</code></pre>
+<p>&lt;span id=&quot;_1-2-域名配置准备&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1.2 域名配置准备</strong></h2>
+<p>&lt;span id=&quot;1c49c41e&quot;&gt;&lt;/span&gt;</p>
+<h2>1.2 获取上报地址并配置小程序白名单</h2>
+<p>进行数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，将数据上报地址添加到小程序后台的“request合法域名”中，如果上报地址设置错误，后续会导致您无法正常上报、查询到数据。</p>
+<p>&lt;span id=&quot;2288ef09&quot;&gt;&lt;/span&gt;</p>
+<h3>获取数据上报地址</h3>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请在上报数据前，务必确认您当前使用的环境类型，根据环境类型配置上报地址。查看当前的环境类型请参见&lt;a href=&quot;https://www.volcengine.com/docs/6287/1544686&quot;&gt;SaaS云原生/非云原生&amp;私有化环境&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果您使用的是SaaS\-云原生环境，您也需确认您的服务所在的地域，根据所在地域配置上报地址（通常您的服务会在华北2\-北京地域，部分用户可能会使用其他地域）。SaaS\-云原生用户查看服务所在地域请参见&lt;a href=&quot;https://www.volcengine.com/docs/6287/1544685&quot;&gt;支持的地域&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;e83eb14d&quot;&gt;&lt;/span&gt;</p>
+<h4>SaaS\-云原生 &amp; SaaS\-非云原生</h4>
+<table><thead><tr><th>地址类型</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（国内：华北2\-北京）</th><th>SaaS\-云原生&lt;br&gt;&lt;br&gt;（海外：亚太东南\-柔佛）</th><th>SaaS\-非云原生环境 国内环境</th><th>SaaS\-非云原生 海外BytePlus环境&lt;br&gt;&lt;br&gt;（以下 SG 指新加坡）</th></tr></thead><tbody><tr><td>数据上报地址</td><td>* SaaS\-云原生（华北）：https://gator.volces.com&lt;br&gt;&lt;br&gt;* 需在小程序中添加对应上报地址至小程序的白名单中</td><td>* https://gator.uba.ap\-southeast\-1.volces.com&lt;br&gt;&lt;br&gt;* 需在小程序中添加白名单：https://gator.uba.ap\-southeast\-1.volces.com</td><td>* <code>channel: &#x27;cn&#x27;</code>&lt;br&gt;&lt;br&gt;* 需在小程序中添加白名单：https://mcs.volceapplog.com</td><td>* <code>channel: &#x27;sg&#x27;</code>&lt;br&gt;&lt;br&gt;* 需在小程序中添加白名单：https://mcs.tobsnssdk.com</td></tr><tr><td>分流地址</td><td>* https://tab.volces.com&lt;br&gt;&lt;br&gt;* 需在小程序中添加对应地址至小程序的白名单中</td><td>* https://tab.ab.ap\-southeast\-1.volces.com&lt;br&gt;&lt;br&gt;* 需在小程序中添加对应地址至小程序的白名单中</td><td>无需手动配置</td><td>无需手动配置</td></tr></tbody></table>
+<p>&lt;span id=&quot;4b732416&quot;&gt;&lt;/span&gt;</p>
+<h4>私有化环境</h4>
+<p>私有化部署场景下，您需要获取部署私有化环境时，自行规划配置的数据上送地址，将私有化部署的数据上报域名添加到小程序后台的“request合法域名”中。如您不清楚此地址，请联系您的项目经理或客户成功经理。</p>
+<p>&lt;span id=&quot;1a59aa63&quot;&gt;&lt;/span&gt;</p>
+<h3>配置小程序白名单</h3>
+<p>在 「小程序后台\-开发\-开发设置\-服务器域名」 中进行配置，具体可以参考小程序相应的官方文档，如 <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/ability/network.html" target="_blank" rel="noopener">微信小程序文档</a>。</p>
+<p>，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节。</p>
+<p>&lt;span id=&quot;_1-3-老版本升级&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1.3 老版本升级</strong></h2>
+<p>请注意，如果是SaaS\-非云原生业务，升级SDK到最新版（2.x.x版本）时，需要补充将<a href="https://mcs.volceapplog.com" target="_blank" rel="noopener">https://mcs.volceapplog.com</a>和<a href="https://abtest.volceapplog.com" target="_blank" rel="noopener">https://abtest.volceapplog.com</a>添加到小程序后台的“request合法域名”中，已添加过<a href="https://mcs.ctobsnssdk.com" target="_blank" rel="noopener">https://mcs.ctobsnssdk.com</a>和<a href="https://toblog.ctobsnssdk.com" target="_blank" rel="noopener">https://toblog.ctobsnssdk.com</a>不要立即移除。</p>
+<p>&lt;span id=&quot;_1-4-旧版本说明&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1.4 旧版本说明</strong></h2>
+<p>如果集成旧版本SDK(2.0以下版本)，需要将<a href="https://mcs.ctobsnssdk.com" target="_blank" rel="noopener">https://mcs.ctobsnssdk.com</a>和<a href="https://toblog.ctobsnssdk.com" target="_blank" rel="noopener">https://toblog.ctobsnssdk.com</a> 添加到微信开放平台的请求白名单中。</p>
+<p>&lt;span id=&quot;_2-初始化&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 初始化</h1>
+<p>&lt;span id=&quot;_2-1-获取appid&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2.1 获取appid</strong></h2>
+<p>在开始集成前，首先需要在集团中拥有一个应用，请参考：<a href="https://www.volcengine.com/docs/6287/66984" target="_blank" rel="noopener">如何创建应用</a>。</p>
+<ul><li>SaaS\-云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/de1df7b557de438893f3013583ee3cfb~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>SaaS\-非云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/11d05eafc702439cb7bdd70059dc8bad~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-2-初始化sdk示例&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2.2 初始化SDK</strong></h2>
+<p>&lt;span id=&quot;_2-2-1-saas业务&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>2.2.1 SaaS\-云原生</strong></h3>
+<pre><code>// 在入口页面初始化SDK
+// app.js
+import $$Rangers from &#x27;@datarangers/sdk-mp&#x27;;
+$$Rangers.init({
+    app_id: 0000, // 替换成申请的app_id，参考2.1节获取，注意类型是number而非字符串
+    channel_domain: &quot;https://****.****.com&quot;, // 设置数据上送域名，各环境各地域的上送地址请参见上文的 获取数据上送地址 章节。
+    log: true, // 开启后会控制台会打印日志，开发阶段有助于查看埋点上报过程
+    auto_report: true, // 开启后会上报一些预定义事件，如app_launch、app_terminate等
+    enable_ab_test: true, // 开启ab实验
+    ab_channel_domain: &quot;https://***.****.com&quot;, // 分流请求域名
+});
+$$Rangers.config({
+    mp_name: &#x27;xyz小程序&#x27;, // 一些预定义属性，可以通过config进行设置mp_version: &#x27;1.1.1&#x27;,
+    mp_version: &#x27;1.1.1&#x27;,
+});
+$$Rangers.send();
+
+App({
+    onLaunch: function () {
+        this.$$Rangers = $$Rangers;
+    
+        // 如果想设置用户标识，比如想使用open_id来标识用户，可以在获取到open_id后把值设置给user_unique_id
+        this.$$Rangers.config({
+            user_unique_id: &#x27;获取到的open_id&#x27;, //可以是open_id，也可以union_id等其他业务觉的可以用来标识用户唯一性的值
+        });
+        // 调用event方法上报具体事件
+        this.$$Rangers.event(&#x27;test_event&#x27;, {
+            from: &#x27;launch&#x27;, // 支持任意属性，值支持数字、字符串等
+        });
+    }
+});
+
+// 其他页面上报事件，如：
+// pages/index/index.js
+Page({
+    onLoad() {
+        getApp().$$Rangers.event(&#x27;bind_view_tap&#x27;, {
+            &#x27;title&#x27;: &#x27;chart&#x27;,
+        });
+    }
+});</code></pre>
+<p>&lt;span id=&quot;_2-2-2-私有化业务&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>2.2.2 SaaS\-非云原生</strong></h3>
+<pre><code>// 在入口页面初始化SDK
+// app.js
+import $$Rangers from &#x27;@datarangers/sdk-mp&#x27;;
+
+$$Rangers.init({
+    app_id: 0000, // 替换成申请的app_id，参考2.1节获取，注意类型是number而非字符串
+    log: true, // 开启后会控制台会打印日志，开发阶段有助于查看埋点上报过程
+    auto_report: true, // 开启后会上报一些预定义事件，如app_launch、app_terminate等
+    enable_ab_test: true, // 开启ab实验
+});
+$$Rangers.config({
+    mp_name: &#x27;xyz小程序&#x27;, // 一些预定义属性，可以通过config进行设置
+    mp_version: &#x27;1.1.1&#x27;,
+});
+$$Rangers.send();
+
+App({
+    onLaunch: function () {
+        this.$$Rangers = $$Rangers;
+    
+        // 如果想设置用户标识，比如想使用open_id来标识用户，可以在获取到open_id后把值设置给user_unique_id
+        this.$$Rangers.config({
+            user_unique_id: &#x27;获取到的open_id&#x27;, //可以是open_id，也可以union_id等其他业务觉的可以用来标识用户唯一性的值
+        });
+
+        // 调用event方法上报具体事件
+        this.$$Rangers.event(&#x27;test_event&#x27;, {
+            from: &#x27;launch&#x27;, // 支持任意属性，值支持数字、字符串等
+        });
+    }
+});
+
+// 其他页面上报事件，如：
+// pages/index/index.js
+Page({
+    onLoad() {
+        getApp().$$Rangers.event(&#x27;bind_view_tap&#x27;, {
+            &#x27;title&#x27;: &#x27;chart&#x27;,
+        });
+    }
+});</code></pre>
+<p>&lt;span id=&quot;36a6138e&quot;&gt;&lt;/span&gt;</p>
+<h3>2.2.3 私有化</h3>
+<p>私有化业务需要明确设置数据上报域名，如您不清楚此域名，请联系您的项目经理或客户成功经理。</p>
+<pre><code>// 在入口页面初始化SDK
+// app.js
+import $$Rangers from &#x27;@datarangers/sdk-mp&#x27;;
+$$Rangers.init({
+    app_id: 0000, // 替换成申请的app_id，参考2.1节获取，注意类型是number而非字符串
+    channel_domain: &quot;{{DOMAIN}}&quot;, // 设置私有化部署数据上送域名，如您不清楚此地址，请联系您的项目经理或客户成功经理
+    log: true, // 开启后会控制台会打印日志，开发阶段有助于查看埋点上报过程
+    auto_report: true, // 开启后会上报一些预定义事件，如app_launch、app_terminate等
+    enable_ab_test: true, // 开启ab实验
+    ab_channel_domain: &quot;{{ABTEST_DOMAIN}}&quot;, // 设置ab分流接口域名，默认为channel_domain的设置
+});
+$$Rangers.config({
+    mp_name: &#x27;xyz小程序&#x27;, // 一些预定义属性，可以通过config进行设置mp_version: &#x27;1.1.1&#x27;,
+    mp_version: &#x27;1.1.1&#x27;,
+});
+$$Rangers.send();
+
+App({
+    onLaunch: function () {
+        this.$$Rangers = $$Rangers;
+    
+        // 如果想设置用户标识，比如想使用open_id来标识用户，可以在获取到open_id后把值设置给user_unique_id
+        this.$$Rangers.config({
+            user_unique_id: &#x27;获取到的open_id&#x27;, //可以是open_id，也可以union_id等其他业务觉的可以用来标识用户唯一性的值
+        });
+        // 调用event方法上报具体事件
+        this.$$Rangers.event(&#x27;test_event&#x27;, {
+            from: &#x27;launch&#x27;, // 支持任意属性，值支持数字、字符串等
+        });
+    }
+});
+ 
+// 其他页面上报事件，如：
+// pages/index/index.js
+Page({
+    onLoad() {
+        getApp().$$Rangers.event(&#x27;bind_view_tap&#x27;, {
+            &#x27;title&#x27;: &#x27;chart&#x27;,
+        });
+    }
+});</code></pre>
+<p>&lt;span id=&quot;edbd08e7&quot;&gt;&lt;/span&gt;</p>
+<h3>2.2.4 多实例初始化（可选）</h3>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;不同实例的app_id需要不同。&lt;/div&gt;</p>
+<pre><code>// 导入sdk的类（构造器）
+import SDK from &#x27;@datarangers/sdk-mp/esm/sdk&#x27;;
+
+// 对构造器使用new操作产生实例1
+const $$sdk1 = new SDK();
+// 其他api调用完全一样
+$$sdk1.init({
+    app_id: 1338,
+});
+$$sdk1.config({});
+$$sdk1.send();
+
+// 对构造器使用new操作产生实例2
+const $$sdk2 = new SDK();
+// 其他api调用完全一样
+$$sdk2.init({
+    app_id: 1339, // app_id不能与其他实例相同
+});
+$$sdk2.config({});
+$$sdk2.send();</code></pre>
+<p>&lt;span id=&quot;48bf923f&quot;&gt;&lt;/span&gt;</p>
+<h2>2.3 引入调试工具 \- DevTools组件(可选)</h2>
+<p><code>DevTools</code>是Debug环境下辅助开发者或测试人员进行应用内埋点验证和SDK接入问题排查的组件。详细接入文档请查阅：<a href="https://www.volcengine.com/docs/76880/1033616" target="_blank" rel="noopener">小程序埋点开发工具</a>。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

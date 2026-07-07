@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实验指标数据上报地址 · A/B 实验知识库</title>
+<meta name="description" content="进行实验指标的埋点数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如果上报地址设置错误，后续会导致您无法查询到上报的数据。 注意事项 注意 请在上报数据前，务必确认您当前使用的环境类型，根据环境类型">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1544684.html">
+<meta property="og:title" content="实验指标数据上报地址"><meta property="og:description" content="进行实验指标的埋点数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如果上报地址设置错误，后续会导致您无法查询到上报的数据。 注意事项 注意 请在上报数据前，务必确认您当前使用的环境类型，根据环境类型">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1544684.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>实验指标数据上报地址</h1>
+<div class="meta">📄 2,963 字 · 🕐 2025-11-10</div>
+<article class="md"><p>进行实验指标的埋点数据接入上报时，您需要根据当前的环境类型和端类型确认您的数据上报地址，如果上报地址设置错误，后续会导致您无法查询到上报的数据。</p>
+<p>&lt;span id=&quot;c8d729d2&quot;&gt;&lt;/span&gt;</p>
+<h1>注意事项</h1>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;请在上报数据前，务必确认您当前使用的环境类型，根据环境类型配置上报地址。查看当前的环境类型请参见&lt;a href=&quot;https://www.volcengine.com/docs/6287/1544686&quot;&gt;SaaS云原生/非云原生&amp;私有化环境&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;如果您使用的是SaaS\-云原生环境，您也需确认您的服务所在的地域，（通常您的服务会在华北2\-北京地域，部分用户可能会使用其他地域）。SaaS\-云原生用户查看服务所在地域请参见&lt;a href=&quot;https://www.volcengine.com/docs/6287/1544685&quot;&gt;支持的地域&lt;/a&gt;。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;9ae0aa48&quot;&gt;&lt;/span&gt;</p>
+<h1>数据上报地址：客户端</h1>
+<table><thead><tr><th>端类型</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（国内：华北2\-北京）</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（海外：亚太东南\-柔佛）</th><th>SaaS\-非云原生环境 国内环境</th><th>SaaS\-非云原生 海外BytePlus环境&lt;br&gt;&lt;br&gt;（以下 SG 指新加坡）</th></tr></thead><tbody><tr><td>iOS</td><td>* SaaS\-云原生（华北）：https://gator.volces.com</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td>引入：&#x27;Host/CN&#x27; 后，无需配置</td><td>引入：&#x27;Host/SG&#x27; 后，无需配置</td></tr><tr><td>Android</td><td>* SaaS\-云原生（华北）：https://gator.volces.com&lt;br&gt;&lt;br&gt;* 需要配合使用 cn 包：<code>&#x27;com.bytedance.applog:RangersAppLog-All-cn:xxx&#x27;</code></td><td>* https://gator.uba.ap\-southeast\-1.volces.com&lt;br&gt;&lt;br&gt;* 需要配合使用海外包：&#x27;com.bytedance.applog:RangersAppLog\-All\-global:xxx&#x27;</td><td>* 无需配置，使用默认的数据上报地址&lt;br&gt;&lt;br&gt;* 需要配合使用 cn 包：<code>&#x27;com.bytedance.applog:RangersAppLog-All-cn:xxx&#x27;</code></td><td>* 无需配置，默认上报到 SG&lt;br&gt;&lt;br&gt;* 需要配合使用海外包：<code>&#x27;com.bytedance.applog:RangersAppLog-All-global:xxx&#x27;</code></td></tr><tr><td>HarmonyOS</td><td>* SaaS\-云原生（华北）：https://gator.volces.com</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td>无需配置，使用默认的数据上报地址</td><td>暂不支持</td></tr><tr><td>Web JS</td><td>* SaaS\-云原生（华北）：https://gator.volces.com</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td><code>channel: &#x27;cn&#x27;</code>，即使用默认的数据上报地址</td><td><code>channel: &#x27;sg&#x27;</code></td></tr><tr><td>Session Replay</td><td>* SaaS\-云原生（华北）：https://gator.volces.com</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td><code>http://analytics.volcengineapi.com</code></td><td>不涉及</td></tr><tr><td>小程序</td><td>* SaaS\-云原生（华北）：https://gator.volces.com&lt;br&gt;&lt;br&gt;* 需在小程序中添加对应上报地址至小程序的白名单中</td><td>* https://gator.uba.ap\-southeast\-1.volces.com&lt;br&gt;&lt;br&gt;* 需在小程序中添加白名单：https://gator.uba.ap\-southeast\-1.volces.com</td><td>* <code>channel: &#x27;cn&#x27;</code>&lt;br&gt;&lt;br&gt;* 需在小程序中添加白名单：https://mcs.volceapplog.com</td><td>* <code>channel: &#x27;sg&#x27;</code>&lt;br&gt;&lt;br&gt;* 需在小程序中添加白名单：https://mcs.tobsnssdk.com</td></tr><tr><td>Windows / Linux</td><td>* SaaS\-云原生（华北）：https://gator.volces.com</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td>无需配置</td><td>* https://toblog.tobsnssdk.com</td></tr><tr><td>MacOS</td><td>* SaaS\-云原生（华北）：https://gator.volces.com</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td>无需配置</td><td>* https://toblog.tobsnssdk.com&lt;br&gt;&lt;br&gt;* 非c++版本暂不支持</td></tr><tr><td>微信公众号</td><td>* 上报地址在创建接入时自动生成，您可以在控制台页面查看&lt;br&gt;&lt;br&gt;* SaaS\-云原生（华北）：需在微信公众侧添加以下白名单&lt;br&gt;&lt;br&gt;&gt; 180.184.102.25&lt;br&gt;&lt;br&gt;&gt; 111.62.107.192&lt;br&gt;&lt;br&gt;&gt; 111.62.107.22</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td>* 上报地址在创建接入时自动生成，您可以在控制台页面查看&lt;br&gt;&lt;br&gt;* 需在微信公众侧添加以下需配置白名单：&lt;br&gt;&lt;br&gt;&gt; 220.243.131.172&lt;br&gt;&lt;br&gt;&gt; 220.243.131.173&lt;br&gt;&lt;br&gt;&gt; 123.58.10.238&lt;br&gt;&lt;br&gt;&gt; 123.58.10.239&lt;br&gt;&lt;br&gt;&gt; 101.126.59.78&lt;br&gt;&lt;br&gt;&gt; 101.126.59.79&lt;br&gt;&lt;br&gt;&gt; 101.126.59.80&lt;br&gt;&lt;br&gt;&gt; 101.126.59.81&lt;br&gt;&lt;br&gt;&gt; 101.126.59.82</td><td>不支持</td></tr><tr><td>Flutter</td><td>* SaaS\-云原生（华北）：https://gator.volces.com</td><td>* https://gator.uba.ap\-southeast\-1.volces.com</td><td><code>host = null</code>，使用默认的数据上报地址</td><td>暂不支持</td></tr></tbody></table>
+<p>&lt;span id=&quot;26f3dd9f&quot;&gt;&lt;/span&gt;</p>
+<h1>数据上报地址：服务端</h1>
+<table><thead><tr><th>语言类型</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（国内：华北2\-北京）</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（海外：亚太东南\-柔佛）</th><th>SaaS\-非云原生环境</th><th>海外BytePlus环境</th></tr></thead><tbody><tr><td>Java/Python/Golang/PHP</td><td>* SaaS\-云原生（华北）：&lt;br&gt;&lt;br&gt;   https://gator.volces.com</td><td>https://gator.uba.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>无需手动配置</td></tr><tr><td>HTTP</td><td>* SaaS\-云原生（华北）&lt;br&gt;&lt;br&gt;   * 单条数据上传：https://gator.volces.com/v2/event/json&lt;br&gt;&lt;br&gt;   * 批量数据上传（每批次最多50条）：https://gator.volces.com/v2/event/list</td><td>* 单条数据上传：https://gator.uba.ap\-southeast\-1.volces.com/v2/event/json&lt;br&gt;&lt;br&gt;* 批量数据上传（每批次最多50条）：https://gator.uba.ap\-southeast\-1.volces.com/v2/event/list</td><td>无需手动配置</td><td>无需手动配置</td></tr></tbody></table>
+<p>&lt;span id=&quot;c6aaa812&quot;&gt;&lt;/span&gt;</p>
+<h1>分流服务地址</h1>
+<table><thead><tr><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（国内：华北2\-北京&amp;华南1\-广州）</th><th>SaaS\-云原生环境&lt;br&gt;&lt;br&gt;（海外：亚太东南\-柔佛）</th><th>SaaS\-非云原生环境</th><th>海外BytePlus环境</th></tr></thead><tbody><tr><td>https://tab.volces.com</td><td>https://tab.ab.ap\-southeast\-1.volces.com</td><td>无需手动配置</td><td>* 客户端：无需手动配置&lt;br&gt;&lt;br&gt;* 服务端：https://tab.abtest.bytepluses.com</td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

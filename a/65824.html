@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>用户测试白名单 · A/B 实验知识库</title>
+<meta name="description" content="在实验正式开启之前，通常需要先选择几名用户进入测试阶段，观察实验是否能够正常获取想要收集的数据，或客户端是否有bug等。参与这一步的用户被称为“白名单用户”。本文为您介绍测试白名单用户的应用场景和添加的操作步骤。 背景信">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65824.html">
+<meta property="og:title" content="用户测试白名单"><meta property="og:description" content="在实验正式开启之前，通常需要先选择几名用户进入测试阶段，观察实验是否能够正常获取想要收集的数据，或客户端是否有bug等。参与这一步的用户被称为“白名单用户”。本文为您介绍测试白名单用户的应用场景和添加的操作步骤。 背景信">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65824.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>用户测试白名单</h1>
+<div class="meta">📄 2,051 字 · 🕐 2026-01-07</div>
+<article class="md"><p>在实验正式开启之前，通常需要先选择几名用户进入测试阶段，观察实验是否能够正常获取想要收集的数据，或客户端是否有bug等。参与这一步的用户被称为“白名单用户”。本文为您介绍测试白名单用户的应用场景和添加的操作步骤。</p>
+<p>&lt;span id=&quot;8643a477&quot;&gt;&lt;/span&gt;</p>
+<h1>背景信息</h1>
+<p>实验上线前需要保证SDK的集成过程无误，上线后才能保证实验结果的科学和有效。添加的白名单用户主要用来调试实验/feature，检查白名单用户是否可以命中实验/feature。</p>
+<p>您可以在创建实验/Feature过程中手动输入白名单用户的UUID/SSID，也可先将常用的测试用户添加至测试用户白名单中，后续在创建实验/Feature时直接选择。</p>
+<ul><li>白名单和SSID/UUID是一一对应的，可以为每个难于记忆的SSID/UUID起个别名、打若干个分类标签，便于理解/记忆。</li></ul>
+<ul><li>在创建实验/feature的过程中，可以直接添加常用白名单，避免多次手动填写长串的SSID/UUID而出错，同时也可以降低管理成本。</li></ul>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;UUID和SSID&lt;/strong&gt;：都是用户的唯一标识，主要区别在于UUID由您和团队为用户分配管理，SSID由火山引擎A/B测试分配管理。&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;UUID&lt;/strong&gt;：即User Unique Id，一般与用户的登录id（如手机号、email）一一对应，UUID由客户来维护；&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;SSID&lt;/strong&gt;：即标准化服务ID（Standardized Service Id），是火山引擎增长营销套件系列产品用来标记和识别用户而提供的用户标识。SSID由火山引擎增长营销套件生成和维护，客户可以根据需要使用。&lt;/div&gt;</li></ul>
+<p>&lt;span id=&quot;二-应用场景&quot;&gt;&lt;/span&gt;</p>
+<h1>进入白名单列表页面</h1>
+<p>您可以登录Tester控制台后，在左侧导航栏的<strong>全局设置</strong>\&gt;<strong>受众管理</strong>\&gt;<strong>用户测试白名单</strong>进入白名单列表页面。白名单列表为您展示白名单的基本情况，如下图：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/a19fe05fd35746c6b090657409228414~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>可操作内容如下：</p>
+<ul><li><strong>搜索</strong>：可输入“白名单名称、创建人、SSID/UUID、标签”搜索白名单。</li></ul>
+<ul><li><strong>添加测试白名单</strong>：点击“+测试白名单”，填写“白名单名称、描述、等白名单用户信息即可创建。白名单名称和SSID/UUID添加后不可修改。</li></ul>
+<ul><li><strong>关联实验和Feature</strong>：点击具体数字，可查看白名单关联的“实验和Feature”的详情。</li></ul>
+<ul><li><strong>操作</strong>：</li></ul>
+<ul><li><strong>编辑</strong>：仅白名单负责人可修改对应的白名单信息，编辑修改白名单后，已使用该白名单的实验或Feature也会生即时生效。</li></ul>
+<ul><li><strong>删除</strong>：删除白名单后，创建实验或Feature将无法看到该常驻白名单。已使用该白名单的实验和Feature不影响。</li></ul>
+<p>&lt;span id=&quot;四-新建白名单&quot;&gt;&lt;/span&gt;</p>
+<h1>新建白名单</h1>
+<p>单击白名单列表的\*\*+测试白名单\*\*，即可在弹窗中配置新增白名单的参数。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0e2b0347bcdf4c37a005d1401ab1479e~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>名称</strong>&amp;<strong>描述</strong></td><td>自定义白名单的名称和描述，用于标识白名单。</td></tr><tr><td><strong>负责人</strong></td><td>白名单维护的负责人。</td></tr><tr><td><strong>用户白名单</strong></td><td>输入后续需参与调试的用户用户ID（SSID/UUID），用户ID字符最长不能超过100个字符。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 如果为客户端实验及Feature：录入统一用ssid。&lt;br&gt;&lt;br&gt;* 如果为服务端实验及Feature：请根据decision_id（分流ID）的类型来录入，如果服务端SDK中配置的 decision_id 对应的ID是类型是uuid，白名单就需要配置uuid，如果decision_id 用的是 ssid，白名单就要配置ssid。&lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;   * &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;如果用户都是实名用户的话，decision_id用uuid，如果有匿名用户的话，建议使用ssid作为decision_id，因为匿名用户没有uuid。   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;   * &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;客户端实验添加ssID，服务端实验添加decisionID。   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;&lt;br&gt;您可以在输入框中直接手动输入，也可单击输入框后的二维码标识，通过扫码录入。&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>手动录入</strong>&lt;br&gt;&lt;br&gt;   * 手动输入用户的UUID/SSID，通过逗号（,）或回车键进行分隔，最多支持输入1000个。&lt;br&gt;&lt;br&gt;   * SSID获取方式：可通过在<a href="https://www.volcengine.com/docs/6287/139422" target="_blank" rel="noopener">用户细查</a>输入UUID，可查询SSID。获取SSID的方法，可参考「<a href="https://www.volcengine.com/docs/6287/101762" target="_blank" rel="noopener">应用接入</a>」文档。&lt;br&gt;&lt;br&gt;* <strong>扫码录入</strong>&lt;br&gt;&lt;br&gt;   手动输入的UUID、SSID数字较长（如：ssid=&quot;a0166a58\-137a\-410c\-af02\-04acc905\*\*\*\*&quot;），容易出错且不方便。因此对移动端的应用（iOS、Android），支持扫描二维码来录入设备ID。详见：<a href="https://www.volcengine.com/docs/6287/67232" target="_blank" rel="noopener">扫码录入设备ID</a>.</td></tr></tbody></table>
+<p>&lt;span id=&quot;_2-ssid添加方式&quot;&gt;&lt;/span&gt;</p>
+<h2>使用白名单</h2>
+<ul><li><strong>创建实验</strong>：在创建实验的过程中，“添加白名单”位置，下拉可选择常用的白名单，也可创建常用的白名单。</li></ul>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/a1ac3fa5f4604d3e8316646d05c5d4d4~tplv-em5hxbkur4-noop.image?width=1473&amp;height=427" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>创建Feature</strong>：在创建Feature的过程中，“发布受众”位置，下拉可选择常用的白名单，也可创建常用的白名单。</li></ul>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/8dd0668c17f643089f840fa8700be843~tplv-em5hxbkur4-noop.image?width=1561&amp;height=738" loading="lazy"> &lt;/span&gt;</p>
+<p>如果一个用户是某个版本的白名单用户，那么实验分流对该用户是没有影响的，会固定在该版本。</p>
+<p>白名单的用户，实验开启后的数据也会被计算到实验报告里。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

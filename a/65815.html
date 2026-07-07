@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>创建Feature：实验固化/关联 · A/B 实验知识库</title>
+<meta name="description" content="功能简介 DataTester支持在创建实验后，将实验参数固化为一个Feature，并发布到线上；或先创建好一个Feature，再手动关联到某个实验并发布到线上，这两种方式均可将Feature与AB实验进行关联，一般有以">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65815.html">
+<meta property="og:title" content="创建Feature：实验固化/关联"><meta property="og:description" content="功能简介 DataTester支持在创建实验后，将实验参数固化为一个Feature，并发布到线上；或先创建好一个Feature，再手动关联到某个实验并发布到线上，这两种方式均可将Feature与AB实验进行关联，一般有以">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65815.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>创建Feature：实验固化/关联</h1>
+<div class="meta">📄 1,210 字 · 🕐 2024-04-18</div>
+<article class="md"><p>&lt;span id=&quot;一、功能简介&quot;&gt;&lt;/span&gt;</p>
+<h1>功能简介</h1>
+<p>DataTester支持在创建实验后，将实验参数固化为一个Feature，并发布到线上；或先创建好一个Feature，再手动关联到某个实验并发布到线上，这两种方式均可将Feature与AB实验进行关联，一般有以下两种应用场景：</p>
+<ul><li>场景1：实验得出结论后，希望将效果好的一组全量到线上，此时可通过将实验固化为Feature，在得出实验结论后即可便捷地将Feature发布到全量（常用场景)。</li></ul>
+<ul><li>场景2：实验暂未得出哪组效果好，但该功能后续会继续探索，此时可先将实验参数固化为一个Feature，在FeatureFlag中管理。</li></ul>
+<p>&lt;span id=&quot;二、如何使用&quot;&gt;&lt;/span&gt;</p>
+<h1>功能入口</h1>
+<ul><li><strong>入口1</strong>：实验详情页右侧操作区，单击<strong>固化至Feature</strong>，即可从实验粒度发起固化。操作详情如下文的<strong>配置实验固化至Feature</strong>。</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/c64f38ba5ee84caf820195b628cc776a~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>入口2</strong>：Feature列表页面，单击<strong>创建关联实验</strong>，即可将已创建的Feature关联到实验。操作详情与创建实验的操作步骤类似，在本文中不再赘述，您可查看创建实验的相关文档。</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fca0bf69be10416889787725e1206f75~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;0ca0ec5e&quot;&gt;&lt;/span&gt;</p>
+<h1>配置实验固化至Feature</h1>
+<ol><li><strong>选择全量组</strong>。 即选择要固化(全量)哪个实验分组。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/12dfac7cf10e4aa2b284f1b78e3be71c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>参数描述</strong></th></tr></thead><tbody><tr><td>选择全量的实验分组</td><td>选择全量实验分组后，将会以该组信息生成Feature（配置）信息；且生成的Feature支持编辑。支持选择多组按实验流量配比固化。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 选择某个实验分组后，左侧展示该组的AB参数信息(不可编辑)，右侧展示以该AB参数生成的Feature信息(可编辑)。&lt;br&gt;&lt;br&gt;* 注意：实验和Feature（配置）是两个独立的概念，可同时存在；若遇冲突，优先级为：实验 \&gt; Feature（配置）。&lt;br&gt;&lt;br&gt;&lt;br&gt;例：Test开了一个20%的实验(对照组A，实验组B，流量各10%），若将实验组全量到100%，线上20%的用户按实验策略生效，剩余80%按全量的Feature生效(即生效新策略1）。</td></tr><tr><td>Feature信息编辑&amp;确认</td><td>确认Feature信息，也可配置Feature的生效的过滤条件。</td></tr><tr><td>上线key选择&amp;信息补充</td><td>选择需要上线的Feature对应的实验参数，并可配置参数的标签等信息。</td></tr><tr><td>不同组流量配比</td><td>Feature的生成实验版本如果选择为<strong>多组按实验分组流量比例固化</strong>，则可配置多个实验版本生成的流量比例。</td></tr></tbody></table>
+<ol><li><strong>确认生效信息</strong>。 即确认Feature的生效信息是否符合预期。请仔细检查生成的Feature和生效规则是否符合预期，若不符合预期，可在该步骤进行更改。详细参数介绍与手动创建Feature一致，请参见<a href="https://www.volcengine.com/docs/6287/66385" target="_blank" rel="noopener">创建Feature：手动创建</a>。</li></ol>
+<ol><li><strong>发布Feature</strong>。 即按照Feature发布流程(系统默认的工作流程)进行发布，生效到线上。操作详情请参见<a href="https://www.volcengine.com/docs/6287/66385" target="_blank" rel="noopener">创建Feature：手动创建</a>。</li></ol></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

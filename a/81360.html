@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feature Flag简介 · A/B 实验知识库</title>
+<meta name="description" content="配置管理\ Feature Flag（后简称Feature Flag）本质是按用户指定的规则下发不同的功能参数，以达到敏捷发布的使用效果。除常见的“功能开关”外，还可以实现动态下发“应用配置”、“业务配置”、“环境配置”">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/81360.html">
+<meta property="og:title" content="Feature Flag简介"><meta property="og:description" content="配置管理\ Feature Flag（后简称Feature Flag）本质是按用户指定的规则下发不同的功能参数，以达到敏捷发布的使用效果。除常见的“功能开关”外，还可以实现动态下发“应用配置”、“业务配置”、“环境配置”">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/81360.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🚩 Feature管理</span></div>
+<h1>Feature Flag简介</h1>
+<div class="meta">📄 2,533 字 · 🕐 2024-04-18</div>
+<article class="md"><p>配置管理\-Feature Flag（后简称Feature Flag）本质是按用户指定的规则下发不同的功能参数，以达到敏捷发布的使用效果。除常见的“功能开关”外，还可以实现动态下发“应用配置”、“业务配置”、“环境配置”、“安全配置”等诸多参数的能力。本文为您概要介绍DataTester的配置管理功能以及应用场景和优势。</p>
+<p>&lt;span id=&quot;46e63e0f&quot;&gt;&lt;/span&gt;</p>
+<h1>功能概述</h1>
+<p>Feature Flag是一种结合功能开关+动态配置+灰度发布+配置管理的敏捷开发技术，基于先进的Feature flag引擎和一站式配置托管能力，满足应用新功能灰度发版、A/B 实验到全量、人群定向发布等不同应用场景。帮助开发、产品、运维人员在低风险环境下迭代新 Feature，实现精益敏捷开发。</p>
+<p>FeatureFlag通过If/else或更复杂的决策树声明，将Feature的开发部署与发布生效解耦，从而实现：</p>
+<ol><li><strong>提升开发效率</strong>：多个Feature可并行开发，随时部署上线，准备好时再发布生效</li></ol>
+<ol><li><strong>降低发布风险</strong>：基于Feature细粒度地渐进式灰度发布、基于Feature的秒级版本回滚</li></ol>
+<p>&lt;span id=&quot;9c45f470&quot;&gt;&lt;/span&gt;</p>
+<h1>应用场景</h1>
+<p>&lt;span id=&quot;940935cc&quot;&gt;&lt;/span&gt;</p>
+<h2>行业痛点</h2>
+<p>在互联网竞争炙热的红海时代，精益开发高效迭代越来越成为成为产品竞争的利器。产品迭代过程中，如何保障高效的功能迭代安全上线，如何快速实现不同人群的精细化运营，成为了产研人员的新挑战，各产研角色面临着以下常见痛点。</p>
+<table><thead><tr><th><strong>研发痛点</strong></th><th><strong>运营痛点</strong></th><th><strong>运维痛点</strong></th><th><strong>QA痛点</strong></th></tr></thead><tbody><tr><td>* 新功能发布，如何保障安全上线？&lt;br&gt;&lt;br&gt;* A/B实验后，该如何正确全量？</td><td>* 想做个运营活动，如何便捷实现不同城市不同的策略？&lt;br&gt;&lt;br&gt;* 活动要在双十一准点上线，如何实现自动上下线？</td><td>* APP、H5、小程序，多端配置如何管理？&lt;br&gt;&lt;br&gt;* 冗余代码越来越多，如何做配置治理？</td><td>* 新功能发布，如何才能及时发现异常？&lt;br&gt;&lt;br&gt;* 异常问题如何快速定位？又如何将损失降到最低？</td></tr></tbody></table>
+<p>为了帮助企业解决如此种种的迭代痛点，Feature Flag应运而生。</p>
+<p>&lt;span id=&quot;bfa5b65a&quot;&gt;&lt;/span&gt;</p>
+<h2>应用场景与解决方案</h2>
+<p>Feature Flag有着丰富的使用场景，为研发、运营、运维、QA等各个角色提供针对性解决方案。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_03cf6106930ad4e865b64471b19a09f1.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;0c83037f&quot;&gt;&lt;/span&gt;</p>
+<h2>一. 缓解上线发布风险</h2>
+<p>新功能发版可逐步灰度扩量，先让小部分用户体验新功能，观察用户反馈和数据表现，再初步扩量，潜藏问题及时发现快速止损。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_15d896da46d548e253b2ec22e22ecfae.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>蓝绿发布：对于有两个相同的生产环境中的软件发布方式（优点是易于故障转移，并且避免发布停机），FeautreFlag提供了较大版本中的单个功能有问题，则无需回滚所有功能的能力，针对特定用户，可以将内部QA/测试人员，外部Beta测试人员或用户群的特定细分受众群暴露给新的Feature。</li></ul>
+<ul><li>金丝雀发布：许多组织要同时测试/使用Canary版本，属于程序包级别的工作，因此需要FeatureFlag来打开/关闭每个部分的功能。</li></ul>
+<ul><li>渐进式交付：灵活的发布排期管理+关键操作审核+发布回滚，为降低新功能爆炸半径的风险提供了基础，Feature flag将FeatureFlag与运营和客户数据配对，实时监控新代码的推出。</li></ul>
+<ul><li>生产测试：在生产中直接测试代码是验证Feature正常工作的最可靠方法之一，Feature flag允许直接在生产环境中圈选一小部分用户执行功能QA和性能测试，从而提供了一种安全有效的扩展方式，如果出现问题，错误跟踪和性能监控的数据会提醒用户注意对应功能，可以立即关闭任何Flag而无需回滚代码。</li></ul>
+<ul><li>Beta测试：通常由产品经理或工程师运行，试图验证新功能的性能，可用性和功能参数，是软件发布生命周期中的关键阶段，使开发团队有机会运行受控的用户测试。通常在进行QA和内部测试人员的Alpha测试之前。</li></ul>
+<p><strong>典型场景1 AB实验安全快捷全量</strong></p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_146872850599e833624a7c30d96add7a.png" loading="lazy"> &lt;/span&gt;</p>
+<p><strong>典型场景2 新功能灰度发版降低风险</strong></p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_63b4295e4df64e4527b5df04b2f1f4b4.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;b431b928&quot;&gt;&lt;/span&gt;</p>
+<h2>二. 减少开发周期</h2>
+<ul><li>持续交付：采用基于主干的开发流程（确保共享分支始终可释放的唯一方法是将未完成的功能隐藏在默认关闭的Flag后面，通过关闭该标志并随时将其部署到主服务器上来构建新功能，防止新功能完成之前发生合并冲突 ），减少部署和发布的代码量，加快部署并降低发布风险。</li></ul>
+<ul><li>暗启动：一种在其中部署新功能而不将其暴露给用户的上线策略，准备就绪后再打开，Feature Flag可简化暗启动功能的过程。将代码包装在Flag中，保持Flag关闭，释放新功能。</li></ul>
+<ul><li>微服务改造：跨服务的大型特性更改通常存在依赖性，利用FeatureFlag来打开和关闭功能，可以使传统架构向微服务架构下的过渡安全且受控。</li></ul>
+<p><strong>典型场景 多feature并行持续开发提升迭代效率</strong></p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_ee5719f8acadf6300f05ed90ee846cb9.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;3ed995f0&quot;&gt;&lt;/span&gt;</p>
+<h2>三. 精细化运营</h2>
+<ul><li>功能个性化：可根据不同人群特点展示不同的功能，比如安卓用户推荐QQ登录，iOS用户推荐微信登录，提升不同人群的个性化体验</li></ul>
+<ul><li>差异化运营：运营活动时，可针对不同地域、人群采用差异化的运营策略，实现细分人群的精细化运营</li></ul>
+<ul><li>定制化发布：Feature Flag支持按公共属性、用户分群、画像分群、事件流圈人等多种圈人群方式，并支持用户自定义人群受众，满足业务定制化的定向发布需求</li></ul>
+<p>&lt;span id=&quot;147bab0f&quot;&gt;&lt;/span&gt;</p>
+<h1>产品优势</h1>
+<p>&lt;span id=&quot;50836d39&quot;&gt;&lt;/span&gt;</p>
+<h2>一. 营销：智能定向，千人千面，数据洞察</h2>
+<p>Feature flag丰富的定向圈人能力，可以实现包括 <strong>落地页</strong> 、 <strong>活动策略</strong> 、 <strong>产品功能</strong> 甚至 <strong>产品流程</strong> 的千人千面。例如对于 Geek 用户，开通最新最有趣的能力，紧紧抓住其眼球，对于不那么精准的新用户，缩短转化流程，以最便捷的方式留住客户。如果您能够把客群分 10 类，产品变成各种 Flag 排列组合出的 10 个版本，岂不有趣？</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_fd05c22f7638635eeacf93fc8a40d0ee.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;036cab52&quot;&gt;&lt;/span&gt;</p>
+<h2>二. 稳定：360° 全方位上线保护</h2>
+<p>APM底层直接赋能，接入包括崩溃、错误、性能问题的所有指标，支持 Feature 级甚至变体级别的上线监控，确保第一时间发现问题并定位问题，将发布风险降至最小。后续还会上线更丰富的能力，Feature 地图、档案详尽管理，确保变体时刻保持最优且可用的布局。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_3dab24dd1b59acc39d203480b62cc3a9.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;ec69dcb7&quot;&gt;&lt;/span&gt;</p>
+<h2>三. 高效：多角色衔接，加速迭代</h2>
+<p>版本上线异常时，可轻松实现 Feature 级的回滚，而非针对版本的直接下架，不影响已下载新版本的客户体验，也不影响其他正常功能的上线。通过权限控制，部分 Flag 支持非技术人员介入管理，让业务需求能够更敏捷的体现在功能上，及时传递给用户，同时也规避了复杂的上线审批。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

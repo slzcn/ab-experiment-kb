@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Android SDK埋点与属性（实验指标） · A/B 实验知识库</title>
+<meta name="description" content="1. 用户与用户属性 1.1 登录态变化调用 1.1.1 账户登录 如您的产品中有账户体系，请在用户登录后立即设置 uuid，以保证用户登录前后口径一致性。 6.13.0+ 版本支持在初始化 AppLog 之前调用，用于">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1271145.html">
+<meta property="og:title" content="Android SDK埋点与属性（实验指标）"><meta property="og:description" content="1. 用户与用户属性 1.1 登录态变化调用 1.1.1 账户登录 如您的产品中有账户体系，请在用户登录后立即设置 uuid，以保证用户登录前后口径一致性。 6.13.0+ 版本支持在初始化 AppLog 之前调用，用于">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1271145.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>Android SDK埋点与属性（实验指标）</h1>
+<div class="meta">📄 3,460 字 · 🕐 2024-12-26</div>
+<article class="md"><p>&lt;span id=&quot;91c9300b&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 用户与用户属性</h1>
+<p>&lt;span id=&quot;a39b49a3&quot;&gt;&lt;/span&gt;</p>
+<h2>1.1 登录态变化调用</h2>
+<p>&lt;span id=&quot;eac6de6c&quot;&gt;&lt;/span&gt;</p>
+<h3>1.1.1 账户登录</h3>
+<p>如您的产品中有账户体系，请在用户登录后立即设置 uuid，以保证用户登录前后口径一致性。 6.13.0+ 版本支持在初始化 AppLog 之前调用，用于设置已登录的用户 uuid。</p>
+<pre><code>// 设置您账号体系的 ID, 并保证其唯一性
+// 6.13.0+ 版本支持此方法在初始化 AppLog 前调用
+AppLog.setUserUniqueID(&quot;your_USER_UNIQUE_ID&quot;);
+// 如果使用多实例，可以使用对应实例设置
+IAppLogInstance other = Applog.newInstance();
+other.setUserUniqueID(&quot;{{USER_UNIQUE_ID}}&quot;);</code></pre>
+<p>（6.13.0+ 版本不推荐使用）通过该方法设置 uuid，仅在首次冷启动时设置生效。由于 AppLog.setUserUniqueID 在 6.13.0+ 已支持在初始化之前调用，所以不再推荐使用该方法设置 uuid，建议统一使用 AppLog.setUserUniqueID。</p>
+<pre><code>// 初始化时设置uuid
+// 6.13.0+版本请勿使用此方法
+config.setUserUniqueId(&quot;your_USER_UNIQUE_ID&quot;);</code></pre>
+<p>&lt;span id=&quot;8f303c71&quot;&gt;&lt;/span&gt;</p>
+<h3>1.1.2 账户登出</h3>
+<p>在账户登出时调用。</p>
+<pre><code>// 登出时设置uuid为null
+AppLog.setUserUniqueID(null); 
+// 多实例同 7.1.1</code></pre>
+<p>请注意，不要误写成<code>(&quot;null&quot;)</code> 或 <code>(&quot;&quot;)</code>，否则会影响数据和用户的绑定关系。</p>
+<p>&lt;span id=&quot;72a09ded&quot;&gt;&lt;/span&gt;</p>
+<h2>1.2 设置用户属性</h2>
+<p>&lt;span id=&quot;743f58d6&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.1 profileSet</h3>
+<p>设置用户属性，存在则覆盖，不存在则创建。</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为value
+JSONObject paramsObj = new JSONObject();
+try {
+    paramsObj.put(&quot;key&quot;, &quot;value&quot;); 
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+AppLog.profileSet(paramsObj);</code></pre>
+<p>&lt;span id=&quot;d3f923f8&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.2 profileSetOnce</h3>
+<p>设置用户属性，存在则不设置，不存在则创建，适合首次相关的用户属性，比如首次访问时间等。</p>
+<pre><code>// 示例：设置用户属性，属性名为key_once，属性值为value_once
+JSONObject paramsObj = new JSONObject();
+try {
+    paramsObj.put(&quot;key_once&quot;, &quot;value_once&quot;);
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+AppLog.profileSetOnce(paramsObj);</code></pre>
+<p>&lt;span id=&quot;cc7838c2&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.3 profileIncrement</h3>
+<p>设置数值类型的属性，可进行累加。</p>
+<pre><code>// 示例：设置用户属性，属性名为key，属性值为1
+JSONObject paramsObj = new JSONObject();
+try {
+    paramsObj.put(&quot;key&quot;, 1);
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+AppLog.profileIncrement(paramsObj);</code></pre>
+<p>&lt;span id=&quot;77a0f91c&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.4 profileAppend</h3>
+<p>设置List类型的用户属性，可持续向List内添加。</p>
+<pre><code>// 示例：设置用户属性，属性名为key，原本已有属性值，现添加属性值为value_append
+JSONObject paramsObj = new JSONObject();
+try {
+    paramsObj.put(&quot;key&quot;, &quot;value_append&quot;);
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+AppLog.profileAppend(paramsObj);</code></pre>
+<p>&lt;span id=&quot;0fae4129&quot;&gt;&lt;/span&gt;</p>
+<h3>1.2.5 profileUnset</h3>
+<p>删除用户的属性。</p>
+<pre><code>// 示例：删除用户属性，属性名为key
+AppLog.profileUnset(&quot;key&quot;);</code></pre>
+<p>&lt;span id=&quot;2f45b084&quot;&gt;&lt;/span&gt;</p>
+<h1>2.获取实验参数</h1>
+<p>通常在SDK 初始化后会向分流服务发送一个分流请求（request），在获取到分流服务的响应（response）后，客户端开发可以根据分流的结果参数完成代码分支。</p>
+<ul><li>请注意此步骤的前置条件：已经根据实验的需求方创建好了实验及相关的参数，具体见“<a href="https://www.volcengine.com/docs/6287/65809#_4-1-%E5%88%9B%E5%BB%BA%E5%AE%9E%E9%AA%8C" target="_blank" rel="noopener">创建实验</a>”。</li></ul>
+<ul><li>请注意每次调用getAbConfig时,会默认上报一条曝光事件 abtest_exposure</li></ul>
+<pre><code>AppLog.addDataObserver(new com.bytedance.applog.IDataObserver() {
+    
+    /**
+     * 本地的id数据加载结果通知
+     * @param did device id
+     * @param iid install id
+     * @param ssid ssid
+     */
+    @Override
+    public void onIdLoaded(@NonNull String did, @NonNull String iid, @NonNull String ssid) {
+ 
+    }
+ 
+    /**
+     * 通知注册结果，以及id变化情况
+     * 仅主进程会被调用
+     * @param changed 是否和本地缓存有所不同
+     * @param oldDid 原device id
+     * @param newDid server返回新的device id
+     * @param oldIid 原install id
+     * @param newIid server返回新install id
+     * @param oldSsid 原ssid
+     * @param newSsid server返回新ssid
+     */
+    @Override
+    public void onRemoteIdGet(boolean changed, @Nullable String oldDid, 
+                        @NonNull String newDid,@NonNull String oldIid, 
+                        @NonNull String newIid, @NonNull String oldSsid, 
+                        @NonNull String newSsid) {
+ 
+    }
+ 
+    /**
+     * Config拉取数据，和本地数据对比有变化的通知
+     * 仅主进程会被调用
+     * @param changed 是否和本地缓存有所不同
+     * @param config server返回新config内容
+     */
+    @Override
+    public void onRemoteConfigGet(boolean changed, @Nullable JSONObject jsonObject) {
+ 
+    }
+ 
+    /**
+     * server拉取AbConfig数据，和本地数据对比有变化的通知
+     * 仅主进程会被调用
+     * @param changed 是否和本地缓存有所不同
+     * @param abConfig server返回新abConfig内容
+     */
+    @Override
+    public void onRemoteAbConfigGet(boolean changed, @NonNull JSONObject jsonObject) {
+        // 比如配置的ab实验参数名称是 &quot;MyTest&quot;, 参数类型是 string，对照组参数值 &quot;groupA&quot;, 实验组参数值 &quot;groupB&quot;// 通过applog接口获取实验分流结果// 第一个参数是实验名称，第二个参数是获取实验分流结果失败时的默认参数值，如默认为对照组参数值或null// 返回值是获取的ab实验分流结果，即实验参数值
+        String group = AppLog.getAbConfig(&quot;MyTest&quot;, null);
+        if (&quot;groupA&quot;.equals(group)) {
+          // 执行对照组逻辑
+        } else if (&quot;groupB&quot;.equals(group)) {
+          // 执行实验组逻辑
+        } else {
+          // 其它
+        }
+    }
+ 
+    /**
+     *  Vid变化通知
+     */
+    @Override
+    public void onAbVidsChange(@NonNull String vids, @NonNull String extVids) {
+ 
+    }
+});</code></pre>
+<p>如果想实时拉取实验分流结果，可以通过 pullABTestConfigs 方法手动触发实验配置更新  <strong>(10秒内多次调用只会触发一次请求)</strong> </p>
+<pre><code>AppLog.pullAbTestConfigs();//此功能需要6.7.0以上版本
+// 执行该接口后，如果拉取到实验数据，会触发 IDataObserver.onRemoteAbConfigGet 回调。</code></pre>
+<p>&lt;span id=&quot;5f3041f5&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 上报实验指标（用户行为事件）</h1>
+<p>&lt;span id=&quot;368fe085&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 上报代码埋点</h2>
+<p>用户行为日志采用事件event+属性params的形式，事件一般对应多个属性，也可以仅有事件没有属性。代码埋点方案一般由数据分析师或产品运营设计。</p>
+<p>仅上报事件的代码埋点，示例如下：</p>
+<pre><code>// 示例：上报事件event，该事件不包含属性
+// 置于业务逻辑对应位置
+AppLog.onEventV3(&quot;event&quot;);</code></pre>
+<p>上报事件和对应属性的代码埋点，示例如下：</p>
+<pre><code>// 示例：上报事件event，该事件包含两个属性
+//      一个string类型的属性，属性名为key_string，属性值为value_string
+//      一个int类型的属性，属性名为key_int，属性值为10
+// 置于业务逻辑对应位置
+JSONObject paramsObj = new JSONObject();
+try {
+    paramsObj.put(&quot;key_string&quot;, &quot;value_string&quot;); 
+    paramsObj.put(&quot;key_int&quot;, 10);
+} catch (JSONException e) { 
+    e.printStackTrace();
+}
+AppLog.onEventV3(&quot;event&quot;, paramsObj);</code></pre>
+<p>&lt;span id=&quot;5bc262b8&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 事件公共属性</h2>
+<p>如需在每个事件中都包括某属性，可通过公共属性设置，无需在每个事件中重复设置。公共属性只需设置一次，即可包括在所有代码埋点事件、预置事件和全埋点事件中。</p>
+<p>&lt;span id=&quot;94b06796&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.1 设置公共属性</h3>
+<pre><code>/* 
+ * 示例：设置自定义的公共属性，属性名为key_public，属性值为value_public
+ * 关于自定义 “公共属性” 请注意：
+ * 1. 上报机制是随着每一次日志发送进行提交，默认的日志发送频率是1分钟，
+ *    所以如果在一分钟内连续修改自定义公共属性，按照日志发送前的最后一次修改为准； 
+ * 2. 不推荐高频次修改，如每秒修改一次。
+ */
+ Map&lt;String,Object&gt; headerMap = new HashMap&lt;String, Object&gt;();
+ headerMap.put(&quot;key_public&quot;, &quot;value_public&quot;);
+ AppLog.setHeaderInfo((HashMap&lt;String, Object&gt;)headerMap);</code></pre>
+<p>&lt;span id=&quot;f3779889&quot;&gt;&lt;/span&gt;</p>
+<h3>3.2.2 移除公共属性</h3>
+<pre><code>// 示例：移除属性名为 key_public 的公共属性
+AppLog.removeHeaderInfo(&quot;key_public&quot;);
+
+// 通过传入 null 移除所有设置过的公共属性
+AppLog.setHeaderInfo(null);</code></pre>
+<p>&lt;span id=&quot;3f4ca71f&quot;&gt;&lt;/span&gt;</p>
+<h1>4. 获取平台ID与通知</h1>
+<p>&lt;span id=&quot;7e959977&quot;&gt;&lt;/span&gt;</p>
+<h2>4.1 获取平台生成ID</h2>
+<pre><code>// 请在初始化完成的3秒后开始获取，否则可能返回为空
+String ssid = AppLog.getSsid(); // 获取SSID
+String did = AppLog.getDid(); // 获取设备bddid</code></pre>
+<p>&lt;span id=&quot;9e7a76b0&quot;&gt;&lt;/span&gt;</p>
+<h2>4.2 获取SDK版本号</h2>
+<pre><code>// SDK版本号格式为X.X.X
+String sdk_version = AppLog.getSdkVersion();</code></pre>
+<p>&lt;span id=&quot;acabc3d0&quot;&gt;&lt;/span&gt;</p>
+<h2>4.3 获取实验版本ID</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;开展AB实验必须调用获取实验参数的api（详情请参见 &lt;strong&gt;&lt;ins&gt;获取实验参数&lt;/ins&gt;&lt;/strong&gt; 章节）。如需获取用户所有曝光或命中实验的版本ID（vid）时，可使用此API，此API不会上报abtest_exposure曝光事件。&lt;/div&gt;</p>
+<pre><code>AppLog.getAbSdkVersion();</code></pre>
+<p>&lt;span id=&quot;5c8cbe9c&quot;&gt;&lt;/span&gt;</p>
+<h2>4.4 切换账号设置数据发送方式</h2>
+<p>切换账号时，同时切换数据发送方式</p>
+<pre><code>AppLog.setPrivacyMode(true); //默认是false，设置后true，不采集不上报</code></pre>
+<p>&lt;span id=&quot;ab2593aa&quot;&gt;&lt;/span&gt;</p>
+<h2>4.5 常用回调介绍：获取各类通知</h2>
+<p>SDK提供addDataObserver方法，用以获取各类通知，建议放在 Application 中。</p>
+<pre><code>public static void addDataObserver(IDataObserver listener)</code></pre>
+<p>设置iid、ssid、did、abconfig从本地加载和server加载成功的回调。</p>
+<p>IDataObserver接口方法的参数说明如下：</p>
+<pre><code>// step1：添加数据集观察回调，this 指代实现了 IDataObserver 的类
+AppLog.addDataObserver(this);
+// step2：通过 IDataObserver 的 onIdLoaded 或 onRemoteIdGet 到数据后使用或者使用以下方式获取： 
+默认实例：Applog.getDid() / 使用多实例：IAppLogInstance.getDid()
+
+
+// IDataObserver 主要功能介绍与参数介绍：
+//  - did、iid、ssid 获取都可以通过该回调获取
+//  - 服务端配置获取
+//  - ab 实验配置获取
+public interface IDataObserver {
+    /**
+     * 本地的id数据加载结果通知
+     * @param did device id
+     * @param iid install id
+     * @param ssid 数说id
+     */
+    void onIdLoaded(@NonNull String did, @NonNull String iid, @NonNull String ssid);
+
+    /**
+     * 通知注册结果，以及id变化情况
+     * 仅主进程会被调用
+     * @param changed 是否和本地缓存有所不同
+     * @param oldDid 本地老的 oldDid，可能为空
+     * @param newDid server返回新的 device id
+     * @param newIid server返回新 install id
+     * @param newSsid server返回新数说 id
+     */
+    void onRemoteIdGet(boolean changed, @Nullable String oldDid, @NonNull String newDid,
+                       @NonNull String oldIid, @NonNull String newIid, 
+                       @NonNull String oldSsid, @NonNull String newSsid);
+
+    /**
+     * Config拉取数据，和本地数据对比有变化的通知
+     * 仅主进程会被调用
+     * @param changed 是否和本地缓存有所不同
+     * @param config server返回新config内容
+     */
+    void onRemoteConfigGet(boolean changed, @Nullable JSONObject config);
+
+    /**
+     * server拉取AbConfig数据，和本地数据对比有变化的通知
+     * 仅主进程会被调用
+     * @param changed 是否和本地缓存有所不同
+     * @param abConfig server返回新abConfig内容
+     */
+    void onRemoteAbConfigGet(boolean changed, @NonNull JSONObject abConfig);
+
+    /**
+     * 客户端ab实验曝光vid集合发生变化的通知
+     * @param vids 客户端ab实验曝光vid集合
+     * @param extVids 外部设置的external vid集合
+     */
+    void onAbVidsChange(@NonNull String vids, @NonNull String extVids);
+}</code></pre>
+<p>&lt;span id=&quot;6686527d&quot;&gt;&lt;/span&gt;</p>
+<h1>5. 默认公共属性字段</h1>
+<p>SDK 默认采集以下信息，并作为用户公共属性，可在增长分析（DataFinder）中分组和筛选。</p>
+<table><thead><tr><th>字段名称</th><th>字段类型</th><th>参数名称</th></tr></thead><tbody><tr><td>os</td><td>string</td><td>设备系统，对应产品内属性为 os_name。</td></tr><tr><td>os_version</td><td>string</td><td>操作系统版本</td></tr><tr><td>app_version</td><td>string</td><td>App 版本</td></tr><tr><td>app_version_minor</td><td>string</td><td>次版本号，App四位版本号，需要初始化调用如： config.setVersionMinor( 1.2.3.r6 )</td></tr><tr><td>channel</td><td>string</td><td>下载渠道（设置后可覆盖），对应产品内属性为 app_channel。</td></tr><tr><td>device_model</td><td>string</td><td>设备机型</td></tr><tr><td>region</td><td>string</td><td>操作系统地区</td></tr><tr><td>language</td><td>string</td><td>系统语言</td></tr><tr><td>sdk_version</td><td>string</td><td>SDK版本</td></tr><tr><td>timezone</td><td>int</td><td>时区</td></tr><tr><td>timezone_offset</td><td>int</td><td>时区偏移量，对应产品内属性为 tz_offset。</td></tr><tr><td>timezone_name</td><td>string</td><td>时区名称</td></tr><tr><td>sim_region</td><td>string</td><td>SIM卡地域</td></tr><tr><td>carrier</td><td>string</td><td>运营商</td></tr><tr><td>resolution</td><td>string</td><td>分辨率</td></tr><tr><td>device_brand</td><td>string</td><td>设备品牌</td></tr><tr><td>access</td><td>string</td><td>网络类型</td></tr></tbody></table>
+<p>&lt;span id=&quot;46df1f37&quot;&gt;&lt;/span&gt;</p>
+<h1>6.View 曝光事件采集</h1>
+<blockquote>本功能在 6.10.1+ 后开始支持，使用曝光建议及早初始化 SDK，比如在 Application 中先初始化。</blockquote>
+<p>用户需要手动标记监听某个 View 的曝光事件。当这个 View 出现在屏幕可视范围内时，会自动触发一个曝光事件。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;&lt;strong&gt;6.16.0 以下版本，进入页面后只会触发一次曝光事件，6.16.0 及以上页面内的 View 会根据不同行为多次触发曝光。&lt;/strong&gt;&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;可以根据曝光事件内部的 $exposure_type 属性区分：&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;$exposure_type:0 首次曝光&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;$exposure_type:3 重复曝光&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;$exposure_type:6 从其他页面返回的曝光&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;$exposure_type:7 后台返回曝光&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;如果想在 6.16.0 以后版本实现之前只曝光一次的效果，可以在新版曝光回调中通过 $exposure_type == 0 进行首次曝光过滤。&lt;/div&gt;</p>
+<p>在初始化配置中可开启曝光配置开关，开启方法：</p>
+<pre><code>config.setExposureEnabled(true);</code></pre>
+<p>开启配置后，在需要曝光的 View 上增加曝光监听，示例代码：</p>
+<p>&lt;Tabs&gt; &lt;Tab zoneid=&quot;pQC5cl89GJ&quot; title=&quot;6.16.2 及以上&quot;&gt; &lt;TabTitle&gt;6.16.2 及以上&lt;/TabTitle&gt;</p>
+<pre><code>View banner = findViewById(R.id.banner);
+// Optional，自定义曝光事件属性
+JSONObject properties = new JSONObject();
+properties.put(&quot;custom_key&quot;, &quot;custom_value&quot;);
+// Optional，默认为 &quot;$bav2b_exposure&quot;
+String eventName = &quot;custom_exposure&quot;;
+
+// 6.16.2 后：曝光支持按面积+时间检测，并提供了曝光回调进行事件处理
+// Optional, 曝光配置，有效曝光面积、可视化调试开关、有效曝光时间和曝光事件回调
+// 有效曝光面积: 有效曝光的 View 显示面积的比例，默认是 0，取值 0-1
+// 可视化调试开关: 默认 false，线上不要开启，开启后曝光的 View 会增加 background 红色边框，用于调试
+// 有效曝光时间: 有效曝光的 View 时间，默认是 0，单位 ms
+// 曝光事件回调: 触发曝光事件时回调，会携带当前曝光事件相关属性，可以进行自定义追加以及支持过滤
+ViewExposureConfig config = new ViewExposureConfig(0.5F, false, 200, viewExposureParam -&gt; {
+      try {
+            // 在回调中添加自定义属性
+            viewExposureParam.getExposureParam().put(&quot;key&quot;, &quot;value&quot;);
+            // 打印曝光类型
+            Log.d(&quot;Exposure&quot;, &quot;ExposureType: &quot; + viewExposureParam.getExposureParam().get(&quot;$exposure_type&quot;));
+      } catch (JSONException e) {
+            // 在发生异常时过滤当前曝光事件
+            return false;
+      }
+      // true 保留曝光事件
+    return true;
+});
+ViewExposureData&lt;ViewExposureConfig&gt; callbackData = new ViewExposureData&lt;&gt;(eventName, null, config);
+
+// 开始监听 View 曝光事件，viewExposureManager字段通过AppLog.getViewExposureManager()来定义，详情可参见 曝光检测频率配置  章节
+viewExposureManager.observeViewExposure(banner, data);
+// 取消监听
+viewExposureManager.disposeViewExposure(banner);</code></pre>
+<p>&lt;/Tab&gt; &lt;Tab zoneid=&quot;lK6h98ZIRC&quot; title=&quot;6.16.2 以下&quot;&gt; &lt;TabTitle&gt;6.16.2 以下&lt;/TabTitle&gt;</p>
+<pre><code>View banner = findViewById(R.id.banner);
+// Optional，自定义曝光事件属性
+JSONObject properties = new JSONObject();
+properties.put(&quot;custom_key&quot;, &quot;custom_value&quot;);
+// Optional，默认为 &quot;$bav2b_exposure&quot;
+String eventName = &quot;custom_exposure&quot;;
+
+// 6.16.2 前：曝光仅支持按面积检测是否曝光
+// Optional, 曝光配置，有效曝光面积和可视化调试开关
+// 有效曝光面积: 有效曝光的 View 显示面积的比例，默认是 0，取值 0-1
+// 可视化调试开关: 默认 false，线上不要开启，开启后曝光的 View 会增加 background 红色边框，用于调试
+ViewExposureConfig config = new ViewExposureConfig(0.5F, false);
+ViewExposureData data = new ViewExposureData(eventName, properties, config);
+
+// 开始监听 View 曝光事件，viewExposureManager字段通过AppLog.getViewExposureManager()来定义，详情可参见 曝光检测频率配置  章节
+viewExposureManager.observeViewExposure(banner, data);
+// 取消监听
+viewExposureManager.disposeViewExposure(banner);</code></pre>
+<p>&lt;/Tab&gt; &lt;/Tabs&gt;</p>
+<p>&lt;span id=&quot;13c4cdf6&quot;&gt;&lt;/span&gt;</p>
+<h2>6.1 设置全局曝光配置</h2>
+<p>&lt;span id=&quot;9af04af9&quot;&gt;&lt;/span&gt;</p>
+<h3>6.1.1 全局曝光配置介绍：</h3>
+<p>&lt;Tabs&gt; &lt;Tab zoneid=&quot;N0wMG4zlQ5&quot; title=&quot;6.16.2 及以上&quot;&gt; &lt;TabTitle&gt;6.16.2 及以上&lt;/TabTitle&gt;</p>
+<pre><code>// 6.16.2 后：曝光支持按面积+时间检测，并提供了曝光回调进行事件处理
+// Optional, 曝光配置，有效曝光面积、可视化调试开关、有效曝光时间和曝光事件回调
+// 有效曝光面积: 有效曝光的 View 显示面积的比例，默认是 0，取值 0-1
+// 可视化调试开关: 默认 false，线上不要开启，开启后曝光的 View 会增加 background 红色边框，用于调试
+// 有效曝光时间: 有效曝光的 View 时间，默认是 0，单位 ms
+// 曝光事件回调: 触发曝光事件时回调，会携带当前曝光事件相关属性，可以进行自定义追加以及支持过滤
+ViewExposureConfig config = new ViewExposureConfig(0.5F, false, 200, viewExposureParam -&gt; {
+      try {
+            // 在回调中添加自定义属性
+            viewExposureParam.getExposureParam().put(&quot;key&quot;, &quot;value&quot;);
+            // 打印曝光类型
+            Log.d(&quot;Exposure&quot;, &quot;ExposureType: &quot; + viewExposureParam.getExposureParam().get(&quot;$exposure_type&quot;));
+      } catch (JSONException e) {
+            // 在发生异常时过滤当前曝光事件
+            return false;
+      }
+      // true 保留曝光事件
+    return true;
+});</code></pre>
+<p>&lt;/Tab&gt; &lt;Tab zoneid=&quot;bbOLb8iSe9&quot; title=&quot;6.16.2 以下&quot;&gt; &lt;TabTitle&gt;6.16.2 以下&lt;/TabTitle&gt;</p>
+<pre><code>// 6.16.2 前：曝光仅支持按面积检测是否曝光
+// Optional, 曝光配置，有效曝光面积和可视化调试开关
+// 有效曝光面积: 有效曝光的 View 显示面积的比例，默认是 0，取值 0-1
+// 可视化调试开关: 默认 false，线上不要开启，开启后曝光的 View 会增加 background 红色边框，用于调试
+ViewExposureConfig config = new ViewExposureConfig(0.5F, false);</code></pre>
+<p>&lt;/Tab&gt; &lt;/Tabs&gt;</p>
+<p>&lt;span id=&quot;5f7c1e48&quot;&gt;&lt;/span&gt;</p>
+<h3>6.1.2 全部配置更新</h3>
+<p>&lt;Tabs&gt; &lt;Tab zoneid=&quot;uIGEOvK8Wa&quot; title=&quot;6.15.2 及以上&quot;&gt; &lt;TabTitle&gt;6.15.2 及以上&lt;/TabTitle&gt;</p>
+<pre><code>// 6.15.2 后调整至 ViewExposureManager 中，用以代替之前 InitConfig.setViewExposureConfig 的方法
+// 请在 SDK init 之后调用
+AppLog.getViewExposureManager().updateViewExposureConfig(config);</code></pre>
+<p>&lt;/Tab&gt; &lt;Tab zoneid=&quot;HorT0yXVJo&quot; title=&quot;6.15.2 以下&quot;&gt; &lt;TabTitle&gt;6.15.2 以下&lt;/TabTitle&gt;</p>
+<pre><code>// 6.15.2 前通过 InitConfig 设置全局曝光配置
+config.setViewExposureConfig(config);</code></pre>
+<p>&lt;/Tab&gt; &lt;/Tabs&gt;</p>
+<p>&lt;span id=&quot;875b6cba&quot;&gt;&lt;/span&gt;</p>
+<h2>6.2 曝光检测频率配置</h2>
+<p>在部分特殊场景下可能会由于页面不断重绘导致一直无法触发曝光，目前新增了两种曝光检测策略以供选择，可动态调整：</p>
+<pre><code>// 6.16.2 新增
+// 默认检测策略 如果有多次频繁触发 会在最后一次触发的 100ms 后触发曝光检测
+AppLog.getViewExposureManager().updateExposureCheckStrategy(ExposureCheckType.DEBOUNCE);
+
+// 新增检测策略 如果有多次频繁触发 会在每隔 500ms 触发一次曝光检测
+AppLog.getViewExposureManager().updateExposureCheckStrategy(ExposureCheckType.THROTTLE);</code></pre>
+<p>&lt;span id=&quot;abaf9c25&quot;&gt;&lt;/span&gt;</p>
+<h1>7.全埋点事件</h1>
+<blockquote>本小节功能在 6.9.0+ 后开始支持。</blockquote>
+<p>开启全埋点事件采集开关后，会默认采集页面事件和 View 点击事件等。</p>
+<p>&lt;span id=&quot;fcf3c42d&quot;&gt;&lt;/span&gt;</p>
+<h2>7.1 自定义页面事件属性</h2>
+<p>有 2 种自定义配置页面事件（$bav2b_page）的属性： <strong>@PageMeta 注解</strong>和<strong>实现 IPageMeta 接口</strong>。</p>
+<p>&lt;span id=&quot;1f5bc448&quot;&gt;&lt;/span&gt;</p>
+<h3>7.1.1 @PageMeta 注解(已废弃)</h3>
+<p><code>@PageMeta</code>注解支持自定义标题和路径，在 Activity 或 Fragment 上添加该注解和配置参数，例如：</p>
+<pre><code>@PageMeta(path = &quot;/mypath&quot;, title = &quot;自定义页面&quot;)
+public class MyActivity extends Activity {
+
+}</code></pre>
+<p>&lt;span id=&quot;48eb994a&quot;&gt;&lt;/span&gt;</p>
+<h3>7.1.2 实现IPageMeta接口（推荐）</h3>
+<p><code>IPageMeta</code>接口类支持自定义标题、路径和属性，优先级高于<code>@PageMeta</code>。在 Activity 或 Fragment 上实现该接口和对应的函数，例如：</p>
+<pre><code>public class MyActivity extends Activity implements IPageMeta {
+    @Override
+    public String title() {
+        return &quot;自定义页面&quot;;
+    }
+    
+    @Override
+    public String path() {
+        return &quot;/mypath&quot;;
+    }
+    
+    @Override
+    public JSONObject pageProperties() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put(&quot;key&quot;, &quot;value&quot;);
+        } catch (JSONException e) {
+            
+        }
+        return params;
+    }
+}</code></pre>
+<p>&lt;span id=&quot;05c688e9&quot;&gt;&lt;/span&gt;</p>
+<h2>7.2 自定义 View 点击事件属性</h2>
+<p>&lt;span id=&quot;659c45cf&quot;&gt;&lt;/span&gt;</p>
+<h3>7.2.1 设置 View 的元素 ID</h3>
+<p>支持对指定的 View 对象设置一个元素 ID，字符串即可，示例：</p>
+<pre><code>AppLog.setViewId(view, &quot;myElementId&quot;);</code></pre>
+<p>&lt;span id=&quot;9b9b334c&quot;&gt;&lt;/span&gt;</p>
+<h3>7.2.2 设置 View 的属性</h3>
+<p>支持对指定的 View 对象设置属性值，示例：</p>
+<pre><code>JSONObject props = new JSONObject();
+try {
+    props.put(&quot;key&quot;, &quot;value&quot;);
+} catch (Exception e) {
+}
+AppLog.setViewProperties(view, props);</code></pre>
+<p>&lt;span id=&quot;52bab683&quot;&gt;&lt;/span&gt;</p>
+<h2>7.3 忽略全埋点事件</h2>
+<p>&lt;span id=&quot;7df68ab2&quot;&gt;&lt;/span&gt;</p>
+<h3>7.3.1 忽略特定的页面访问事件</h3>
+<p>支持忽略特定的 Activity 或 Fragment 的全埋点事件，示例：</p>
+<pre><code>AppLog.ignoreAutoTrackPage(MyActivity.class, MyFragment.class);</code></pre>
+<p>&lt;span id=&quot;37f79e94&quot;&gt;&lt;/span&gt;</p>
+<h3>7.3.2 忽略特定 View 的点击事件</h3>
+<ul><li>忽略指定 View 对象的点击事件，示例：</li></ul>
+<p>   ``<code>java    AppLog.ignoreAutoTrackClick(findViewById(R.id.button1));    </code>``</p>
+<ul><li>忽略指定 View 类型的点击事件，示例：</li></ul>
+<p>   ``<code>java    // 忽略所有 Switch 组件的点击事件    AppLog.ignoreAutoTrackClickByViewType(Switch.class);    </code>``</p>
+<p>&lt;span id=&quot;c67a4151&quot;&gt;&lt;/span&gt;</p>
+<h2>7.4 手动采集页面事件</h2>
+<p>支持手动采集特定的 Activity 和 Fragment 对象的页面事件以及属性，示例：</p>
+<pre><code>JSONObject params = new JSONObject();
+try {
+    params.put(&quot;param1&quot;, &quot;test&quot;);
+} catch (JSONException e) {
+}
+AppLog.trackPage(MyActivity.this, params);</code></pre>
+<p>&lt;span id=&quot;61d7482e&quot;&gt;&lt;/span&gt;</p>
+<h2>7.5 手动采集 View 点击事件</h2>
+<p>支持手动采集特定 View 的点击事件以及属性，示例：</p>
+<pre><code>JSONObject params = new JSONObject();
+try {
+    params.put(&quot;param1&quot;, &quot;test&quot;);
+} catch (JSONException e) {
+}
+AppLog.trackClick(myView, params);</code></pre>
+<p>&lt;span id=&quot;386668bf&quot;&gt;&lt;/span&gt;</p>
+<h1>8.采集时长事件</h1>
+<blockquote>本小节功能在 6.10.1+ 后开始支持。</blockquote>
+<p>带有时间属性的事件可以使用时长事件采集接口，例如采集视频播放时长事件等。示例：</p>
+<pre><code>// 在视频开始播放时调用
+AppLog.startDurationEvent(&quot;play&quot;);
+
+// 在视频暂停播放时调用
+AppLog.pauseDurationEvent(&quot;play&quot;);
+
+// 在视频继续播放时调用
+AppLog.resumeDurationEvent(&quot;play&quot;);
+
+// 在结束播放时调用，此时会上报一个 play 事件，且带有 $event_duration 属性（记录了播放时长，单位毫秒） 
+JsonObject params = new JsonObject() 
+// 可以在 params 填入自己的自定义参数
+AppLog.stopDurationEvent(&quot;play&quot;, params);
+// 6.16.10 后自持自定义时长事件事件名，默认情况事件名为方法第一个参数
+AppLog.stopDurationEvent(&quot;play&quot;, params, &quot;custom_play&quot;);</code></pre></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

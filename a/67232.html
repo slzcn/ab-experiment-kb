@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>扫码录入ID · A/B 实验知识库</title>
+<meta name="description" content="在一些需手动录入用户ID的场景，例如填写白名单，手动输入的UUID、SSID数字较长（如：ssid=&#x27;a0166a58\ 137a\ 410c\ 1111\ 04acc905\ \ \ \ &#x27;），容易出错且不方便。因此对">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/67232.html">
+<meta property="og:title" content="扫码录入ID"><meta property="og:description" content="在一些需手动录入用户ID的场景，例如填写白名单，手动输入的UUID、SSID数字较长（如：ssid=&#x27;a0166a58\ 137a\ 410c\ 1111\ 04acc905\ \ \ \ &#x27;），容易出错且不方便。因此对">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/67232.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>扫码录入ID</h1>
+<div class="meta">📄 1,224 字 · 🕐 2024-09-12</div>
+<article class="md"><p>在一些需手动录入用户ID的场景，例如填写白名单，手动输入的UUID、SSID数字较长（如：ssid=&quot;a0166a58\-137a\-410c\-1111\-04acc905\*\*\*\*&quot;），容易出错且不方便。因此对移动端的应用（iOS、Android），DataTester支持通过扫描二维码来录入对应ID。本文为您介绍扫码录入ID的操作要点。</p>
+<p>&lt;span id=&quot;二-前置条件&quot;&gt;&lt;/span&gt;</p>
+<h1>前置条件</h1>
+<ul><li>当前仅支持移动端App（iOS、Android）扫码录入ID。微信小程序、Web/H5/WAP端不支持。</li></ul>
+<ul><li>应用集成的数据接入SDK版本要求：5.2.0及以上版本的iOS SDK、Android SDK。</li></ul>
+<ul><li>待录入ID的设备手机，安装从应用商店下载的APP，且APP已集成满足版本要求的SDK。</li></ul>
+<p>&lt;span id=&quot;三-操作入口&quot;&gt;&lt;/span&gt;</p>
+<h1>操作入口</h1>
+<p>&lt;span id=&quot;_1-系统管理-创建白名单&quot;&gt;&lt;/span&gt;</p>
+<h2>用户测试白名单\-创建白名单</h2>
+<p>在全局设置\&gt;受众管理\&gt;用户测试白名单页面中，点击“+测试白名单”，如下图：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/e3b23d1d009a4060bb351cdec7fe6812~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-创建实验-选择目标受众-添加白名单&quot;&gt;&lt;/span&gt;</p>
+<h2>2. 创建实验\-选择目标受众\-添加白名单</h2>
+<p>在<strong>创建实验</strong>\-<strong>配置实验版本</strong>\-<strong>添加测试用户</strong>时，点击“扫二维码录入”的图标，即可扫码录入，如下：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/91316cc3093f4ce1953a6b0db5b55df0~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;四-操作流程&quot;&gt;&lt;/span&gt;</p>
+<h1>操作流程</h1>
+<ol><li>通过以上操作入口，打开扫码获取SSID弹窗页面。</li></ol>
+<ol><li>使用手机App（如微信、支付宝等）扫描二维码，进入扫码成功页面，在页面右上角点击选择“在浏览器打开”。</li></ol>
+<ol><li>进入浏览器H5页面，点击“打开App并获取UUID/SSID”。</li></ol>
+<ol><li>检查在创建白名单页面、或者扫码获取UUID/SSID页面的“UUID/SSID输入框”，是否同步该设备的UUID/SSID。</li></ol>
+<p>以上关于“UUID/SSID”，客户在应用接入的时候，会确定用户使用那个类型的ID，因此需要根据当前应用的ID来分别显示对应的UUID或者SSID。</p>
+<p>&lt;span id=&quot;五-获取id失败，检查项详情&quot;&gt;&lt;/span&gt;</p>
+<h1>获取ID失败，自主排查指导</h1>
+<p>若无法获取“UUID/SSID”，可参照如下流程进行检查：</p>
+<p>&lt;span id=&quot;_1-请检查手机安装了app的正确版本&quot;&gt;&lt;/span&gt;</p>
+<h2>1. 请检查手机安装了App的正确版本</h2>
+<p>&lt;span id=&quot;_2-确认sdk初始化时使用了正确的应用信息&quot;&gt;&lt;/span&gt;</p>
+<h2>2. 确认SDK初始化时使用了正确的应用信息</h2>
+<p>&lt;span id=&quot;android&quot;&gt;&lt;/span&gt;</p>
+<h3>Android</h3>
+<pre><code>final InitConfig config = new InitConfig(&quot;2174&quot;,&quot;【您的App渠道号】&quot;);
+
+config.setAutoStart(true);
+config.setUriConfig(UriConfig.DEFAULT);
+config.setPicker(new Picker(this, config));
+config.setAbEnable(true);  // 开启ABTest
+AppLog.init(this, config);</code></pre>
+<p>&lt;span id=&quot;ios&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS</h3>
+<p>请在App启动完成的时候，就初始化配置（如果在页面展示完毕之后 才初始化配置，会导致部分事件采集有缺失）。</p>
+<pre><code>#import &lt;RangersAppLog/BDAutoTrack.h&gt;
+#import &lt;RangersAppLog/BDAutoTrackConfig.h&gt;
+#import &lt;RangersAppLog/BDAutoTrackURLHostItemCN.h&gt;
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+      
+    /* 初始化开始 */
+    BDAutoTrackConfig*config =[BDAutoTrackConfig configWithAppID:@&quot;appid&quot;]; //您申请APPID,如不清楚请联系专属客户成功经理
+    config.serviceVendor = BDAutoTrackServiceVendorCN; //数据上报
+
+    config.appName = @&quot;your appName&quot;;  与您申请APPID时的app_name一致
+    config.channel = @&quot;App Store&quot;; // iOS一般默认App Store
+    
+    config.abEnable = YES; //开启ab测试，默认为YES
+    config.showDebugLog = NO; // 是否在控制台输出日志，仅调试使用，需要同时设置logger。release版本请设置为 NO
+    //config.logger = ^(NSString * _Nullable log) {NSLog(@&quot;%@&quot;,log);}; //如果 showDebugLog设置为 YES 请打开这里的注释
+    config.logNeedEncrypt = YES; // 是否加密日志，默认加密。release版本请设置为 YES
+    config.autoTrackEnabled = YES; //是否开启全埋点采集用于圈选功能
+    
+    [BDAutoTrack startTrackWithConfig:config];
+    /* 初始化结束 */  
+}</code></pre>
+<p>swift：</p>
+<pre><code>import RangersAppLog
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -&gt; Bool {
+        // Override point for customization after application launch.
+        
+        let config = BDAutoTrackConfig(appID: &quot;your appID&quot;) // 如不清楚请联系专属客户成功经理
+        config.appName = &quot;your app name&quot; // 与您申请APPID时的app_name一致
+        config.serviceVendor = BDAutoTrackServiceVendorCN; //数据上报
+        config.channel = &quot;App Store&quot; // iOS一般默认App Store
+        config.showDebugLog = false // 是否在控制台输出日志，仅调试使用。release版本请设置为 false 
+       //config.logger = { (log) inprint(log ?? &quot;log is nil&quot;)} // 如果设置了 showDebugLog = true 请打开这里的注释
+        config.logNeedEncrypt = true // 是否加密日志，默认加密。release版本请设置为 true
+        config.autoTrackEnabled = true //是否开启全埋点采集用于圈选功能
+        
+        BDAutoTrack.start(with: config)
+                
+        return true
+    }</code></pre>
+<p>&lt;span id=&quot;_3-确认url-scheme设置正确&quot;&gt;&lt;/span&gt;</p>
+<h2>3. 确认URL Scheme设置正确</h2>
+<p>&lt;span id=&quot;android&quot;&gt;&lt;/span&gt;</p>
+<h3>Android</h3>
+<p>在module级别的build.gradle中，添加url scheme:</p>
+<pre><code>// 在android的defaultConfig中添加
+manifestPlaceholders.put(&quot;APPLOG_SCHEME&quot;, &quot;&quot;.toLowerCase())</code></pre>
+<p>&lt;span id=&quot;ios&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS</h3>
+<p>在应用信息中找到URL Scheme：</p>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/6b7b9baf390546848c936a172fda5167~tplv-em5hxbkur4-noop.image?width=2544&amp;height=792" loading="lazy"> &lt;/span&gt;</p>
+<p>将URL Scheme添加到你的项目中：</p>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/05c8d79157234ccdb322d456e96daf29~tplv-em5hxbkur4-noop.image?width=1816&amp;height=746" loading="lazy"> &lt;/span&gt;</p>
+<p>如果是iOS 13，重写UISceneDelegate的回调方法：</p>
+<pre><code>#import &lt;RangersAppLog/BDAutoTrackSchemeHandler.h&gt;
+
+- (void)scene:(UIScene *)scene openURLContexts:(NSSet&lt;UIOpenURLContext *&gt; *)URLContexts {
+    for (UIOpenURLContext *context in URLContexts) {
+        NSURL *URL = context.URL;
+        if ([[BDAutoTrackSchemeHandler sharedHandler] handleURL:URL appID:@&quot;appid&quot; scene:scene]) {
+            continue;
+        }
+
+        /// ……
+    }
+}</code></pre>
+<p>Swift：</p>
+<pre><code>import RangersAppLog
+
+func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -&gt; Bool {  
+    if(BDAutoTrackSchemeHandler.shared().handle(url, appID: &quot;appid&quot;, scene: nil)) {
+       return true
+    }      
+    return false
+}</code></pre>
+<p>如果iOS版本低于13，则重写UIApplicationDelegate的回调方法</p>
+<pre><code>#import &lt;RangersAppLog/BDAutoTrackSchemeHandler.h&gt;
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary&lt;UIApplicationOpenURLOptionsKey, id&gt; *)options {
+    if ([[BDAutoTrackSchemeHandler sharedHandler] handleURL:url appID:@&quot;appid&quot; scene:nil]) {
+        return YES;
+    }
+    /// ……
+    return NO;
+}</code></pre>
+<p>&lt;span id=&quot;_4-确认sdk版本≥5-2-0&quot;&gt;&lt;/span&gt;</p>
+<h2>4. 确认SDK版本≥5.2.0</h2>
+<p>&lt;span id=&quot;android&quot;&gt;&lt;/span&gt;</p>
+<h3>Android</h3>
+<p>在project级别的build.gradle中，添加引用:</p>
+<pre><code>// 在buildscript的dependencies中添加
+classpath &#x27;com.bytedance.applog:RangersAppLog-All-plugin:5.2.0&#x27;</code></pre>
+<p>在module级别的build.gradle中，添加引用:</p>
+<pre><code>// 在文件开头添加
+apply plugin: &#x27;com.bytedance.std.tracker&#x27;</code></pre>
+<p>和</p>
+<pre><code>// 在dependencies中添加
+implementation &#x27;com.bytedance.applog:RangersAppLog-All-cn:5.2.0&#x27;
+
+// 如需符合GDPR请更改为
+// implementation &#x27;com.bytedance.applog:RangersAppLog-All-global:5.2.0&#x27;</code></pre>
+<p>&lt;span id=&quot;ios&quot;&gt;&lt;/span&gt;</p>
+<h3>iOS</h3>
+<p>在Podfile中，确认集成版本≥5.2.0，且所选子库包含&#x27;Picker&#x27;, &#x27;UITracker&#x27;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

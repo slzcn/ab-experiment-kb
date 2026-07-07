@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HarmonyOS Next SDK 埋点与属性 · A/B 实验知识库</title>
+<meta name="description" content="用户与用户属性 登录态变化调用 账户登录 如您的产品中有账户体系，请在用户登录后立即设置 uuid，以保证用户登录前后口径一致性。 6.13.0+ 版本支持在初始化 AppLog 之前调用，用于设置已登录的用户 uuid">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1408236.html">
+<meta property="og:title" content="HarmonyOS Next SDK 埋点与属性"><meta property="og:description" content="用户与用户属性 登录态变化调用 账户登录 如您的产品中有账户体系，请在用户登录后立即设置 uuid，以保证用户登录前后口径一致性。 6.13.0+ 版本支持在初始化 AppLog 之前调用，用于设置已登录的用户 uuid">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1408236.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>HarmonyOS Next SDK 埋点与属性</h1>
+<div class="meta">📄 1,244 字 · 🕐 2025-04-16</div>
+<article class="md"><p>&lt;span id=&quot;7f8b5f8f&quot;&gt;&lt;/span&gt;</p>
+<h1>用户与用户属性</h1>
+<pre><code>// 获取用户信息模块
+appLog.user()</code></pre>
+<p>&lt;span id=&quot;5b4c2c9f&quot;&gt;&lt;/span&gt;</p>
+<h2>登录态变化调用</h2>
+<p>&lt;span id=&quot;dc31b648&quot;&gt;&lt;/span&gt;</p>
+<h3>账户登录</h3>
+<p>如您的产品中有账户体系，请在用户登录后立即设置 uuid，以保证用户登录前后口径一致性。 6.13.0+ 版本支持在初始化 AppLog 之前调用，用于设置已登录的用户 uuid。</p>
+<pre><code>// 设置 UUID
+appLog.user()?.setUserUniqueID(&quot;your_uuid&quot;)
+
+// 如果有多口径需求可以看下面的设置
+// 设置 UUID + UUIDType
+appLog.user()?.setUserUniqueID(&quot;your_uuid&quot;, &quot;your_uuid_type&quot;)
+// 单参数的 setUserUniqueID(uuid) 等效于 双参数的 setUserUniqueID(uuid, lastuuidType) 只是默认情况下 uuidType 没有，如果设置过 uuidType 想要清空，需要额外设置:
+appLog.user()?.setUserUniqueID(&quot;your_uuid&quot;, null)</code></pre>
+<p>&lt;span id=&quot;cbeb60af&quot;&gt;&lt;/span&gt;</p>
+<h3>账户登出</h3>
+<p>在账户登出时调用。</p>
+<pre><code>// 登出 UUID
+appLog.user()?.setUserUniqueID(null)
+
+// 如果有多口径需求可以看下面的设置
+// 登出 UUID + UUIDType
+appLog.user()?.setUserUniqueID(null, null)</code></pre>
+<p>&lt;span id=&quot;fe7b6402&quot;&gt;&lt;/span&gt;</p>
+<h2>多 ID 口径</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1.3.0 之后版本支持，仅私有化支持，多ID口径功能需单独申请开通，使用时，需在上报用户 ID、ID type 时，同时配置 id_bind 关系，以尽可能准确还原一个真实的用户。更多关于多 ID 口径的介绍和使用指导请参见&lt;a href=&quot;https://www.volcengine.com/docs/56651/1362118&quot;&gt;高阶功能：多应用/多主体/多ID类型&lt;/a&gt;。&lt;/div&gt;</p>
+<pre><code>// 示例演示
+appLog.user()?.bind({
+  &quot;id_type_1&quot;: &quot;id_type_value_1&quot;,
+  &quot;id_type_2&quot;: &quot;id_type_value_2&quot;
+}, (result: IDBindParams) =&gt; {
+  hilog.info(0x0000, &#x27;AppLogH&#x27;, `IDBindSuccess result: ${JSON.stringify(result)}`)
+  // 更新用户状态
+  appLog.user()?.setUserUniqueID(&quot;id_type_value_1&quot;, &quot;id_type_1&quot;)
+}, (code: number, message: StringOrNull) =&gt; {
+  hilog.info(0x0000, &#x27;AppLogH&#x27;, `IDBindFail code: ${code}, message: ${message}`)
+})</code></pre>
+<p>&lt;span id=&quot;7c6df339&quot;&gt;&lt;/span&gt;</p>
+<h2>设置用户属性</h2>
+<p>&lt;span id=&quot;1420ad7f&quot;&gt;&lt;/span&gt;</p>
+<h3>ProfileSet</h3>
+<p>设置用户属性，存在则覆盖，不存在则创建。</p>
+<pre><code>appLog.profile()?.set({
+  &quot;set1&quot;: &quot;value&quot;,
+  &quot;set2&quot;: &quot;value&quot;
+})</code></pre>
+<p>&lt;span id=&quot;3fd33c92&quot;&gt;&lt;/span&gt;</p>
+<h3>ProfileSetOnce</h3>
+<p>设置用户属性，存在则不设置，不存在则创建。适合首次相关的用户属性，比如首次访问时间等。</p>
+<pre><code>appLog.profile()?.setOnce({
+  &quot;setOnce&quot;: &quot;value&quot;
+})</code></pre>
+<p>&lt;span id=&quot;a46d1475&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>ProfileIncrement</strong></h3>
+<p>设置数值类型的属性，可进行累加。</p>
+<pre><code>appLog.profile()?.increment({
+  &quot;increment&quot;: 1
+})</code></pre>
+<p>&lt;span id=&quot;83b8727c&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>ProfileAppend</strong></h3>
+<p>设置List类型的用户属性，可持续向 List 内添加。</p>
+<pre><code>appLog.profile()?.append({
+  &quot;appendStr&quot;: &quot;1&quot;,
+  &quot;appendNum&quot;: 1
+})</code></pre>
+<p>&lt;span id=&quot;f1beecd0&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>ProfileUnset</strong></h3>
+<p>删除用户的属性。</p>
+<pre><code>appLog.profile()?.unset(&quot;set2&quot;)</code></pre>
+<p>&lt;span id=&quot;17e2c7d3&quot;&gt;&lt;/span&gt;</p>
+<h1>事件与事件属性</h1>
+<p>&lt;span id=&quot;4c833d29&quot;&gt;&lt;/span&gt;</p>
+<h2>上报代码埋点</h2>
+<p>用户行为日志采用<strong>事件 event + 属性 params</strong> 的形式，事件一般对应多个属性，也可以仅有事件没有属性。代码埋点方案一般由数据分析师或产品运营设计。</p>
+<ul><li>仅上报事件的代码埋点，示例如下：</li></ul>
+<pre><code>// 示例：上报事件 event，该事件不包含属性
+*// 置于业务逻辑对应位置
+appLog.event(&quot;event&quot;)</code></pre>
+<ul><li>上报事件和对应属性的代码埋点，示例如下：</li></ul>
+<pre><code>// 示例：上报事件 event，该事件包含两个属性
+*// 一个 string 类型的属性，属性名为 key_string，属性值为 value_string
+*// 一个 int 类型的属性，属性名为 key_int，属性值为 10
+*// 置于业务逻辑对应位置
+appLog.event(&quot;event&quot;, {
+  &quot;key_string&quot;: &quot;value_string&quot;,
+  &quot;key_int&quot;: 10
+})</code></pre>
+<p>&lt;span id=&quot;4cc3b7e4&quot;&gt;&lt;/span&gt;</p>
+<h2>事件公共属性</h2>
+<p>如需在每个事件中都包括某属性，可通过公共属性设置，无需在每个事件中重复设置。公共属性只需设置一次，即可包括在所有代码埋点事件、预置事件和全埋点事件中。</p>
+<p>&lt;span id=&quot;f166818c&quot;&gt;&lt;/span&gt;</p>
+<h3>设置公共属性</h3>
+<pre><code>/*
+ * 示例：设置自定义的公共属性，属性名为 key_public，属性值为 value_public
+ * 关于自定义 “公共属性” 请注意：
+ * 1. 上报机制是随着每一次日志发送进行提交，默认的日志发送频率是 1 分钟，
+ *    所以如果在一分钟内连续修改自定义公共属性，按照日志发送前的最后一次修改为准；
+ * 2. 不推荐高频次修改，如每秒修改一次。
+ */
+appLog.setHeaderInfo(&quot;key_public&quot;, &quot;value_public&quot;)</code></pre>
+<p>&lt;span id=&quot;e42dbff8&quot;&gt;&lt;/span&gt;</p>
+<h3>移除公共属性</h3>
+<pre><code>// 示例：移除属性名为 key_public 的公共属性
+appLog.removeHeaderInfo(&quot;key_public&quot;)</code></pre>
+<p>&lt;span id=&quot;bc0b7464&quot;&gt;&lt;/span&gt;</p>
+<h1>订阅平台 ID</h1>
+<p>&lt;span id=&quot;07e460b1&quot;&gt;&lt;/span&gt;</p>
+<h2>订阅 Did Ready</h2>
+<pre><code>appLog.topicReceiver()?.on(Topic.DidReady, (didInfo) =&gt; {
+  setTimeout(() =&gt; {
+    hilog.info(0x0000, &#x27;AppLogH&#x27;, `AppLog did ready:  ${didInfo[&quot;bd_did&quot;]}`)
+  })
+})
+
+didInfo 格式：
+// device_info_from 表示该信息来自本地还是服务端请求返回
+// device_info_from: did_from_remote 表示数据来自服务端返回
+// device_info_from: did_from_local 表示数据来自本地缓存
+{
+    &quot;bd_did&quot;: &quot;xxxx&quot;,
+    &quot;install_id&quot;: xxxx,
+    &quot;device_info_from&quot;: &quot;did_from_remote&quot;
+}</code></pre>
+<p>&lt;span id=&quot;781888ff&quot;&gt;&lt;/span&gt;</p>
+<h1>组件曝光事件采集</h1>
+<p>用户需要手动标记监听某个 View 的曝光事件。当这个 View 出现在屏幕可视范围内时，会自动触发一个曝光事件。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1.2.0 之后版本支持，用户需要手动标记监听某个 View 的曝光事件。当这个 View 出现在屏幕可视范围内时，会自动触发一个曝光事件。&lt;/div&gt;</p>
+<blockquote>目前版本能力基本和 Android 对齐，暂不支持按时间曝光配置以及调试视图。</blockquote>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;可以根据曝光事件内部的 $exposure_type 属性区分：&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;$exposure_type:0 首次曝光&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;$exposure_type:3 重复曝光&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;$exposure_type:6 从其他页面返回的曝光&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;$exposure_type:7 后台返回曝光&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;如果想在实现组件只曝光一次的效果，可以在新版曝光回调中通过 $exposure_type == 0 进行首次曝光过滤。&lt;/div&gt;</p>
+<pre><code>//  需要给组件添加 ID
+Button(&#x27;Test&#x27;, { stateEffect: true, type: ButtonType.Capsule })
+  .id(&quot;test_btn&quot;))
+
+//  请在页面 build 后开始监控，如果传入过早，无法通过 NodeId 找到对应组件，就无法处理曝光
+//  开始曝光监控，曝光时给 SDK 传给 ID，来确定需要监控哪个组件的曝光
+appLog.exposure()?.observeByNodeId(&quot;test_btn&quot;, this.getUIContext(), {
+    //  Optional，默认为 &quot;$bav2b_exposure&quot;
+    eventName: &quot;custom_exposure&quot;,
+    //  Optional，自定义曝光事件属性
+    properties: {
+        &quot;test&quot;: &quot;test&quot;
+    },
+    //  Optional, 曝光配置，有效曝光面积和曝光事件回调
+    //  有效曝光面积: 有效曝光的 View 显示面积的比例，默认是 0，取值 0-1
+    //  曝光事件回调: 触发曝光事件时回调，会携带当前曝光事件相关属性，可以进行自定义追加以及支持过滤
+    config: {
+        exposureCallback: (param) =&gt; {
+          //  支持在回调中添加自定义属性
+          //  true 保留曝光事件
+          return true
+        }
+    }
+})
+
+//  在适当实际停止曝光监控，如离开页面或者其他逻辑
+appLog.exposure()?.disposeByNodeId(&quot;test_btn&quot;)</code></pre>
+<p>&lt;span id=&quot;0ed3b8d3&quot;&gt;&lt;/span&gt;</p>
+<h1>全埋点\-beta</h1>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1.2.0 之后版本支持，由于鸿蒙已不再推荐 route 页面路由，主推 Navigation 组件导航，所以 SDK 以 Navigation 组件导航为主。&lt;/div&gt;</p>
+<blockquote>暂不支持 Tab 切换监听，目前系统 Tab 监听不完善，无法监听到 Tab 进入、退出，只能监听到 Tab 切换。</blockquote>
+<pre><code>onWindowStageCreate(windowStage: window.WindowStage): void {
+  // 推荐在 EntryAbility loadContent 时开启，以便对页面生命周期更完整
+  windowStage.loadContent(&#x27;pages/Index&#x27;, (err, data) =&gt; {
+    appLog.bav()?.enablePlugin(windowStage.getMainWindowSync().getUIContext(), {
+      // 是否采集页面离开事件
+      enablePageLeaveEvent: true,
+      // 是否采集组件点击事件
+      enableClickEvent: true
+    })
+  })
+}</code></pre></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

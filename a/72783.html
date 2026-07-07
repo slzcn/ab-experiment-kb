@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>支付链路实验｜提升平台下单率 · A/B 实验知识库</title>
+<meta name="description" content="悟空租车是国内头部预约出行服务平台，以“让人人愉悦出行”为使命，自2014年创立以来深受用户欢迎，已发展成为覆盖全国近300个城市，16,000多个服务网点，入驻出行服务商超过4000家，在线可供选择车辆超过10万台，车">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/72783.html">
+<meta property="og:title" content="支付链路实验｜提升平台下单率"><meta property="og:description" content="悟空租车是国内头部预约出行服务平台，以“让人人愉悦出行”为使命，自2014年创立以来深受用户欢迎，已发展成为覆盖全国近300个城市，16,000多个服务网点，入驻出行服务商超过4000家，在线可供选择车辆超过10万台，车">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/72783.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📢 广告投放实验</span></div>
+<h1>支付链路实验｜提升平台下单率</h1>
+<div class="meta">📄 898 字 · 🕐 2023-09-21</div>
+<article class="md"><p>悟空租车是国内头部预约出行服务平台，以“让人人愉悦出行”为使命，自2014年创立以来深受用户欢迎，已发展成为覆盖全国近300个城市，16,000多个服务网点，入驻出行服务商超过4000家，在线可供选择车辆超过10万台，车型超过5,000种的出行服务平台。</p>
+<p>无论自驾出游还是商务拜访，用户都可以在悟空租车实时搜索、预定标准有保障的短租自驾、长租自驾、企业用车、自驾游、包车、豪华车租赁等预约出行服务。为提升出行体验，平台提供7x24小时全国专业客服、信用押金双免、交付保证、上门取还、优选比价、第三方评价等贴心服务。</p>
+<p>发现问题</p>
+<p>&lt;span id=&quot;实验背景&quot;&gt;&lt;/span&gt;</p>
+<h2>实验背景</h2>
+<p>于汽车在线租赁平台，用户在平台中完成选车并进入付款时，会经历一个必备环节——押金缴纳。押金缴纳有多种形式，如直接缴纳、第三方信用免押等。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_4d9716515859796e79d3b2a2eccfde1c.png" loading="lazy"> &lt;/span&gt;</p>
+<p>但对于用户，在付款环节如果无法使用信用进行免押，就必须同时支付一笔额外的数额较大的押金，增加的现金流成本可能会给用户的用车决策带来较大的影响，并直接波及平台的成单率，最终影响到平台收入。</p>
+<p>悟空租车团队希望找到一种方式，降低押金开销对用户用车决策的负面影响，从而提升平台的下单转化率。</p>
+<p>&lt;span id=&quot;实验设计&quot;&gt;&lt;/span&gt;</p>
+<h2>实验设计</h2>
+<p>悟空租车团队通过用户访谈与研究分析，初步判断将“租金”和“押金”放在同一支付页面，会让用户产生“总支付金额=总用车成本”的感知，并容易引起用户的焦虑。</p>
+<p>因此，团队希望通过拆分支付步骤来引导用户分辨用车成本，降低对成本的焦虑，即用户完成租金支付后再进入押金缴纳环节。</p>
+<p>新方案看似非常合理，但要求用户必须进行一步额外操作，那么该如何选择？</p>
+<p><strong>丨倾听用户真实的反馈</strong></p>
+<p>悟空租车团队非常注重用数据驱动决策，通过火山引擎A/B实验产品，用小流量进行方案试错，并设计了一组实验：</p>
+<ul><li>对照组：现行支付流程，用户在下单页面需要同时支付租金与押金；</li></ul>
+<ul><li>实验组：新方案，用户在订单支付完成后，再进入押金缴纳页。</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_9b479581001743c66095ae4fd03777a8.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span id=&quot;实验结论&quot;&gt;&lt;/span&gt;</p>
+<h2>实验结论</h2>
+<p>实验运行两周后，团队发现针对“最终下单完成指标”，实验组比对照组上升了7%，增长非常明显。操作步骤的增多，并没有降低用户的使用意愿，反而提升了租车转化效果。</p>
+<p>因此，在得到用户对新方案的真实反馈后，团队决定全量上线新方案。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

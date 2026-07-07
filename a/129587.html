@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>开放接口V3 · A/B 实验知识库</title>
+<meta name="description" content="一. 概述 本文档提供「A/B测试」应用中开放接口V3版本的说明。 可用范围包括 实验信息：创建实验、获取实验详情、获取实验列表、修改实验、开始实验、结束实验 指标信息：创建指标、删除指标、获取指标详情、获取指标列表、全">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/129587.html">
+<meta property="og:title" content="开放接口V3"><meta property="og:description" content="一. 概述 本文档提供「A/B测试」应用中开放接口V3版本的说明。 可用范围包括 实验信息：创建实验、获取实验详情、获取实验列表、修改实验、开始实验、结束实验 指标信息：创建指标、删除指标、获取指标详情、获取指标列表、全">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/129587.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>开放接口V3</h1>
+<div class="meta">📄 15,088 字 · 🕐 2026-04-17</div>
+<article class="md"><p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>一. 概述</h1>
+<p>本文档提供「A/B测试」应用中开放接口V3版本的说明。</p>
+<p>可用范围包括</p>
+<ul><li>实验信息：创建实验、获取实验详情、获取实验列表、修改实验、开始实验、结束实验</li></ul>
+<ul><li>指标信息：创建指标、删除指标、获取指标详情、获取指标列表、全量修改指标信息、修改指标状态</li></ul>
+<ul><li>互斥组信息：获取互斥组列表、新建互斥组</li></ul>
+<ul><li>报告页信息：获取实验报告基础数据</li></ul>
+<p>如需使用老版本开放接口，请参考：<a href="https://www.volcengine.com/docs/6287/65829" target="_blank" rel="noopener">A/B测试开放接口</a></p>
+<p>&lt;span id=&quot;二-联系开通&quot;&gt;&lt;/span&gt;</p>
+<h1>二. 联系开通</h1>
+<p>为了保证您和用户的数据安全，开放接口权限默认是关闭的。</p>
+<p>在开始使用之前，您需要联系我们开通。（您可以通过服务对接的飞书/微信群或页面右下角的在线客服与我们取得联系）</p>
+<ul><li>开通后，我们会为您提供导出所需的AK/SK，收到后请务必妥善保管和使用。</li></ul>
+<ul><li>开通时请和对接人员确认需要开放的接口范围以及接口使用额度，不在开放范围内的接口以及超出限额的接口请求将被拒绝。</li></ul>
+<p>&lt;span id=&quot;三-使用方式&quot;&gt;&lt;/span&gt;</p>
+<h1>三. 使用方式</h1>
+<p>为了方便集成和使用OpenAPI，我们提供了SDK。其主要功能是提供了对签名过程和复杂查询参数的包装。</p>
+<p>SDK已经在 Github 上开源，建议使用Github 源码的方式进行集成。</p>
+<p>基本使用流程为：</p>
+<ol><li>根据ak, sk, API 服务地址初始化一个RangersClient</li></ol>
+<ol><li>使用RangersClient的<code>request</code>接口或者<code>data_tester</code>来调用具体API（具体的方法名称在不同的语言上会有命名格式的区别）</li></ol>
+<p>由于中国区和非中国区是隔离不互通的，OpenAPI 的服务地址需要根据所在地区进行设置：</p>
+<ul><li>中国区：https://analytics.volcengineapi.com</li></ul>
+<ul><li>非中国区： https://analytics.byteplusapi.com</li></ul>
+<ul><li>私有化部署：根据私有化部署的环境来获取，即产品的域名地址。</li></ul>
+<p>&lt;span id=&quot;sdk使用说明&quot;&gt;&lt;/span&gt;</p>
+<h2>SDK使用说明</h2>
+<p>&lt;span id=&quot;java&quot;&gt;&lt;/span&gt;</p>
+<h3>Java</h3>
+<ul><li>源码：https://github.com/volcengine/datafinder\-sdk\-openapi\-java</li></ul>
+<ul><li>软件包：https://github.com/volcengine/datafinder\-sdk\-openapi\-java/raw/main/release/javasdk.zip</li></ul>
+<ul><li>初始化示例：</li></ul>
+<pre><code>String ak = &quot;{使用AK替换}&quot;;
+String sk = &quot;{使用SK替换}&quot;;
+
+// SDK 的默认url地址是指向中国区 SAAS 的
+RangersClient bc = new RangersClient(ak, sk);
+
+// 海外和私有化需要指定url地址, 可以参考上文
+String url=&quot;{使用非中国区或者Tester服务域名替换}&quot;;
+RangersClient bc = new RangersClient(ak, sk, url);
+
+String result = bc.dataTester(&quot;/openapi/v1/openapi-test&quot;, &quot;GET&quot;);
+System.out.println(result);</code></pre>
+<p>&lt;span id=&quot;python&quot;&gt;&lt;/span&gt;</p>
+<h3>Python</h3>
+<ul><li>源码：https://github.com/volcengine/datafinder\-sdk\-openapi\-py</li></ul>
+<ul><li>软件包：https://github.com/volcengine/datafinder\-sdk\-openapi\-py/raw/main/release/rangersdk\-1.2.0.tar.gz</li></ul>
+<p>Python SDK 软件包的形式下载后在shell执行以下命令完成安装：</p>
+<pre><code># python需要3.7及以上版本
+pip install rangersdk-${version}.tar.gz</code></pre>
+<ul><li>初始化示例：</li></ul>
+<pre><code>from rangersdk import RangersClient
+
+ak = &#x27;{使用AK替换}&#x27;
+sk = &#x27;{使用SK替换}&#x27;
+bc = RangersClient(ak, sk)
+
+# 海外和私有化需要指定url地址, 可以参考上文,
+url = &#x27;{使用非中国区或者Tester服务域名替换}&#x27;
+# 注意这里传参数，一定要写成 url=url
+bc = RangersClient(ak, sk, url=url)
+
+re = bc.data_tester(&quot;/openapi/v1/openapi-test&quot;, method=&quot;GET&quot;)
+print(re.json())</code></pre>
+<p>&lt;span id=&quot;golang&quot;&gt;&lt;/span&gt;</p>
+<h3>Golang</h3>
+<ul><li>源码：https://github.com/volcengine/datafinder\-sdk\-openapi\-go</li></ul>
+<ul><li>软件包：https://github.com/volcengine/datafinder\-sdk\-openapi\-go/raw/main/release/gosdk.zip</li></ul>
+<ul><li>初始化示例：</li></ul>
+<pre><code>var (
+   ak = &quot;{使用AK替换}&quot;
+   sk = &quot;{使用SK替换}&quot;
+)
+bc := dslcontent.NewRangersClient(ak, sk)
+
+// 海外和私有化需要指定url地址, 可以参考上文
+url = &#x27;{使用非中国区或者Tester服务域名替换}&#x27;
+bc := dslcontent.NewRangersClientWithUrl(ak, sk, url)
+
+res, _ := bc.DataTester(&quot;/openapi/v1/openapi-test&quot;, &quot;GET&quot;)
+data, err := ioutil.ReadAll(res.Body)
+fmt.Println(err, string(data))</code></pre>
+<p>&lt;span id=&quot;js&quot;&gt;&lt;/span&gt;</p>
+<h3>JS</h3>
+<ul><li>源码：https://github.com/volcengine/datafinder\-sdk\-openapi\-js</li></ul>
+<ul><li>软件包：https://github.com/volcengine/datafinder\-sdk\-openapi\-js/raw/main/release/nodejssdk.zip</li></ul>
+<ul><li>初始化示例：</li></ul>
+<pre><code>ak = &quot;{使用AK替换}&quot;
+sk = &quot;{使用SK替换}&quot;
+bc = new RangersClient(ak, sk)
+
+// 海外和私有化需要指定url地址, 可以参考上文
+url = &#x27;{使用非中国区或者Tester服务域名替换}&#x27;
+bc = RangersClient(ak, sk, url=url)
+
+bc.dataTester(&quot;/openapi/v1/openapi-test&quot;, {method: &quot;GET&quot;})
+    .then(res =&gt; res.json())
+    .then(response =&gt; {
+        if (200 !== response[&#x27;code&#x27;]) {
+            throw &quot; result is not ok, code: &quot; + response[&#x27;code&#x27;] + &quot;, message: &quot; + response[&#x27;message&#x27;];
+        }
+        console.log(response)
+        console.log(&#x27;success.&#x27;)
+    })
+    .catch(error =&gt; console.error(&#x27;error:&#x27;, error));</code></pre>
+<p>&lt;span id=&quot;php&quot;&gt;&lt;/span&gt;</p>
+<h3>PHP</h3>
+<ul><li>源码：https://github.com/volcengine/datafinder\-sdk\-openapi\-php</li></ul>
+<ul><li>软件包：https://github.com/volcengine/datafinder\-sdk\-openapi\-php/raw/main/release/phpsdk.zip</li></ul>
+<ul><li>初始化示例：</li></ul>
+<pre><code>$ak = &quot;{使用AK替换}&quot;;
+$sk = &quot;{使用SK替换}&quot;;
+$bc = new RangersClient($ak, $sk);
+
+// 海外和私有化需要指定url地址, 可以参考上文
+$url = &#x27;{使用非中国区或者Tester服务域名替换}&#x27;
+$bc = new RangersClient($ak, $sk, $url);
+
+echo $bc-&gt;dataTester(&quot;/openapi/v1/openapi-test&quot;, &quot;GET&quot;);</code></pre>
+<p>&lt;span id=&quot;sdk使用注意&quot;&gt;&lt;/span&gt;</p>
+<h2>SDK使用注意</h2>
+<p>&lt;span id=&quot;中文编码&quot;&gt;&lt;/span&gt;</p>
+<h3>中文编码</h3>
+<p>获取列表的相关接口（实验、指标、互斥组）支持根据关键字查询，如需查询中文，Java、Python、PHP需要调用前自行进行url转码，转码方法如下</p>
+<p>golang SDK和nodeJs SDK不需要自行转码</p>
+<p><strong>Java</strong></p>
+<pre><code>import java.net.URLEncoder;
+
+String keyword = URLEncoder.encode(&quot;中文关键字&quot;, &quot;UTF-8&quot;)</code></pre>
+<p><strong>Python</strong></p>
+<pre><code>import urllib.parse
+
+keyword = urllib.parse.quote(&quot;中文关键字&quot;, encoding=&quot;UTF-8&quot;)</code></pre>
+<p><strong>PHP</strong></p>
+<pre><code>$keyword = urlencode(&quot;中文关键字&quot;);</code></pre>
+<p>&lt;span id=&quot;四-接口说明&quot;&gt;&lt;/span&gt;</p>
+<h1>四. 接口说明</h1>
+<p>&lt;span id=&quot;创建实验&quot;&gt;&lt;/span&gt;</p>
+<h2>创建实验</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;开放接口所创建的实验，仅管理员可编辑&lt;/div&gt;</p>
+<p><strong>接口描述：</strong>  创建一个编程实验或MAB实验。</p>
+<p><strong>请求路径：</strong> <code>/openapi/v3/apps/{app_id}/experiments</code></p>
+<p><strong>请求方法：POST</strong></p>
+<p><strong>请求参数</strong></p>
+<table><thead><tr><th>参数名称</th><th>参数类型</th><th>是否必填</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>name</td><td>string</td><td>是</td><td>实验名称</td><td>不能与当前APP下已有实验重名，长度限制200字符</td></tr><tr><td>description</td><td>string</td><td>否</td><td>实验描述</td><td>长度限制1000字符</td></tr><tr><td>tags</td><td>string</td><td>否</td><td>实验标签</td><td>[&quot;123&quot;, &quot;456&quot;]</td></tr><tr><td>owners</td><td>object</td><td>否</td><td>创建人</td><td>实验owner列表，owner的object数据结构包括id和name两个参数：&lt;br&gt;&lt;br&gt;&lt;br&gt;* id：int类型，必填，表示用户ID。&lt;br&gt;&lt;br&gt;* name：string类型，必填，表示用户名。&lt;br&gt;&lt;br&gt;&lt;br&gt;您可以使用<strong>用户信息查询</strong>接口获取实验owners的数值。</td></tr><tr><td>endpoint_type</td><td>int</td><td>是</td><td>实验类型</td><td>0\-客户端实验，1\-服务端实验</td></tr><tr><td>duration</td><td>int</td><td>是</td><td>实验时长</td><td>单位天，范围：[1, 365]</td></tr><tr><td>major_metric</td><td>int</td><td>是</td><td>核心指标ID</td><td>必须在metrics中</td></tr><tr><td>metrics</td><td>int[]</td><td>是</td><td>关注的指标ID列表</td><td>必须包含major_metric</td></tr><tr><td>versions</td><td>object[]</td><td>是</td><td>实验版本配置</td><td>数组长度要大于等于2，详见version结构说明</td></tr><tr><td>layer_info</td><td>object</td><td>是</td><td>实验层配置</td><td>详见layer_info说明</td></tr><tr><td>mab_info</td><td>object</td><td>否</td><td>MAB实验配置信息</td><td>如果是创建MAB实验，该字段必传。详细介绍请参见下文的mab_info结构说明。</td></tr></tbody></table>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;配置mab组和对应的非mab组的配置要相同，也就是mab和非mab组的配置是一对一对的。具体参见下文的例子，例如智能调优组&quot;对照组&quot;和评估组&quot;对照组\-Besfw&quot;是一一对应的。&lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;私有化480版本mab核心指标只支持单事件转化率类型的指标，uv_per_dau（算子为：转化率）。&lt;/div&gt;</li></ul>
+<p><strong>version结构说明</strong></p>
+<table><thead><tr><th>参数名称</th><th>参数类型</th><th>是否必填</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>type</td><td>int</td><td>是</td><td>对照版本/实验版本</td><td>0\-对照版本，1\-实验版本 versions数组中只能有一个对照版本</td></tr><tr><td>name</td><td>string</td><td>是</td><td>版本名称</td><td>长度50字符</td></tr><tr><td>description</td><td>string</td><td>否</td><td>版本描述</td><td>长度1000字符</td></tr><tr><td>weight</td><td>float</td><td>否</td><td>实验版本的流量分配</td><td>范围[0.001, 1] 0.1% ~ 100%&lt;br&gt;&lt;br&gt;versions数组中不传，则默认均匀分配 如果传，则会校验所有weight的和是否为1</td></tr><tr><td>config</td><td>object</td><td>是</td><td>版本配置</td><td>version数组中所有config的key需要保持一致</td></tr><tr><td>users</td><td>string[]</td><td>否</td><td>白名单用户</td><td>不同版本的白名单用户不能有交集</td></tr><tr><td>is_mab</td><td>int</td><td>否</td><td>是否为mab智能流量组，取值：0或1</td><td></td></tr></tbody></table>
+<p><strong>layer_info结构说明</strong></p>
+<table><thead><tr><th>参数名称</th><th>参数类型</th><th>是否必填</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>layer_id</td><td>int</td><td>否</td><td>互斥组ID</td><td>使用的实验层，使用默认层则传\-1或不传&lt;br&gt;&lt;br&gt;如果指定了layer_id，则会校验实验层上可用流量是否满足实验配置</td></tr><tr><td>version_resource</td><td>float</td><td>是</td><td>实验流量占比</td><td>范围[0.001, 1]，最小精度千分之一</td></tr></tbody></table>
+<p><strong>mab_info结构说明</strong></p>
+<table><thead><tr><th><strong>参数名称</strong></th><th><strong>参数类型</strong></th><th><strong>是否必填</strong></th><th><strong>描述</strong></th><th><strong>备注</strong></th></tr></thead><tbody><tr><td>interval_time</td><td>int</td><td>是</td><td>调优间隔，单位：秒</td><td>单位秒，最小间隔30分钟，并且按照30分钟增加，例如1800, 3600, 5400。</td></tr><tr><td>non_mab_traffic</td><td>int</td><td>是</td><td>评估流量占比</td><td>百分比，例如6就是6%，每个实验组最低需要3%的评估流量，例如三个实验组最低需要9%的评估流量。</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>int</td><td>新创建实验ID</td></tr></tbody></table>
+<p><strong>示例</strong></p>
+<p>编程实验，两个评估组，两个智能调优组，一共4个组，调优间隔30分钟，评估流量6%。</p>
+<pre><code>{
+    &quot;name&quot;: &quot;test-mab&quot;,
+    &quot;duration&quot;: 14,
+    &quot;versions&quot;: [
+        {
+            &quot;name&quot;: &quot;对照组&quot;,
+            &quot;label&quot;: &quot;对照组&quot;,
+            &quot;weight&quot;: 0.47,
+            &quot;is_mab&quot;: 1,
+            &quot;type&quot;: 0,
+            &quot;config&quot;: {
+                &quot;HcCVhO&quot;: &quot;_Lf5XM&quot;
+            },
+            &quot;users&quot;: []
+        },
+        {
+            &quot;name&quot;: &quot;实验组1&quot;,
+            &quot;label&quot;: &quot;实验组1&quot;,
+            &quot;weight&quot;: 0.47,
+            &quot;is_mab&quot;: 1,
+            &quot;type&quot;: 1,
+            &quot;config&quot;: {
+                &quot;HcCVhO&quot;: &quot;TAqqd4&quot;
+            },
+            &quot;users&quot;: []
+        },
+        {
+            &quot;name&quot;: &quot;对照组-Besfw&quot;,
+            &quot;label&quot;: &quot;对照组&quot;,
+            &quot;weight&quot;: 0.03,
+            &quot;is_mab&quot;: 0,
+            &quot;type&quot;: 1,
+            &quot;config&quot;: {
+                &quot;HcCVhO&quot;: &quot;ij45wC&quot;
+            },
+            &quot;users&quot;: []
+        },
+        {
+            &quot;name&quot;: &quot;实验组1-fL17k&quot;,
+            &quot;label&quot;: &quot;实验组1&quot;,
+            &quot;weight&quot;: 0.03,
+            &quot;is_mab&quot;: 0,
+            &quot;type&quot;: 1,
+            &quot;config&quot;: {
+                &quot;HcCVhO&quot;: &quot;WRDoSW&quot;
+            },
+            &quot;users&quot;: []
+        }
+    ],
+    &quot;major_metric&quot;: 100942,
+    &quot;metrics&quot;: [
+        100940,
+        100941,
+        100942,
+        100943,
+        100944,
+        100945,
+        100946
+    ],
+    &quot;mode&quot;: 1,
+    &quot;mab_info&quot;: {
+        &quot;interval_time&quot;: 1800,
+        &quot;non_mab_traffic&quot;: 6
+    },
+    &quot;endpoint_type&quot;: 0,
+    &quot;layer_info&quot;: {
+        &quot;layer_id&quot;: -1,
+        &quot;version_resource&quot;: 1
+    }
+}</code></pre>
+<p>&lt;span id=&quot;获取实验详情&quot;&gt;&lt;/span&gt;</p>
+<h2>获取实验详情</h2>
+<p><strong>说明：</strong>  根据实验ID获取实验详情</p>
+<p><strong>请求路径：</strong> <code>/openapi/v3/apps/{app_id}/experiments/{experiment_id}</code></p>
+<p><strong>请求方法：GET</strong></p>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>接口返回的实验信息</td></tr></tbody></table>
+<p><strong>data信息</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>experiment</td><td>object</td><td>实验信息</td></tr></tbody></table>
+<p><strong>experiment结构说明</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>实验的experiment_id</td></tr><tr><td>name</td><td>string</td><td>实验名称</td></tr><tr><td>tags</td><td>string</td><td>实验标签列表</td></tr><tr><td>owners</td><td>object</td><td>owner信息列表，包含以下字段：&lt;br&gt;&lt;br&gt;&lt;br&gt;* id：int，账号ID&lt;br&gt;&lt;br&gt;* name：string，用户名&lt;br&gt;&lt;br&gt;* account：string，用户账号名称</td></tr><tr><td>launch_start_time</td><td>long</td><td>实验开始时间，Unix时间戳</td></tr><tr><td>end_time</td><td>long</td><td>实验结束时间，Unix时间戳</td></tr><tr><td>create_time</td><td>long</td><td>实验创建时间，Unix时间戳</td></tr><tr><td>modify_time</td><td>long</td><td>实验修改时间，Unix时间戳</td></tr><tr><td>test_start_time</td><td>long</td><td>实验调试开始时间，Unix时间戳</td></tr><tr><td>duration</td><td>long</td><td>实验运行时间，单位秒</td></tr><tr><td>confidence_level</td><td>int</td><td>置信度水平，95代表置信度水平为95%</td></tr><tr><td>version_resource</td><td>float</td><td>实验所占流量，范围[0.001, 1]，1为100%</td></tr><tr><td>layer_id</td><td>int</td><td>实验层id</td></tr><tr><td>freeze_status</td><td>int</td><td>实验冻结状态 1\-冻结，0\-没冻结</td></tr><tr><td>freeze_time</td><td>long</td><td>实验冻结时间，Unix时间戳（只有冻结状态为1时才有效）</td></tr><tr><td>version_freeze_status</td><td>boolean</td><td>是否进组不出组&lt;br&gt;&lt;br&gt;&lt;br&gt;* true：是&lt;br&gt;&lt;br&gt;* false：否</td></tr><tr><td>pause_status</td><td>boolean</td><td>实验是否暂停&lt;br&gt;&lt;br&gt;&lt;br&gt;* true：暂停&lt;br&gt;&lt;br&gt;* false：不暂停</td></tr><tr><td>endpoint_type</td><td>int</td><td>0\-客户端实验，1\-服务端实验</td></tr><tr><td>versions</td><td>object[]</td><td>实验版本信息</td></tr><tr><td>metrics</td><td>object[]</td><td>实验关注指标信息</td></tr><tr><td>status</td><td>int/enum</td><td>实验状态， 0:已结束 1:运行中 2: 待调度 3:调试中</td></tr><tr><td>filters</td><td>string</td><td>实验受众目标，json字符串</td></tr><tr><td>description</td><td>string</td><td>实验描述</td></tr></tbody></table>
+<p><strong>metric结构说明</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>指标id</td></tr><tr><td>name</td><td>string</td><td>指标名称</td></tr><tr><td>description</td><td>string</td><td>指标描述</td></tr><tr><td>is_primary</td><td>int</td><td>是否核心指标：0\-否 1\-是</td></tr><tr><td>calculate_type</td><td>string</td><td>指标计算类型</td></tr><tr><td>dsl</td><td>object</td><td>指标dsl</td></tr><tr><td>status</td><td>int</td><td>指标状态 0: 已下线 1:没下线</td></tr><tr><td>is_composed</td><td>boolean</td><td>是否组合指标：true/false</td></tr><tr><td>data_type</td><td>string</td><td>指标展现数值格式</td></tr><tr><td>metric_type</td><td>string</td><td>指标类型，枚举值如下：&lt;br&gt;&lt;br&gt;&lt;br&gt;* tea：事件指标&lt;br&gt;&lt;br&gt;* funnel：漏斗指标&lt;br&gt;&lt;br&gt;* retention_all：预置留存指标。&lt;br&gt;&lt;br&gt;* custom_retention：自定义留存指标。&lt;br&gt;&lt;br&gt;* portable：数仓指标。&lt;br&gt;&lt;br&gt;* event：事件指标，过往曾使用“event”表示事件指标，当前事件指标均使用“tea”。&lt;br&gt;&lt;br&gt;* 其他枚举值：其他指标类型。</td></tr></tbody></table>
+<p><strong>version结构说明</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>版本id</td></tr><tr><td>type</td><td>int</td><td>版本类型：0\-对照版本，1\-实验版本</td></tr><tr><td>name</td><td>string</td><td>版本名称</td></tr><tr><td>description</td><td>string</td><td>版本描述</td></tr><tr><td>config</td><td>object</td><td>版本配置</td></tr><tr><td>weight</td><td>int</td><td>版本权重，和为1000，1代表0.1% 为0则为均匀分配</td></tr><tr><td>user_list</td><td>string[]</td><td>白名单列表</td></tr></tbody></table>
+<p>&lt;span id=&quot;获取实验列表&quot;&gt;&lt;/span&gt;</p>
+<h2>获取实验列表</h2>
+<p><strong>说明：</strong>  分页获取APP下的实验列表</p>
+<p><strong>注意：如果搜索关键字keyword包含中文，则需要先进行url转义，再进行调用</strong></p>
+<p><strong>请求路径：</strong> <code>/openapi/v3/apps/&lt;app_id&gt;/experiments</code></p>
+<p><strong>请求方法：GET</strong></p>
+<p><strong>URL查询参数</strong></p>
+<table><thead><tr><th>参数</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>status</td><td>int</td><td>实验状态，0\-已结束，1\-运行中，3\-测试中；不传则默认所有状态</td></tr><tr><td>page</td><td>int</td><td>分页参数，1表示第一页，不传默认为1</td></tr><tr><td>page_size</td><td>int</td><td>每页数量，不传默认99</td></tr><tr><td>keyword</td><td>string</td><td>搜索关键字，当前支持按照实验name和description模糊搜索</td></tr><tr><td>sort_by</td><td>string</td><td>排序规则。当前仅支持 end_time结束时间、launch_start_time实验启动时间、test_start_time测试开始时间； 不传默认实验创建时间</td></tr><tr><td>sort_order</td><td>string</td><td>排序顺序。desc/asc。不传默认desc降序</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>{&lt;br&gt;&lt;br&gt;&quot;experiments&quot;: [],&lt;br&gt;&lt;br&gt;&quot;page&quot;: {&lt;br&gt;&lt;br&gt;&quot;current_page&quot;: 1, // 当前页&lt;br&gt;&lt;br&gt;&quot;total_pages&quot;: 0, // 总页数&lt;br&gt;&lt;br&gt;&quot;total_items&quot;: 0 // 总条目数&lt;br&gt;&lt;br&gt;}&lt;br&gt;&lt;br&gt;}</td></tr></tbody></table>
+<p><strong>experiments结构说明</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>实验ID</td></tr><tr><td>name</td><td>string</td><td>实验名称</td></tr><tr><td>end_time</td><td>long</td><td>实验结束时间，Unix时间戳</td></tr><tr><td>test_start_time</td><td>long</td><td>实验调试开始时间，Unix时间戳</td></tr><tr><td>launch_start_time</td><td>long</td><td>实验开始时间，Unix时间戳</td></tr><tr><td>duration</td><td>long</td><td>实验运行时间，单位秒</td></tr><tr><td>version_resource</td><td>float</td><td>实验所占流量，范围[0.001, 1]，1为100%</td></tr><tr><td>layer_id</td><td>int</td><td>实验层id</td></tr><tr><td>freeze_status</td><td>int</td><td>实验冻结状态 1\-冻结，0\-没冻结</td></tr><tr><td>freeze_time</td><td>long</td><td>实验冻结时间，Unix时间戳（只有冻结状态为1时才有效）</td></tr><tr><td>version_freeze_status</td><td>boolean</td><td>是否进组不出组&lt;br&gt;&lt;br&gt;&lt;br&gt;* true：是&lt;br&gt;&lt;br&gt;* false：否</td></tr><tr><td>pause_status</td><td>boolean</td><td>实验是否暂停&lt;br&gt;&lt;br&gt;&lt;br&gt;* true：暂停&lt;br&gt;&lt;br&gt;* false：不暂停</td></tr><tr><td>endpoint_type</td><td>int</td><td>0\-客户端实验，1\-服务端实验</td></tr><tr><td>description</td><td>string</td><td>实验描述</td></tr><tr><td>status</td><td>int/enum</td><td>实验状态， 0:已结束 1:运行中 2: 待调度 3:调试中</td></tr><tr><td>owner</td><td>字符串</td><td>实验创建人</td></tr><tr><td>versions</td><td>object[]</td><td>实验版本信息</td></tr></tbody></table>
+<p>&lt;span id=&quot;修改实验信息&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>修改实验信息</strong></h2>
+<p><strong>说明：</strong>  修改实验的配置信息。<strong>通过Method来区分是全量修改还是部分修改</strong>。</p>
+<ul><li>全量修改：Method=PUT。请求参数中的所有必填参数必须包含。</li></ul>
+<ul><li>部分修改：Method=PATCH。可以任意传递支持的配置参数，请求体中有的参数，才会进行校验与修改，请求体中没有的参数，则会保持现状。</li></ul>
+<p><strong>注意：由于使用的网络库本身不支持不支持PATCH方法，因此Java SDK暂不支持PATCH方法</strong></p>
+<p><strong>请求路径：</strong> <code>/openapi/v3/apps/{app_id}/experiments/&lt;experiment_id&gt;</code></p>
+<p>请求方法：PUT/PATCH</p>
+<p><strong>请求参数</strong></p>
+<table><thead><tr><th>参数名称</th><th>参数类型</th><th>是否必须</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>name</td><td>string</td><td>是</td><td>实验名称</td><td>不能与已有实验重名，长度50字符</td></tr><tr><td>description</td><td>string</td><td>否</td><td>实验描述</td><td>长度1000字符</td></tr><tr><td>tags</td><td>string</td><td>否</td><td>实验标签</td><td>[&quot;123&quot;, &quot;456&quot;]</td></tr><tr><td>owners</td><td>object</td><td>否</td><td>创建人</td><td>实验owner列表</td></tr><tr><td>duration</td><td>int</td><td>是</td><td>实验时长</td><td>单位天，[1, 365]，整数</td></tr><tr><td>major_metric</td><td>int</td><td>是</td><td>核心指标 ID</td><td>运行中不可修改 测试中可以修改</td></tr><tr><td>metrics</td><td>int[]</td><td>是</td><td>指标ID列表</td><td></td></tr><tr><td>versions</td><td>object[]</td><td>是</td><td>实验版本</td><td>version数量不可变动，只可以修改version内容</td></tr><tr><td>layer_info</td><td>object</td><td>否</td><td>互斥组</td><td></td></tr></tbody></table>
+<p><strong>version结构</strong></p>
+<table><thead><tr><th>参数名称</th><th>参数类型</th><th>是否必填</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>是</td><td>版本ID</td><td>修改version信息必填</td></tr><tr><td>name</td><td>string</td><td>是</td><td>版本名称</td><td>长度50字符</td></tr><tr><td>description</td><td>string</td><td>否</td><td>版本描述</td><td>长度1000字符</td></tr><tr><td>weight</td><td>float</td><td>否</td><td>流量分配</td><td>范围[0.001, 1] 0.1% ~ 100%&lt;br&gt;&lt;br&gt;versions数组中不传，则默认均匀分配&lt;br&gt;&lt;br&gt;如果传，则会校验所有weight的和是否为1</td></tr><tr><td>config</td><td>object</td><td>是</td><td>版本参数不同版本的 key&lt;br&gt;&lt;br&gt;需要保持一致</td><td>version数组中所有config的key需要保持一致</td></tr><tr><td>users</td><td>string[]</td><td>否</td><td>白名单用户</td><td></td></tr></tbody></table>
+<p><strong>layer_info结构</strong></p>
+<table><thead><tr><th>参数名称</th><th>参数类型</th><th>是否必填</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>layer_id</td><td>int</td><td>否</td><td>互斥组 ID</td><td></td></tr><tr><td>version_resource</td><td>float</td><td>是</td><td>占用流量百分比</td><td>范围[0.001, 1]，最小精度千分之一</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>实验ID</td></tr></tbody></table>
+<p>&lt;span id=&quot;90df9025&quot;&gt;&lt;/span&gt;</p>
+<h2>修改实验关联指标组</h2>
+<p><strong>说明：</strong>  修改实验关联的指标组，设置结果会直接覆盖实验关联指标的配置。</p>
+<p><strong>请求路径</strong>： <code>/openapi/v3/apps/&lt;app_id&gt;/metric_groups/experiments/{experiment_id}/update_watching_metric_groups</code></p>
+<p><strong>请求方法</strong>: PUT</p>
+<ul><li>请求体请求参数如下。</li></ul>
+<table><thead><tr><th>参数名称</th><th></th><th>类型</th><th>是否必须</th><th>描述</th></tr></thead><tbody><tr><td>relation_metric_groups</td><td></td><td>[object]</td><td>是</td><td>修改后实验关联的指标组列表。指标组列表中的每个指标对象包含：metric_group_id、metric_ids、type三个字段，详细说明可参见表格下方的参数说明。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;调用此接口修改实验关联指标组时，会将本次设置结果直接覆盖实验的指标配置，而非基于此前实验的指标配置基础上进行新增、删除的操作。因此建议在进行修改前，您可调用“获取实验详情”接口先了解当前实验的指标有哪些，需要保留的指标组需同时添加在本次的修改指标中。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td></td><td>metric_ids</td><td>[int]</td><td>是</td><td>指标ID列表，配置为修改后实验的指标ID列表。您可以通过“获取指标列表”接口获取指标ID。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;此处配置的指标需要为当前实验所在应用下创建的指标。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td></td><td>metric_group_id</td><td>int</td><td>是</td><td>指标组ID，您可以通过“获取指标详情”接口，基于指标ID获取指标组ID。</td></tr><tr><td></td><td>type</td><td>string</td><td>是</td><td>修改后实验的指标类型，支持设置为：&lt;br&gt;&lt;br&gt;&lt;br&gt;* core：实验核心指标，仅支持设置一个实验核心指标。&lt;br&gt;&lt;br&gt;* watching：实验关注指标，支持设置多个实验关注指标。</td></tr></tbody></table>
+<ul><li>请求示例</li></ul>
+<p>   ``<code>JSON    {        &quot;relation_metric_groups&quot;: [            {                &quot;metric_group_id&quot;: 1679062,                &quot;metric_ids&quot;: [                    114314                ],                &quot;type&quot;: &quot;core&quot;            },            {                &quot;metric_group_id&quot;: 158338,                &quot;metric_ids&quot;: [                    83731                ],                &quot;type&quot;: &quot;watching&quot;            }        ]    }    </code>``</p>
+<p><strong>返回参数</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>int</td><td>NULL</td></tr></tbody></table>
+<p>&lt;span id=&quot;开始实验&quot;&gt;&lt;/span&gt;</p>
+<h2>开始实验</h2>
+<p><strong>说明：</strong>  开始一个测试中的实验。使其状态变为运行中。</p>
+<p><strong>请求路径：</strong>  <code>/openapi/v3/apps/&lt;app_id&gt;/experiments/&lt;experiment_id&gt;/launch</code></p>
+<p><strong>请求方法：</strong>  PUT</p>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>实验ID</td></tr></tbody></table>
+<p>&lt;span id=&quot;0e84d636&quot;&gt;&lt;/span&gt;</p>
+<h2>暂停实验</h2>
+<p><strong>说明：</strong>  暂停指定实验</p>
+<p><strong>请求路径</strong> : <code>/openapi/v3/apps/&lt;app_id&gt;/experiments/&lt;experiment_id&gt;/pause</code></p>
+<p><strong>请求方法:</strong>  POST</p>
+<p><strong>请求参数</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>duration</td><td>int</td><td>暂停某个实验时，实验流量是平滑生效的，通过此参数设置平滑生效的时间是多少分钟</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr></tbody></table>
+<p>&lt;span id=&quot;b1045cd1&quot;&gt;&lt;/span&gt;</p>
+<h2>恢复实验</h2>
+<p><strong>说明：</strong>  恢复指定实验</p>
+<p><strong>请求路径</strong> : <code>/openapi/v3/apps/&lt;app_id&gt;/experiments/&lt;experiment_id&gt;/restore</code></p>
+<p><strong>请求方法:</strong>  POST</p>
+<p><strong>请求参数</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>duration</td><td>int</td><td>恢复某个实验时，实验流量是平滑生效的，通过此参数设置平滑生效的时间是多少分钟</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr></tbody></table>
+<p>&lt;span id=&quot;结束实验&quot;&gt;&lt;/span&gt;</p>
+<h2>结束实验</h2>
+<p><strong>说明：</strong>  结束指定实验</p>
+<p><strong>请求路径</strong> : <code>/openapi/v3/apps/&lt;app_id&gt;/experiments/&lt;experiment_id&gt;/stop</code></p>
+<p><strong>请求方法:</strong>  PUT</p>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>实验ID</td></tr></tbody></table>
+<p>&lt;span id=&quot;创建指标&quot;&gt;&lt;/span&gt;</p>
+<h2>创建指标</h2>
+<p><strong>说明</strong>： 创建一个A/B测试指标</p>
+<p><strong>请求路径：</strong>  <code>/openapi/v3/apps/&lt;app_id&gt;/metrics</code></p>
+<p><strong>请求方法</strong>：POST</p>
+<p><strong>请求参数</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>是否必须</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>name</td><td>string</td><td>是</td><td>指标名称</td><td>长度限制 50，不可与相同APP下其他指标重复</td></tr><tr><td>description</td><td>string</td><td>否</td><td>指标描述</td><td>长度限制 1000</td></tr><tr><td>dsl</td><td>object</td><td>是</td><td>指标DSL</td><td>dsl详情可咨询对接人员</td></tr><tr><td>composed</td><td>boolean</td><td>是</td><td>是否是组合指标</td><td>true/false</td></tr><tr><td>data_type</td><td>string</td><td>否</td><td>数据展示类型</td><td>枚举值&lt;br&gt;&lt;br&gt;number_0, number_1, number_2, number_3, number_4, number_5,&lt;br&gt;&lt;br&gt;percent_0, percent_1, percent_2, percent_3, percent_4, percent_5&lt;br&gt;&lt;br&gt;默认为percent_4，即百分数四位小数</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>int</td><td>指标ID</td></tr></tbody></table>
+<p>&lt;span id=&quot;基于指标模板创建指标&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>基于指标模板创建指标</strong></h2>
+<p><strong>说明：</strong>  基于现存的A/B测试指标，通过修改其中的属性过滤信息，创建新的A/B测试指标。只会替换模板指标中同名的属性值，模板指标中不存在的属性会忽略。如果传入多个 metrics，要修改的属性信息会分别应用于每个 metric。</p>
+<p>可以简单理解为把每个模板指标都复制一份，然后修改其已存在的 property 信息。</p>
+<p><strong>请求路径：</strong>  /openapi/v3/apps/&lt;app_id\&gt;/metrics/create\-from\-templates</p>
+<p><strong>请求方法：</strong>  POST</p>
+<p><strong>请求参数</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>是否必须</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>metrics</td><td>list[metric]</td><td>是</td><td>指标信息列表</td><td>metric 见下表说明</td></tr><tr><td>properties</td><td>list[property]</td><td>是</td><td>需要修改的属性信息</td><td>property 见下表说明</td></tr></tbody></table>
+<p>metric字段说明</p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>是否必须</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>metric_id</td><td>int</td><td>是</td><td>模板指标id</td><td>已存在的指标id</td></tr><tr><td>name</td><td>string</td><td>是</td><td>根据模板指标，新建指标的名称</td><td>长度限制 50，不可与相同APP下其他指标重复</td></tr><tr><td>description</td><td>string</td><td>否</td><td>根据模板指标，新建指标的指标信息</td><td>长度限制 1000</td></tr></tbody></table>
+<p>property字段说明</p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>是否必须</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>property_name</td><td>string</td><td>是</td><td>属性名称</td><td>模板中不存在的属性名会直接忽略，不报错</td></tr><tr><td>property_values</td><td>string/int/float数组</td><td>是</td><td>属性值</td><td>长度限制255，如果为空，则是[]；属性值类型需要与模板指标的属性类型保持一致。具体字段说明可参考 <a href="https://bytedance.feishu.cn/wiki/wikcnoc1Nr7G3hcECZeQq9zA2Pf#" target="_blank" rel="noopener">V3 DSL 字段详细说明</a></td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>list[object]</td><td>新创建的指标信息</td></tr></tbody></table>
+<p>object字段说明</p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>新创建的指标ID</td></tr><tr><td>name</td><td>string</td><td>新创建的指标名称</td></tr></tbody></table>
+<pre><code>curl --location --request POST &#x27;{host}/datatester/openapi/v3/apps/253047/metrics/create-from-template&#x27; \
+--header &#x27;Content-Type: application/json&#x27; \
+--data-raw &#x27;{
+    &quot;metrics&quot;: [
+        {
+            &quot;metric_id&quot;: 33487,
+            &quot;name&quot;: &quot;测试一下事件指标5&quot;,
+            &quot;description&quot;: &quot;这是一个description&quot;
+        },
+        {
+            &quot;metric_id&quot;: 33488,
+            &quot;name&quot;: &quot;测试一下事件指标6&quot;,
+            &quot;description&quot;: &quot;这是一个description&quot;
+        }
+    ],
+    &quot;properties&quot;: [
+        {
+            &quot;property_name&quot;: &quot;app_channel&quot;,
+            &quot;property_values&quot;: [
+                &quot;channel3&quot;,
+                &quot;channel4&quot;
+            ]
+        },
+        {
+            &quot;property_name&quot;: &quot;account_id&quot;,
+            &quot;property_values&quot;: [
+                &quot;1234556&quot;,
+                &quot;7654321&quot;
+            ]
+        }
+    ]
+}&#x27;</code></pre>
+<p>&lt;span id=&quot;删除指标&quot;&gt;&lt;/span&gt;</p>
+<h2>删除指标</h2>
+<p><strong>说明：</strong>  删除指定的指标。<strong>如果指标有已经关联的实验，则无法删除</strong></p>
+<p><strong>请求路径:</strong>  <code>/openapi/v3/apps/&lt;app_id&gt;/metrics/&lt;metric_id&gt;</code></p>
+<p><strong>请求方法: DELETE</strong></p>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>int</td><td>指标ID</td></tr></tbody></table>
+<p>&lt;span id=&quot;获取指标详情&quot;&gt;&lt;/span&gt;</p>
+<h2>获取指标详情</h2>
+<p><strong>说明：</strong>  获取指定指标的详情数据</p>
+<p><strong>请求路径：</strong>  <code>/openapi/v3/apps/&lt;app_id&gt;/metrics/&lt;metric_id&gt;</code></p>
+<p><strong>请求方法: GET</strong></p>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>指标信息</td></tr></tbody></table>
+<p><strong>指标信息说明</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>指标ID</td></tr><tr><td>name</td><td>string</td><td>指标名</td></tr><tr><td>description</td><td>string</td><td>描述</td></tr><tr><td>dsl</td><td>object</td><td>指标dsl</td></tr><tr><td>composed</td><td>boolean</td><td>是否是组合指标</td></tr><tr><td>status</td><td>int</td><td>状态 0\-下线 1\-上线</td></tr><tr><td>is_support_major</td><td>boolean</td><td>是否支持设置为核心指标</td></tr><tr><td>is_required</td><td>int</td><td>是否是必看指标，0：不是，1：是</td></tr><tr><td>metric_group</td><td>object</td><td>该指标所属的指标组信息，详情见下文的metric_group结构说明</td></tr></tbody></table>
+<p><strong>metric_group结构说明</strong></p>
+<table><thead><tr><th><strong>参数名称</strong></th><th><strong>参数类型</strong></th><th><strong>描述</strong></th></tr></thead><tbody><tr><td>id</td><td>int</td><td>指标组ID</td></tr><tr><td>name</td><td>string</td><td>指标组名称</td></tr><tr><td>uba_report_type</td><td>int</td><td>指标组类型，枚举值：1\-事件指标；2\-留存指标；3\-漏斗指标</td></tr></tbody></table>
+<p>&lt;span id=&quot;获取指标列表&quot;&gt;&lt;/span&gt;</p>
+<h2>获取指标列表</h2>
+<p><strong>说明：</strong>  分页获取APP下的指标列表</p>
+<p><strong>请求路径：</strong> <code>/openapi/v3/apps/&lt;app_id&gt;/metrics</code></p>
+<p><strong>请求方法：GET</strong></p>
+<p><strong>URL查询参数</strong></p>
+<table><thead><tr><th>参数</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>status</td><td>int</td><td>指标状态，0\-下线 1\-上线，不传则默认所有状态</td></tr><tr><td>page</td><td>int</td><td>分页参数，1表示第一页，不传默认为1</td></tr><tr><td>page_size</td><td>int</td><td>每页数量，不传默认99</td></tr><tr><td>keyword</td><td>string</td><td>搜索关键字，当前支持按照指标name和description模糊搜索</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>{&lt;br&gt;&lt;br&gt;&quot;metrics&quot;: [],&lt;br&gt;&lt;br&gt;&quot;page&quot;: {&lt;br&gt;&lt;br&gt;&quot;current_page&quot;: 1, // 当前页&lt;br&gt;&lt;br&gt;&quot;total_pages&quot;: 0, // 总页数&lt;br&gt;&lt;br&gt;&quot;total_items&quot;: 0 // 总条目数&lt;br&gt;&lt;br&gt;}&lt;br&gt;&lt;br&gt;}</td></tr></tbody></table>
+<p><strong>指标信息说明</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>指标ID</td></tr><tr><td>name</td><td>string</td><td>指标名</td></tr><tr><td>description</td><td>string</td><td>描述</td></tr><tr><td>dsl</td><td>object</td><td>指标dsl</td></tr><tr><td>composed</td><td>boolean</td><td>是否是组合指标</td></tr><tr><td>status</td><td>int</td><td>状态 0\-下线 1\-上线</td></tr><tr><td>is_support_major</td><td>boolean</td><td>是否支持设置为核心指标</td></tr></tbody></table>
+<p>&lt;span id=&quot;全量修改指标信息&quot;&gt;&lt;/span&gt;</p>
+<h2>全量修改指标信息</h2>
+<p><strong>说明：</strong>  全量修改指标的信息，DSL暂时无法修改，只可以修改名称、描述和数据类型</p>
+<p><strong>请求路径：</strong>  <code>/openapi/v3/apps/&lt;app_id&gt;/metrics/&lt;metric_id&gt;</code></p>
+<p><strong>请求方法: PUT</strong></p>
+<p><strong>请求体</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>是否必须</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>name</td><td>string</td><td>是</td><td>指标名称</td><td>最大长度50，不可重复</td></tr><tr><td>description</td><td>string</td><td>否</td><td>指标描述</td><td>最大长度1000</td></tr><tr><td>data_type</td><td>string</td><td>否</td><td>指标数据类型</td><td>枚举值&lt;br&gt;&lt;br&gt;number_0, number_1, number_2, number_3, number_4, number_5,&lt;br&gt;&lt;br&gt;percent_0, percent_1, percent_2, percent_3, percent_4, percent_5&lt;br&gt;&lt;br&gt;默认为percent_4，即百分数四位小数</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>int</td><td>指标ID</td></tr></tbody></table>
+<p>&lt;span id=&quot;修改指标状态&quot;&gt;&lt;/span&gt;</p>
+<h2>修改指标状态</h2>
+<p><strong>说明：</strong>  修改指标的状态（上线、下线）。<strong>JAVA SDK暂不支持此接口</strong></p>
+<p><strong>请求路径：</strong>  <code>/openapi/v3/apps/&lt;app_id&gt;/metrics/&lt;metric_id&gt;</code></p>
+<p><strong>请求方法: PATCH</strong></p>
+<p><strong>请求体</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>是否必须</th><th>描述</th><th>备注</th></tr></thead><tbody><tr><td>status</td><td>int</td><td>是</td><td>指标状态</td><td>0\-下线 1\-上线</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>int</td><td>指标ID</td></tr></tbody></table>
+<p>&lt;span id=&quot;获取互斥组列表&quot;&gt;&lt;/span&gt;</p>
+<h2>获取互斥组列表</h2>
+<p><strong>说明：</strong>  分页获取APP下互斥组的列表</p>
+<p><strong>请求路径</strong>： /openapi/v3/apps/&lt;app_id\&gt;/layers</p>
+<p><strong>请求方法: GET</strong></p>
+<p><strong>URL查询参数</strong></p>
+<table><thead><tr><th>参数</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>keyword</td><td>string</td><td>查询关键字，可以根据name和description模糊查询</td></tr><tr><td>endpoint_type</td><td>int</td><td>互斥组的端类型。0\-客户端层，1\-服务端层</td></tr><tr><td>page</td><td>int</td><td>查询页码。默认为1</td></tr><tr><td>page_size</td><td>int</td><td>每页数量，默认为99</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>{&lt;br&gt;&lt;br&gt;&quot;layers&quot;: [],&lt;br&gt;&lt;br&gt;&quot;page&quot;: {&lt;br&gt;&lt;br&gt;&quot;current_page&quot;: 1, // 当前页&lt;br&gt;&lt;br&gt;&quot;total_pages&quot;: 0, // 总页数&lt;br&gt;&lt;br&gt;&quot;total_items&quot;: 0 // 总条目数&lt;br&gt;&lt;br&gt;}&lt;br&gt;&lt;br&gt;}</td></tr></tbody></table>
+<p><strong>互斥组信息说明</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>互斥组ID</td></tr><tr><td>name</td><td>string</td><td>互斥组名</td></tr><tr><td>description</td><td>string</td><td>描述</td></tr><tr><td>endpoint_type</td><td>int</td><td>端类型，0\-客户端层，1\-服务端层</td></tr><tr><td>available_traffic</td><td>int</td><td>剩余流量，1000代表100%</td></tr></tbody></table>
+<p>&lt;span id=&quot;新建互斥组&quot;&gt;&lt;/span&gt;</p>
+<h2>新建互斥组</h2>
+<p><strong>说明：</strong>  创建一个新的互斥组</p>
+<p><strong>请求路径：</strong>  <code>/openapi/v3/apps/&lt;app_id&gt;/layers</code></p>
+<p><strong>请求方法: POST</strong></p>
+<p><strong>请求参数</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>是否必须</th><th>说明</th></tr></thead><tbody><tr><td>name</td><td>string</td><td>是</td><td>互斥组名，长度限制50</td></tr><tr><td>description</td><td>string</td><td>否</td><td>描述，长度限制1000</td></tr><tr><td>endpoint_type</td><td>int</td><td>是</td><td>端类型，0\-客户端层，1\-服务端层</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>int</td><td>互斥组ID</td></tr></tbody></table>
+<p>&lt;span id=&quot;5ac82ff9&quot;&gt;&lt;/span&gt;</p>
+<h2>获取实验报告\-分组结论概览</h2>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;当前实验报告相关数据获取仅支持天粒度的数据获取，暂不支持小时等更细粒度的数据。&lt;/div&gt;</p>
+<p><strong>说明</strong>：用于获取实验报告分组结论概览。</p>
+<p><strong>请求路径</strong> : /openapi/v3/apps/&lt;app_id\&gt;/experiments/&lt;experiment_id\&gt;/summary\-data</p>
+<p><strong>请求方法: GET</strong></p>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>报告数据，详情请参见下文的报告数据结构说明。</td></tr></tbody></table>
+<p><strong>报告数据结构说明</strong></p>
+<table><thead><tr><th><strong>参数名称</strong></th><th><strong>参数类型</strong></th><th><strong>描述</strong></th></tr></thead><tbody><tr><td>summary_infos</td><td>list[object]</td><td>报告概览数据，详情请参见下文的summary_infos结构说明。</td></tr><tr><td>report_type</td><td>string</td><td>报告类型：day。表示报告的查询时间粒度为天级</td></tr><tr><td>start_ts</td><td>int</td><td>查询开始时间，UNIX时间戳</td></tr><tr><td>end_ts</td><td>int</td><td>查询结束时间，UNIX时间戳</td></tr><tr><td>user_data</td><td>object</td><td>各版本进组人数</td></tr></tbody></table>
+<p><strong>summary_infos结构说明</strong></p>
+<table><thead><tr><th><strong>参数名称</strong></th><th><strong>参数类型</strong></th><th><strong>描述</strong></th></tr></thead><tbody><tr><td>major_metric_name</td><td>string</td><td>核心指标名称</td></tr><tr><td>summary</td><td>list[object]</td><td>指标概览数据</td></tr></tbody></table>
+<p><strong>返回示例</strong></p>
+<pre><code>{
+    &quot;code&quot;: 200,
+    &quot;data&quot;: {
+        &quot;summary_infos&quot;: [
+            {
+                &quot;major_metric_name&quot;: &quot;any转化率&quot;,
+                &quot;summary&quot;: [
+                    {
+                        &quot;vid&quot;: 339601,
+                        &quot;version_name&quot;: &quot;8b4b2cfdbd73941123bce96f9ce541e2&quot;,
+                        &quot;confidence&quot;: 3,
+                        &quot;conf_interval&quot;: [
+                            -0.08904,
+                            0.08904
+                        ],
+                        &quot;p&quot;: 1.0
+                    }
+                ]
+            }
+        ],
+        &quot;user_data&quot;: {
+            &quot;339600&quot;: 799,
+            &quot;339601&quot;: 799
+        },
+        &quot;start_ts&quot;: 1708822800,
+        &quot;end_ts&quot;: 1713801599,
+        &quot;report_type&quot;: &quot;day&quot;
+    },
+    &quot;message&quot;: &quot;success&quot;
+}</code></pre>
+<p>&lt;span id=&quot;22b2fb98&quot;&gt;&lt;/span&gt;</p>
+<h2>获取实验报告\-核心指标概览</h2>
+<p><strong>说明</strong>：用于获取实验报告分组结论概览</p>
+<p><strong>请求路径</strong> : /openapi/v3/apps/&lt;app_id\&gt;/experiments/&lt;experiment_id\&gt;/metric\-data</p>
+<p><strong>请求方法: POST</strong></p>
+<p><strong>请求参数</strong></p>
+<table><thead><tr><th><strong>参数名称</strong></th><th><strong>类型</strong></th><th><strong>是否必须</strong></th><th><strong>描述</strong></th><th><strong>备注</strong></th></tr></thead><tbody><tr><td>metric_id</td><td>int</td><td>是</td><td>指标ID</td><td>您可以通过获取指标列表接口获取指标ID。</td></tr><tr><td>report_type</td><td>string</td><td>是</td><td>查询类型</td><td>默认天级。当前仅支持 day，表示报告的查询时间粒度为天级。</td></tr><tr><td>start_ts</td><td>int</td><td>是</td><td>查询开始时间，UNIX时间戳</td><td>默认实验开始时间，不可以早于实验开始时间</td></tr><tr><td>end_ts</td><td>int</td><td>是</td><td>查询结束时间，UNIX时间戳</td><td>默认当前时间，不可以晚于实验结束时间</td></tr></tbody></table>
+<p><strong>返回值</strong></p>
+<table><thead><tr><th>参数名称</th><th>类型</th><th>说明</th></tr></thead><tbody><tr><td>code</td><td>int</td><td>接口返回状态，200为成功</td></tr><tr><td>message</td><td>string</td><td>接口返回信息，成功时默认为success</td></tr><tr><td>data</td><td>object</td><td>报告数据，详情请参见下文的报告数据结构说明。</td></tr></tbody></table>
+<p><strong>报告数据结构说明</strong></p>
+<table><thead><tr><th><strong>参数名称</strong></th><th><strong>参数类型</strong></th><th><strong>描述</strong></th></tr></thead><tbody><tr><td>versions</td><td>list[object]</td><td>实验版本信息，详情请参见下文的版本信息结构说明。</td></tr><tr><td>start_ts</td><td>int</td><td>查询开始时间，UNIX时间戳</td></tr><tr><td>end_ts</td><td>int</td><td>查询结束时间，UNIX时间戳</td></tr><tr><td>available_start_ts</td><td>int</td><td>可用报告开始时间，UNIX时间戳&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;当查询的时间范围超出了真实的报告数据产出的时间范围时，调用接口的返回结果为报告有数据的时间范围内的数据，这里的可用报告开始/结束时间，指的是真实返回的报告数据的时间范围。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td>available_end_ts</td><td>int</td><td>可用结束时间，UNIX时间戳</td></tr><tr><td>confidence_level</td><td>int</td><td>置信度</td></tr><tr><td>metric_id</td><td>int</td><td>指标ID</td></tr><tr><td>distribution</td><td>object</td><td>统计分布数据</td></tr><tr><td>daily_data</td><td>object</td><td>天级报告数据</td></tr><tr><td>user_data</td><td>object</td><td>各版本进组人数</td></tr></tbody></table>
+<p><strong>版本信息结构说明</strong></p>
+<table><thead><tr><th><strong>参数名称</strong></th><th><strong>参数类型</strong></th><th><strong>描述</strong></th></tr></thead><tbody><tr><td>id</td><td>int</td><td>版本ID</td></tr><tr><td>name</td><td>string</td><td>版本名称</td></tr><tr><td>config</td><td>object</td><td>版本配置信息</td></tr><tr><td>type</td><td>int</td><td>0:对照版本 1:实验版本</td></tr><tr><td>weight</td><td>int</td><td>版本权重，0为均分</td></tr><tr><td>disabled</td><td>bool</td><td>是否禁用</td></tr></tbody></table>
+<p><strong>返回示例</strong></p>
+<pre><code>{
+    &quot;code&quot;: 200,
+    &quot;data&quot;: {
+        &quot;available_start_ts&quot;: 1708822800,
+        &quot;available_end_ts&quot;: 1713801599,
+        &quot;start_ts&quot;: 1708822800,
+        &quot;end_ts&quot;: 1713801599,
+        &quot;versions&quot;: [
+            {
+                &quot;id&quot;: &quot;339600&quot;,
+                &quot;name&quot;: &quot;版本1&quot;,
+                &quot;config&quot;: {
+                    &quot;0304&quot;: &quot;111&quot;
+                },
+                &quot;type&quot;: 0,
+                &quot;weight&quot;: 0,
+                &quot;disabled&quot;: false
+            },
+            {
+                &quot;id&quot;: &quot;339601&quot;,
+                &quot;name&quot;: &quot;版本2&quot;,
+                &quot;config&quot;: {
+                    &quot;0304&quot;: &quot;222&quot;
+                },
+                &quot;type&quot;: 1,
+                &quot;weight&quot;: 0,
+                &quot;disabled&quot;: false
+            }
+        ],
+        &quot;confidence_level&quot;: 80,
+        &quot;metric_id&quot;: 99196,
+        &quot;distribution&quot;: {
+            &quot;339600&quot;: {
+                &quot;339601&quot;: {
+                    &quot;p&quot;: 1.0,
+                    &quot;m&quot;: 0.3416771,
+                    &quot;change&quot;: 0.0,
+                    &quot;change_rate&quot;: 0.0,
+                    &quot;conf_interval&quot;: [
+                        -0.08904,
+                        0.08904
+                    ],
+                    &quot;half_interval&quot;: 0.0890367,
+                    &quot;confidence&quot;: 3,
+                    &quot;mean&quot;: {
+                        &quot;339600&quot;: 0.3416771,
+                        &quot;339601&quot;: 0.3416771
+                    },
+                    &quot;variance&quot;: {
+                        &quot;339600&quot;: 0.00028152,
+                        &quot;339601&quot;: 0.00028152
+                    },
+                    &quot;mde&quot;: 0.14750037,
+                    &quot;sample_size&quot;: {
+                        &quot;339600&quot;: 799,
+                        &quot;339601&quot;: 799
+                    },
+                    &quot;details&quot;: {
+                        &quot;numerator&quot;: 273,
+                        &quot;denominator&quot;: 799
+                    }
+                }
+            },
+            &quot;339601&quot;: {
+                &quot;339600&quot;: {
+                    &quot;p&quot;: 0,
+                    &quot;m&quot;: 0.3416771,
+                    &quot;change&quot;: 0,
+                    &quot;change_rate&quot;: 0,
+                    &quot;conf_interval&quot;: [
+                        0,
+                        0
+                    ],
+                    &quot;half_interval&quot;: 0,
+                    &quot;confidence&quot;: 3,
+                    &quot;mean&quot;: {
+                        &quot;339601&quot;: 0,
+                        &quot;339600&quot;: 0
+                    },
+                    &quot;variance&quot;: {
+                        &quot;339601&quot;: 0,
+                        &quot;339600&quot;: 0
+                    },
+                    &quot;details&quot;: {
+                        &quot;numerator&quot;: 273,
+                        &quot;denominator&quot;: 799
+                    }
+                }
+            }
+        },
+        &quot;daily_data&quot;: {
+            &quot;2024-03-04&quot;: {
+                &quot;339600&quot;: {
+                    &quot;339601&quot;: {
+                        &quot;p&quot;: 1.0,
+                        &quot;m&quot;: 0.3416771,
+                        &quot;change&quot;: 0.0,
+                        &quot;change_rate&quot;: 0.0,
+                        &quot;conf_interval&quot;: [
+                            -0.08904,
+                            0.08904
+                        ],
+                        &quot;half_interval&quot;: 0.0890367,
+                        &quot;confidence&quot;: 3,
+                        &quot;mean&quot;: {
+                            &quot;339600&quot;: 0,
+                            &quot;339601&quot;: 0
+                        },
+                        &quot;variance&quot;: {
+                            &quot;339600&quot;: 0,
+                            &quot;339601&quot;: 0
+                        },
+                        &quot;mde&quot;: 0.14750037,
+                        &quot;details&quot;: {
+                            &quot;numerator&quot;: 273,
+                            &quot;denominator&quot;: 799
+                        }
+                    }
+                },
+                &quot;339601&quot;: {
+                    &quot;339600&quot;: {
+                        &quot;p&quot;: 0,
+                        &quot;m&quot;: 0.3416771,
+                        &quot;change&quot;: 0,
+                        &quot;change_rate&quot;: 0,
+                        &quot;conf_interval&quot;: [
+                            0,
+                            0
+                        ],
+                        &quot;half_interval&quot;: 0,
+                        &quot;confidence&quot;: 3,
+                        &quot;mean&quot;: {
+                            &quot;339601&quot;: 0,
+                            &quot;339600&quot;: 0
+                        },
+                        &quot;variance&quot;: {
+                            &quot;339601&quot;: 0,
+                            &quot;339600&quot;: 0
+                        },
+                        &quot;details&quot;: {
+                            &quot;numerator&quot;: 273,
+                            &quot;denominator&quot;: 799
+                        }
+                    }
+                }
+            }
+        },
+        &quot;boxplot&quot;: &quot;The current indicator does not support box plots. Please refer to the explanation below for the specific reason.&quot;,
+        &quot;user_data&quot;: {
+            &quot;339600&quot;: 799,
+            &quot;339601&quot;: 799
+        }
+    },
+    &quot;message&quot;: &quot;success&quot;
+}</code></pre>
+<p>&lt;span id=&quot;4605ccf9&quot;&gt;&lt;/span&gt;</p>
+<h2>五. 业务错误码说明</h2>
+<p>返回消息体里的code详细的定义</p>
+<table><thead><tr><th>错误码</th><th>含义</th></tr></thead><tbody><tr><td>200</td><td>成功</td></tr><tr><td>403</td><td>对请求的资源（app、实验等）无权限</td></tr><tr><td>404</td><td>请求的资源不存在，如查询了不存在的实验ID或指标ID</td></tr><tr><td>410</td><td>请求的资源已被删除</td></tr><tr><td>40000</td><td>缺少必填参数</td></tr><tr><td>40001</td><td>参数值错误</td></tr><tr><td>40003</td><td>对请求的接口无访问权限</td></tr><tr><td>40010</td><td>调用过于频繁（超过每秒调用次数限制）</td></tr><tr><td>40011</td><td>超过每天调用次数限制</td></tr><tr><td>60001</td><td>DSL格式错误</td></tr><tr><td>60002</td><td>指标有已关联实验，无法删除</td></tr><tr><td>60010</td><td>流量不足，无法创建实验</td></tr><tr><td>60011</td><td>实验的endpoint_type与所属互斥组不一致</td></tr><tr><td>60012</td><td>测试中实验无法被结束</td></tr><tr><td>60013</td><td>草稿态实验不可被openAPI查询或修改</td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

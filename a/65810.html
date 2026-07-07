@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>推送实验 · A/B 实验知识库</title>
+<meta name="description" content="推送通知类实验可以对推送通知的标题、内容、点击动作等进行测试。当您要向现有用户发布通知消息或者开始新的营销通知，但不确定效果如何时，您可以使用火山引擎A/B测试来创建推送通知类实验，通过在您所选的用户群中测试各种通知实验">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65810.html">
+<meta property="og:title" content="推送实验"><meta property="og:description" content="推送通知类实验可以对推送通知的标题、内容、点击动作等进行测试。当您要向现有用户发布通知消息或者开始新的营销通知，但不确定效果如何时，您可以使用火山引擎A/B测试来创建推送通知类实验，通过在您所选的用户群中测试各种通知实验">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65810.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>推送实验</h1>
+<div class="meta">📄 5,036 字 · 🕐 2026-01-07</div>
+<article class="md"><p>推送通知类实验可以对推送通知的标题、内容、点击动作等进行测试。当您要向现有用户发布通知消息或者开始新的营销通知，但不确定效果如何时，您可以使用火山引擎A/B测试来创建推送通知类实验，通过在您所选的用户群中测试各种通知实验组，来找出最理想的通知文案和消息呈现方式。本文为您介绍DataTester的推送实验应用场景和操作要点。</p>
+<p>&lt;span id=&quot;22312ec5&quot;&gt;&lt;/span&gt;</p>
+<h1><strong>前置条件及限制</strong></h1>
+<table><thead><tr><th>限制/前提条件</th><th>说明</th></tr></thead><tbody><tr><td>支持的实验类型</td><td>* 推送的实验类型为<strong>服务端</strong>实验。&lt;br&gt;&lt;br&gt;* 当前支持iOS、Android应用。&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;在推送过程中需要与客户端交互，因此目标受众可使用客户端的属性。&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;SaaS\-云原生环境中，柔佛地域暂不支持。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td>前提条件</td><td>* 使用推送实验前，需先配置好对应的推送通道，详情请参见<a href="https://www.volcengine.com/docs/6287/71443" target="_blank" rel="noopener">推送通道管理</a>。&lt;br&gt;&lt;br&gt;* 使用推送实验前，需集成DataTester的数据接入SDK，详情请参见<a href="https://www.volcengine.com/docs/6287/65801" target="_blank" rel="noopener">iOS SDK集成开发指南</a>、<a href="https://www.volcengine.com/docs/6287/65802" target="_blank" rel="noopener">Android SDK集成</a>。</td></tr></tbody></table>
+<p>&lt;span id=&quot;03116819&quot;&gt;&lt;/span&gt;</p>
+<h1>基本概念</h1>
+<ul><li>计划触达人数：调取API触发发送的去重人数。</li></ul>
+<ul><li>实际触达人数：接收到推送任务的去重人数。</li></ul>
+<ul><li>目标完成人数：根据设定的目标，完成的去重人数。</li></ul>
+<ul><li>计划触达次数：调取API触发发送的总数。</li></ul>
+<ul><li>实际触达次数：接收到推送任务的总数。</li></ul>
+<ul><li>目标完成次数：根据设定的目标，完成的次数。</li></ul>
+<p>&lt;span id=&quot;39f3c062&quot;&gt;&lt;/span&gt;</p>
+<h1>应用场景</h1>
+<p>推送实验主要用于解决（1）可选方案选择难，无法决策哪种效果佳；（2）变更影响大，不敢轻易变动，担心带来客户舆情这类场景的痛点。例如：</p>
+<ul><li><strong>多文案推送实验</strong> ：市场人员针对候选文案，很难通过人为经验判断哪个效果最好，即可通过开启A/B实验方式，先验小流量分析实验报告，选择适用场景的最优文案。</li></ul>
+<ul><li><strong>智能文案调优实验：</strong>  在进行多文案推送实验后，我们可以进一步设置智能文案调优实验，将效果更好的文案直接发送给更大范围的用户。</li></ul>
+<p><strong>场景示例：</strong> </p>
+<p>在购物节到来之际，我们有多种不同文案的push消息可以发送给用户，每种push消息主打不同的痛点，包括低价、舒适、时尚等，文案如下表：</p>
+<table><thead><tr><th>对照组</th><th>2021年度最爆折扣，抢1号0\-2点折上8折，全场低至3折起，入会下单领百元猫超卡，错过等明年！</th></tr></thead><tbody><tr><td>实验版本1</td><td>双11买什么？舒适百搭牛仔裤，穿搭巨显高级感，即刻挑选新品</td></tr><tr><td>实验版本2</td><td>idol同款，时尚牛仔搭品，双11新品折上折，助你时髦开挂</td></tr><tr><td>实验版本3</td><td>双11折扣燃爆，1号冲刺0\-2点折上8折，全场低至3折起，会员实付TOP1送Iphone，还有专属大额券领，快来解锁全年最大折扣！</td></tr></tbody></table>
+<ul><li>在大范围推送之前，我们先将不同的文案编辑成不同的实验版本，配置10%的流量进行实验。</li></ul>
+<ul><li>一段时间后，我们查看各实验版本的push点击情况、后链路付费率、付费总价等，选择最优的文案策略，给全量用户大范围推送。</li></ul>
+<p>&lt;span id=&quot;c85dfe3f&quot;&gt;&lt;/span&gt;</p>
+<h1>操作演示</h1>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_8adbfde7a1fb206ffe0e71329c8005ae.gif" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;c6e35283&quot;&gt;&lt;/span&gt;</p>
+<h1>创建实验</h1>
+<p>在实验列表页点击“+创建实验”，选择用户触达实验\-推送实验，进入实验创建流程。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;如果您在创建实验入口中找不到用户触达实验，可能是因为功能开关被关闭了，您可联系技术支持人员打开功能开关。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;3c5e7fe1&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>step1 输入基本信息</strong></h2>
+<p><strong>实验基本信息</strong>相关参数主要用于标识实验、明确实验类型等，配置详情如下。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fe5dfdfc2e4b479492ab77d3786ec50f~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>实验名称&amp;实验描述</strong></td><td>* <strong>实验名称</strong>：建议设置为与实验内容相关的名称，如有实验版本迭代可以增加版本号后缀，让您的伙伴能够快速了解到实验是做什么的、在哪个迭代版本。&lt;br&gt;&lt;br&gt;* <strong>实验描述</strong> ：实验内容简述，可以让项目相关人员更清晰地知道到这个实验是如何做的，解决什么问题，同时也便于后期查看和管理历史实验时一目了然。</td></tr><tr><td><strong>实验标签</strong></td><td>您可以在下拉框中选择已存在的实验标签，也可直接输入新标签。&lt;br&gt;&lt;br&gt;一般采用业务线、优化方向等实验内容关键词作为标签，用于筛选、归类实验，后续实验创建完成后，在实验列表中可以通过实验标签快速搜索到相关实验。</td></tr><tr><td><strong>实验负责人</strong></td><td>默认为实验创建者。</td></tr><tr><td><strong>实验结束后持续观测时长</strong></td><td>推送数据的收集有延后性，请根据实际情况输入实验结束后持续观测时长，最长30天</td></tr></tbody></table>
+<p>&lt;span id=&quot;8df4c7b3&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>step2 设置实验版本</strong></h2>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_ea8545dab76f18b30a9f25b87e6f8e81.png" loading="lazy"> &lt;/span&gt;</p>
+<p>您可以在配置实验版本页面中添加多个实验版本，分别配置实验的对照版本和各实验版本的推送规则，配置操作类似，核心配置参数如下：</p>
+<ol><li><strong>是否推送</strong>：可以选择该实验版本是否对用户进行推送；</li></ol>
+<ol><li><strong>推送通道及内容设置</strong>：此部分内容根据不同的推送通道进行设置</li></ol>
+<ol><li><strong>推送通道</strong> ：支持「极光通道」、「个推通道」和 Webhook 等通道。Webhook通道可对接自有或其他触达通道，可在推送通道管理中配置，详见<a href="https://www.volcengine.com/docs/6287/71443" target="_blank" rel="noopener">推送通道管理</a>。</li></ol>
+<ol><li><strong>推送平台</strong> ：支持「Android」和「iOS」。</li></ol>
+<ol><li><strong>后续动作</strong> ：</li></ol>
+<ul><li>启动应用，指的是用户点击push消息后，直接打开App应用。</li></ul>
+<ul><li>自定义行为，指的是用户点击push消息后，将填写的参数透传给客户端，客户端可以拿到参数去实现自己的业务逻辑，比如说进入某个新的页面。</li></ul>
+<ol><li><strong>推送标题</strong> ：字数≤20个汉字（40个字节）</li></ol>
+<ol><li><strong>推送内容</strong> ：字数≤50个汉字（100个字节）</li></ol>
+<ol><li><strong>推送通道说明：</strong> </li></ol>
+<p>      （1）极光/个推通道说明</p>
+<table><thead><tr><th>平台/推送通道</th><th>极光通道</th><th>个推通道</th></tr></thead><tbody><tr><td>Android</td><td>启动应用：&lt;br&gt;&lt;br&gt;（1）角标数字增加。&lt;br&gt;&lt;br&gt;（2）通知提醒：响铃、震动、呼吸灯、App在前台依然提醒、可设置优先级、可设置跳转链接。&lt;br&gt;&lt;br&gt;自定义行为：&lt;br&gt;&lt;br&gt;（1）将kv参数透传给特定应用，具体行为由应用决定。&lt;br&gt;&lt;br&gt;（2）角标数字增加。&lt;br&gt;&lt;br&gt;（3）通知提醒：响铃、震动、呼吸灯、App在前台依然提醒。可设置优先级。</td><td>启动应用：&lt;br&gt;&lt;br&gt;（1）通知提醒：响铃、震动。通知渠道重要性。通知是否可清除。&lt;br&gt;&lt;br&gt;自定义行为：&lt;br&gt;&lt;br&gt;（1）将kv参数透传给特定应用，具体行为由应用决定。</td></tr><tr><td>iOS</td><td>启动应用：&lt;br&gt;&lt;br&gt;（1）角标数字增加。&lt;br&gt;&lt;br&gt;（2）通知提醒：iOS可选生产环境、开发环境。&lt;br&gt;&lt;br&gt;自定义行为：&lt;br&gt;&lt;br&gt;（1）将kv参数透传给特定应用，具体行为由应用决定。&lt;br&gt;&lt;br&gt;（2）角标数字增加。&lt;br&gt;&lt;br&gt;（3）通知提醒：iOS可选生产环境、开发环境。</td><td>启动应用：&lt;br&gt;&lt;br&gt;（1）角标数字增加。&lt;br&gt;&lt;br&gt;自定义行为：&lt;br&gt;&lt;br&gt;（1）将kv参数透传给特定应用，具体行为由应用决定。&lt;br&gt;&lt;br&gt;（2）角标数字增加。</td></tr><tr><td>备注</td><td>1.极光通道，Android比iOS多了通知提醒（响铃、震动、呼吸灯、App在前台依然提醒、优先级）的选项。&lt;br&gt;&lt;br&gt;2.相同平台不同后续动作（启动应用、自定义行为），自定义行为只比启动应用多了kv参数透传。</td><td>iOS的功能符合预期，即自定义比打开应用多了kv选择&lt;br&gt;&lt;br&gt;Android自定义透传与打开应用无重叠功能。</td></tr></tbody></table>
+<p>      （2）Webhook 通道使用说明</p>
+<ul><li>创建实验时，可选择已经配置好的 Webhook通道</li></ul>
+<ul><li>选择通道后，填写通道对应的字段取值</li></ul>
+<ul><li>配置好后可以直接输入白名单测试</li></ul>
+<p>         &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_9a0cfd4a2e730e6aa993f36c7670780a.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li><strong>测试用户：</strong>  添加白名单测试用户</li></ol>
+<ol><li><strong>频控规则</strong> ：</li></ol>
+<ul><li>全局频控：每个用户1天内，最多能接受24条推送消息，且每小时最多1条。您可在火山引擎增长分析设置频控规则。</li></ul>
+<ul><li>无频控：1个用户在1天内可能会收到多条Push。</li></ul>
+<ol><li><strong>推送时机</strong></li></ol>
+<ul><li>单次立即推送：选择单次立即推送后，开始实验后立即生效。</li></ul>
+<ul><li>定时推送：支持定时推送。支持每天/周/月重复例行推送。</li></ul>
+<ul><li>事件触发推送：选择事件触发推送后，可设置事件触发规则：触发XX行为之后触发XX行为——\&gt;运行推送动作。 推送运营场景中，相对于定时推送等手动推送方式，基于用户行为事件触发推送的方式更加贴合用户场景，从而也更容易带来用户转化（比如，在用户将商品添加购物车后给用户发送优惠券，更容易促成用户下单)。</li></ul>
+<p>      &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_acd8b955e51519fd04f8078ba1f92b42.png" loading="lazy"> &lt;/span&gt;</p>
+<p>      事件触发类型见下表：</p>
+<table><thead><tr><th>事件触发类型</th><th>选项</th><th>释义</th><th>举例</th></tr></thead><tbody><tr><td>用户触发</td><td>单个行为</td><td>指触发了某个行为</td><td>用户启动/退出应用时，运行推送动作</td></tr><tr><td>多个行为</td><td>指触发了多个行为，比如做了A并且做了B</td><td>用户启动应用，并在使用过程中搜索商品，则运行推送动作</td></tr><tr><td>多个行为（有顺序）</td><td>指触发了多个行为且是按时间顺序，比如做了A之后并且做了B</td><td>用户搜索某商品后，退出应用，运行推送动作</td></tr><tr><td>之后</td><td>等待一段时间</td><td>触发行为等待一定时间后再推送</td><td>用户搜索商品后等待5分钟，运行推送动作</td></tr><tr><td>未触发特定行为</td><td>指触发行为后续未触发其他行为</td><td>用户搜索商品后的一天内未有提交订单行为，则运行推送动作</td></tr><tr><td>触发特定行为</td><td>指触发行为后续触发了其他行为</td><td>用户搜索商品后，在一天内有提交订单的行为，则运行推送条件</td></tr></tbody></table>
+<p>      注：事件和过滤条件有数量限制：事件数量&lt;=3、过滤条件&lt;=5。</p>
+<ol><li><strong>实验类型设置：</strong> </li></ol>
+<ol><li>常规推送实验</li></ol>
+<ol><li>智能调优推送实验：即文案赛马，可以动态调整流量给到更优的实验版本，如需使用建议实验进组人数超过10万；</li></ol>
+<ol><li><strong>实验流量分配设置</strong></li></ol>
+<p>   实验流量分配设置：即分配每个实验版本之间的流量比例分配。</p>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_2443c760cf3ffdc84559aedbbda19804.png" loading="lazy"> &lt;/span&gt;</p>
+<p>   可操作项如下：</p>
+<ul><li><strong>流量均匀分配\-开启</strong>：默认为开启状态，开启状态下为强制各实验版本流量均匀分配。</li></ul>
+<ul><li><strong>流量均匀分配\-关闭</strong>：关闭后可调配对照版本和实验版本的流量相对占比。 可通过输入数值，来控制每个实验版本命中的用户比例。例如，当关闭均匀分配后，三个实验版本，可配置对照版本占比20%，实验版本1占比为50%，实验版本2占比为30%，整体总和为100%。</li></ul>
+<p>&lt;span id=&quot;91e8a464&quot;&gt;&lt;/span&gt;</p>
+<h2>step3 设置生效策略</h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/e2eb9e437cf04710aecab9ab6736b277~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>实验流量</strong></td><td>生效实验的用户占满足用户受众用户比例。系统默认为100%流量，您可以通过建议工具（点击流量计算器）进行流量预估，看设置多少流量合适，详见：<a href="https://www.volcengine.com/docs/6287/65814" target="_blank" rel="noopener">预估实验流量：流量计算器</a>。&lt;br&gt;&lt;br&gt;启用受众规则后，系统将<strong>先筛选符合规则的用户</strong>，再按配置的<strong>实验流量比例</strong>生效。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;实验流量的预估时，通常需要结合实验的业务指标与&lt;strong&gt;MDE&lt;/strong&gt;（检验灵敏度）来进行估算，通常实验指标为提升/降低xx（某个业务指标值），那MDE建议以小于这个指标值来进行估算，尽量避免MDE取值较大，无法检测出真实的实验结果。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td><strong>受众规则</strong></td><td>* 推送实验为特殊的服务端实验，实验发起过程与普通客户端服务拉取数据的方式相反，是推送服务器主动下推。因此在下推之前要明确的选定目标受众，支持将已提前离线构建完毕的「用户分群」作为受众过滤条件，如上图所示。&lt;br&gt;&lt;br&gt;* 推送人数预估：点击后可计算出符合规则的用户数量。</td></tr></tbody></table>
+<p>&lt;span id=&quot;e25353c7&quot;&gt;&lt;/span&gt;</p>
+<h2>step4 添加实验指标</h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/cda597355f9c446285bfc8daed4d9025~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>实验默认指标</strong></td><td>推送实验会默认关注与触达与点击相关指标。</td></tr><tr><td><strong>实验核心指标配置</strong></td><td>* <strong>核心指标配置</strong>：&lt;br&gt;&lt;br&gt;   用来决策实验功能是否符合预期的「直接效果指标」或「成功指标」，您可以在下拉框中，在已有的指标组中选择指标作为实验的核心指标，建议合理的进行实验设计，谨慎选择，更多关于实验指标设置的经验指导请查看<a href="https://www.volcengine.com/docs/6287/65838#_1-%E7%A1%AE%E5%AE%9A%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87" target="_blank" rel="noopener">确定评估指标</a>。&lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;实验指标配置好后，后续实验创建完成后，如果如有特殊情况需要修改实验指标，请进入实验详情页进行修改。   &lt;/div&gt;&lt;br&gt;   &lt;br&gt;&lt;br&gt;* <strong>监控报警</strong>：可选择目标指标点击“监控报警”，填写具体需要的报警策略，选择是否勾选“效果显著”，以及选择报警策略的生效方式。&lt;br&gt;&lt;br&gt;* <strong>编辑指标</strong>：点击图例中3位置处可进入指标编辑页面，对可指标进行名称、指标类型、是否设为必看指标等进行编辑。</td></tr><tr><td><strong>实验关注指标配置</strong></td><td>对需要关注的指标进行配置。您可以在页面的下拉列表中选择需要关注的指标，也可以在页面单击<strong>新建指标</strong>或<strong>移除指标</strong>按钮，快速调整需要关注的指标。</td></tr></tbody></table>
+<p>&lt;span id=&quot;62e6e860&quot;&gt;&lt;/span&gt;</p>
+<h1>调试、开启、停止实验</h1>
+<p>实验创建完成后，您可以在A/B测试\&gt;实验列表中查看已创建的实验，并查看实验状态。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fad3f9d5a18e4a47a230b72ca7ce4a64~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>调试中</strong>：新创建完成的实验，实验状态为<strong>调试中</strong>，此阶段您可以邀请已添加为测试用户的用户进行实验测试，确认实验符合预期。</li></ul>
+<ul><li><strong>进行中</strong>：实验调试完毕后，您可以在实验列表页点击“启动”，即可开启实验。实验开始后，实验的状态变为<strong>进行中</strong>，此时进组用户可实时查看，指标置信度第二日产出。</li></ul>
+<ul><li><strong>已结束</strong>：实验开始后，当实验时长到达创建实验时配置的<strong>实验时长</strong>后，实验会自动停止；如果没有到达实验时长，您希望立即停止实验，也可在实验列表手动停止实验。停止实验后，实验状态变为<strong>已结束</strong>。</li></ul>
+<p>&lt;span id=&quot;eccda838&quot;&gt;&lt;/span&gt;</p>
+<h1>查看实验报告</h1>
+<p>实验开启后，您也可以在实验列表中，通过实验操作入口点击进入实验报告页面，查看实验报告，详情请参见<a href="https://www.volcengine.com/docs/6287/1130945" target="_blank" rel="noopener">实验报告概述</a>。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

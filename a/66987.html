@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>权限系统 · A/B 实验知识库</title>
+<meta name="description" content="一. 权限维度 权限的构成，包括三个维度： 1. 身份：决定了用户在火山引擎增长营销套件产品中的合法使用深度，比如是否可以禁用事件、是否可以看到全部看板等； 2. 应用：决定了用户可以对集团下哪些已接入的应用进行查看和操">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/66987.html">
+<meta property="og:title" content="权限系统"><meta property="og:description" content="一. 权限维度 权限的构成，包括三个维度： 1. 身份：决定了用户在火山引擎增长营销套件产品中的合法使用深度，比如是否可以禁用事件、是否可以看到全部看板等； 2. 应用：决定了用户可以对集团下哪些已接入的应用进行查看和操">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/66987.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>权限系统</h1>
+<div class="meta">📄 1,410 字 · 🕐 2024-09-12</div>
+<article class="md"><p>&lt;span id=&quot;一-权限维度&quot;&gt;&lt;/span&gt;</p>
+<h1>一. 权限维度</h1>
+<p>权限的构成，包括三个维度：</p>
+<ol><li>身份：决定了用户在火山引擎增长营销套件产品中的合法使用深度，比如是否可以禁用事件、是否可以看到全部看板等；</li></ol>
+<ol><li>应用：决定了用户可以对集团下哪些已接入的应用进行查看和操作；</li></ol>
+<ol><li>功能：决定了用户可以使用火山引擎增长营销套件产品中的哪些功能。</li></ol>
+<p>&lt;span id=&quot;二-角色&quot;&gt;&lt;/span&gt;</p>
+<h1>二. 角色</h1>
+<ul><li>角色是赋予用户权限的基本单位，角色由身份、开放的应用、开放的产品三个要素构成，如下图：</li></ul>
+<p>&lt;span&gt;<img src="https://p9-volceps.byteimg.com/tos-cn-i-0000/1218b0af6a6345288900741e55447df2~tplv-noop.image?width=911&amp;height=383" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>默认角色有三个：集团管理员、管理员、成员</li></ul>
+<ul><li>管理员和成员，可对开放的应用以及开放的产品进行修改，其它不可修改；</li></ul>
+<ul><li>一个用户可以同时具备多个角色。</li></ul>
+<p>&lt;span&gt;<img src="https://p9-volceps.byteimg.com/tos-cn-i-0000/a2648d50d1d24fa4a4b7b25bfa27e65c~tplv-noop.image?width=924&amp;height=225" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>在集团中，有对应权限的用户可以对角色进行增加、删除、修改；</li></ul>
+<p>   &lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/3ac02c9b675d4dc2af0401320cfb67a0~tplv-em5hxbkur4-noop.image?width=1651&amp;height=313" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>点击具体的“用户数 蓝色数字”或者“编辑”按钮，可进入编辑角色界面；</li></ul>
+<p>      &lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/f37b2a99762642c99b26f1452a2489a4~tplv-em5hxbkur4-noop.image?width=1390&amp;height=632" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>点击“添加新角色”，可进入创建角色界面。</li></ul>
+<p>      &lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/982e76857c054240a157973a19326ee0~tplv-em5hxbkur4-noop.image?width=1394&amp;height=607" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>温馨提示：</li></ul>
+<ul><li>对于没有权限的功能，在对应产品的顶部导航栏和左侧导航栏会隐藏没有权限的功能模块；</li></ul>
+<ul><li>分享链接时，如果用户打开的链接对应的功能没有权限，会出现“权限不足”的提示。</li></ul>
+<p>&lt;span id=&quot;三-权限集合&quot;&gt;&lt;/span&gt;</p>
+<h1>三. 权限集合</h1>
+<p>用户的权限集合，指的是在一个集团内，一个用户身上所有角色权限的并集。</p>
+<ul><li>需要注意不同身份的权限关系：</li></ul>
+<ul><li>“集团管理员权限”  包含  “管理员权限”  包含  “成员权限”</li></ul>
+<p>示例，如果某集团有以下三个角色：</p>
+<table><thead><tr><th>角色名称</th><th>身份</th><th>开放的应用</th><th>开放的产品</th></tr></thead><tbody><tr><td>分析师</td><td>管理员</td><td>抖音，火山小视频，图虫web</td><td>增长分析</td></tr><tr><td>AB实验RD</td><td>管理员</td><td>全部</td><td>增长分析、A/B测试</td></tr><tr><td>头条运营</td><td>成员</td><td>今日头条</td><td>增长分析</td></tr></tbody></table>
+<p>用户A具有分析师和头条运营的角色，则他的权限集合如下：</p>
+<ol><li>他是增长分析上抖音、火山小视频、图虫web应用的管理员；</li></ol>
+<ol><li>他是增长分析上今日头条应用的成员。</li></ol>
+<p>用户B具有AB实验RD和头条运营的角色，则他的权限集合如下：</p>
+<ol><li>他是增长分析、A/B测试上全部应用的管理员；</li></ol>
+<ol><li>他是游戏增长分析上今日头条、抖音的成员。</li></ol>
+<p>&lt;span id=&quot;四-身份-对应功能&quot;&gt;&lt;/span&gt;</p>
+<h1>四. 身份&amp;对应功能</h1>
+<p>各个身份与其对应的功能使用深度</p>
+<p>&lt;span id=&quot;角色管理权限&quot;&gt;&lt;/span&gt;</p>
+<h2>角色管理权限</h2>
+<table><thead><tr><th>身份</th><th>角色管理权限</th></tr></thead><tbody><tr><td>集团管理员</td><td>可以创建新角色；&lt;br&gt;&lt;br&gt;可以增删改所有角色，可以给所有角色分配用户。</td></tr><tr><td>管理员</td><td>可以创建新角色；&lt;br&gt;&lt;br&gt;可以创建的新角色权限集合必须小于等于他自己的权限集合；&lt;br&gt;&lt;br&gt;只能删除和修改自己创建的角色，只可以给自己的角色或自己创建的角色分配用户。</td></tr><tr><td>成员</td><td>/</td></tr><tr><td>备注</td><td>默认角色（角色名称为集团管理员、管理员、成员）不可被删除；&lt;br&gt;&lt;br&gt;角色名称为集团管理员不可被编辑；&lt;br&gt;&lt;br&gt;新建角色不允许选择集团管理员作为身份。</td></tr></tbody></table>
+<p>&lt;span id=&quot;用户管理的权限&quot;&gt;&lt;/span&gt;</p>
+<h2>用户管理的权限</h2>
+<table><thead><tr><th>身份</th><th>用户管理的权限</th></tr></thead><tbody><tr><td>集团管理员</td><td>可以编辑用户的角色；&lt;br&gt;&lt;br&gt;可以新建和管理所有用户的所有角色；&lt;br&gt;&lt;br&gt;可以添加和删除集团用户；&lt;br&gt;&lt;br&gt;可以在用户管理的右上角设置用户邀请权限；&lt;br&gt;&lt;br&gt;可以管理集团所有用户的权限；&lt;br&gt;&lt;br&gt;可以增加或删除其他的集团管理员；&lt;br&gt;&lt;br&gt;可以修改集团信息。</td></tr><tr><td>管理员</td><td>可以编辑用户的角色；&lt;br&gt;&lt;br&gt;只能编辑管理员和成员的角色，&lt;br&gt;&lt;br&gt;只能给其他用户赋予自己的角色或自己创建的角色。</td></tr><tr><td>成员</td><td>/</td></tr></tbody></table>
+<p>&lt;span id=&quot;集团信息修改的权限&quot;&gt;&lt;/span&gt;</p>
+<h2>集团信息修改的权限</h2>
+<table><thead><tr><th>身份</th><th>集团信息修改的权限</th></tr></thead><tbody><tr><td>集团管理员</td><td>只有集团管理员可以修改集团信息</td></tr><tr><td>管理员</td><td>/</td></tr><tr><td>成员</td><td>/</td></tr></tbody></table>
+<p>&lt;span id=&quot;其它&quot;&gt;&lt;/span&gt;</p>
+<h2>其它</h2>
+<table><thead><tr><th>身份</th><th>其它</th></tr></thead><tbody><tr><td>集团管理员</td><td>可以接入新应用；&lt;br&gt;&lt;br&gt;可以修改集团应用列表的置顶；&lt;br&gt;&lt;br&gt;平台上所有已有功能、所有已接入应用均向集团管理员开放。</td></tr><tr><td>管理员</td><td>可以无限制的访问及使用自己权限集合内的各应用&amp;各功能。</td></tr><tr><td>成员</td><td>可以访问及使用自己权限集合内的各产品&amp;各功能，但会受到限制，具体限制要参考功能设计。</td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

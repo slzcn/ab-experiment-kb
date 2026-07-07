@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>预置用户属性 · A/B 实验知识库</title>
+<meta name="description" content="系统为您提供了大量预置用户属性，也为您提供了自定义绑定用户属性的预置事件，便于您通过此事件自定义用户属性。 预置用户属性 属性名 SaaS/私有化支持 属性值类型 数据来源 属性描述 web_id Saas/私有化（事件">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1237087.html">
+<meta property="og:title" content="预置用户属性"><meta property="og:description" content="系统为您提供了大量预置用户属性，也为您提供了自定义绑定用户属性的预置事件，便于您通过此事件自定义用户属性。 预置用户属性 属性名 SaaS/私有化支持 属性值类型 数据来源 属性描述 web_id Saas/私有化（事件">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1237087.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>预置用户属性</h1>
+<div class="meta">📄 1,996 字 · 🕐 2024-03-28</div>
+<article class="md"><p>系统为您提供了大量预置用户属性，也为您提供了自定义绑定用户属性的预置事件，便于您通过此事件自定义用户属性。</p>
+<p>&lt;span id=&quot;057adc6a&quot;&gt;&lt;/span&gt;</p>
+<h1>预置用户属性</h1>
+<table><thead><tr><th><strong>属性名</strong></th><th><strong>SaaS/私有化支持</strong></th><th><strong>属性值类型</strong></th><th><strong>数据来源</strong></th><th><strong>属性描述</strong></th></tr></thead><tbody><tr><td>web_id</td><td>Saas/私有化（事件公共属性）</td><td>String</td><td>服务端生成</td><td></td></tr><tr><td>device_id</td><td>私有化</td><td>String</td><td>用户传入</td><td></td></tr><tr><td>region</td><td>Saas</td><td>String</td><td>系统 API</td><td>系统地区</td></tr><tr><td>loc_country_id</td><td>Saas</td><td>String</td><td>服务端生成</td><td>国家（数据构建时根据client_ip生成）</td></tr><tr><td>sdk_version</td><td>Saas</td><td>String</td><td>固定值</td><td>SDK版本</td></tr><tr><td>utm_term</td><td>Saas</td><td>String</td><td>服务端生成</td><td>广告推广字词</td></tr><tr><td>app_version</td><td>Saas</td><td>String</td><td>系统 API</td><td>软件版本</td></tr><tr><td>app_language</td><td>Saas</td><td>String</td><td>用户传入</td><td>软件语言</td></tr><tr><td>client_ip</td><td>Saas</td><td>String</td><td></td><td></td></tr><tr><td>resolution</td><td>Saas</td><td>String</td><td>系统 API</td><td>分辨率</td></tr><tr><td>continent</td><td>Saas</td><td>String</td><td>服务端生成</td><td>国家所属大洲（数据构建时根据client_ip生成）</td></tr><tr><td>app_channel</td><td>Saas</td><td>String</td><td></td><td>渠道</td></tr><tr><td>loc_province_id</td><td>Saas</td><td>String</td><td>服务端生成</td><td>省份（数据构建时根据client_ip生成）</td></tr><tr><td>language</td><td>Saas</td><td>String</td><td>系统 API</td><td>系统语言</td></tr><tr><td>age</td><td>Saas</td><td>String</td><td></td><td></td></tr><tr><td>browser_version</td><td>Saas</td><td>String</td><td>系统 API</td><td>浏览器版本</td></tr><tr><td>sdk_lib</td><td>Saas</td><td>String</td><td>固定值</td><td>SDK类型</td></tr><tr><td>user_is_new</td><td>Saas/私有化</td><td>Number</td><td>服务端生成</td><td>新老用户（user_is_new）和是否首日访问（$is_first_day）最主要的区别在于前者受所选时间周期的影响，而后者不受影响，因此后者在不同的图表类型中得到的计算结果有更好的一致性，建议使用是否首日访问（$is_first_day）来判断新老用户。&lt;br&gt;&lt;br&gt;是否首日访问（$is_first_day）：目标事件和首个事件发生在同一天。&lt;br&gt;&lt;br&gt;新老用户（user_is_new）：目标事件和首个事件发生在同一周期。比如在柱形图中，周期就是用户所选的时间范围。</td></tr><tr><td>os_version</td><td>Saas</td><td>String</td><td>系统 API</td><td>系统版本</td></tr><tr><td>platform</td><td>Saas</td><td>String</td><td>固定值</td><td></td></tr><tr><td>custom_mp_platform_app_version</td><td>Saas</td><td>String</td><td></td><td>平台版本号</td></tr><tr><td>custom_mp_platform</td><td>Saas</td><td>String</td><td></td><td>小程序平台</td></tr><tr><td>utm_source</td><td>Saas</td><td>String</td><td>服务端生成</td><td>广告推广渠道</td></tr><tr><td>os_name</td><td>Saas</td><td>String</td><td>系统 API</td><td>操作系统</td></tr><tr><td>network_type</td><td>Saas</td><td>String</td><td>系统 API</td><td>网络类型</td></tr><tr><td>ab_version</td><td>Saas</td><td>Number</td><td></td><td>AB实验VID</td></tr><tr><td>custom_mp_platform_basic_version</td><td>Saas</td><td>String</td><td></td><td>小程序基础库版本号</td></tr><tr><td>utm_medium</td><td>Saas</td><td>String</td><td>服务端生成</td><td>广告推广媒介</td></tr><tr><td>device_model</td><td>Saas</td><td>String</td><td>系统 API</td><td>设备型号</td></tr><tr><td>browser</td><td>Saas</td><td>String</td><td>系统 API</td><td>浏览器</td></tr><tr><td>custom_rangers_mp_from_uid</td><td>Saas</td><td>String</td><td></td><td></td></tr><tr><td>network_carrier</td><td>Saas</td><td>String</td><td>系统 API</td><td>运营商（数据构建时会有清洗逻辑到设备库进行映射，如果映射不到就使用上报的值）</td></tr><tr><td>utm_campaign</td><td>Saas</td><td>String</td><td>服务端生成</td><td>广告推广活动</td></tr><tr><td>utm_content</td><td>Saas</td><td>String</td><td>服务端生成</td><td>广告推广内容</td></tr><tr><td>brand</td><td>Saas</td><td>String</td><td>系统 API</td><td>手机品牌</td></tr><tr><td>app_region</td><td>Saas</td><td>String</td><td></td><td>软件地区</td></tr><tr><td>loc_city_id</td><td>Saas</td><td>String</td><td>服务端生成</td><td>城市（数据构建时根据client_ip生成）</td></tr><tr><td>user_id</td><td>Saas</td><td>String</td><td></td><td>用户ID</td></tr><tr><td>first_event_time</td><td>私有化</td><td>String</td><td>服务端生成</td><td>激活时间</td></tr><tr><td>last_active_date</td><td>私有化</td><td>String</td><td>服务端生成</td><td>最后活跃日期</td></tr></tbody></table>
+<p>&lt;span id=&quot;8b4d0fbb&quot;&gt;&lt;/span&gt;</p>
+<h1>用户属性绑定</h1>
+<table><thead><tr><th><strong>事件名</strong></th><th><strong>事件显示名</strong></th><th><strong>属性</strong></th></tr></thead><tbody><tr><td>__profile_set</td><td>用户属性</td><td>属性为自定义的用户属性</td></tr><tr><td>__profile_set_once</td><td>用户属性</td><td>属性为自定义的用户属性</td></tr><tr><td>__profile_unset</td><td>取消用户属性</td><td>属性为自定义的用户属性</td></tr><tr><td>__profile_increment</td><td>增量用户属性</td><td>属性为自定义的用户属性</td></tr><tr><td>__profile_append</td><td>增加用户属性</td><td>属性为自定义的用户属性</td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

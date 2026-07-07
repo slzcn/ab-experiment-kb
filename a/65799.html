@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>基本概念 · A/B 实验知识库</title>
+<meta name="description" content="初阶 1、AB实验、实验组、对照组 相关概念 概念介绍 AB实验 A/B实验的基本思想就是在线上流量中取出 一小部分 （较低风险），完全 随机 地分给原策略A和新策略B（排除干扰），再结合一定的 统计方法 ，得到对于两种">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65799.html">
+<meta property="og:title" content="基本概念"><meta property="og:description" content="初阶 1、AB实验、实验组、对照组 相关概念 概念介绍 AB实验 A/B实验的基本思想就是在线上流量中取出 一小部分 （较低风险），完全 随机 地分给原策略A和新策略B（排除干扰），再结合一定的 统计方法 ，得到对于两种">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65799.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📎 上手·协议·其他</span></div>
+<h1>基本概念</h1>
+<div class="meta">📄 12,403 字 · 🕐 2026-01-22</div>
+<article class="md"><p>&lt;span id=&quot;0adc51d0&quot;&gt;&lt;/span&gt;</p>
+<h1>初阶</h1>
+<p>&lt;span id=&quot;_1-ab实验&quot;&gt;&lt;/span&gt;</p>
+<h2>1、AB实验、实验组、对照组</h2>
+<table><thead><tr><th><strong>相关概念</strong></th><th><strong>概念介绍</strong></th></tr></thead><tbody><tr><td><strong>AB实验</strong></td><td>A/B实验的基本思想就是在线上流量中取出<strong>一小部分</strong>（较低风险），完全<strong>随机</strong>地分给原策略A和新策略B（排除干扰），再结合一定的<strong>统计方法</strong>，得到对于两种策略相对效果的准确估计（量化结果）。&lt;br&gt;&lt;br&gt;这一套基于小样本的实验方法即为A/B实验，亦被称为“<strong>对照实验”或“小流量随机实验”</strong> ，同时满足了<strong>低风险</strong>，<strong>抗干扰</strong>和<strong>量化结果</strong>的要求，因此不论在互联网产品研发还是科学研究中，都被广泛使用。&lt;br&gt;&lt;br&gt;更多AB实验的应用场景等介绍详情请参见<a href="https://www.volcengine.com/docs/6287/65794" target="_blank" rel="noopener">什么是A/B 实验</a>。</td></tr><tr><td><strong>实验组、对照组</strong></td><td>实验组和对照组是一组相对的概念，A/B实验通常是为了验证一个新策略的效果。假设在实验中，所抽取的用户被随机地分配到A组和B组中，A组用户在产品中体验到新策略，B组用户在实验中体验的仍旧是旧策略。在这一实验过程中，A组便为实验组，B组则为对照组。</td></tr></tbody></table>
+<p>&lt;span id=&quot;d4591f03&quot;&gt;&lt;/span&gt;</p>
+<h2>2、客户端实验、服务端实验</h2>
+<table><thead><tr><th><strong>对比说明</strong></th><th><strong>客户端实验</strong></th><th><strong>服务端实验</strong></th></tr></thead><tbody><tr><td><strong>实验描述</strong></td><td>指通过客户端获取实验分组信息并控制配置生效的实验。</td><td>指通过服务端获取实验分组信息并控制配置生效或下发的实验。</td></tr><tr><td><strong>特点及场景</strong></td><td>* 特点：APP唤起时，AB相关配置即需生效&lt;br&gt;&lt;br&gt;* 场景：&lt;br&gt;&lt;br&gt;&lt;br&gt;要求启动就要曝光的场景，比如我们要针对APP的开屏页面进行A/B实验，用户刚刚打开APP，客户端就需要向用户展现开屏界面了。这种情况下客户端可能来不及向服务端请求配置参数。</td><td>* 特点：命中和曝光的逻辑在服务端处理，不要求唤起APP时就使实验配置生效。客户端有充分时间向服务端发起请求，获得实验配置后再向用户展示策略。&lt;br&gt;&lt;br&gt;* 场景：&lt;br&gt;&lt;br&gt;   * 推荐策略、纯服务端配置实验，通常uid分流，不要求唤起APP时就使实验配置生效。&lt;br&gt;&lt;br&gt;   * 部分功能只能由服务端来控制，比如内容分发算法（如用户打开今日头条以后在feed流中会看见什么内容）、由服务端逻辑控制的产品功能（如推送）等。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_2-流量&quot;&gt;&lt;/span&gt;</p>
+<h2>3、实验流量、流量分配</h2>
+<ul><li>互联网行业的A/B实验中，流量通常用于描述产品所拥有的总体用户数量。</li></ul>
+<ul><li>开A/B实验时，一般都会小流量测试，当看到某个实验组效果后，再大流量测试，最终再全量上线。</li></ul>
+<p>对AB实验进行实验流量分配时，需结合实验目标、实验校验灵敏度等进行估算合适的流量数据，您可使用流量计算器进行估算，详情请参见<a href="https://www.volcengine.com/docs/6287/65814" target="_blank" rel="noopener">预估实验流量：流量计算器</a>。</p>
+<p>&lt;span id=&quot;_5-互斥组&quot;&gt;&lt;/span&gt;</p>
+<h2>4、实验流量分层：互斥实验、流量正交</h2>
+<p>以下为互斥实验、流量正交的基本概念介绍，更多应用场景和配置操作指导请参见<a href="https://www.volcengine.com/docs/6287/65834" target="_blank" rel="noopener">规划实验流量：流量层与互斥域</a>。</p>
+<ul><li>互斥实验</li></ul>
+<p>互斥实验，指的是互斥组中的所有实验都不会共享用户，开在同一流量层的多个实验中，流量只能命中其中一个，即同层实验的流量之间是相互排斥的。 如果一个用户/设备命中了实验A，就不会命中该互斥组中的其他实验。</p>
+<p>基本原则：内容相同或相关、可能会彼此影响的实验，建议将实验加入到同一个互斥组中。举例， 您要同时做按钮颜色和按钮形状的实验，就需要将两个实验加入到一个互斥组。</p>
+<blockquote>假如现在有4个实验要进行，每一个实验要取用30%的流量才能够得出可信的实验结果。此时为了同时运行这4个实验就需要4\*30%=120%的流量，这意味着100%的流量不够同时分配给这4个实验。</blockquote>
+<blockquote>那么此时我们只能选择给实验排序，让几个实验先后完成，但是这样会造成实验效率低下。</blockquote>
+<blockquote>实验层技术就可以完美解决这个问题：</blockquote>
+<blockquote>实验层技术是为了让多个实验能够并行不相互干扰，且都获得足够的流量而研发的流量分层技术。</blockquote>
+<blockquote>我们把总体流量“复制”无数遍，形成无数个流量层，让总体流量可以被无数次复用，从而提高实验效率。各层之间的流量是正交的，可以简单理解为：在流量层选择正确的前提下，流量经过科学的分配，可以保证各实验的结果不会受到其他层实验的干扰。</blockquote>
+<ul><li>正交实验</li></ul>
+<p>互斥组=互斥层=实验层</p>
+<p>每个独立实验为一层，一份流量穿越每层实验时，都会随机打散再重组，保证每层流量数量相同。</p>
+<p><strong>如何理解流量正交？</strong> </p>
+<blockquote>举个例子。假设我现在有2个实验。实验A（实验组标记为A1，对照组标记为A2）分布于实验层1，取用该层100%的流量；实验B（实验组标记为B1，对照组标记为B2）分布于实验层2，也取用该层100%的流量。（要注意，实验层1和实验层2实际上是同一批用户，实验层2只是复用了实验层1的流量）</blockquote>
+<blockquote>如果把A1组的流量分成2半，一份放进B1组，一份放进B2组；再把A2组的流量也分成2半，一份放进B1组，一份放进B2组。那么两个实验对于流量的调用就会如下图所示。此时实验A和实验B之间，就形成了<strong>流量“正交”</strong> 。</blockquote>
+<blockquote>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/3a9fc80bc9cf49688b1edadb967c3869~tplv-em5hxbkur4-noop.image?width=693&amp;height=315" loading="lazy"> &lt;/span&gt;</blockquote>
+<p><strong>流量正交有什么意义呢？</strong> </p>
+<p>我们可以发现，因为A1组的一半流量在B1中，另一半流量在B2中，因此即使A1的策略会对实验B产生影响，那么这种影响也均匀的分布在了实验B的两个组之中；</p>
+<p>在这种情况下，如果B1组的指标上涨了，那么就可以排除B1是受A1影响才形成上涨。这就是流量正交存在的意义。</p>
+<p>&lt;span id=&quot;78ae1641&quot;&gt;&lt;/span&gt;</p>
+<h2>5、实验时长/实验周期</h2>
+<p>实验时长，也叫实验周期，是指实验开启的时长，一般为了避免不同时间段（工作日与周末）的用户行为差异，建议至少观察 2 个完整的实验周期。</p>
+<p>例如，考虑工作日与周末影响时，实验周期至少需要一周，那实验开启时长建议为14天。</p>
+<p>确定 AB 实验的实验周期需要考虑多个因素，包括实验目的、受众行为模式、业务需求等。以下是一些常见的考虑因素：</p>
+<ul><li>实验目的：明确实验的主要目标是什么。如果是测试短期效果，实验周期可以较短；如果是评估长期影响，可能需要更长的时间来观察。</li></ul>
+<ul><li>受众行为模式：考虑受众的行为和反应时间。例如，如果是一个在线广告实验，你可能需要观察用户在几天或几周内的点击、转化等行为。</li></ul>
+<ul><li>业务需求：根据业务的时间敏感性和资源限制来确定实验周期。如果是季节性活动或有限的推广期，实验周期可能需要与之匹配。</li></ul>
+<ul><li>统计显著性：通常情况下，实验周期应该足够长，以确保收集到足够的数据来达到统计显著性。这可以根据预期的效果大小、样本大小和置信水平来计算。</li></ul>
+<ul><li>变化速度：如果你预计效果会迅速显现，实验周期可以较短；如果效果需要较长时间才能显现，可能需要更长的实验周期。</li></ul>
+<p>一般来说，AB 实验的周期可以从几天到几个月不等。在确定实验周期时，可以结合以上因素进行综合考虑，并根据实际情况进行调整。同时，在实验过程中，密切监控数据和效果，以便及时做出决策并可能进行调整。</p>
+<p>&lt;span id=&quot;_8-参数、参数类型、参数值&quot;&gt;&lt;/span&gt;</p>
+<h2>6、实验参数</h2>
+<p>在开一个实验时，你需要通过一个标识来区分对照组和实验组，我们用参数来解决标识的问题。在A/B测试的实验中，每一个对照组和实验组可以有1个参数也可以有多个参数，每个参数都会有参数类型（目前支持String、Number、Boolean），每个参数还会有参数值。</p>
+<ul><li>如，对于注册文案的实验，我们可以建立一个String类型的参数（命名为：register_name），对照组的参数值为&quot;一键注册&quot;，实验组的参数值为&quot;立即注册&quot;。</li></ul>
+<p>更多实验参数的配置指导请参见<a href="https://www.volcengine.com/docs/6287/67082" target="_blank" rel="noopener">如何配置实验参数</a>。</p>
+<p>&lt;span id=&quot;_9-指标&quot;&gt;&lt;/span&gt;</p>
+<h2>7、实验指标</h2>
+<ul><li>实验指标</li></ul>
+<p>   在开一个实验时，目的是对比对照组和实验组的某个或者某几个指标。如，分析点击按钮的次数时，需要上报注册按钮的点击事件，然后在「A/B 测试」产品上配置指标即可。</p>
+<ul><li>常见指标：WAU</li></ul>
+<p>   WAU（Weekly Active Users），周活跃用户数，最近一周（含当日的7天）启动使用产品的用户数，一般按照自然周进行计算。</p>
+<ul><li>常见指标：MAU</li></ul>
+<p>   MAU（Monthly Active Users），月活跃用户数，最近一个月（含当日的30天）启动使用产品的用户数，一般按照自然月进行计算。</p>
+<p>&lt;span id=&quot;_10-过滤条件&quot;&gt;&lt;/span&gt;</p>
+<h2>8、实验调试、 白名单用户</h2>
+<p>在实验正式开启之前，通常需要先选择几名用户进入测试阶段（实验调试），观察实验是否能够正常获取想要收集的数据，或客户端是否有bug等。参与这一步的用户被称为“白名单用户”。</p>
+<p>更多白名单用户的介绍和配置指导请参见<a href="https://www.volcengine.com/docs/6287/65824" target="_blank" rel="noopener">用户测试白名单</a>。</p>
+<p>&lt;span id=&quot;_17-方差与标准差&quot;&gt;&lt;/span&gt;</p>
+<h2>9、实验报告、实验结果数据</h2>
+<ul><li>方差与标准差</li></ul>
+<ul><li>方差：方差是数据组中各数据值与中心值间距的平方和的平均值。</li></ul>
+<blockquote>方差的计算公式：公式中 x̅ 为数据的平均数，N为数据的个数，s²为方差。</blockquote>
+<blockquote>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_8efc37a9f1d23266901e956ec978251e.png" loading="lazy"> &lt;/span&gt;</blockquote>
+<ul><li>标准差：标准差是方差的平方根，即s。</li></ul>
+<p>&lt;span id=&quot;二-中阶&quot;&gt;&lt;/span&gt;</p>
+<h1>中阶</h1>
+<p>&lt;span id=&quot;4dc9de75&quot;&gt;&lt;/span&gt;</p>
+<h2>DataTester产品功能逻辑</h2>
+<p>&lt;span id=&quot;d01fdc50&quot;&gt;&lt;/span&gt;</p>
+<h3>A/B实验分流服务、vid</h3>
+<p>开设A/B实验，顾名思义，我们至少需要一个A组和一个B组，那么究竟是什么决定了哪些用户被实验命中，以及哪些用户进入A组/B组呢？就是靠A/B实验分流服务。</p>
+<ul><li>分流服务会帮助实验者，从总体流量中抽取部分流量，并将抽取的流量随机地分配进A组与B组之中，尽量减少抽样误差。</li></ul>
+<ul><li>需要注意的一点是，当分流服务分流完成后，被选中进入实验的用户会被赋予一个“身份信息”——ab_version(又称vid)，这个id标记着流量究竟应该进入实验的哪一组中。</li></ul>
+<p>&lt;span id=&quot;7e6981dc&quot;&gt;&lt;/span&gt;</p>
+<h3>分流原理：分流服务的input&amp;output</h3>
+<p>分流服务的任务是对用户进行随机抽样，并均匀地分配到实验组和对照组中，使其生效不同的功能。</p>
+<p>我们先来把分流服务看作是一个“黑盒”。也就是说，抛开分流服务具体包含了什么样的流程和逻辑，先将分流服务看作是一个整体。接着，我们通过输入输出来解释它的工作原理：</p>
+<ul><li>输入：业务端向分流服务发出请求，告诉分流服务用户是谁</li></ul>
+<ul><li>输出：分流服务返回业务端这个用户是否命中实验，以及用户被分到了哪个实验组。</li></ul>
+<p>以最简单、通俗的话来说：<strong>实验中，我们向分流服务发出请求（request），告诉分流服务用户是谁，随后分流服务就会告诉我们，这个用户是否被实验命中，以及用户被分到了哪个组里</strong>。</p>
+<ul><li><strong>分流服务的input</strong></li></ul>
+<p>   当我们在向分流服务发出请求（request）的时候，我们要告诉分流服务的信息被称为“<strong>请求参数</strong>”。当中包含的信息有：<strong>用户是谁（用户的分流id【decisionID】）、用户从哪儿来（appkey）、用户符合什么条件（filter）</strong> 。</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;&lt;strong&gt;decisionID&lt;/strong&gt;：分流id，需要是唯一标识id，可以使用uuid，did。在实验过程中，究竟使用什么id去标记用户，需要业务方结合实验场景自行裁定。   &lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;&lt;strong&gt;appkey&lt;/strong&gt;：应用的唯一标识，请求参数中的appkey标记了用户来源于哪个应用。   &lt;/div&gt;</li></ul>
+<ul><li>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;&lt;strong&gt;filter&lt;/strong&gt;：实际上就是过滤条件。在开设实验时，实验者可能会为进入实验的流量增加一些限制条件，规定被实验命中的用户必须符合（或不符合）这些条件，进而达到缩小用户群体、精准找到用户的目的。这种限制条件就是filter。在向分流服务发出请求的时候，用户信息中必须带有和过滤条件相对应的属性信息。比如某实验中，实验者规定，被实验命中的必须是北京用户。那么在发出请求时，如果请求信息中不含有用户的定位信息/定位信息不为北京，该用户就会被过滤掉，无法被实验命中。   &lt;/div&gt;</li></ul>
+<p>   有了这些信息，分流服务就有了“原材料”，并在内部进行加工，对用户进行分流处理。</p>
+<ul><li><strong>分流服务的output</strong></li></ul>
+<p>   如果用户被实验命中，分流服务会输出该用户的身份信息<strong>vid（ab_version）/vid list</strong>（一个用户可能同时命中不同层的多个实验，因此会输出vid list）和该用户应对应的<strong>实验配置</strong>。如果用户没有被实验命中，那么分流服务则不会输出信息。</p>
+<p>&lt;span id=&quot;23b99627&quot;&gt;&lt;/span&gt;</p>
+<h3>分流原理：流量分桶</h3>
+<p>分流服务在分配流量时，会先把每一层的流量平均分配为1000份，每一份被称为一个“哈希桶（bucket）”。为什么叫“哈希桶”呢？因为用户在进入实验层的时候，分流服务会通过「哈希函数」和「取模运算」，将用户分配到某个桶里。</p>
+<blockquote>「哈希」：Hash，一般翻译做散列、杂凑，音译为哈希。哈希函数可以把任意长度的输入，通过散列算法变换成固定长度的输出，该输出就是散列值。我们用人类的语言来解释一下这件事。在分流服务中，我们会将用户的uid/did，加上用户所在实验层的名字，组合在一起计算哈希值。比如，按照did分流的实验层上的实验，分流服务就会用“did:layer_name&quot;做为输入值，经哈希计算后，得到一串固定长度的“数值串”。</blockquote>
+<blockquote>「取模」：a Mod b，表示a除以b的余数。a除以b的余数，取值有0,1,2,3...(b\-1)一共b种，因此取模函数常用来把一个数据集合分配成b份。在分流原理中我们要把流量分为1000份，因此我们对哈希函数的输出结果按1000取模，这样，已经通过哈希函数打散的uid/did就能都够随机分配到这1000个流量桶中了。</blockquote>
+<blockquote>哈希和取模的目的，就是让用户能够随机、均匀地被分配到我们所分割的1000个桶里，且保障每次被分配到的是同一个桶。</blockquote>
+<p>经过分流服务的处理，我们把所有用户都扔进了桶里，那么这1000个桶里，每桶都有0.1％的流量。同一层上的不同实验在调用流量时，就会按照实验所需的流量的百分比，随机领取到不同数量的桶（且桶不重合）。</p>
+<p>假设我开设的实验调用2%的流量，那么我就会领取到20个桶。如果进入实验层的用户落在了这20个桶里，那么该用户就会进入接下来的流量筛选步骤；如果不在这20个桶里，则用户不会被实验命中。</p>
+<p>&lt;span id=&quot;187185ea&quot;&gt;&lt;/span&gt;</p>
+<h3>分流原理：流量分层</h3>
+<p>为了保证流量的大规模复用，核心思想是流量分层，把流量划分为多个实验层（互斥组），并保持如下性质：</p>
+<blockquote>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/3a9fc80bc9cf49688b1edadb967c3869~tplv-em5hxbkur4-noop.image?width=693&amp;height=315" loading="lazy"> &lt;/span&gt;</blockquote>
+<ul><li><strong>互斥性</strong>：实验层内部互斥，即开在同一流量层的多个实验中，流量只能命中其中一个</li></ul>
+<ul><li><strong>正交性</strong>：实验层两两正交，即开在不同实验层的实验互相独立，流量随机命中</li></ul>
+<ul><li><strong>稳定性</strong>：实验命中稳定，即同一流量两次经过分流服务，实验命中情况保持一致</li></ul>
+<p>&lt;span id=&quot;a359748b&quot;&gt;&lt;/span&gt;</p>
+<h3>分流原理：进组不出组</h3>
+<p>基本概念：</p>
+<ul><li>进组：用户命中了实验中的某个版本，被称为进组该实验版本。</li></ul>
+<ul><li>出组：用户命中了实验中的某个版本，后续不再命中实验中的这个版本了。</li></ul>
+<ul><li>跳组：用户命中了实验中的某个版本，在另一时刻又命中了该实验的其他版本。</li></ul>
+<ul><li>进组不出组（体验一致性）：用户命中了实验中的某个版本，就不会再命中实验中的其他版本。</li></ul>
+<p>   在创建实验时，可以设置是否需要打开体验一致性的开关。</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/02e9b11e81cb4d379db201b828849e11~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>流量：是客户配置的进入实验的流量比值。</li></ul>
+<p>常见问题——出现跳组：</p>
+<ul><li>跳组：同一个用户先命中实验组A，再次分流进入实验组B</li></ul>
+<ul><li>可能原因：实验版本间流量分配被修改/实验总流量缩减</li></ul>
+<ul><li>解决办法：在实验运行过程中，用户绑定首次分流进组信息，后续分流会保持进组信息不变。</li></ul>
+<ul><li>实现方式：</li></ul>
+<ul><li>客户端实验使用SDK进行缓存，调用分流服务后在端侧缓存进组信息，后续调用分流服务会携带缓存的进组信息</li></ul>
+<ul><li>服务端实验需要依赖外部存储，集成服务端SDK后实现查询、保存的接口，通过外部存储来缓存用户进组信息</li></ul>
+<p>&lt;span id=&quot;6e350b1c&quot;&gt;&lt;/span&gt;</p>
+<h3>分流原理：分流流程图</h3>
+<p>了解了分流服务的输入和输出之后，我们再看看分流服务内部到底是如何运作的。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/05079c56a7534f11944632d3fb68c4de~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p><strong>第一步：检查白名单用户</strong></p>
+<p>首先，分流服务会检查实验层上，是否有实验配置了白名单用户。</p>
+<blockquote>白名单用户：在实验正式开启之前，通常需要先选择几名用户进入测试，观察实验是否能够正常获取数据，实验配置是否正常生效，或客户端是否有bug等。参与这一步的用户被称为“测试用户”。如果实验需要测试用户，则需要先提供各组测试用户的ssid/decisionid。</blockquote>
+<blockquote>如果请求参数中的ssid/decision id，在某组的测试用户列表之中，且实验处于调试状态下，那么有且只有测试用户会命中该组，获得实验配置。</blockquote>
+<p><strong>第二步：流量分桶</strong></p>
+<p>分流服务在分配流量时，会先把每一层的流量平均分配为1000份，每一份被称为一个“哈希桶（bucket）”。为什么叫“哈希桶”呢？因为用户在进入实验层的时候，分流服务会通过「哈希函数」和「取模运算」，将用户分配到某个桶里，详情可参见上文的流量分桶章节。</p>
+<p><strong>第三步：检验过滤条件</strong></p>
+<p>在这一步里，分流服务会根据实验所配置的过滤条件（filter），再次对流量进行过滤。符合过滤条件的用户会被实验命中，不符合过滤条件的用户则没有被实验命中。</p>
+<p><strong>第四步：计算分组</strong></p>
+<p>现在，我们要对被实验命中的流量进行分组。此时我们仍旧要借助「哈希函数」的力量。在这一步当中，我们会将用户的id和实验名作为输入值（如：“did:flight_name”），来运算哈希函数，并取模，把被实验命中的用户随机地分到不同的分组之中。</p>
+<p>以上为代码调用顺序进行下钻的，实际的用户进组流程顺序，应该是倒着的：</p>
+<p><strong>第一步：判断用户是否为白名单用户</strong>。</p>
+<p><strong>第二步：判断用户所属实验层</strong>。判断实验的层分流，如果没有层分流，就进行下一步去分桶。有层分流的情况下，对用户分流的 decision_id 进行hash的时候加入 layer 参数进行分桶。</p>
+<p><strong>第三步：判断进组不出组逻辑</strong>。如果开启了进组不出组，先去查客户配置的第三方进组信息存储库。有的话，就返回存储库中的分流信息。没有的话，进行下一步。</p>
+<p><strong>第四步：判断目标受众</strong>。判断用户是否满足目标受众设置的条件。满足的话，继续向下执行。</p>
+<p><strong>第五步：判断用户是否命中实验对应的桶</strong>。对用户的 decision_id 进行hash，获取到用户所在的桶编号， 判断用户是否在实验分配的桶编号列表中。</p>
+<p><strong>第六步：获取实验版本号</strong>。每个实验版本都有自己对应的桶编号列表，用户落在哪个桶里面，就是那个版本的用户。落在没有实验版本对应的桶编号，就没有命中实验。</p>
+<p>&lt;span id=&quot;731feda6&quot;&gt;&lt;/span&gt;</p>
+<h3>分流原理：客户端&amp;服务端实验的差异</h3>
+<table><thead><tr><th><strong>差异细分</strong></th><th><strong>客户端实验</strong></th><th><strong>服务端实验</strong></th></tr></thead><tbody><tr><td><strong>进组不出组</strong></td><td>客户端实验默认进组不出组</td><td>服务端实验默认不会进组不出组，如果要用这个特性需要根据sdk接入文档实现相关接口</td></tr><tr><td><strong>配置下发流程图</strong></td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/8dcb0b5557bc44f7841eb2ffaa73b06e~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/78100f6ae0f348cea86611f8deee2cbf~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td><strong>配置生效步骤</strong></td><td>1. 客户app集成AB客户端SDK并初始化&lt;br&gt;&lt;br&gt;2. AB客户端SDK初始化后定时调用AB分流服务获取当前设备用户的实验进组信息并缓存至本地&lt;br&gt;&lt;br&gt;3. 客户app执行至曝光区代码，调用AB客户端SDK获取实验进组信息，AB客户端SDK上报曝光事件，曝光事件携带用户命中实验配置的vid信息&lt;br&gt;&lt;br&gt;4. 用户在客户app进行操作，客户app使用AB客户端SDK进行埋点上报，埋点将会携带实验配置的vid信息</td><td>1. 客户服务端集成AB服务端SDK并初始化&lt;br&gt;&lt;br&gt;2. AB服务端SDK初始化后定时调用AB元数据服务获取实验元信息&lt;br&gt;&lt;br&gt;3. 客户前端请求客户服务端&lt;br&gt;&lt;br&gt;4. 客户服务端调用AB服务端SDK后，AB服务端SDK使用实验元信息经过计算返回实验进组信息，同时上报曝光事件，曝光事件携带用户命中实验配置的vid信息</td></tr></tbody></table>
+<p>&lt;span id=&quot;2e20136c&quot;&gt;&lt;/span&gt;</p>
+<h2>AB实验数据计算逻辑</h2>
+<p>&lt;span id=&quot;_1-留存率&quot;&gt;&lt;/span&gt;</p>
+<h3>1. 留存率</h3>
+<p>实验报告中的留存率指的是“按进组时间拆分的留存率”，是根据【用户首次进实验组的时间】作为起始，用户回到App作为回访，计算用户n日留存。</p>
+<p>统计方式如下：</p>
+<table><thead><tr><th>规则</th><th>处理逻辑</th></tr></thead><tbody><tr><td>分组方式</td><td>首次进入实验组的用户</td></tr><tr><td>归因方式</td><td>把留存用户按照进组时间划分，分别归因到首次进组的时间</td></tr><tr><td>回访规则</td><td>回到APP即视为回访。</td></tr></tbody></table>
+<blockquote>举个例子说明：</blockquote>
+<blockquote>* 第一天实验组A的用户数为：10000，第一天base_user为10000。</blockquote>
+<blockquote>* 第二天实验组A的用户数为：10400，其中9200用户是第一天便已经在A中的用户，1200用户为当天新进组用户；第二天base_user为1200，第一天的次日留存为9200/10000=92%。</blockquote>
+<blockquote>* 第三天实验组A的用户数为：10200，其中8000用户为第一天便已经在A中的用户，1100用户为第二天进入A中的用户，1100为第三天进入A的用户；第三天的base_user为1100， 第一天的2日留存为8000/10000=80%， 第二天的次日留存为1100/1200=91.67%。</blockquote>
+<blockquote>* 然后分别把每个进入实验日期的指标用base_user进行加权平均，得到次日留存率、第2天留存率等。</blockquote>
+<p>当日&quot;已进组用户&quot; 表示当日曝光进组的总用户数，包括之前已进组的老用户和初次到访的&quot;新进组用户&quot;。</p>
+<p>&lt;span id=&quot;_2-置信区间&quot;&gt;&lt;/span&gt;</p>
+<h3>2. 置信区间</h3>
+<p>置信度区间就是用来对一组实验数据的总体参数进行估计的区间范围。</p>
+<blockquote>举个例子，我们现在开了一个实验来优化商品页面的用户购买率，其中采用了新策略B的实验组，购买率提升均值为5%，置信区间为[\-3%，13%]。</blockquote>
+<blockquote>怎么理解此处的置信区间呢？</blockquote>
+<blockquote>由于在A/B实验中我们采取小流量抽样的方式，样本不能完全代表总体，那么实际上策略B如果在总体流量中生效，不见得会获得5%的增长。如果我们设策略B在总体流量中推行所导致的真实增长率为μ，那么在这个案例中，μ的真实取值会在[\-3%，13%]之间。</blockquote>
+<p>值得注意的是，μ并不是100%概率落在这一区间里，在计算置信区间的过程中，我们会先取一个置信水平，计算这一置信水平下的置信区间是多少，A/B实验中我们通常计算95%置信度下的置信区间。回到刚刚的例子，我们就可以得知，μ的真实取值有95%的可能落在[\-3%，13%]之间。</p>
+<p>&lt;span id=&quot;_3-多天累计指标&quot;&gt;&lt;/span&gt;</p>
+<h3>3. 多天累计指标</h3>
+<p>“多天累计指标”是所选实验日期范围内，对应指标多天合并的累计值。</p>
+<blockquote>举个例子，假如现在我们要看6月1日到6月3日，用户A、B、C的用户阅读数这一指标：</blockquote>
+<table><thead><tr><th></th><th>6月1日</th><th>6月2日</th><th>6月3日</th><th>多天累计指标</th></tr></thead><tbody><tr><td>用户A</td><td>13</td><td>0</td><td>16</td><td>29</td></tr><tr><td>用户B</td><td>5</td><td>3</td><td>4</td><td>12</td></tr><tr><td>用户C</td><td>7</td><td>8</td><td>12</td><td>27</td></tr></tbody></table>
+<blockquote>上表中的数字关系很清晰地展示了多天累计指标与单日指标之间的逻辑（即加在一起）。</blockquote>
+<p>在A/B实验中，如果我们所检测的指标支持多天累计指标，那么我们基本上应该<strong>以多天累计指标为准</strong>，而不要过多关注实验周期内的单日指标。</p>
+<p>多天累积数据意味着，随着实验的进行，实验的总体样本不断增加，实验的检验灵敏度在不断提高。</p>
+<p>&lt;span id=&quot;三-高阶&quot;&gt;&lt;/span&gt;</p>
+<h1>高阶</h1>
+<p>&lt;span id=&quot;_1-假设检验&quot;&gt;&lt;/span&gt;</p>
+<h2>1. 假设检验</h2>
+<p>A/B实验的核心统计学理论是（双样本）假设检验。假设检验，即首先做出假设，然后运用数据来检验假设是否成立。需要注意的是 ，我们在检验假设时，逻辑上采用了反证法。通过A/B实验，我们实际上要验证的是一对相互对立的假设：原假设和备择假设。</p>
+<ul><li><strong>原假设（Null Hypothesis）</strong> ：是实验者想要收集证据予以反对的假设。A/B实验中的原假设就是指“新策略没有效果”。</li></ul>
+<ul><li><strong>备择假设（Alternative Hypothesis）</strong> ：是实验者想要收集证据予以支持的假设，与原假设互斥。A/B实验中的备择假设就是指“新策略有效果”。</li></ul>
+<p>利用反证法来检验假设，意味着我们要利用现有的数据，通过一系列方法证明原假设是错误的（伪），并借此证明备择假设是正确的（真）。这一套方法在统计学上被称作原假设显著性检验 Null Hypothesis Significance Testing (NHST)。</p>
+<blockquote>举个例子：</blockquote>
+<blockquote>我们要针对某页面的购买按钮做一个实验。我认为：将购买按钮的颜色从蓝色改为红色，可以提高购买率3%。在这个实验中，我们想通过统计学检验的“原假设”就是“购买按钮改成红色不能提升购买率”；“备择假设”就是“购买按钮改成红色能够提升购买率”。这是一对互斥的假设。也就是说，实际上我们要证明的就是“改成红色不能提升购买率”是错误的。</blockquote>
+<p>&lt;span id=&quot;_2-第一类错误和显著性水平（α）&quot;&gt;&lt;/span&gt;</p>
+<h2>2. 第一类错误和显著性水平（α）</h2>
+<ul><li>第一类错误，指原假设正确（真），但是我们假设检验的结论却显示原假设错误。这一过程中我们拒绝了正确的原假设，所以第一类错误是“弃真”。</li></ul>
+<ul><li>第一类错误在实际操作中表现为：实验结论显示我的新策略有用，但实际上我的新策略没有用。</li></ul>
+<p>在统计学中，我们用显著性水平（α）来描述实验者犯第一类错误的概率。</p>
+<p>当某个实验组的指标是显著的，说明这个实验结论有一定信心是可信的。例如，置信度是95%，则著性水平（α）为0.05，也就是说，系统有95%的信心确认这个实验结果是准确的，有0.05的概率会犯第一类错误。</p>
+<p><strong>显著性水平存在的意义是什么？</strong> </p>
+<blockquote>一个按钮从蓝色改成红色，一个窗口从左边移到右边，到底用户体验会变好还是变差呢？我们并不确定，因此我们试图使用A/B实验的办法，帮助我们转化这种“不确定”——观察小流量实验中新旧策略的表现，从而确定新旧策略的优劣。</blockquote>
+<blockquote>但是，这样就能完全消除不确定性了吗？答案是不能，因为存在<strong>抽样误差</strong>。</blockquote>
+<blockquote>* 举个例子，假设瑞士人均收入为中国的十倍，那么随机抽三个瑞士人和三个中国人，能保证样本里这三个瑞士人的平均收入是三个中国人的十倍吗？万一这三个中国人是马云，王健林和一个小学生呢？</blockquote>
+<blockquote>* 反过来想，假设在1%的流量下，组A（按钮呈红色）比组B（按钮呈现蓝色）购买率高，将流量扩大至100%，能保证策略A的表现仍旧比策略B出色吗？显然，我们还是不确定。</blockquote>
+<blockquote><strong>抽样误差带来的不确定性，使得我们在做小流量实验时，永远没法保证结论是完全正确的。幸运的是，对于抽样的不确定性，在统计学中，我们有一套方法来量化这种不确定性到底有多大，这便是显著性水平（α）存在的意义。</strong></blockquote>
+<p>&lt;span id=&quot;_3-第二类错误-β-和统计功效（statistics-power）&quot;&gt;&lt;/span&gt;</p>
+<h2>3. 第二类错误( β )和统计功效（statistics power）</h2>
+<ul><li>第二类错误，指原假设错误（伪），但是我们假设检验的结论却显示“原假设正确（真）、备择假设是错误的”，这一过程中我们接受了错误的原假设，所以第二类错误是“取伪”。</li></ul>
+<ul><li>第二类错误在实际操作中表现为：我的新策略其实有效，但实验没能检测出来。</li></ul>
+<p>在统计学中，统计功效 = 1 \- 第二类错误的概率，统计功效在现实中表现为：我的新策略是有效的，我有多大概率在实验中检测出来。</p>
+<p>&lt;span id=&quot;_4-统计显著性-置信水平-置信度-置信系数&quot;&gt;&lt;/span&gt;</p>
+<h2>4. 统计显著性/置信水平/置信度/置信系数</h2>
+<ul><li>置信水平（也称置信度、置信系数、统计显著性），指实验组与对照组之间存在真正性能差异的概率，实验组和对照组之间衡量目标（即配置的指标）的差异不是因为随机而引起的概率。置信水平使我们能够理解结果什么时候是正确的，<strong>对于大多数企业而言，一般来说，置信水平高于95％都可以理解为实验结果是正确的。因此，默认情况下，「A/B 测试」产品将置信水平参数值设置为95%。</strong> </li></ul>
+<ul><li>在A/B实验中，由于我们只能抽取流量做小样本实验。样本流量的分布与总体流量不会完全一致，这就导致没有一个实验结果可以100%准确——即使数据涨了，也可能仅仅由抽样误差造成，跟我们采取的策略无关。在统计学中，<strong>置信度的存在就是为了描述实验结果的可信度。</strong> </li></ul>
+<p>在实验的过程中，我们所抽取的样本流量实际上与总体流量会存在些许的差异，这些差异就决定了我们通过实验得出的结论或多或少会存在一些“误差”。</p>
+<blockquote>举个例子，实验中，我通过改变落地页的颜色让购买率提升了3%，但是因为样本流量并不能完全代表总体流量，有可能“我改变颜色这一策略其实没用，购买率提升3%是抽样结果导致的”。</blockquote>
+<blockquote>那么发生这种“我的策略其实没用”事件的概率有多大呢？在统计学中，我们会用“显著性水平(α)”来描述发生这一事件的概率是多少。而置信度=1\-α。</blockquote>
+<blockquote>在「A/B 测试」产品上，根据业界标准，显著性水平α取0.05。在A/B实验中，如果发生“我的策略其实没用”这一事件的概率小于0.05，我们即称实验结论已经“统计显著/可置信”。这意味着你采取的新策略大概率（A/B实验中意味着大于95%）是有效的。相反，如果这一事件的概率大于0.05，则称实验结论“不显著/不可置信”。</blockquote>
+<p>&lt;span id=&quot;_5-中心极限定理&quot;&gt;&lt;/span&gt;</p>
+<h2>5. 中心极限定理</h2>
+<p><strong>显著性水平的理论依据便是中心极限定理。我们可以量化抽样误差的根基在于中心极限定理的存在。</strong> </p>
+<p><strong>什么是中心极限定理？</strong> </p>
+<blockquote>* 由于存在抽样误差，我们每次实验所得到的指标结果，都可能与我们期望得到的真正结果有误差。假设我们从总体中抽取样本，计算其指标的均值，每一次计算，样本均值都会受抽样误差影响。假如我们做无数多次实验，那么理论上，这无数多个样本均值中，总应该有一个是“真的”，不受抽样误差影响的，这个值在统计学里被称为“真值”。</blockquote>
+<blockquote>* 中心极限定理定告诉我们，如果我们从总体流量里不断抽取样本，做无数次小流量实验，这无数次抽样所观测到的均值，近似呈现正态分布（就是下图这样的分布）。这个分布以真值为中心，均值越接近真值，出现的概率就越大；反之均值越偏离真值，出现的概率就越小。</blockquote>
+<p>PS：此处为了便于理解，放弃了阐述统计学概念，仅从A/B实验场景下出发，解释中心极限定理。</p>
+<p>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/54e36e7b87fc4c1581286fba7dac970d~tplv-em5hxbkur4-noop.image?width=1374&amp;height=436" loading="lazy"> &lt;/span&gt;</p>
+<p><strong>为什么样本均值越接近真值，出现的概率越大？</strong> </p>
+<blockquote>举个例子，如果从全中国人这个总体中，抽取很多很多次样本，计算很多很多次平均收入。</blockquote>
+<blockquote>可以预见，我们会因为样本不同而得到很多个不同的平均收入值。这些数值确实有可能因为偶然抽到顶级富豪而偏高，或因为抽到极贫困的人口而偏低。但是，上述两种情况毕竟是少数（均值越偏离真值，出现的概率小）。随着抽样次数增多，我们会发现，平均收入落在大多数普通人收入范围内的次数，会显著增多（均值接近真值，出现的概率大）。并且，有了中心极限定理的帮助，我们可以知道每个均值出现的概率是多少。</blockquote>
+<p>&lt;span id=&quot;_6-校验灵敏度mde&quot;&gt;&lt;/span&gt;</p>
+<h2>6. 校验灵敏度MDE</h2>
+<ul><li><strong>MDE是什么</strong>：Minimum Detectable Effect (MDE)，最小可检测单位，即检验灵敏度，是实验在当前条件下能有效检测的指标diff幅度。当前条件，指当前样本量，指标值和指标分布情况，并假设样本方差与总体指标方差足够接近。有效检测，指检出概率大于等于80%（type II error小于等于20%）。</li></ul>
+<ul><li><strong>MDE可以用来做什么</strong>：通过比较指标MDE与指标的目标提升率，可以避免实验在灵敏度不足的情况下被过早作出非显著结论而结束，错失有潜力的feature。</li></ul>
+<blockquote>假设您对某指标的预期目标提升率为1%</blockquote>
+<blockquote>* 如果此时MDE=0.5%，MDE ＜ 预期提升值，在统计不显著的情况下，说明指标变化真的不显著，请结合业务ROI和其他维度里例如用户体验、长期战略价值等来综合判断是否值得上线；</blockquote>
+<blockquote>* 如果此时MDE=2%，MDE ＞ 预期提升值，说明当前能检验出显著性的最小差异值是2%，由于灵敏度（也就是校验效力）不足未能检测出。这种情况下建议增大样本量，例如扩大流量、再观察一段时间积累更多进组用户，指标还有置信的可能。</blockquote>
+<ul><li><strong>如何设置</strong>：MDE越小，意味着您要求测试的灵敏度越高，所需的样本量也越大。如果MDE设置过于精细，不仅会浪费不必要的流量，同时实际收益可能不能弥补新策略的研发和推广成本。灵敏度不足（比如预期1%就达标，但实验灵敏度仅能检测5%及以上），可能会导致错失有潜力的feature。</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;通常实验指标为提升/降低xx（某个业务指标值），那MDE建议以小于这个指标值来进行估算，尽量避免MDE取值较大，无法检测出真实的实验结果。   &lt;/div&gt;</p>
+<ul><li>更多关于MDE的介绍请见<a href="https://www.volcengine.com/docs/6287/75708" target="_blank" rel="noopener">资源中心</a>。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>集成工作台 · A/B 实验知识库</title>
+<meta name="description" content="说明 此功能私有化V4.4.0（含）以上版本支持，该功能为付费功能，如需使用需联系您的客户成功经理进行咨询。 一、概述 在企业系统功能较为完善的场景下，拥有的系统比较多，如有CDP、CSM、推荐系统、运营系统等，企业希望">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/196860.html">
+<meta property="og:title" content="集成工作台"><meta property="og:description" content="说明 此功能私有化V4.4.0（含）以上版本支持，该功能为付费功能，如需使用需联系您的客户成功经理进行咨询。 一、概述 在企业系统功能较为完善的场景下，拥有的系统比较多，如有CDP、CSM、推荐系统、运营系统等，企业希望">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/196860.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>集成工作台</h1>
+<div class="meta">📄 1,838 字 · 🕐 2023-03-21</div>
+<article class="md"><p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;此功能私有化V4.4.0（含）以上版本支持，该功能为付费功能，如需使用需联系您的客户成功经理进行咨询。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;一、概述&quot;&gt;&lt;/span&gt;</p>
+<h1>一、概述</h1>
+<p>在企业系统功能较为完善的场景下，拥有的系统比较多，如有CDP、CSM、推荐系统、运营系统等，企业希望将DataTester的能力与自身的系统进行打通，减少系统之间的多次跳转。集成工作台提供不同的集成模版支持客户将DataTester的能力通过流程化引导的方式集成至客户自有系统，有效解决了此类问题。</p>
+<p>&lt;span id=&quot;二、功能介绍&quot;&gt;&lt;/span&gt;</p>
+<h1>二、功能介绍</h1>
+<p>&lt;span id=&quot;_2-1集成工作台&quot;&gt;&lt;/span&gt;</p>
+<h2>2.1集成工作台</h2>
+<p>菜单进入&quot;开放能力 \&gt; 集成工作台 &quot;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_11fafb0894c04b97c61fadbabfd9d6d3.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;新建定制&quot;&gt;&lt;/span&gt;</p>
+<h3>新建定制</h3>
+<p>点击<strong>新建定制</strong>，填写信息并选择集成模版类型，并单击保存</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_f44c7a78d2f5472abd9f03d70232146c.png" loading="lazy"> &lt;/span&gt;</p>
+<p>接着，我们就进入了定制编辑页面</p>
+<p>&lt;span id=&quot;页面配置能力&quot;&gt;&lt;/span&gt;</p>
+<h3>页面配置能力</h3>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_4c25625014ae968e4aa3a0db6d49df9d.png" loading="lazy"> &lt;/span&gt;</p>
+<p>当点击可配置的蓝色区域时，展示配置面板</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_739b171bed6d864f36fe09b9019e2e54.png" loading="lazy"> &lt;/span&gt;</p>
+<p>如果觉得每次切换配置区域很繁琐，可以直接点击配置面板顶部的标题切换到根节点，有一些配置也只会存在于根节点处</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_410557359023bc0d4e6e6a32db3f6eda.png" loading="lazy"> &lt;/span&gt;</p>
+<p><strong>支持的配置页面有</strong></p>
+<ul><li>实验列表</li></ul>
+<ul><li>实验报告</li></ul>
+<p>支持的配置项如下</p>
+<table><thead><tr><th>页面</th><th>参数值</th><th>描述</th></tr></thead><tbody><tr><td>实验列表</td><td>isSkipCreateExperimentModal</td><td>跳过实验创建模式弹窗</td></tr><tr><td>defaultNewExperimentMode</td><td>默认跳转实验</td></tr><tr><td>hiddenExperimentModes</td><td>隐藏实验模式</td></tr><tr><td>headerModule.hidden</td><td>隐藏Header模块</td></tr><tr><td>headerModule.title</td><td>标题</td></tr><tr><td>headerModule.barHidden</td><td>帮助信息隐藏</td></tr><tr><td>headerModule.createHidden</td><td>创建按钮隐藏</td></tr><tr><td>tableModule.filterHidden</td><td>筛选项模块隐藏</td></tr><tr><td>tableModule.operationHiddenKeys</td><td>表格操作隐藏项</td></tr><tr><td>实验报告</td><td>hiddenAsyncTask</td><td>隐藏异步查询任务</td></tr><tr><td>hiddenFlightToFeature</td><td>隐藏实验固化至Feature</td></tr><tr><td>hiddenMetricSwitch</td><td>隐藏全局和详细指标视图的切换</td></tr><tr><td>hiddenCustomFilterBox</td><td>隐藏自定义过滤模板</td></tr><tr><td>initTabKey</td><td>初始化的实验报告tab</td></tr><tr><td>hiddenTabKeys</td><td>实验报告tab隐藏keys</td></tr></tbody></table>
+<p>&lt;span id=&quot;_2-2-主题色定制&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 主题色定制</h2>
+<p>单点击顶导右侧的“主题配置”按钮后展示主题色配置面板</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_3a81b6b01a009b5fe4d48168e39a6fcd.png" loading="lazy"> &lt;/span&gt;</p>
+<p><strong>本期支持的主题色配置是</strong></p>
+<ul><li>主色</li></ul>
+<ul><li>文本色</li></ul>
+<ul><li>边框色</li></ul>
+<p>&lt;span id=&quot;_2-3-表单搭建能力&quot;&gt;&lt;/span&gt;</p>
+<h2>2.3 表单搭建能力</h2>
+<p>当进入到实验创编页面的时候，顶部浮悬“进入实验创建搭建”，可进入到表单搭建页面；</p>
+<p>注：目前仅支持<strong>编程实验</strong></p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_7d6aff9a9d6c89f7ddc2e0b7292ea611.png" loading="lazy"> &lt;/span&gt;</p>
+<p>初始化页面</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_866839e3ea8db8ea72f0f3f6b7638626.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>顶部导航：操作栏，提供保存，预览，关闭/开启表单配置能力，回撤/恢复，查看组件之间的联动关系图的能力</li></ol>
+<ol><li>物料库：提供最基础的表单搭建原子组件</li></ol>
+<ol><li>物料树：当前组成实验创编页面的各个组件顺序结构</li></ol>
+<ol><li>属性配置：配置各个组件的展示样式，支持功能和教研，联动能力</li></ol>
+<ol><li>画布：实时展示，当前表单搭建产物</li></ol>
+<p>&lt;span id=&quot;步骤&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>步骤</strong></h3>
+<ol><li>点击物料库中的组件，展示在中间面板中，目前会预置最基本的编程实验配置；</li></ol>
+<ol><li>对组件进行属性配置，可以隐藏后的组件，可以点击左侧组件树，打开对应配置面板；</li></ol>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_dde969920cac3dc481b4312fdf9d1129.png" loading="lazy"> &lt;/span&gt;</p>
+<p>不同组件对应了不同的配置能力；</p>
+<p>以下为一些基本配置，不同组件有自身特定支持的配置能力：</p>
+<table><thead><tr><th>属性</th><th>默认值</th><th>描述</th></tr></thead><tbody><tr><td>key</td><td>无</td><td>对应实验创编接口里的key</td></tr><tr><td>标题</td><td>无</td><td>对应左侧展示label</td></tr><tr><td>默认值</td><td>无</td><td>组件初始值</td></tr><tr><td>可编辑</td><td>true</td><td>是否可以编辑</td></tr><tr><td>隐藏</td><td>false</td><td>是否要展示组件，与删除组件不同的是，组件的值会存储在表单内</td></tr><tr><td>校验规则</td><td>{}</td><td>提供对组件值的基本校验能力和自定义校验能力</td></tr><tr><td>联动规则</td><td>无</td><td>提供各个组件之间的联动能力配置，目前仅支持组件值的联动</td></tr></tbody></table>
+<ol><li>对组件进行校验配置和联动配置</li></ol>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_ee972535555531f168fcff13204abb4c.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_6de62a5f6b1295a3d5d26ac6a4975637.png" loading="lazy"> &lt;/span&gt;</p>
+<p>JSON schema格式</p>
+<p>自定义函数，返回true通过，字符串错误信息</p>
+<p>&lt;span id=&quot;联动逻辑规则&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>联动逻辑规则</strong></h3>
+<p>目前仅支持主动模式</p>
+<p>  需要了解每个组件的value值组成，避免出现找不到值的问题</p>
+<p>  $self.value：指代当前所处组件的组件值 $target[\*].value：指代目标组件的组件值， 其下标可以是任何数字(这些数字是选择框中选中的组件顺序，从0开始递增) 比如 $target[0].value</p>
+<pre><code>比如说，当实验类型变化时，互斥层清空
+选择实验类型组件，在联动规则处创建1个，目标组件选择互斥层组件，联动类型时value
+联动值：{ 
+     ...$target[0].value, 
+     layer: &#x27;&#x27;, 
+   }</code></pre>
+<p>示例：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_dfd473ad3984bd45f23c272de3d7e279.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_85d691e4d6be6fc24a775854ad535719.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span id=&quot;预览配置项&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>预览配置项</strong></h3>
+<p>通过操作栏的“预览”按钮进入</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_2bef4f6e661a3b8046ca9f97c99a018f.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;创建-编辑-详情编程实验&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>创建/编辑/详情编程实验</strong></h3>
+<p>前置条件：在操作栏的“开启”开关打开</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_ec3faa84d76fd8d31be7007c82436b00.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span id=&quot;三、功能应用-接入引导&quot;&gt;&lt;/span&gt;</p>
+<h1>三、功能应用&amp;接入引导</h1>
+<p>&lt;span id=&quot;_3-1功能应用&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1功能应用</h2>
+<p>集成成功后即可在自有页面查看到集成后的DataTester页面。</p>
+<p>&lt;span id=&quot;_3-2接入引导&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2接入引导</h2>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_583e8d8ae41e80422ee7af204406bdd8.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_38a46a108aa6ba28fd92e5477779ecd1.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_0fd5cd25d9610c427606caa608fa304d.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_356c34f059fdd2f2e6a8362d7ac08e1a.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>虚拟事件 · A/B 实验知识库</title>
+<meta name="description" content="DataTester为您提供“虚拟事件”功能，您可以对DataTester中的多个一般事件通过一定的逻辑关系组合成虚拟事件，后续通过虚拟事件进行用户行为分析，便于您对于常规复合事件的组合管理、查看。 应用场景 目前常见场">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/67628.html">
+<meta property="og:title" content="虚拟事件"><meta property="og:description" content="DataTester为您提供“虚拟事件”功能，您可以对DataTester中的多个一般事件通过一定的逻辑关系组合成虚拟事件，后续通过虚拟事件进行用户行为分析，便于您对于常规复合事件的组合管理、查看。 应用场景 目前常见场">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/67628.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🎯 指标体系</span></div>
+<h1>虚拟事件</h1>
+<div class="meta">📄 629 字 · 🕐 2024-12-12</div>
+<article class="md"><p>DataTester为您提供“虚拟事件”功能，您可以对DataTester中的多个一般事件通过一定的逻辑关系组合成虚拟事件，后续通过虚拟事件进行用户行为分析，便于您对于常规复合事件的组合管理、查看。</p>
+<p>&lt;span id=&quot;865febd4&quot;&gt;&lt;/span&gt;</p>
+<h1>应用场景</h1>
+<p>目前常见场景为：想看一下发生了事件A或者发生了事件B的去重用户数。比如浏览了页面A或者浏览了页面B的去重用户数有多少。</p>
+<p>此时就需要用到虚拟事件：表示发生了事件A或者事件B。</p>
+<p>&lt;span id=&quot;二-使用说明&quot;&gt;&lt;/span&gt;</p>
+<h1>使用说明</h1>
+<p>&lt;span id=&quot;_1-虚拟事件列表页&quot;&gt;&lt;/span&gt;</p>
+<h2>进入虚拟事件列表页</h2>
+<p>登录并进入DataTester控制台后，单击左侧导航栏的<strong>数据管理</strong>\&gt;<strong>元数据管理</strong>\&gt;<strong>虚拟事件</strong>，进入虚拟事件列表页面。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/6b0027878e0c428e832ea34212077887~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>当点击进入“虚拟事件”页面时，默认要显示所有已创建虚拟事件的列表；</li></ul>
+<ul><li>对列表可以按“事件名称”、“事件展示名”进行筛选；</li></ul>
+<p>&lt;span id=&quot;cf8599e7&quot;&gt;&lt;/span&gt;</p>
+<h2>创建虚拟事件</h2>
+<ol><li>点击页面右上角新建虚拟事件。</li></ol>
+<ol><li>在弹出的创建虚拟事件页面，填写相应的信息。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/33f22f7344bc482ca4a5d4cfe2b1fc65~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>参数</th><th>配置说明</th></tr></thead><tbody><tr><td>虚拟事件名称 &amp; 展示名</td><td>自定义虚拟事件的名称和展示名，用于标识虚拟事件，便于后续使用虚拟事件时查找使用。</td></tr><tr><td>组合一般事件</td><td>选择创建的虚拟事件需要组合的一般事件有哪些。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 您可基于实际业务分析需要选择对应的一般事件，并支持对各选择的事件配置过滤筛选条件。&lt;br&gt;&lt;br&gt;* 选择的多个一般事件之间是or关系，即任意命中一个一般事件则表明符合条件，虚拟事件会被触发。</td></tr></tbody></table>
+<p>&lt;span id=&quot;d6f710a5&quot;&gt;&lt;/span&gt;</p>
+<h2>使用虚拟事件</h2>
+<p>在创建指标时，选择指标事件的时候，可点击选择“虚拟事件”类型的事件。以下以创建一个UBA事件指标为例，为您示例虚拟事件的应用。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/1402e00ed9ad431f9037af5bad9ba882~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

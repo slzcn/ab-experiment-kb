@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>了解A/B测试产品 · A/B 实验知识库</title>
+<meta name="description" content="说明 火山引擎A/B测试又名DataTester（简称Tester），后续在所有文档中出现「A/B测试」「DataTester」「Tester」均是指代该产品。 概述 产品架构 核心功能与优势 10年打磨科学可靠：实验总">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65798.html">
+<meta property="og:title" content="了解A/B测试产品"><meta property="og:description" content="说明 火山引擎A/B测试又名DataTester（简称Tester），后续在所有文档中出现「A/B测试」「DataTester」「Tester」均是指代该产品。 概述 产品架构 核心功能与优势 10年打磨科学可靠：实验总">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65798.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">💡 AB通识科普</span></div>
+<h1>了解A/B测试产品</h1>
+<div class="meta">📄 1,334 字 · 🕐 2024-04-24</div>
+<article class="md"><p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_be120d565d953c5b8a3cff4cea56ecf8.png" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;火山引擎A/B测试又名DataTester（简称Tester），后续在所有文档中出现「A/B测试」「DataTester」「Tester」均是指代该产品。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;一-概述&quot;&gt;&lt;/span&gt;</p>
+<h1>概述</h1>
+<p>&lt;video src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/450ac53315b34d4f890c4e394436bda5~tplv-goo7wpa0wc-image.image&quot; controls&gt;&lt;/video&gt;</p>
+<p>&lt;span id=&quot;产品架构&quot;&gt;&lt;/span&gt;</p>
+<h1>产品架构</h1>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/20cb39a324994f23a57eb9d0aaf18d8f~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;三-产品优势&quot;&gt;&lt;/span&gt;</p>
+<h1>核心功能与优势</h1>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/9b3ac52e30834bd9997c5da5cb422023~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>10年打磨科学可靠：实验总量150万+、日新增实验2000+、同时运行实验3万+</li></ul>
+<ul><li>字节增长经验加成：深度服务字节内部500+业务线，沉淀了大量增长经验</li></ul>
+<ul><li>实验丰富功能全面：拥有多种特型实验和智能调优实验以及强大的配置发布能力</li></ul>
+<ul><li>灵活部署使用便捷：支持在线使用、本地部署、嵌入业务系统等多种使用方式</li></ul>
+<p>&lt;span id=&quot;四-应用场景&quot;&gt;&lt;/span&gt;</p>
+<h1>应用场景</h1>
+<p>&lt;span id=&quot;_1-产品&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>1. 产品</strong></h2>
+<ul><li><strong>产品功能迭代</strong> ：头痛产品升级核心功能该采用哪一版本？用小部分流量进行互斥A/B测试，让您在不影响用户体验的同时，从多种方案中找到最优解。</li></ul>
+<ul><li><strong>用户路径设计</strong> ：多种用户路径设计方案，哪个版本转化效果更好？建立A/B测试，重点观测转化漏斗指标，计算用户路径转化过程中各个环节的转化率，将转化最好的方案全量发布至线上。</li></ul>
+<ul><li><strong>UI&amp;交互优化</strong> ：不同的页面布局、界面交互，哪个才是理想的方案？UI&amp;交互大改版，可通过A/B测试，通过对比不同方案下点击、转化、留存等指标，找到最佳迭代版本。</li></ul>
+<p>&lt;span id=&quot;_2-运营&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>2. 运营</strong></h2>
+<ul><li><strong>活动页面优化</strong> ：对活动落地页的文案、图片、按钮、颜色等进行持续优化，让各要素都最大程度上地提高活动转化和付费留存，帮助运营人员提高整体投入产出比。</li></ul>
+<ul><li><strong>推送方案择优</strong> ：选择推送文案/落地页，依靠经验下判断不免存在偏颇。开启推送测试，小流量先验，根据分析报告，做出科学选择。同时可设置不定时循环文案/落地页进行推送，降低单调性。</li></ul>
+<ul><li><strong>可视化编辑</strong> ：想进行A/B测试却没有研发人员支持？您可利用可视化编辑，以简单的拖移操作，完成页面图片/文本的替换与编辑、元素位移等操作，生成实验方案。无需更多代码工作。</li></ul>
+<p>&lt;span id=&quot;_3-研发&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>3. 研发</strong></h2>
+<ul><li><strong>推荐算法优化</strong> ：优化后的算法是否可以提升相应业务的数据指标？可通过A/B实验进行小规模验证，避免负向表现带来大范围影响，适用于基于内容、协同过滤和关联规则的各类推荐算法优化。算法包括基于内容的推荐算法（根据用户的历史记录推荐相似内容）、基于协同过滤的推荐算法（根据有相似兴趣用户的行为推荐相关内容）、基于关联规则的推荐算法（根据内容本身的相关性给用户推荐），最终提高用户使用黏性。</li></ul>
+<ul><li><strong>灰度发布</strong> ：发版前的功能/性能测试盲区，极有可能留下隐性问题，影响用户体验甚至导致用户流失。火山引擎A/B测试与智能运营模块打通，提供灰度发布功能，让研发者可在功能迭代时逐步放量，出现问题一键回滚，及时止损。</li></ul>
+<p>&lt;span id=&quot;_4-市场营销&quot;&gt;&lt;/span&gt;</p>
+<h2><strong>4. 市场营销</strong></h2>
+<ul><li><strong>投放落地页优化</strong> ：广告投放消耗高，线索转化却很低，如何解决？可通过可视化A/B测试，对落地页的标题、图片、文案、表单域及整体布局等进行可视化编辑，多版本投放，择优选择，提升营销效率。</li></ul>
+<ul><li><strong>以单链接投放多个页面</strong> ：多个落地页通过不同广告计划投放，流量分配不均，数据对比困难，无从择优。建立多链接测试，访问同一链接的用户可分流至不同版本落地页，从而科学地选出最佳投放页面。</li></ul>
+<ul><li><strong>投放流量</strong> ：人工调配投放流量耗时耗力，效果也难达到最佳。您可开启智能化流量调优，它应用贝叶斯统计原理，可实时对比多页面指标，流量自动向表现最佳的页面倾斜，动态更新流量配置，稳定实现ROI最大化。</li></ul></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

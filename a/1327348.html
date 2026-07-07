@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web个性化 · A/B 实验知识库</title>
+<meta name="description" content="个性化是指根据用户的行为、兴趣、地理位置等信息， 为用户提供个性化的内容和体验 ，以提高用户满意度和转化率。DataTester支持创建个性化实验，本文为您介绍个性化实验的应用场景、优势和创建Web个性化实验的操作步骤。">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1327348.html">
+<meta property="og:title" content="Web个性化"><meta property="og:description" content="个性化是指根据用户的行为、兴趣、地理位置等信息， 为用户提供个性化的内容和体验 ，以提高用户满意度和转化率。DataTester支持创建个性化实验，本文为您介绍个性化实验的应用场景、优势和创建Web个性化实验的操作步骤。">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1327348.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>Web个性化</h1>
+<div class="meta">📄 3,804 字 · 🕐 2024-12-30</div>
+<article class="md"><p>个性化是指根据用户的行为、兴趣、地理位置等信息，<strong>为用户提供个性化的内容和体验</strong>，以提高用户满意度和转化率。DataTester支持创建个性化实验，本文为您介绍个性化实验的应用场景、优势和创建Web个性化实验的操作步骤。</p>
+<p>&lt;span id=&quot;5fe0643b&quot;&gt;&lt;/span&gt;</p>
+<h1>应用场景</h1>
+<p>传统A/B实验有测试周期长、成本高、无法实时优化、难以满足个性化需求的限制，DataTester支持个性化实验，在多个典型应用场景下，可为进一步满足灵活高效低成本地开展A/B实验，对比介绍如下。</p>
+<table><thead><tr><th>应用场景</th><th>传统AB实验痛点</th><th>个性化实验应用价值</th><th>个性化实验优势</th></tr></thead><tbody><tr><td>电商网站的<strong>商品推荐</strong></td><td>传统AB实验只能对整个用户群体进行测试，无法满足个性化需求，不能根据用户的不同特征进行测试</td><td>根据用户的不同特征进行测试。</td><td>AB个性化测试可以根据用户的历史购买记录、浏览记录、搜索记录等信息，对不同用户推荐不同的商品，提高用户购买率和满意度。</td></tr><tr><td>营销活动的<strong>定向投放</strong></td><td>传统AB实验需要投入大量的人力、物力和时间成本，对于小型企业或创业公司来说，测试成本可能会超出预算。</td><td>降低AB实验成本。</td><td>AB个性化测试可以根据用户的地理位置、年龄、性别、兴趣爱好等信息，对不同用户进行定向投放，提高广告点击率和转化率。</td></tr><tr><td>社交媒体的<strong>内容推荐</strong></td><td>传统AB测试测试周期长，无法快速响应市场变化。</td><td>快速响应市场变化。</td><td>AB个性化测试可以根据用户的社交关系、兴趣爱好、历史行为等信息，对不同用户推荐不同的内容，提高用户参与度和留存率。</td></tr><tr><td>移动应用的<strong>功能优化</strong></td><td>传统AB测试无法实时优化，不能根据测试结果及时调整策略。</td><td>实时优化，根据测试结果及时调整策略。</td><td>AB个性化测试可以根据用户的设备类型、操作系统版本、网络环境等信息，对不同用户进行功能优化，提高用户体验和留存率。</td></tr><tr><td>网站的页面<strong>布局优化</strong></td><td>传统AB测试无法满足个性化需求，不能根据用户的不同特征进行测试。</td><td>根据用户的不同特征进行测试。</td><td>AB个性化测试可以根据用户的设备分辨率、浏览器类型、操作系统等信息，对不同用户进行页面布局优化，提高用户体验和转化率。</td></tr></tbody></table>
+<p>&lt;span id=&quot;a4eaeeac&quot;&gt;&lt;/span&gt;</p>
+<h1>使用限制</h1>
+<ul><li>版本要求：</li></ul>
+<ul><li>SaaS：当前所有SaaS用户可免费试用。</li></ul>
+<ul><li>私有化：4.9.0及以上版本支持</li></ul>
+<ul><li>实验类型：仅支持客户端实验</li></ul>
+<p>&lt;span id=&quot;85cacdfd&quot;&gt;&lt;/span&gt;</p>
+<h1>创建个性化实验</h1>
+<p>&lt;span id=&quot;de8deeb2&quot;&gt;&lt;/span&gt;</p>
+<h2>准备工作</h2>
+<p>与普通A/B实验类似，创建个性化实验前，请先完成以下准备工作：</p>
+<ul><li>根据实验需求完成数据接入操作。</li></ul>
+<ul><li>根据实验规划，明确实验指标，建议提前创建好实验指标。</li></ul>
+<p>&lt;span id=&quot;426537ec&quot;&gt;&lt;/span&gt;</p>
+<h2>step1：进入个性化实验页面</h2>
+<p>登录并进入A/B测试控制台后，在页面左侧导航栏选择<strong>个性化</strong>\&gt;<strong>Web个性化</strong>，进入<strong>Web个性化列表</strong>后单击右上角的<strong>创建个性化</strong>按钮，进入创建页面。</p>
+<p>&lt;span id=&quot;2cbc9ff1&quot;&gt;&lt;/span&gt;</p>
+<h2>step2：配置个性化实验参数</h2>
+<ol><li>配置个性化实验的基础信息。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/510eae67fb0e47d9864183b978e3e047~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>配置项</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>个性化名称</strong></td><td>建议与个性化内容相关的名称，比如：版本号+内容。便于让其他相关人员能够快速了解到此个性化实验是做什么的、是在哪个迭代版本的。</td></tr><tr><td><strong>目标URL</strong></td><td>* 支持的匹配方式：URL简单匹配、URL精准匹配。&lt;br&gt;&lt;br&gt;* URL地址：个性化web页面的URL。包括H5页面，Web页面，APP里H5页面，小程序里H5页面。&lt;br&gt;&lt;br&gt;   注意，此处配置的URL地址必须保障可通过浏览器直接访问，可以支持需要登录才能访问的页面，或者需要有权限才能访问的页面。</td></tr><tr><td><strong>预留流量</strong></td><td>预留流量是指应该看到您的原始页面的用户百分比，至少 5%。</td></tr></tbody></table>
+<ol><li>添加指标。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/38a22c411d884002b3752f9805c46597~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>支持添加核心指标和普通指标。</li></ul>
+<ul><li>核心指标：只能选择一个核心指标，最关心指标的提升比率，最终实验报告也是主要围绕该指标设计的。</li></ul>
+<ul><li>普通指标：可以配置多个，作为核心指标之外的指标数据参考，组成实验报告指标数据。</li></ul>
+<ul><li>如果指标选择的下拉框中没有实验所需的指标，可单击右上方的新建指标，跳转到创建指标页面进行创建；对已选的指标也可单击指标后的链接按钮，跳转指标组详情页面查看详情。</li></ul>
+<ol><li>单击<strong>确定</strong>，进入实验构建器页面，可继续后续创建子实验的操作步骤。</li></ol>
+<p>&lt;span id=&quot;bb6aa730&quot;&gt;&lt;/span&gt;</p>
+<h2>step3：创建子实验</h2>
+<p>支持为Web个性化实验创建多个子实验，操作步骤类似，以下以创建一个子实验为例，为您介绍详细的操作步骤。</p>
+<ol><li>单击个性化卡片右边  <strong>+</strong>  号，添加子实验。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/c72b8f6b1cfc4eedb2cba334bdd38788~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>配置子实验的基础信息参数。</li></ol>
+<table><thead><tr><th>配置项</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>名称</strong>&amp;<strong>描述</strong></td><td>建议与实验内容相关的名称，比如：版本号+内容。</td></tr><tr><td><strong>时长</strong></td><td>默认是7天，最高设置365天。</td></tr></tbody></table>
+<ol><li>配置目标用户。</li></ol>
+<p>   只有满足此规则的用户才能看到体验。 如果不提供条件，此体验将展示给所有访问您网站的用户。</p>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fafce691661245649f8e2bd2112eff38~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>添加且条件、或条件：可以通过筛选<strong>用户属性</strong>的方式来控制参与个性化实验的用户。</li></ul>
+<ul><li>添加分群：可以通过筛选<strong>用户分群</strong>的方式来控制参与个性化实验的用户。</li></ul>
+<ol><li>配置个性化实验的实验版本信息。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7ea74aff4fa3477ba3ed79cfd73ef4f1~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>根据界面检测结果提示，如果未按照可视化编辑器插件，可根据界面提示安装对应的插件。</li></ol>
+<ul><li>针对Web页面的个性化实验，可直接通过可视化编辑器，来编辑待进行A/B实验的页面，并将修改后的页面直接保存为实验版本的页面，与原页面进行A/B对比开展实验。</li></ul>
+<ul><li>首次安装插件后，需刷新操作页面后再继续后续操作。</li></ul>
+<ol><li>单击<strong>进入可视化编辑器</strong>，进入可视化编辑器页面中，您可通过可视化编辑器对Web页面进行编辑修改，完成后单击<strong>保存</strong>，即可将修改的页面保存为<strong>实验版本</strong>页面。</li></ol>
+<ol><li>配置对照版本、实验版本的版本参数。</li></ol>
+<p>      其中对照版本为Web个性化实验的原页面URL的页面；实验版本为可视化编辑器修改并保存后的页面。</p>
+<table><thead><tr><th>配置项</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>版本名称</strong>&amp;<strong>描述</strong></td><td>设置用于快速标识实验版本和对照版本的版本名称和描述，比如：版本号+内容。</td></tr><tr><td><strong>白名单</strong></td><td>添加后续进行实验调试的测试白名单用户，支持：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 手动输入白名单用户的ssid，支持输入多个，通过逗号隔开。&lt;br&gt;&lt;br&gt;* 也可选择已创建的白名单组，支持多选。</td></tr><tr><td><strong>实验版本操作记录</strong></td><td>您可以在实验版本中查看到当前实验版本的操作记录，上述步骤中，在可视化编辑器中的操作会记录并展示在这里。</td></tr><tr><td><strong>流量分配</strong></td><td>配置对照组、实验组的用户流量分配，支持均匀分配，或关闭均匀分配开关后手动调整流量分配比例。</td></tr></tbody></table>
+<ol><li>单击<strong>保存并进入调试</strong>，则创建的子实验进入<strong>调试中</strong>状态。</li></ol>
+<p>   已添加的白名单用户可查看对应版本的页面情况，确认子实验的配置是否符合预期。如果符合预期，您可根据规划正式开启个性化实验。</p>
+<p>&lt;span id=&quot;5cdb8660&quot;&gt;&lt;/span&gt;</p>
+<h1>开启/结束个性化实验</h1>
+<p>已调试符合预期的个性化实验，您可按需开始实验，开始后也可以根据实验情况停止对应的个性化实验。</p>
+<ul><li>您可以在Web个性化实验列表页面，开始/停止对应的个性化实验。</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/8dc0921aa81c4cbabbde39f12b66748f~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>您也可以进入个性化实验的实验构建器，在这里您可以开启/停止整个个性实验，或仅开启/停止其中某个子实验。</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0ed0d86375f842f5b7296951746e5a26~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;af65acae&quot;&gt;&lt;/span&gt;</p>
+<h1>查看个性化实验报告</h1>
+<p>实验开始后，您可以进入个性化实验的报告页面，查看个性化实验的指标结果等信息，结合个性化实验报告进行业务调整。</p>
+<p>&lt;span id=&quot;723b031a&quot;&gt;&lt;/span&gt;</p>
+<h2>报告概览</h2>
+<p>个性化更关注的是全局最优解，也就是整体个性化整体最优解。个性化概览在核心指标中收益是最重要。在个性化概览右侧卡片是实验在核心指标中的收益。</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/802004d410a644a6b2e385536e1ba3f8~tplv-goo7wpa0wc-image.image&quot; width=&quot;3008px&quot; /&gt;&lt;/div&gt;</p>
+<p>切换到实验</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/a665f1c64de54db99bb5ac18f13de8e5~tplv-goo7wpa0wc-image.image&quot; width=&quot;2940px&quot; /&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;e7bd182f&quot;&gt;&lt;/span&gt;</p>
+<h2>日期筛选</h2>
+<p>支持天级别，范围：个性化开始日期 到 T\-1。举个例子：个性化在20240613开启了个性化，如果我们在20240621查询，可选范围是：20240613 \- 20240620。</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/66e3df7a482c44bf9b1af13f9325e323~tplv-goo7wpa0wc-image.image&quot; width=&quot;464px&quot; /&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;dc1e0f36&quot;&gt;&lt;/span&gt;</p>
+<h2>进组用户趋势</h2>
+<p>根据日期筛选来看个性化中预留流量和个性化流量的进组用户数。如果切换到实验的时候，展示的对照版本和实验版本的进组用户数。通过这个图可以查看进组用户趋势。</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/e20397559bf44b0a8d0ce3a58be9e427~tplv-goo7wpa0wc-image.image&quot; width=&quot;2896px&quot; /&gt;&lt;/div&gt;</p>
+<p>切换到实验</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/174d35709a834f26a2705dc8596dd508~tplv-goo7wpa0wc-image.image&quot; width=&quot;2876px&quot; /&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;44a1efc4&quot;&gt;&lt;/span&gt;</p>
+<h2>指标值变化</h2>
+<p>根据日期筛选和选择指标来查看个性化中指标的表现。默认选中核心指标，可以切换到普通指标。在日期范围内选中指标的每天变化，可以得到指标每天变化趋势。</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b0131df282924e96868fc34be882b969~tplv-goo7wpa0wc-image.image&quot; width=&quot;2858px&quot; /&gt;&lt;/div&gt;</p>
+<p>切换到实验</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/32fe9f669c5b46ee9cc9640598a226ab~tplv-goo7wpa0wc-image.image&quot; width=&quot;2878px&quot; /&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;8cc33961&quot;&gt;&lt;/span&gt;</p>
+<h2>P值变化</h2>
+<p>据日期筛选和选择指标来查看个性化中指标的表现。p值就是用来表示实验结果与对照组之间差异的大小，也就是判断实验结果是否具有统计学意义，p值越小，差异越大，实验结果与对照组之间的差异越显著。</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/ca7bd5e11c264e4ea62f10b1a16b1fe2~tplv-goo7wpa0wc-image.image&quot; width=&quot;2832px&quot; /&gt;&lt;/div&gt;</p>
+<p>切换到实验</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/ba99dcb5ebe14a3ea843180e2e251c82~tplv-goo7wpa0wc-image.image&quot; width=&quot;2814px&quot; /&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;988c25cb&quot;&gt;&lt;/span&gt;</p>
+<h1>常见问题</h1>
+<p>&lt;span id=&quot;a75892bc&quot;&gt;&lt;/span&gt;</p>
+<h2>Q1：个性化和推荐的区别是什么？</h2>
+<p>个性化和推荐从本质上讲都是将最匹配的内容分发给最合适的人，但是在大的优化场景下，<strong>推荐仅仅是个性化的一个子集</strong>。</p>
+<p>推荐主要是关注于内容（产品，文章等），而<strong>个性化则从宏观的角度关注于不同场景和需求下整个用户的体验</strong>，大到内容，小到一个词对不同人群产生的影响，推荐在个性化的背景下，仅仅会作为一个组件进行使用，或一个场景进行选择。所以简单的将<strong>推荐理解为个性化是不准确的，不全面的</strong>。</p>
+<p>&lt;span id=&quot;eb8c209d&quot;&gt;&lt;/span&gt;</p>
+<h2>Q2：个性化与父子实验区别</h2>
+<ul><li><strong>个性化对用户进行分层，父子实验对实验进行分层</strong>。</li></ul>
+<ul><li>个性化实验通常需要对用户进行分层，将用户分为不同的群体，然后针对不同的群体进行不同的实验设计。</li></ul>
+<ul><li>父子实验通常需要对实验进行分层，将实验分为不同的组，然后针对不同的组进行不同的实验设计。</li></ul>
+<ul><li>个性化命中允许调整实验优先级。</li></ul>
+<ul><li>针对人群动态调整运行中子实验。</li></ul>
+<ul><li>个性化报告，展示个性化整体收益，全局收益。</li></ul>
+<p>&lt;span id=&quot;f61d033b&quot;&gt;&lt;/span&gt;</p>
+<h2>Q3：个性化中有关实验层的处理逻辑是怎样的？</h2>
+<p>个性化对应的是单独的一个层，添加实验的每一个实验都是在不同层上面，每一个层是正交的。</p>
+<p>&lt;span id=&quot;22f715ff&quot;&gt;&lt;/span&gt;</p>
+<h2>Q4：多个子实验时，子实验命中优先级怎么修改设置？</h2>
+<p>如果某一个用户同时命中实验1和实验2的受众条件，可以通过设置实验的排列顺序，优先命中排列在前面子实验，最终只会命中一个子实验的一个版本。</p>
+<p>&lt;div style=&quot;text-align: center&quot;&gt; &lt;img src=&quot;https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/3fa1e946c4144f1fbe1a9da39334e06c~tplv-goo7wpa0wc-image.image&quot; width=&quot;2368px&quot; /&gt;&lt;/div&gt;</p>
+<p>&lt;span id=&quot;7bd6d724&quot;&gt;&lt;/span&gt;</p>
+<h2>Q5：个性化中，用户分流逻辑是怎样的？</h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/6f98ab566bf948ddbb85ff5a8a22d211~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>数据查重工具（SaaS-云原生） · A/B 实验知识库</title>
+<meta name="description" content="DataTester支持 数据查重工具 ，如果实验指标数据可能存在重复上报的情况，您可使用数据查重工具进行查找定位，找到疑似重复的数据，进而对重复数据进行处理，避免指标计算不准确。本文为您介绍数据查重工具的使用详情。 注">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1468423.html">
+<meta property="og:title" content="数据查重工具（SaaS-云原生）"><meta property="og:description" content="DataTester支持 数据查重工具 ，如果实验指标数据可能存在重复上报的情况，您可使用数据查重工具进行查找定位，找到疑似重复的数据，进而对重复数据进行处理，避免指标计算不准确。本文为您介绍数据查重工具的使用详情。 注">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1468423.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🗂️ 数据与埋点</span></div>
+<h1>数据查重工具（SaaS-云原生）</h1>
+<div class="meta">📄 752 字 · 🕐 2025-08-28</div>
+<article class="md"><p>DataTester支持<strong>数据查重工具</strong>，如果实验指标数据可能存在重复上报的情况，您可使用数据查重工具进行查找定位，找到疑似重复的数据，进而对重复数据进行处理，避免指标计算不准确。本文为您介绍数据查重工具的使用详情。</p>
+<p>&lt;span id=&quot;981ec81d&quot;&gt;&lt;/span&gt;</p>
+<h1>注意事项</h1>
+<ul><li>当前支持对实验指标事件进行<strong>疑似重复数据</strong>进行查重，您可以查重结果作为参考进行数据治理和指标处理。</li></ul>
+<ul><li>查重任务创建完成后，每日9点会自动运行查重任务，任务运行结束后，会将查重结果消息发送至您配置的飞书Webhook地址中，您可根据消息提示下载查看疑似重复数据。</li></ul>
+<p>&lt;span id=&quot;f751bba6&quot;&gt;&lt;/span&gt;</p>
+<h1>进入数据查重工具</h1>
+<ol><li>登录并进入DataTester控制台后，单击页面左侧导航栏的<strong>A/B测试</strong>\&gt;<strong>实验工具箱</strong>，在工具箱页面选择<strong>数据查重工具</strong>。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/5b5e6561fa064b5e88fa80e35b7616da~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>进入数据查重工具页面后，您可查看已创建的查重任务，也可创建新的查重任务。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/f7c9f6cf03bb40e1a90003603a0dfeb7~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;5b64c221&quot;&gt;&lt;/span&gt;</p>
+<h1>创建数据查重任务</h1>
+<ol><li>单击数据查重工具页面右上角的<strong>创建任务</strong>，。在弹出的任务页面中配置查重任务参数。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/d4a2c5e6eb9345be9938debf6f31c720~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>参数</th><th>配置说明</th></tr></thead><tbody><tr><td>任务名称</td><td>自定义数据查重任务的名称。</td></tr><tr><td>事件名称</td><td>在下拉列表中选择需要查重的指标事件。不支持选择任意事件、任意主动事件这类无查重意义的事件。</td></tr><tr><td>飞书Webhook地址</td><td>配置查重结果消息通知的飞书Webhook地址。</td></tr></tbody></table>
+<ol><li>任务配置完成后，单击<strong>创建任务</strong>，即可完成查重任务的配置。</li></ol>
+<p>&lt;span id=&quot;65231b23&quot;&gt;&lt;/span&gt;</p>
+<h1>运行数据查重任务</h1>
+<p>数据查重任务创建完成后，DataTester会在每天9点自动开始运行所有已创建的任务，任务运行完成后，会将运行结果发送至飞书群组中。</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;当前暂不支持暂停、删除已创建的数据查重任务，如果您希望暂停或删除任务，可联系技术支持人员协助处理。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;d50da107&quot;&gt;&lt;/span&gt;</p>
+<h1>下载疑似重复数据</h1>
+<p>任务运行结束后，您可在数据查重工具页面单击下载按钮下载疑似重复数据，每次下载最多支持下载10,000条数据。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/27121cf75b884a5c8b27cd81cccbe19c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

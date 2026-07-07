@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>分流 agent · A/B 实验知识库</title>
+<meta name="description" content="1. 使用方式 1. agent为docker镜像，需要部署到业务环境 2. 通过http接口访问，获取分流结果 3. 支持服务端SDK的主要功能 2. 服务部署 1. 下载镜像，当前agent版本：v1.0.3 saa">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/73642.html">
+<meta property="og:title" content="分流 agent"><meta property="og:description" content="1. 使用方式 1. agent为docker镜像，需要部署到业务环境 2. 通过http接口访问，获取分流结果 3. 支持服务端SDK的主要功能 2. 服务部署 1. 下载镜像，当前agent版本：v1.0.3 saa">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/73642.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">📐 实验设计与规划</span></div>
+<h1>分流 agent</h1>
+<div class="meta">📄 2,319 字 · 🕐 2024-07-31</div>
+<article class="md"><p>&lt;span id=&quot;_1-使用方式&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 使用方式</h1>
+<ol><li>agent为docker镜像，需要部署到业务环境</li></ol>
+<ol><li>通过http接口访问，获取分流结果</li></ol>
+<ol><li>支持服务端SDK的主要功能</li></ol>
+<p>&lt;span id=&quot;_2-服务部署&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 服务部署</h1>
+<ol><li>下载镜像，当前agent版本：v1.0.3</li></ol>
+<p><strong>saas</strong></p>
+<p>&lt;Attachment link=&quot;https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e098ac41e97cf9ab8771f39a14f3b68c.gz&quot; name=&quot;datatester-docker-agent_v1.0.3.tar.gz&quot;&gt;datatester-docker-agent_v1.0.3.tar.gz&lt;/Attachment&gt;</p>
+<p>&amp;nbsp;</p>
+<p><strong>私有化</strong></p>
+<p>&lt;Attachment link=&quot;https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_c28db17555fb817cb4a42151fbdc1660.gz&quot; name=&quot;datatester-docker-agent-onpremise_v1.0.3.tar.gz&quot;&gt;datatester-docker-agent-onpremise_v1.0.3.tar.gz&lt;/Attachment&gt;</p>
+<ol><li>安装docker</li></ol>
+<ol><li>启动服务</li></ol>
+<ol><li>加载镜像</li></ol>
+<pre><code># 加载镜像
+docker  load -i datatester-docker-agent*.tar.gz
+# 查询load的镜像id
+docker  images</code></pre>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_cf0bf94a5cbb3a0dba4521fe1c691727.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>运行</li></ol>
+<p>&lt;span id=&quot;saas&quot;&gt;&lt;/span&gt;</p>
+<h4>saas</h4>
+<p>*docker* run \-p {宿主机端口}:6789 {镜像id} {appKey} {metaInterval} {region}</p>
+<p>所有参数都是必选，其中appkey可在界面获取：</p>
+<p>在集团中接入一个应用后，您可以在集团相关页面查看应用的AppKey等信息，详情请参考：<a href="https://www.volcengine.com/docs/6287/66984" target="_blank" rel="noopener">如何创建应用</a>。</p>
+<ul><li>SaaS\-云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7f186b68302f40ae8822331615ea0e71~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>SaaS\-非云原生</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b55e61ee067544deaff4939685d1475c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1、宿主机端口根据业务需要进行配置&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;2、镜像id替换为实际的id，参照示例图片中的c8323aee9721&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;3、metaInterval为拉取元数据的时间间隔，单位为秒，建议设置为60秒&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;4、region区分国内和海外环境，国内为CN，海外为SG&lt;/div&gt;</p>
+<p>示例：</p>
+<ul><li>docker run \-p 6789:6789 380b4fc3dcf0 3ac7ff2fad9d005f97857596a9078 60 CN</li></ul>
+<ul><li>docker run \-p 6789:6789 380b4fc3dcf0 3ac7ff2fad9d005f97857596a9078 20 CN</li></ul>
+<ul><li>docker run \-p 6789:6789 380b4fc3dcf0 65877c795467314d04d9fa0ee33 60 SG</li></ul>
+<p>&lt;span id=&quot;私有化&quot;&gt;&lt;/span&gt;</p>
+<h4>私有化</h4>
+<ul><li>*docker* run \-p {宿主机端口}:6789 {镜像id} {appKey} {metaInterval}</li></ul>
+<p>所有参数都是必选</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1、宿主机端口根据业务需要进行配置&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;2、镜像id替换为实际的id，参照示例图片中的c8323aee9721&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;3、为了获取appKey，您需要在火山引擎A/B平台进行接入，并于&quot;集团设置\-应用列表\-应用ID&quot;处获取appKey&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;4、metaInterval为拉取元数据的时间间隔，单位为秒，建议设置为60秒&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;5、私有化部署时会有产品域名和上报域名，productHost替换为产品域名，eventHost替换为上报域名&lt;/div&gt;</p>
+<p>示例：</p>
+<ul><li>docker run \-p 6789:6789 380b4fc3dcf0 7857596a9078f97857596a907 60 http://product.cc https://product.com</li></ul>
+<ul><li>docker run \-p 6789:6789 380b4fc3dcf0 7857596a9078f97857596a907 20 http://product.cc https://product.com</li></ul>
+<p>&lt;span id=&quot;_3-接口描述&quot;&gt;&lt;/span&gt;</p>
+<h1>3. 接口描述</h1>
+<p>&lt;span id=&quot;_3-1-健康检查接口&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 健康检查接口</h2>
+<p><strong>接口：/ping</strong></p>
+<p><strong>方法: GET</strong></p>
+<p><strong>描述：健康检查</strong></p>
+<p><strong>请求参数：无</strong></p>
+<p><strong>返回值：固定值</strong></p>
+<pre><code>{
+    &quot;message&quot;: &quot;pong&quot;
+}</code></pre>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;除健康检查接口外，其余所有接口都是HTTP POST&lt;/div&gt;</p>
+<p>&lt;span id=&quot;_3-2-activate&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 activate</h2>
+<p><strong>接口：/activate</strong></p>
+<p><strong>描述：</strong>  获取特定key的分流结果，并上报曝光事件</p>
+<p><strong>请求参数：</strong> </p>
+<pre><code>{
+    &quot;variant_key&quot;: &quot;variantKey&quot;, // 特定的key, 即实验中配置的参数名
+    &quot;decision_id&quot;: &quot;decisionID&quot;, // 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+    &quot;track_id&quot;: &quot;uuid&quot;, // 事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+    &quot;attributes&quot;: {      // 用户属性，仅用于分流，不随埋点上报
+        &quot;name&quot;: &quot;user_name&quot;,
+        &quot;age&quot;: 20,
+        &quot;is_android&quot;: true,
+        &quot;pay&quot;: 123.456
+    }
+}</code></pre>
+<p><strong>返回值：</strong>  返回命中变体对象</p>
+<pre><code>// 未命中
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// variant_key=&quot;string&quot;
+{
+    &quot;data&quot;: {
+        &quot;string&quot;: {
+            &quot;val&quot;: &quot;bbb&quot;,
+            &quot;vid&quot;: &quot;23357&quot;
+        }
+    },
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// variant_key=&quot;number&quot;
+{
+    &quot;data&quot;: {
+        &quot;number&quot;: {
+            &quot;val&quot;: 456,
+            &quot;vid&quot;: &quot;23357&quot;
+        }
+    },
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// variant_key=&quot;boolean&quot;
+{
+    &quot;data&quot;: {
+        &quot;boolean&quot;: {
+            &quot;val&quot;: false,
+            &quot;vid&quot;: &quot;23357&quot;
+        }
+    },
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// variant_key=&quot;json&quot;
+{
+    &quot;data&quot;: {
+        &quot;json&quot;: {
+            &quot;val&quot;: {
+                &quot;count&quot;: 2,
+                &quot;ver&quot;: &quot;b&quot;
+            },
+            &quot;vid&quot;: &quot;23357&quot;
+        }
+    },
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 参数错误  code为203，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 203,
+    &quot;message&quot;: &quot;variant_key is empty&quot;
+}
+// 其他错误  code为205，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 205,
+    &quot;message&quot;: &quot;xxxx&quot;
+}</code></pre>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;1、该接口与所有含有“WithImpression”字样的接口均会自动上报曝光事件&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;2、variant_key、decision_id、track_id必选&lt;/div&gt;</p>
+<p>&lt;span id=&quot;_3-3-getexperimentconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.3 getExperimentConfigs</h2>
+<p><strong>接口：/getExperimentConfigs</strong></p>
+<p><strong>描述：</strong>  获取用户命中的特定实验的变体详情</p>
+<p><strong>请求参数：</strong> </p>
+<pre><code>{
+    &quot;decision_id&quot;: &quot;decisionID&quot;, // 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+    &quot;track_id&quot;: &quot;uuid&quot;, // 事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+    &quot;attributes&quot;: {      // 用户属性，仅用于分流，不随埋点上报
+        &quot;name&quot;: &quot;user_name&quot;,
+        &quot;age&quot;: 20,
+        &quot;is_android&quot;: true,
+        &quot;pay&quot;: 123.456
+    },
+    &quot;experiment_id&quot;: &quot;123456&quot; // 特定实验的id
+}</code></pre>
+<p><strong>返回值：</strong>  返回命中变体的对象，表明用户命中某个实验的变体详情，通常仅能命中一个变体。</p>
+<pre><code>// 未命中实验
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 命中实验
+{
+    &quot;data&quot;: {
+        &quot;number&quot;: {
+            &quot;val&quot;: 456,
+            &quot;vid&quot;: &quot;23357&quot;
+        },
+        &quot;boolean&quot;: {
+            &quot;val&quot;: false,
+            &quot;vid&quot;: &quot;23357&quot;
+        },
+        &quot;string&quot;: {
+            &quot;val&quot;: &quot;bbb&quot;,
+            &quot;vid&quot;: &quot;23357&quot;
+        },
+        &quot;json&quot;: {
+            &quot;val&quot;: {
+                &quot;count&quot;: 2,
+                &quot;ver&quot;: &quot;b&quot;
+            },
+            &quot;vid&quot;: &quot;23357&quot;
+        }
+    },
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 参数错误  code为203，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 203,
+    &quot;message&quot;: &quot;experiment_id is empty&quot;
+}
+// 其他错误  code为205，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 205,
+    &quot;message&quot;: &quot;failed to find experiment[333333]&quot;
+}</code></pre>
+<p>&lt;span id=&quot;_3-4-getexperimentconfigswithimpression&quot;&gt;&lt;/span&gt;</p>
+<h2>3.4 getExperimentConfigsWithImpression</h2>
+<p><strong>接口：/getExperimentConfigsWithImpression</strong></p>
+<p>请求响应与接口“getExperimentConfigs”相同，会自动上报曝光事件</p>
+<p>&lt;span id=&quot;_3-5-getallexperimentconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.5 getAllExperimentConfigs</h2>
+<p><strong>接口：/getAllExperimentConfigs</strong></p>
+<p><strong>描述：</strong>  获取用户命中的所有实验的变体详情</p>
+<p><strong>请求参数：</strong> </p>
+<pre><code>{
+    &quot;decision_id&quot;: &quot;decisionID&quot;, // 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+    &quot;attributes&quot;: {      // 用户属性，仅用于分流，不随埋点上报
+        &quot;name&quot;: &quot;user_name&quot;,
+        &quot;age&quot;: 20,
+        &quot;is_android&quot;: true,
+        &quot;pay&quot;: 123.456
+    }
+}</code></pre>
+<p><strong>返回值：</strong>  返回命中变体详情，通常命中多个变体。</p>
+<pre><code>// 未命中实验
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 命中
+{
+    &quot;data&quot;: {
+        &quot;number&quot;: {
+            &quot;val&quot;: 456,
+            &quot;vid&quot;: &quot;23357&quot;
+        },
+        &quot;boolean&quot;: {
+            &quot;val&quot;: false,
+            &quot;vid&quot;: &quot;23357&quot;
+        },
+        &quot;string&quot;: {
+            &quot;val&quot;: &quot;bbb&quot;,
+            &quot;vid&quot;: &quot;23357&quot;
+        },
+        &quot;json&quot;: {
+            &quot;val&quot;: {
+                &quot;count&quot;: 2,
+                &quot;ver&quot;: &quot;b&quot;
+            },
+            &quot;vid&quot;: &quot;23357&quot;
+        },
+        &quot;config&quot;: {
+            &quot;val&quot;: &quot;off&quot;,
+            &quot;vid&quot;: &quot;23361&quot;
+        }
+    },
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 参数错误  code为203，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 203,
+    &quot;message&quot;: &quot;decision_id is empty&quot;
+}
+// 其他错误  code为205，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 205,
+    &quot;message&quot;: &quot;xxxxx&quot;
+}</code></pre>
+<p>&lt;span id=&quot;_3-6-getfeatureconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.6 getFeatureConfigs</h2>
+<p><strong>接口：/getFeatureConfigs</strong></p>
+<p><strong>描述：</strong>  获取用户命中的特定feature的变体详情</p>
+<p><strong>请求参数：</strong> </p>
+<pre><code>{
+    &quot;decision_id&quot;: &quot;decisionID&quot;, // 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+    &quot;track_id&quot;: &quot;uuid&quot;, // 事件上报用户标识，用于事件上报，请替换为客户的真实用户标识
+    &quot;attributes&quot;: {      // 用户属性，仅用于分流，不随埋点上报
+        &quot;name&quot;: &quot;user_name&quot;,
+        &quot;age&quot;: 20,
+        &quot;is_android&quot;: true,
+        &quot;pay&quot;: 123.456
+    },
+    &quot;feature_id&quot;: &quot;123456&quot; // 特定feature的id
+}</code></pre>
+<p><strong>返回值：</strong>  返回命中变体的对象，表明用户命中某个feature的变体详情，通常仅能命中一个变体。</p>
+<pre><code>// 未命中
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 命中ff
+{
+    &quot;data&quot;: {
+        &quot;feature_str&quot;: {
+            &quot;val&quot;: &quot;false&quot;,
+            &quot;vid&quot;: &quot;20000044&quot;
+        }
+    },
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 命中ff
+{
+    &quot;data&quot;: {
+        &quot;feature_key_number&quot;: {
+            &quot;val&quot;: 3,
+            &quot;vid&quot;: &quot;20000058&quot;
+        }
+    },
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 参数错误  code为203，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 203,
+    &quot;message&quot;: &quot;feature_id is empty&quot;
+}
+// 其他错误  code为205，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 205,
+    &quot;message&quot;: &quot;failed to find feature[333333]&quot;
+}</code></pre>
+<p>&lt;span id=&quot;_3-7-getfeatureconfigswithimpression&quot;&gt;&lt;/span&gt;</p>
+<h2>3.7 getFeatureConfigsWithImpression</h2>
+<p><strong>接口：/getFeatureConfigsWithImpression</strong></p>
+<p>请求响应与接口“getFeatureConfigs”相同，会自动上报曝光事件</p>
+<p>&lt;span id=&quot;_3-8-getallfeatureconfigs&quot;&gt;&lt;/span&gt;</p>
+<h2>3.8 getAllFeatureConfigs</h2>
+<p><strong>接口：/getAllFeatureConfigs</strong></p>
+<p><strong>描述：</strong>  获取用户命中的所有feature的变体详情</p>
+<p><strong>请求参数：</strong> </p>
+<pre><code>{
+    &quot;decision_id&quot;: &quot;decisionID&quot;, // 本地分流用户标识，不用于事件上报，请替换为客户的真实用户标识
+    &quot;attributes&quot;: {      // 用户属性，仅用于分流，不随埋点上报
+        &quot;name&quot;: &quot;user_name&quot;,
+        &quot;age&quot;: 20,
+        &quot;is_android&quot;: true,
+        &quot;pay&quot;: 123.456
+    }
+}</code></pre>
+<p><strong>返回值：</strong>  返回命中变体详情，通常命中多个变体。</p>
+<pre><code>// 未命中
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 命中
+{
+    &quot;data&quot;: {
+        &quot;feature_str&quot;: {
+            &quot;val&quot;: &quot;false&quot;,
+            &quot;vid&quot;: &quot;20000044&quot;
+        },
+        &quot;feature_key_number&quot;: {
+            &quot;val&quot;: 1,
+            &quot;vid&quot;: &quot;20000056&quot;
+        }
+    },
+    &quot;code&quot;: 200,
+    &quot;message&quot;: &quot;&quot;
+}
+// 参数错误  code为203，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 203,
+    &quot;message&quot;: &quot;decision_id is empty&quot;
+}
+// 其他错误  code为205，message为错误信息
+{
+    &quot;data&quot;: {},
+    &quot;code&quot;: 205,
+    &quot;message&quot;: &quot;xxxxx&quot;
+}</code></pre>
+<p>&lt;span id=&quot;_4-其他&quot;&gt;&lt;/span&gt;</p>
+<h1>4. 其他</h1>
+<p>&lt;span id=&quot;使用场景&quot;&gt;&lt;/span&gt;</p>
+<h2>使用场景</h2>
+<p>agent为单节点，性能相当于单个服务端SDK，建议仅在试用阶段、请求量相对较小的场景下使用，大流量接入场景下还是优先使用服务端SDK。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

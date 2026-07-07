@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>干货 | A/B测试助力游戏业务增长 · A/B 实验知识库</title>
+<meta name="description" content="中国游戏行业发展现状及挑战 国内市场增长乏力 2021 年游戏销售收入 2965.13 亿元，同比增长 6.4%，增速相较于 2020 年减少近 15%。游戏用户规模达 6.66 亿人，同比增长仅为 0.22%。2021">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/120543.html">
+<meta property="og:title" content="干货 | A/B测试助力游戏业务增长"><meta property="og:description" content="中国游戏行业发展现状及挑战 国内市场增长乏力 2021 年游戏销售收入 2965.13 亿元，同比增长 6.4%，增速相较于 2020 年减少近 15%。游戏用户规模达 6.66 亿人，同比增长仅为 0.22%。2021">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/120543.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🏆 实战案例库</span></div>
+<h1>干货 | A/B测试助力游戏业务增长</h1>
+<div class="meta">📄 3,139 字 · 🕐 2022-06-28</div>
+<article class="md"><p>&lt;span id=&quot;中国游戏行业发展现状及挑战&quot;&gt;&lt;/span&gt;</p>
+<h1>中国游戏行业发展现状及挑战</h1>
+<p>&lt;span id=&quot;国内市场增长乏力&quot;&gt;&lt;/span&gt;</p>
+<h2>国内市场增长乏力</h2>
+<p>2021 年游戏销售收入 2965.13 亿元，同比增长 6.4%，增速相较于 2020 年减少近 15%。游戏用户规模达 6.66 亿人，同比增长仅为 0.22%。2021 年游戏销售收入增长乏力，游戏人口红利趋于饱和，国内游戏市场整体正在从增量市场向存量市场转变。受未成年人保护法和国内游戏版号发行限制的影响，未来一段时间国内发展还会受限。</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_8369c0f1e9b9cec738ba198ffda15e9f" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;自研游戏出海势头强劲&quot;&gt;&lt;/span&gt;</p>
+<h2>自研游戏出海势头强劲</h2>
+<p>2021 年，中国自主研发游戏海外市场实际销售收入达 180.13 亿美元（近 1200 亿人民币），比 2020 年增加了 25.63 亿美元，同比增长 16.59%。从近五年的平均增长幅度看，我国游戏出海份额呈现稳定上升的态势。中国自主研发移动游戏海外重点地区收入分布中，来自美国、日本、韩国收入占 32.58%，18.54%和 7.19%，共贡献了 58.31%的收入。</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_f5327a2365a524a4a9ee88c7f8a435a2" loading="lazy"> &lt;/span&gt;</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span id=&quot;私域流量扰动行业格局&quot;&gt;&lt;/span&gt;</p>
+<h2>私域流量扰动行业格局</h2>
+<p>近年来，随着自媒体平台的快速发展，私域流量的积累为游戏的发行提供了新的投放基础。在精准营销技术的辅助下，自媒体平台的游戏投放取得了令人瞩目的效果。以青瓷游戏的《最强蜗牛》为例，《最强蜗牛》上线在抖音和西瓜视频两个平台，通过悬念预热、超级挑战赛、全民任务等新的互动方式，精准触达了目标用户，游戏上线后 10 天 iOS 流水超 1.04 亿，连续一个月居 iOS 游戏畅销榜前十名。</p>
+<p>随着国内游戏用户数量趋于饱和，中国游戏产业也从高速成长期逐渐转型，市场成熟度提升，竞争趋于精细化。游戏企业买量成本高企，用户留存难，对精细化运营的要求也越来越高。叠加游戏出海以及私域流量运营的挑战，游戏企业对数据分析的使用需求和依赖度进一步提高。</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span id=&quot;快速试错，a-b-测试助力打造爆款游戏&quot;&gt;&lt;/span&gt;</p>
+<h1>快速试错，A/B 测试助力打造爆款游戏</h1>
+<p>游戏行业发展至今，先后经历了主机游戏时代、网页游戏时代、移动游戏时代等多个阶段，如今移动游戏收入占国内游戏收入的 7 成以上，许多传统游戏公司正面临着转型压力。随着游戏技术的日趋成熟，大批新兴公司涌入该行业，进一步加剧了竞争压力。</p>
+<p>游戏研发流程大致分为立项、验证、开发、测试、上线准备和运营六个阶段，每个阶段往往都伴随着许多修改。修改的效果如何？对于核心指标是否会有负面的影响？传统的思路，是将新特性上线后验证效果，但这也往往存在上线周期长，过分依赖经验，影响面广等问题。</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_4ddfd0e89e5abc01af398274fee069e5" loading="lazy"> &lt;/span&gt;</p>
+<p>&amp;nbsp;</p>
+<p><strong>A/B 实验通过在线上流量中取出一小部分，完全随机地分给原策略 A（对照组）和新策略 B（实验组），再结合一定的统计方法 ，得到对于两种策略相对效果的准确估计。</strong>  通过 A/B 实验可以对游戏新特性/修改进行科学的评估，利用线上小流量即可验证效果，并能够有效地衡量收益。</p>
+<p>&lt;span id=&quot;a-b-实验，科学评估修改结果&quot;&gt;&lt;/span&gt;</p>
+<h2>A/B 实验，科学评估修改结果</h2>
+<p>&amp;nbsp;</p>
+<p>当我们进行实验之前，实验者需要事先约定一个对显著性水平的预期，即限定&quot;原假设正确但是被拒绝了&quot;的概率上限为 *α* ，通常接受的犯此类错误的概率范围是 0%～5%。在实验的统计计算中，我们用 p\-value 来表征某个实验情景下犯这种错误的实际概率。只要 *p\-value* 小于我们事先设定的 *α，*  实验即在显著性水平上达标。计算显著性水平是用来对抗抽样误差的方法，当我们实验在显著性水平上达标后，我们认为有 95%以上的把握说明实验结果是可信的。这大大降低了，游戏修改上线对指标负面影响的可能。</p>
+<p>&amp;nbsp;</p>
+<p>《全民弹弹弹》是一款操作简单、极易上手的球跳塔类休闲游戏，玩家既可以让弹球一层一层地击穿彩色砖块，享受纯粹的弹射快感，也可以解锁更多未知的球球，体验合成的养成乐趣。游戏运营为验证游戏首页对玩家留存和广告数据的影响，对两个首页方案进行对比：跳塔页（对照组）、合成页面（实验组）</p>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_dbe526bb89744378121f0b26baeae461" loading="lazy"> &lt;/span&gt;</p>
+<p>经过 2 周的实验测试，结果显示，首页为合成页面在 3 日、7 日留存以及广告的效果等核心指标都优于对照组跳塔页方案。最终选择全量合成页面的方案，上线并取得了优异的效果。</p>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_c56dd39be56294648fa9647d5f651a38" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;Vw5RxIJmJ1&quot;&gt;&lt;/span&gt;</p>
+<h2></h2>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_8f0872f34fc3c3762124341793db5b7c" loading="lazy"> &lt;/span&gt;</p>
+<p>除上述场景外，A/B 实验还常常被用在以下修改的验证中新手引导改动，新手任务难度调整，初始资源调整等关卡难度、装备爆率、宝箱中奖率调整等影响游戏体验的的改动商城界面，积分系统，公告栏、banner、按钮、图标等功能性区域的改动匹配系统、好友系统、聊天系统等社交性功能改动游戏 IP、NPC、游戏场景、剧情的改动实验分层，拓展线上流量</p>
+<p>&lt;span id=&quot;实验分层，拓展线上流量&quot;&gt;&lt;/span&gt;</p>
+<h2>实验分层，拓展线上流量</h2>
+<p>小 A 要验证新的武器系统，需要 50%的流量验证；小 B 修改商城界面，也需要 50%的流量；小 C 对新手任务进行了完善，同样需要 50%的流量验证。此时同时进行 3 个实验，需要 150%的流量。线上流量不够用，只能对实验进行优先级排序，让几个实验先后进行，但这会导致效率低下。</p>
+<p>&amp;nbsp;</p>
+<p>通过 A/B 实验的流量分层技术，将总体流量复制“无数遍”，形成”无数个”流量层。流量层两两之间相互正交，再加之运行在相同层的实验流量互斥，从而保证同时运行多个实验不会互相干扰。</p>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_7551e99d146da751fa4af36c51b4f138" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;euZeMoBxk7&quot;&gt;&lt;/span&gt;</p>
+<h2></h2>
+<p>实验分层技术可以有效的解决线上流量不足的情况，尤其是在游戏内测阶段，这个阶段往往获取用户难度较大。需要通过发布内测任务，小规模买量等方式获得游戏玩家，流量获取成本高。而这个阶段既需要验证游戏的性能、兼容性，又要对游戏的玩法、关卡设置、故事剧情、营收模型等进行调整。如果内测时间过长，不仅需要持续的买量投入，也会导致游戏上线节奏被拖慢，甚至可能错过市场热点。</p>
+<p>通过 A/B 实验流量分层技术，打破流量限制，大大缩短游戏验证时间，快速上线迭代。</p>
+<p>&lt;span id=&quot;场景能力，让推广更加高效&quot;&gt;&lt;/span&gt;</p>
+<h2>场景能力，让推广更加高效</h2>
+<p>&amp;nbsp;</p>
+<p>除了传统的客户端、服务端实验以外，我们还提供了针对特殊场景的 A/B 实验能力，让实验开启更便捷，效果更显著。</p>
+<p>&amp;nbsp;</p>
+<ul><li><strong>可视化实验：</strong>  通过所见即所得的在线编辑，降低在 Web/H5 页面优化的场景下，产品方和运营方使用 A/B 实验工具的成本。可用于游戏活动的推广页面，抽奖页面的效果对比，无需编程即可快速上线。</li></ul>
+<p>&amp;nbsp;</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_cdf433f1a0ad7a44939c74a723ac8c57" loading="lazy"> &lt;/span&gt;</p>
+<p>&amp;nbsp;</p>
+<ul><li><strong>推送实验：</strong>  通过对推送通知的标题、内容、点击动作等进行测试，找出效果最优的方案。支持多种推送通道、设备类型；可应用于游戏的拉新、召回以及活动推广等场景，及时响应效果，避免负面影响。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_800e8ff8712e5ce56d5e00f3d2072040" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>广告实验：</strong>  提升广告投放 ROI，优化广告投放策略，可对比不同的实验文案、不同的投放渠道的广告投放效果。通过转化增效度量的方式来控制“自然转化”对实验效果的影响，保证广告实验的科学性和严谨性。</li></ul>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_ce3de40595682784f3f5a2f22ae34ffe" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;游戏出海，a-b-保驾护航&quot;&gt;&lt;/span&gt;</p>
+<h2>游戏出海，A/B 保驾护航</h2>
+<p>&amp;nbsp;</p>
+<p>如今全球化运营已经成为新的趋势，海外游戏营收相较于国内有着更高的增长性。国内自研游戏纷纷出海，快速抢占重点地区份额。与此同时也带来了差异化运营、全球化发布、信息安全等全新的挑战。</p>
+<p>&amp;nbsp;</p>
+<ul><li><strong>地区差异化运营</strong></li></ul>
+<p>由于各国文化、宗教信仰、潮流趋势的差异，相同的游戏活动和修改，在海外不同的地区往往取得的收益各不相同。对于公司来说，海外不同地区的差异化运营，往往需要积累各地的运营经验，成本通常较高。盲目的推行，又容易导致一些负面的影响。</p>
+<p>A/B 实验支持圈选不同地区的游戏用户，可以针对不同地区的用户开展针对性的测试，能够快速的比较实验结果，确定该地区的最优方案。</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span&gt;<img src="https://lf6-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_7512093310ac5ee121238bd03082d6c0" loading="lazy"> &lt;/span&gt;</p>
+<p>&amp;nbsp;</p>
+<ul><li><strong>全球化发布</strong></li></ul>
+<p>全球化发布也是公司在出海过程中所不得不面临的挑战。全球化发布意味着运维成本的提高，同时多版本的管理也增加了发行的复杂性。运行中的 A/B 实验，支持直接转换为特性进行发布。同时支持渐进式发布、定时发布，以及回滚操作等。通过使用特性发布功能，使发布流程更加简洁，减少发布风险。</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span&gt;<img src="https://lf3-volc-editor.volccdn.com/obj/volcfe/sop-public/upload_16eeccbcbe2e0d6afa6cd5a5457d36a9" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实验命中诊断工具 · A/B 实验知识库</title>
+<meta name="description" content="实验创建后，实验协作者可使用DataTester提供的实验诊断工具，从实验角度出发，监查看目标实验测试用户是否正常命中对应的实验版本，如果没有命中可根据诊断原因进一步优化排查。本文为您介绍实验命中诊断工具的使用注意事项和">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65832.html">
+<meta property="og:title" content="实验命中诊断工具"><meta property="og:description" content="实验创建后，实验协作者可使用DataTester提供的实验诊断工具，从实验角度出发，监查看目标实验测试用户是否正常命中对应的实验版本，如果没有命中可根据诊断原因进一步优化排查。本文为您介绍实验命中诊断工具的使用注意事项和">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65832.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">⚙️ 配置·权限·计费</span></div>
+<h1>实验命中诊断工具</h1>
+<div class="meta">📄 1,298 字 · 🕐 2024-09-06</div>
+<article class="md"><p>实验创建后，实验协作者可使用DataTester提供的实验诊断工具，从实验角度出发，监查看目标实验测试用户是否正常命中对应的实验版本，如果没有命中可根据诊断原因进一步优化排查。本文为您介绍实验命中诊断工具的使用注意事项和操作指导。</p>
+<p>&lt;span id=&quot;d7dd8301&quot;&gt;&lt;/span&gt;</p>
+<h1>注意事项</h1>
+<ul><li><strong>时间限制</strong>：实验诊断时，最多支持回溯的时间周期为3个月，即您最多可诊断近三个月实验的命中情况。</li></ul>
+<ul><li><strong>实验类型</strong>：当前只有「<strong>调试中</strong>」、「<strong>运行中</strong>」、「<strong>已冻结</strong>」和「<strong>已暂停</strong>」状态的<strong>客户端</strong>实验，可使用实验诊断工具。</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;「&lt;strong&gt;已冻结&lt;/strong&gt;」和「&lt;strong&gt;已暂停&lt;/strong&gt;」状态的&lt;strong&gt;客户端&lt;/strong&gt;实验可使用实验诊断工具查看在实验运行期间的命中情况。   &lt;/div&gt;</p>
+<ul><li><strong>权限相关</strong>：拥有实验「命中工具」权限的用户，可以使用命中诊断工具；且需要对某个实验进行诊断时，还需同时拥有此实验的查看协作权限。</li></ul>
+<p>&lt;span id=&quot;二-应用场景&quot;&gt;&lt;/span&gt;</p>
+<h1>应用场景</h1>
+<p>如果您在AB实验中出现以下问题，均可使用命中诊断，排查出实验无法命中的详细原因。</p>
+<ul><li>为什么我的测试机明明填了白名单，但是没生效？</li></ul>
+<ul><li>实验已经开始了，我已经把实验版本的流量权重调到90%，为什么测试机还没命中实验版本？</li></ul>
+<p>&lt;span id=&quot;三-实验命中诊断&quot;&gt;&lt;/span&gt;</p>
+<h1>操作指导</h1>
+<p>&lt;span id=&quot;_1-诊断入口&quot;&gt;&lt;/span&gt;</p>
+<h2>实验诊断入口</h2>
+<p>在实验列表页，点击实验名称，随后点击“诊断”操作按钮，如下图所示：</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/abeb120189b94cc0a0e5fcb9c2f65e92~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-如何诊断？&quot;&gt;&lt;/span&gt;</p>
+<h2>实验诊断配置</h2>
+<p>进入当前实验的诊断工具页面后，您可以配置需要诊断的分流用户、时间窗口、实验版本信息，查询该用户在目标时间窗口内的请求分流情况和命中实验情况。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/ef84a645ba0646e68232e5f099daa426~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th>参数</th><th>配置说明</th></tr></thead><tbody><tr><td><strong>测试用户ID</strong></td><td>您可以手工输入目标用户的ssid。</td></tr><tr><td><strong>预期命中实验ID</strong></td><td>您可以手动输入实验ID，您可以在实验详情的页面URL中获取到对应的实验ID。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/640398273cdc4896b148cef27cdc5b04~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td><strong>选择回放时间</strong></td><td>选择需要回放诊断的时间窗口，当前支持最长的回溯周期为近3个月。</td></tr></tbody></table>
+<p>完成配置后，单击<strong>开始诊断</strong>，即可在页面下方查看诊断结果。</p>
+<p>&lt;span id=&quot;_2-1-列表模式&quot;&gt;&lt;/span&gt;</p>
+<h2>实验诊断结果</h2>
+<p>实验诊断结果为您展示时间窗口中，所有实验分流列表及每次分流请求的详细请求日志，并为您展示未命中的分析结果原因。您可以在实验诊断结果的右上方点击切换结果展示的方式，支持<strong>列表模式</strong>或<strong>时间线模式</strong>。</p>
+<table><thead><tr><th>列表模式</th><th>时间线模式</th></tr></thead><tbody><tr><td>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/2780b34b7a1b43629ae0b1e1ecdb94a1~tplv-em5hxbkur4-noop.image?width=1663&amp;height=607" loading="lazy"> &lt;/span&gt;</td><td>&lt;span&gt;<img src="https://p-vcloud.byteimg.com/tos-cn-i-em5hxbkur4/73b7d3521ced400ba9d3608252e44433~tplv-em5hxbkur4-noop.image?width=1653&amp;height=593" loading="lazy"> &lt;/span&gt;</td></tr></tbody></table>
+<p>您可以查看每次分流请求的日志JSON详情，您可以结合给出的未命中原因，进一步查看日志中对应的请求参数，进一步明确未命中的解决方案。</p>
+<p>&lt;span id=&quot;_3-用户为什么无法命中实验？&quot;&gt;&lt;/span&gt;</p>
+<h2>参考：未命中原因详细说明</h2>
+<table><thead><tr><th>序号</th><th><strong>未命中原因</strong></th><th>详细解释</th></tr></thead><tbody><tr><td>1</td><td>实验状态为关闭</td><td>该实验已关闭，任何用户都无法命中实验。</td></tr><tr><td>2</td><td>互斥层命中规则</td><td>白名单用户，命中同层其它实验。</td></tr><tr><td>3</td><td>不属于流量区间</td><td>该用户分流结果不属于该实验的流量区间，当前实验分配总流量为&lt;实验赋予流量百分比\&gt;，该用户属于剩余流量空间。</td></tr><tr><td>4</td><td>实验状态为暂停</td><td>该实验当时处于暂停状态时，该用户虽然属于流量区间，但无法命中。</td></tr><tr><td>5</td><td>实验状态为预览/调试</td><td>该实验当时处于调试状态，该用户非白名单用户，无法命中。</td></tr><tr><td>6</td><td>实验状态为冻结</td><td>该实验当时处于冻结状态，该用户冻结前未曝光实验，虽然属于流量区间，但无法命中。</td></tr><tr><td>7</td><td>流量过滤条件不符合</td><td>该用户不满足受众过滤条件，无法命中。&lt;br&gt;&lt;br&gt;例如，该用户“操作系统=Windows”，不满足过滤条件“操作系统=MAC/Android”，无法命中。</td></tr><tr><td>8</td><td>未命中多链接实验</td><td>该用户请求URL未命中多链接实验目标URL。</td></tr></tbody></table></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

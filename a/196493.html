@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAB报告综述 · A/B 实验知识库</title>
+<meta name="description" content="1. 术语表 MAB实验收益提升： MAB智能调优实验相对于平均分流的普通A/B实验，核心指标整体的提升比例。 成为最优组概率Probability\ to\ beat\ all（P2BA）： 该版本相对全部版本胜出的概">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/196493.html">
+<meta property="og:title" content="MAB报告综述"><meta property="og:description" content="1. 术语表 MAB实验收益提升： MAB智能调优实验相对于平均分流的普通A/B实验，核心指标整体的提升比例。 成为最优组概率Probability\ to\ beat\ all（P2BA）： 该版本相对全部版本胜出的概">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/196493.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>MAB报告综述</h1>
+<div class="meta">📄 1,477 字 · 🕐 2025-02-17</div>
+<article class="md"><p>&lt;span id=&quot;_1-术语表&quot;&gt;&lt;/span&gt;</p>
+<h1>1. 术语表</h1>
+<ul><li><strong>MAB实验收益提升：</strong>  MAB智能调优实验相对于平均分流的普通A/B实验，核心指标整体的提升比例。</li></ul>
+<ul><li><strong>成为最优组概率Probability\-to\-beat\-all（P2BA）：</strong>  该版本相对全部版本胜出的概率大小，计算逻辑是使用蒙特卡洛法计算每个分组获胜的概率。</li></ul>
+<ul><li><strong>指标分布区间估计：</strong>  展示核心指标随机变化的概率分布范围，即所有的调优轮次下，指标25,50（即中位数）和75分位点。</li></ul>
+<ul><li><strong>实验流量分配：</strong>  每轮调优时，MAB 算法给各个版本分配的流量比例。</li></ul>
+<ul><li><strong>评估流量分配：</strong>  在总流量中拿取一部分进行正常AB实验，其数据结果用作算法调优和收益计算。</li></ul>
+<p>&lt;span id=&quot;_2-报告概览&quot;&gt;&lt;/span&gt;</p>
+<h1>2. 报告概览</h1>
+<p>&lt;span id=&quot;_2-1-mab实验整体收益提升&quot;&gt;&lt;/span&gt;</p>
+<h2>2.1 MAB实验整体收益提升</h2>
+<p>常规实验更关注的是优胜组的选择，而MAB实验相更关注的是整个实验期间<strong>整体流量上</strong>核心指标达到最优。因此，MAB报告页中，整体收益提升作为最重要的部分放在首位。</p>
+<ul><li>累计收益：核心指标在做MAB实验时相对于平均分流到各个实验版本时，核心指标的收益提升比例。</li></ul>
+<ul><li>收益汇总：展示到截止日期的目标优化指标的提升值。</li></ul>
+<ul><li>横坐标指的是调优的时间，纵坐标是核心指标累积提升值，需要查看各个轮次调节的具体时间以及各节点的提升值，可以将鼠标移入折线图上即可展示。</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/42211ddd22d04174920a8ab49c1faca6~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>明细收益：聚焦每次新进组用户，其核心指标在当前轮次的提升比例。</li></ul>
+<ul><li>横坐标指的是调优的时间，纵坐标是核心指标累积提升值，需要查看各个轮次调节的具体时间以及各节点的提升值，可以将鼠标移入折线图上即可展示。</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/2bef9a2b59224f979b947ef0edec80c1~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>智能调优流程与评估流量指标趋势</li></ul>
+<ul><li>横坐标指的是调优的时间，纵坐标是核心指标指</li></ul>
+<ul><li>绿色曲线为智能调优流量组的指标趋势，灰色曲线为评估流量组的指标趋势，可以将鼠标移入折线图上即可展示。</li></ul>
+<p>      注意：前端展示上数据精确到小数点后4位</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/2c770bf5ad1f42dcb2382fd96fce50cd~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-2-核心指标明细表&quot;&gt;&lt;/span&gt;</p>
+<h2>2.2 核心指标明细表</h2>
+<p>当前版本下，MAB实验提供核心指标数据。此处展示的是各个实验组中核心指标的明细情况，表中展示都是累计数据。</p>
+<ul><li>指标取值：核心指标的截止当前的累计值</li></ul>
+<ul><li>进组用户数：该实验版本累计的进组用户数</li></ul>
+<ul><li>成为最优组概率：该版本相对全部版本胜出的概率大小</li></ul>
+<ul><li>~~指标分布区间预估：各组指标值的数学期望的区间估计~~</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/a2b44cd63b354eb49518c63d802a249e~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-3-核心指标明细图&quot;&gt;&lt;/span&gt;</p>
+<h2>2.3 核心指标明细图</h2>
+<p>核心指标明细图展示的是核心指标在每一轮调优中的变化情况，分绝对趋势和相对趋势两种展示方式：</p>
+<ul><li><strong>绝对趋势：</strong>  展示随着时间变化，每一次调优后的指标变化情况以及95分位区间（阴影部分）。</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/5e2fa417a87c4df3a889b12aa99d022c~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>相对趋势：</strong>  以版本1为基准，分析所有版本每一次调优结果中核心指标相对于版本1随时间变化的趋势图，指标包含按轮次对比指标提升比例和提升度的95分位区间（阴影部分）。</li></ul>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/302e4e7739fa434cbe2fe4ebda7827f1~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;_2-4-实验流量分配&quot;&gt;&lt;/span&gt;</p>
+<h2>2.4 实验流量分配</h2>
+<p>展示每一次调节后，流量随时间的分配情况。用作流量的监控和观察。</p>
+<ul><li>\*\*累计数据：\*\*展示从实验开始截至目前的各组流量参与智能调优的流量比例，鼠标移入图表可以查询每一轮累计流量比例在智能调优实验分配的情况。</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/353eba44e5164d54bff542cb01638bb7~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>\*\*明细数据\-实际分配：\*\*展示某个时刻线上实际参与智能调优的流量比例。</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/db960efed6ab4cbe9287a82c1b92ecfe~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>明细数据\-理论分配</strong>：更多用作算法/技术监控排查问题，展示的为某个时刻线上算法给出的权重比例。</li></ul>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/0c4be8e8975342eaae653f87c9ca0263~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;55f9aceb&quot;&gt;&lt;/span&gt;</p>
+<h1>3 报告解读</h1>
+<p>&lt;span id=&quot;e015bbbe&quot;&gt;&lt;/span&gt;</p>
+<h2>3.1 核心指标明细图与流量分配之间的关系</h2>
+<p>t 时刻的核心指标绝对趋势图中，版本指标之间的大小关系，对应到流量分配图上 t 时刻的流量分配，t 时刻核心指标越大的版本会在 t 时刻流量分配图上呈现越多的流量。</p>
+<p>&lt;span id=&quot;5d79441c&quot;&gt;&lt;/span&gt;</p>
+<h2>3.2 流量最高的实验版本与版本优胜</h2>
+<p>当前版本下，流量最高的实验版本不一定是最优的版本，但高概率是次优、最优版本。实验时间越长、样本越多，流量高的版本越可能是最优版本。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>技术优化实验｜提升飞书妙记秒开率提升 · A/B 实验知识库</title>
+<meta name="description" content="用户体验是决定互联网产品能否长久生存的关键，每一个基于产品功能、使用和外观的微小体验，都将极大地影响用户留存和满意度。 对于企业协作平台飞书而言，用户体验旅程从打开产品页面的一瞬间就已开始，这里有一个十分重要的指标——页">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1134398.html">
+<meta property="og:title" content="技术优化实验｜提升飞书妙记秒开率提升"><meta property="og:description" content="用户体验是决定互联网产品能否长久生存的关键，每一个基于产品功能、使用和外观的微小体验，都将极大地影响用户留存和满意度。 对于企业协作平台飞书而言，用户体验旅程从打开产品页面的一瞬间就已开始，这里有一个十分重要的指标——页">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1134398.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🏆 实战案例库</span></div>
+<h1>技术优化实验｜提升飞书妙记秒开率提升</h1>
+<div class="meta">📄 1,023 字 · 🕐 2023-09-07</div>
+<article class="md"><p>用户体验是决定互联网产品能否长久生存的关键，每一个基于产品功能、使用和外观的微小体验，都将极大地影响用户留存和满意度。</p>
+<p>对于企业协作平台飞书而言，用户体验旅程从打开产品页面的一瞬间就已开始，这里有一个十分重要的指标——页面秒开率，秒开率是指页面在一秒之内打开的比率。飞书为了提升用户体验，对其各项功能的秒开率优化下了大功夫，通过应用火山引擎A/B测试（DataTester）进行严格的变量控制，落地精准的实验结果，帮助研发团队佐证并明确了秒开率优化方案的收益。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5cac828adea966641f59c4aca3f3ef3a.png" loading="lazy"> &lt;/span&gt;</p>
+<p>影响秒开率其实有很多种因素，如代码冗余，插件拖累…… 在其中，有一项重要的影响因素是“类加载”。类加载是指当页面被打开时，背后是调用的多个元素的代码，它们会经历验证、准备、解析、初始化等环节后，才能被使用，这个流程是比较耗费时间的。</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_0bcaa4c92fa43fe7822f7157f7217e30.png" loading="lazy"> &lt;/span&gt;</p>
+<p>以飞书的一项功能“飞书妙记”加载为例，当飞书整体进行冷启动时，如果用户是首次打开飞书妙记界面，就会伴随着接近1600个类的大量加载，这对页面启动速度有着不可忽视的影响。如何减少如此高的类加载数量对秒开率的影响呢？飞书团队希望尝试采用的方案是：接入SnapBoost方案。</p>
+<p>SnapBoost方案的思路是让app能够提前对页面使用到的&quot;类&quot;进行加载，通俗来说，也就是在用户打开页面之前，将耗时较长的部分提前进行加载，当用户在打开页面的时候，这些代码省去了编译和解析的时间，可以直接执行，使秒开率得到提升。</p>
+<p>那么SnapBoost方案是否能有效降低“飞书妙记”的加载时间呢？飞书团队采用了火山引擎A/B测试（DataTester）进行方案可行性的重要验证。</p>
+<p><strong>本次A/B实验三大指标：</strong> </p>
+<ul><li>类加载数量</li></ul>
+<ul><li>Activity切换耗时 ：Activity通常指一个单独的屏幕（页面），此指标指在不同页面之间的切换耗时。</li></ul>
+<ul><li>可感知耗时 ：指用户操作相关动作(点击播放、滑动卡片等)到首帧渲染出来感知到的耗时。</li></ul>
+<p><strong>优化前后收益验证：</strong> </p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_8bc390a2167dec3ddc7566724074d3b6.png" loading="lazy"> &lt;/span&gt;</p>
+<p>火山引擎DataTester的实验结果，对SnapBoost方案的提升性能假设给予了强有力的佐证，通过SnapBoost方案等一系列优化，飞书妙记的秒开率可以达成37%的优化提升，目前该方案已经成功地进行了全量上线。</p>
+<p>“ DataTester是结合A/B测试方法论最好的一个工具。”飞书的研发成员在采访时讲到，在性能优化的A/B实验上，DataTester能提供更加严格的变量控制和更加智能化的实验形式，业务可以便捷地获得有说服力的实验结果。</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

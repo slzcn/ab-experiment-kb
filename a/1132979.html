@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>动态变量 · A/B 实验知识库</title>
+<meta name="description" content="一、概述 在推送时，我们经常需要引入用户的个性化内容，比如用户姓名、用户所在的城市等用户属性，这时我们可以使用「动态变量」功能。 &amp;nbsp; 二、动态变量支持哪些属性 计算逻辑为分析最终值的用户属性，你可以在功能页面中">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1132979.html">
+<meta property="og:title" content="动态变量"><meta property="og:description" content="一、概述 在推送时，我们经常需要引入用户的个性化内容，比如用户姓名、用户所在的城市等用户属性，这时我们可以使用「动态变量」功能。 &amp;nbsp; 二、动态变量支持哪些属性 计算逻辑为分析最终值的用户属性，你可以在功能页面中">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1132979.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>动态变量</h1>
+<div class="meta">📄 720 字 · 🕐 2023-08-28</div>
+<article class="md"><p>&lt;span id=&quot;一、概述&quot;&gt;&lt;/span&gt;</p>
+<h1>一、概述</h1>
+<p>在推送时，我们经常需要引入用户的个性化内容，比如用户姓名、用户所在的城市等用户属性，这时我们可以使用「动态变量」功能。</p>
+<p>&amp;nbsp;</p>
+<p>&lt;span id=&quot;二、动态变量支持哪些属性&quot;&gt;&lt;/span&gt;</p>
+<h1>二、动态变量支持哪些属性</h1>
+<ul><li>计算逻辑为分析最终值的用户属性，你可以在功能页面中进行设置。如果已有的用户属性不能满足，你可以在「数据管理」\-「用户属性」中进行设置并在埋点中增加；如果你需要的用户用户属性不是随事件上报的，为我们也提供了Open API导入的方式，接入方式：<a href="https://www.volcengine.com/docs/6285/117783" target="_blank" rel="noopener">用户标签OpenAPI</a></li></ul>
+<ul><li>同时，我们也预置了一批公共事件属性，如下表：</li></ul>
+<table><thead><tr><th>Property Name</th><th>Value</th></tr></thead><tbody><tr><td>loc_province_id</td><td>State of Idaho</td></tr><tr><td>os_version</td><td>12.1.4</td></tr><tr><td>app_region</td><td>China</td></tr><tr><td>device_model</td><td>iphone 6</td></tr><tr><td>app_version</td><td>0.2.5</td></tr><tr><td>os_name</td><td>ios</td></tr><tr><td>loc_city_id</td><td>5583739</td></tr><tr><td>language</td><td>en</td></tr><tr><td>app_channel</td><td>facebook</td></tr><tr><td>region</td><td>China</td></tr><tr><td>loc_country_id</td><td>America</td></tr><tr><td>platform</td><td></td></tr><tr><td>network_carrier</td><td>verizon</td></tr><tr><td>brand</td><td>apple</td></tr></tbody></table>
+<p>&amp;nbsp;</p>
+<p>&lt;span id=&quot;三、使用配置&quot;&gt;&lt;/span&gt;</p>
+<h1>三、使用配置</h1>
+<p>在推送实验、推送消息、流程画布中，你都可以使用动态变量</p>
+<ol><li>点击“插入属性”后，下方文本框中就会出现一个属性选择框，这里可以选择所有最终值用户属性和默认支持的公共事件属性</li></ol>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_ee976693d6df4e1ce20ecaf72a3ec9d3.png" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>当你选择了一个属性后，系统会提示你设置默认值，以保证当该属性被删除或值为空时，发送给用户的消息也不会受到影响。</li></ol>
+<p>   &lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_19c864e7a2fdcdfa75783dfac1a8ccf7.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

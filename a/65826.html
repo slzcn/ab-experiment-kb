@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>服务端请求参数 · A/B 实验知识库</title>
+<meta name="description" content="服务端实验的目标受众，无法使用客户端的公共属性、用户分群和自定义属性，需要将服务端参数在「受众管理\ 服务端请求参数」进行注册，才可支持使用。 服务端请求参数列表 搜索 ：可输入“名称、描述、创建人”进行搜索。 注册新的">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/65826.html">
+<meta property="og:title" content="服务端请求参数"><meta property="og:description" content="服务端实验的目标受众，无法使用客户端的公共属性、用户分群和自定义属性，需要将服务端参数在「受众管理\ 服务端请求参数」进行注册，才可支持使用。 服务端请求参数列表 搜索 ：可输入“名称、描述、创建人”进行搜索。 注册新的">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/65826.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🔌 SDK与技术集成</span></div>
+<h1>服务端请求参数</h1>
+<div class="meta">📄 642 字 · 🕐 2026-01-07</div>
+<article class="md"><p>服务端实验的目标受众，无法使用客户端的公共属性、用户分群和自定义属性，需要将服务端参数在「受众管理\-服务端请求参数」进行注册，才可支持使用。</p>
+<p>&lt;span id=&quot;二-服务端过滤参数列表&quot;&gt;&lt;/span&gt;</p>
+<h1>服务端请求参数列表</h1>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/a20e02edbac64cb8a5092974076ae873~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>搜索</strong> ：可输入“名称、描述、创建人”进行搜索。</li></ul>
+<ul><li><strong>注册新的过滤参数</strong> ：点击“+过滤参数”，在创建参数页面填写完整信息即可创建参数。</li></ul>
+<ul><li><strong>操作：</strong>  支持复制、删除、操作历史、添加数值合集等操作。</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;点击「删除」会先禁用该参数，所有服务端实验和服务端Feature都无法使用该参数作为定向过滤条件，同时已使用该参数的实验和Feature的相关过滤条件将会失效。请谨慎删除。   &lt;/div&gt;</p>
+<p>&lt;span id=&quot;三-如何注册服务端过滤参数&quot;&gt;&lt;/span&gt;</p>
+<h1>注册服务端请求参数</h1>
+<p>点击列表页“+过滤参数”，弹出如下：</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_bd0cf76b53b6c57138ed438efb6edbb3.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>参数名称</strong> ：不得与其他服务端请求参数同名。</li></ul>
+<ul><li><strong>参数Key</strong> ：需要保证不同服务端请求参数间的代码层级变量名（即Key）唯一。</li></ul>
+<ul><li><strong>参数类型</strong> ：支持String、Int、Version、Boolean、Float。</li></ul>
+<ul><li><strong>负责人</strong>：默认创建人。</li></ul>
+<ul><li><strong>调用来源</strong>：默认服务端。</li></ul>
+<p>&lt;span id=&quot;四-如何使用服务端过滤参数&quot;&gt;&lt;/span&gt;</p>
+<h1>使用服务端请求参数</h1>
+<p><strong>1.</strong>  <strong>SDK分流使用示例</strong></p>
+<p>参考服务端SDK集成相关文档：<a href="https://www.volcengine.com/docs/6287/65805" target="_blank" rel="noopener">后端SDK</a></p>
+<p><strong>2. 创建服务端实验/Feature</strong></p>
+<p>在创建服务端实验/Feature的时候，可以使用已经注册的服务端请求参数作为目标受众。</p>
+<ul><li>“服务端实验”目标受众，如下图：</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;说明   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-wrapper-indent=&quot;1&quot;&gt;过滤参数使用需要在代码处增加服务端过滤参数。   &lt;/div&gt;</p>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_e1d3fde39316b05464ffcb88079ab8cd.png" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>“服务端Feature”自定义受众规则，如下图：</li></ul>
+<p>&lt;span&gt;<img src="https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_7ea0893cbc3bcee50943413dca84722e.png" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

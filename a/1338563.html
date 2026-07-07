@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实验编辑与重启 · A/B 实验知识库</title>
+<meta name="description" content="DataTester为您提供实验编辑修改与启停等管理操作，在各个创建实验文档中已为您介绍实验的调试、启停的相关操作指导，本文为您介绍实验编辑和重启相关操作要点。 实验编辑（缩量） 实验创建成功后，您可以在实验详情页面右上">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/1338563.html">
+<meta property="og:title" content="实验编辑与重启"><meta property="og:description" content="DataTester为您提供实验编辑修改与启停等管理操作，在各个创建实验文档中已为您介绍实验的调试、启停的相关操作指导，本文为您介绍实验编辑和重启相关操作要点。 实验编辑（缩量） 实验创建成功后，您可以在实验详情页面右上">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/1338563.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>实验编辑与重启</h1>
+<div class="meta">📄 605 字 · 🕐 2024-09-09</div>
+<article class="md"><p>DataTester为您提供实验编辑修改与启停等管理操作，在各个创建实验文档中已为您介绍实验的调试、启停的相关操作指导，本文为您介绍实验编辑和重启相关操作要点。</p>
+<p>&lt;span id=&quot;99b6aaa3&quot;&gt;&lt;/span&gt;</p>
+<h1>实验编辑（缩量）</h1>
+<p>实验创建成功后，您可以在实验详情页面右上角单击编辑按钮，对实验进行编辑修改。</p>
+<ul><li>对于实验流量：您可以根据业务实际情况减小实验流量（即缩量）或增加实验流量，以下为您重点介绍缩量的操作要点。</li></ul>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot; data-wrapper-indent=&quot;1&quot;&gt;注意   &lt;/div&gt;</p>
+<p>   &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-wrapper-indent=&quot;1&quot;&gt;运行以及暂停中缩量为高危操作，会导致用户出组，并且影响报告科学性，导致实验报告数据不可用，请谨慎操作。   &lt;/div&gt;</p>
+<ul><li>其他参数的修改配置与创建实验时的要点一致。</li></ul>
+<ol><li>登录并进入实验详情页面后，单击编辑按钮。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/1312881d67b84c18b674dfcb78c39a6b~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>在实验编辑页面中，可针对各个实验参数进行调整，如果您修改了实验流量：</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/6f865ebcb93d4f6d81ad9d3cf81eaa6d~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li>如果您修改了实验流量：则会对原有实验流量进行增减，且增减后，实验版本和对照版本的实验流量比例与实验配置的结果保持一致。</li></ul>
+<ul><li>如果您减少了实验流量：需根据界面提示评估实验缩量是否会影响实验报告的准确性，确认后再进行后续操作。</li></ul>
+<ul><li>修改实验流量后，进组人数、实时指标数据当天即可查看到修改后的数据；离线指标数据需第二天才能看到变更后的结果数据。</li></ul>
+<p>&lt;span id=&quot;ad9068b0&quot;&gt;&lt;/span&gt;</p>
+<h1>实验重启</h1>
+<p>&lt;span id=&quot;37871c4f&quot;&gt;&lt;/span&gt;</p>
+<h3>注意事项</h3>
+<ul><li>实验停止后，<strong>24小时内</strong>可对实验进行重启操作。</li></ul>
+<ul><li>实验负责人或管理员可进行实验重启操作。</li></ul>
+<p>&lt;span id=&quot;a60c3a8c&quot;&gt;&lt;/span&gt;</p>
+<h3>操作说明</h3>
+<ol><li>登录并进入已停止的实验详情页，单击右上角的<strong>更多</strong>\&gt;<strong>重启实验</strong>。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/73d2d5e5a0cc4772b2e1b7b2cd749192~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ol><li>在弹窗中单击确认，立即重启实验。</li></ol>
+<p>   &lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/5cdfe5b2ebe64a5b80a5906f2e62fdd6~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>

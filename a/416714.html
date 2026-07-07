@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>创建MAB智能调优实验 · A/B 实验知识库</title>
+<meta name="description" content="智能调优实验是一种序贯地评估实验数据表现，并自适应的将流量倾斜给效果更好的实验版本的实验类型。其中自适应评估与调优的算法主要是 MAB(Multi\ Armed Bandit) 。本文为您介绍DataTester的MAB">
+<link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/416714.html">
+<meta property="og:title" content="创建MAB智能调优实验"><meta property="og:description" content="智能调优实验是一种序贯地评估实验数据表现，并自适应的将流量倾斜给效果更好的实验版本的实验类型。其中自适应评估与调优的算法主要是 MAB(Multi\ Armed Bandit) 。本文为您介绍DataTester的MAB">
+<meta property="og:type" content="article"><meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/416714.html">
+<style>
+:root{--bg:#faf7f2;--bg2:#fff;--line:#e8e0d4;--ink:#2c2a26;--sub:#6b6459;--dim:#9a9184;--brand:#e0632e;--brand2:#c9541f;--panel:#f4efe7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:26px 20px 60px}
+.back{display:inline-block;color:var(--dim);text-decoration:none;font-size:13px;margin-bottom:22px}
+.back:hover{color:var(--brand)}
+.ct{display:inline-block;font-size:11.5px;font-weight:600;color:var(--brand2);background:rgba(224,99,46,.1);padding:4px 12px;border-radius:20px}
+h1{font-size:30px;font-weight:800;line-height:1.32;letter-spacing:-.01em;margin:14px 0 14px}
+.meta{font-size:12.5px;color:var(--dim);padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.md{color:#3a3733}
+.md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;margin:1.9em 0 .7em}
+.md h1{font-size:23px} .md h2{font-size:20px;padding-left:11px;border-left:4px solid var(--brand)} .md h3{font-size:17px}
+.md p{margin:1em 0} .md strong{color:var(--ink)}
+.md a{color:var(--brand2);border-bottom:1px solid rgba(201,84,31,.4)}
+.md ul,.md ol{margin:.8em 0;padding-left:1.5em} .md li{margin:.45em 0}
+.md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;margin:20px auto;max-height:70vh;width:auto}
+.md blockquote{border-left:3px solid var(--brand);background:var(--panel);padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
+.md code{background:var(--panel);padding:2px 6px;border-radius:5px;font-size:.9em;color:var(--brand2)}
+.md pre{background:#2c2a26;border-radius:10px;padding:15px 17px;overflow-x:auto;margin:1em 0}
+.md pre code{background:none;padding:0;color:#f0ebe2;font-size:13px;line-height:1.6}
+.md table{border-collapse:collapse;width:100%;margin:1.1em 0;font-size:14px;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:8px 12px;text-align:left} .md th{background:var(--panel)}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;text-align:center}
+.foot a{color:var(--brand2);text-decoration:none}
+</style></head><body>
+<div class="wrap">
+<a class="back" href="https://slzcn.github.io/ab-experiment-kb/">← 返回知识库</a>
+<div><span class="ct">🧪 创建与管理实验</span></div>
+<h1>创建MAB智能调优实验</h1>
+<div class="meta">📄 5,223 字 · 🕐 2025-10-15</div>
+<article class="md"><p>智能调优实验是一种序贯地评估实验数据表现，并自适应的将流量倾斜给效果更好的实验版本的实验类型。其中自适应评估与调优的算法主要是 MAB(Multi\-Armed Bandit) 。本文为您介绍DataTester的MAB智能调优实验应用场景和创建要点。</p>
+<p>&lt;span id=&quot;二-应用场景&quot;&gt;&lt;/span&gt;</p>
+<h1>应用场景</h1>
+<p>&lt;span id=&quot;_1-传统ab的弊端&quot;&gt;&lt;/span&gt;</p>
+<h2>传统AB的弊端</h2>
+<p>传统A/B实验依赖于统计显著性的经典假设检验，为对照版本和实验版本分配相应的流量，但一般不允许在实验期间变更每个子版本的流量。因此该类实验有几个弊端，一是需要专门的给常规实验预留一定的周期（至少7天），对于一些时间比较紧急的需求，很难满足这样苛刻的条件；二是必须要有足够的样本进入到实验中，才能得出显著的结果。</p>
+<p>&lt;span id=&quot;_2-智能调优实验的应用场景和优势&quot;&gt;&lt;/span&gt;</p>
+<h2>智能调优实验的应用场景和优势</h2>
+<blockquote>实验目的：指标收益最高，实验成本最小</blockquote>
+<table><thead><tr><th><strong>场景</strong></th><th><strong>智能调优实验</strong></th><th><strong>A/B实验</strong></th></tr></thead><tbody><tr><td>高价值流量：丢失转化的机会成本较高，例如在线销售大额商品（汽车、钻石等），每个失去的转化都会造成几千/几万块的损失。</td><td>动态调整流量，根据实验结果及时找出当前效果比较好的版本，将转化效果差的版本降低流量，减少损失</td><td>目标是获得统计上显著的方案：在时间、机会成本允许的情况下，AB实验能更快的获得稳健的、在统计上显著的获胜方案，虽然在过程中会损失一些转化。</td></tr><tr><td>活动周期短：比如很多电商活动的整个周期就一两天，如果传统AB的方法一般需要7天以上，活动没法提供足够的时间进行A/B实验</td><td>MAB的核心目标是整个活动最优，并不是帮助客户找到最优组，对实验时限没有要求</td><td>需要足够的时间，一般至少7天以上，排除时间变量</td></tr><tr><td>优化目标实效性强：例如头条新闻的标题、缩略图、视频内容等的优化测试，需要在短的窗口期内获得最大点击量。</td><td>MAB可以周期性查询各版本的转化效果，且调优频率可以自定义设置，目前最短能达到半小时</td><td>实时性较弱：需要等到实验时间结束或者流量用尽之后产出统计结果</td></tr><tr><td>持续优化：可以在MAB优化过程中，随时在变体中增加或减少多个元素，比如开启界面MAB时，可以调整界面上被测试的元素</td><td>MAB对流量/实验变体没有严格要求，可以在调优过程中切换实验流量以及实验变体的元素</td><td>需要进行深度数据分析，AB实验收集的数据更适合在实验时或实验后进行数据的多维分析，来查看不同细分人群对于测试的变量有何反映。对MAB来说，表现不好的组可能没有足够的数据进行这些。</td></tr><tr><td>小流量：对于初创公司或者活动冷启动时期，可能没有足够的流量进行实验</td><td>MAB会基于当下指标表现动态的分配，所以原则上来说MAB过程更能在总流量不多的情况下将流量收益最大化（注：本质是一种在流量较少的情况下优化收益的妥协性方案，不代表可以比AB实验使用更少的流量达到相同的效果）</td><td>想要从所有变体（特别是较差变体）中吸取一些教训：AB实验一定程度上能够保证每个变体都有足够的流量来统计以及计算置信度，如果想衡量较差变体的糟糕程度，从而指导业务决策，请选择AB实验。</td></tr></tbody></table>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot; data-tips-is-title=&quot;true&quot;&gt;说明&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;tip&quot;&gt;如果既要拿整体流量收益，又要决策方案优劣，Tester 将在后续版本提供 MAB 与AB 实验混合的整体解决方案。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;f41ab03b&quot;&gt;&lt;/span&gt;</p>
+<h1>注意事项与前提条件</h1>
+<table><thead><tr><th>细分</th><th>注意事项详述</th></tr></thead><tbody><tr><td>版本要求</td><td>当前仅A/B测试<strong>旗舰版</strong>支持MAB智能调优实验，如果您希望使用MAB智能调优实验进行实验分析，请确保您已购买A/B测试旗舰版。</td></tr><tr><td>MAB调优生效限制</td><td>创建MAB调优实验后，如果实验过程中，<strong>用户进组人数</strong>和<strong>指标</strong>需同时达到以下条件才能正常进行实验调优，否则无法开启实验调优：&lt;br&gt;&lt;br&gt;&lt;br&gt;* 用户进组人数要求：每个实验组进组人数超500人。&lt;br&gt;&lt;br&gt;* 指标要求：指标值大于0</td></tr><tr><td>准备工作</td><td>创建MAB智能调优实验前，您需确保管理员与研发已完成对应的准备工作，包括集团的配置、应用添加。完成准备工作后，运营人员即可参考以下操作步骤创建实验。</td></tr></tbody></table>
+<p>&lt;span id=&quot;三-操作演示&quot;&gt;&lt;/span&gt;</p>
+<h1>操作演示</h1>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/c51746b26c1a494b9e0c6a77342c8807~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<p>&lt;span id=&quot;01351911&quot;&gt;&lt;/span&gt;</p>
+<h1>创建智能调优实验</h1>
+<p>登录并进入A/B测试应用页面后，在页面左侧导航栏选择<strong>智能优化 \&gt; 智能动态调优</strong>，进入<strong>调优列表</strong>后单击右上角的<strong>智能调优</strong>按钮，进入创建智能调优实验页面。</p>
+<p>&lt;span id=&quot;_4-1-1-输入基本信息&quot;&gt;&lt;/span&gt;</p>
+<h2>step1 输入基本信息</h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/01fb061bd3a64f5d912f6e412f6941b8~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>调优名称&amp;调优描述</strong></td><td>* <strong>调优名称：</strong>  调优名称建议取与调优内容相关的名称，如有实验版本迭代可以增加版本号后缀，让你的伙伴能够快速了解到实验是做什么的、是在哪个迭代版本的。&lt;br&gt;&lt;br&gt;* <strong>调优描述：</strong>  调优内容简述，可以让项目相关人员更清晰地知道到这个调优是如何做的，解决什么问题，同时也便于后期查看和管理历史调优时一目了然。</td></tr><tr><td><strong>调优场景</strong></td><td>有【落地页优化】和【APP小程序优化】。&lt;br&gt;&lt;br&gt;&lt;br&gt;* 选择【落地页优化】，会有两种调优方式，分别为「可视化调优」和「多链接调优」。&lt;br&gt;&lt;br&gt;* 选择【APP小程序优化】，则会调起「客户端调优」和「服务端调优」两种方式。</td></tr><tr><td><strong>调优方向与指标</strong></td><td>此处只能选择一个核心指标，智能调优只关注实验者最关心指标的提升比率，最终实验报告也是围绕该指标设计的。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;调优指标不能带常数项，需要选取反馈较快的指标，例如是否点击、在小时粒度内是否转化等。带常数项的识别规则如下：&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;   * &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;假设C为常数，X为变量项目。&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;   * &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;则以下均为带常数项的指标：C+X、C\-X、C\*X。&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* &lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;对于隔天才有转化的转化率指标，当前版本的算法基本会失效。对于需要较长时间（例如超过2个及以上个调优周期）才有反馈的指标，无法及时获得效果数据来调整流量，故不建议作为调优指标。（当前只支持点击率、转化率类指标；人均点击次数、浏览时长等下一次迭代提供）&lt;/div&gt;&lt;br&gt;</td></tr><tr><td><strong>调优时长</strong></td><td>默认7天，上限为60天。</td></tr><tr><td><strong>实验负责人</strong></td><td>默认为实验创建者。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_4-1-2-设置生效策略&quot;&gt;&lt;/span&gt;</p>
+<h2>step2 设置生效策略</h2>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/c16c39213a61477b987c95c909dc4a5e~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<table><thead><tr><th><strong>参数</strong></th><th><strong>配置说明</strong></th></tr></thead><tbody><tr><td><strong>参与调优的流量</strong></td><td>控制参与调优的总流量，系统默认100%。&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;每个调优频率内，平均每组流量累计不能小于500个，否则系统会一直等到累计到足够样本量才开始调优。&lt;/div&gt;&lt;br&gt;</td></tr><tr><td><strong>流量生效方式</strong></td><td>支持「立即生效」和「平滑生效」两种生效方式。&lt;br&gt;&lt;br&gt;平滑生效会在设置的时间内把流量生效到设定的大小，例如实验流量设置成30%，平滑生效时间设置成30min，则会按照每分钟生效1%的进度线性生效。平滑生效更多说明可以查看文档：<a href="https://www.volcengine.com/docs/6287/1169339" target="_blank" rel="noopener">实验流量平滑生效</a>。</td></tr><tr><td><strong>用户受众规则</strong></td><td>您可以创建多个筛选组，筛选组间为“或”的逻辑关系；每个筛选组内可设置多个过滤条件，过滤条件间为“且”的逻辑关系。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fca4b6532f7a40c2887288d2bfcc993f~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td><strong>体验一致性</strong></td><td>进组不出组，保证参与调优的用户，每次进入到同一个实验版本中。</td></tr><tr><td><strong>调优设置</strong></td><td>持用户设定调优的频率，目前可设置的范围是[0.5h, 24h]。</td></tr></tbody></table>
+<p>&lt;span id=&quot;_4-1-3-配置实验版本&quot;&gt;&lt;/span&gt;</p>
+<h2>step3 配置实验版本</h2>
+<p>此处实验版本的配置取决于实验第一步中【输入基本信息】中的调优场景和调优方式的设定：</p>
+<ul><li>与普通实验配置的主要差异</li></ul>
+<table><thead><tr><th>实验版本配置参考</th><th></th></tr></thead><tbody><tr><td>实验版本</td><td>MAB实验版本不再区分实验版本、对照版本，通过版本1、版本2来标识不同的实验版本。</td></tr><tr><td>流量分配</td><td>MAB实验支持自定义设置流量分配按钮。&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/8ee0bf3d0eb04b20bc219f82c3b2ce29~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;* <strong>自定义设置</strong>未打开时：流量分配仅展示<strong>评估流量</strong>以及<strong>智能调优流量</strong>整体的流量分配比例。&lt;br&gt;&lt;br&gt;   * 评估流量默认按照每个版本给3%流量，此部分流量用于算法调优以及收益计算。&lt;br&gt;&lt;br&gt;   * 剩余流量给到智能调优并根据版本数平均分配，如果余数超过一位小数，按照后端逻辑处理。&lt;br&gt;&lt;br&gt;* <strong>自定义设置</strong>打开时：可手动设置评论流量智能流量初始设置。</td></tr></tbody></table>
+<ul><li>其他与普通实验配置类似的配置参数，可参考普通实验的配置文档。</li></ul>
+<table><thead><tr><th>调优场景</th><th>调优方式</th><th>实验版本配置参考</th></tr></thead><tbody><tr><td>落地页优化</td><td>可视化调优</td><td><a href="https://www.volcengine.com/docs/6287/65811#_4-1-3-%E9%85%8D%E7%BD%AE%E5%AE%9E%E9%AA%8C%E7%89%88%E6%9C%AC" target="_blank" rel="noopener">可视化实验-配置实验版本</a></td></tr><tr><td>落地页优化</td><td>多链接调优</td><td><a href="https://www.volcengine.com/docs/6287/65808#_4-1-3-%E9%85%8D%E7%BD%AE%E5%AE%9E%E9%AA%8C%E7%89%88%E6%9C%AC" target="_blank" rel="noopener">多链接实验-配置实验版本</a></td></tr><tr><td>APP小程序优化</td><td>客户端调优/服务端调优</td><td><a href="https://www.volcengine.com/docs/6287/65809#_4-1-3-%E9%85%8D%E7%BD%AE%E5%AE%9E%E9%AA%8C%E7%89%88%E6%9C%AC" target="_blank" rel="noopener">编程实验-配置实验版本</a></td></tr></tbody></table>
+<p>&lt;span id=&quot;_4-2-开启实验&quot;&gt;&lt;/span&gt;</p>
+<h1>调试、开启、停止实验</h1>
+<p>实验创建完成后，您可以在A/B测试\&gt;实验列表中查看已创建的实验，并查看实验状态。</p>
+<p>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/fad3f9d5a18e4a47a230b72ca7ce4a64~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</p>
+<ul><li><strong>调试中</strong>：新创建完成的实验，实验状态为<strong>调试中</strong>，此阶段您可以邀请已添加为测试用户的用户进行实验测试，确认实验符合预期。</li></ul>
+<ul><li><strong>进行中</strong>：实验调试完毕后，您可以在实验列表页点击“启动”，即可开启实验。实验开始后，实验的状态变为<strong>进行中</strong>，此时进组用户可实时查看，指标置信度第二日产出。</li></ul>
+<ul><li><strong>已结束</strong>：实验开始后，当实验时长到达创建实验时配置的<strong>实验时长</strong>后，实验会自动停止；如果没有到达实验时长，您希望立即停止实验，也可在实验列表手动停止实验。停止实验后，实验状态变为<strong>已结束</strong>。</li></ul>
+<p>&lt;span id=&quot;472224e0&quot;&gt;&lt;/span&gt;</p>
+<h1>支持实验过程中调整实验版本</h1>
+<p>MAB实验\-<strong>APP小程序优化实验\-体验一致性关闭，即</strong>支持在实验过程中添加、减少版本，也支持调整实验版本的下发参数。此功能适用于实验长期在线，且在实验过程中希望能够调整下发版本的参数的场景。</p>
+<blockquote>例如希望对app banner做长期的择优选择，实验初期只有3个版本比较，在过程中会根据数据表现淘汰表现差的banner或者增加新的banner参与流量调优。</blockquote>
+<p>&lt;span id=&quot;1789bb3e&quot;&gt;&lt;/span&gt;</p>
+<h2>注意事项</h2>
+<ul><li>该功能仅适用于体验不一致的场景。当前支持APP小程序中的客户端调优/服务端调优，在体验一致性关闭时可使用。</li></ul>
+<ul><li>当前仅SaaS\-云原生环境支持此功能。</li></ul>
+<p>&lt;span id=&quot;e361f87c&quot;&gt;&lt;/span&gt;</p>
+<h2>操作步骤</h2>
+<p>&lt;span id=&quot;4f02558e&quot;&gt;&lt;/span&gt;</p>
+<h3>开启功能</h3>
+<p>开启该功能，除配置实验外，还需要在事件公共属性中增加mab_arm属性，并在指标计算相关的事件中正确上报该参数信息。需要手动上报曝光事件和调优指标相关的事件中携带该事件属性，属性值为分流下发的对应配置值，否则将统计不到进组和指标。</p>
+<blockquote>例：实验为海报赛马实验，各版本中将海报的识别参数（如：postid）作为流量调优的目标。则需要将postid上报到mab_arm中。</blockquote>
+<p>&lt;span id=&quot;cd1c4e75&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>新建实验</strong></h3>
+<table><thead><tr><th><strong>操作</strong></th><th><strong>示意图</strong></th></tr></thead><tbody><tr><td>输入基本信息&lt;br&gt;&lt;br&gt;<strong>实验场景选择：APP/小程序优化</strong></td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/d7090056a8094509a50fcd92dea2868a~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td>设置生效策略&lt;br&gt;&lt;br&gt;体验一致性：<strong>关闭</strong>&lt;br&gt;&lt;br&gt;&gt; 备注：由于在实验过程中允许实验下发参数的调整，无法保证实验一致性（即用户始终体验的是同一套下发参数），所以体验一致性关的时候可以支持调整参数</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b1a4259d5fe14f6b8659ce4617327f23~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td>配置实验版本&lt;br&gt;&lt;br&gt;在实验过程中不能增减配置的版本数量，所以需要提前预留足够的实验版本（即同时在线的版本数量），不需要使用的版本可以预留不下发。&lt;br&gt;&lt;br&gt;预留版本配置：&lt;br&gt;&lt;br&gt;当下发版本超过3个时，可以设置某版本为预留版本，在实验过程中调整。&lt;br&gt;&lt;br&gt;同时下发的版本数不得小于2个&lt;br&gt;&lt;br&gt;调优参数配置：&lt;br&gt;&lt;br&gt;在体验不一致性场景下，调优建模由原来的对版本建模改为对下发参数建模，多参数下发时需要指定调优参数。&lt;br&gt;&lt;br&gt;调优参数不支持JSON类型。&lt;br&gt;&lt;br&gt;备注：若只有一个参数的情况下，不需要配置调优参数（隐藏不现实）</td><td>预留版本配置&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/39951dcbefce405ba30914f50eb26a73~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;调优参数及流量配置&lt;br&gt;&lt;br&gt;&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/69817d35bc934925982461725eaef7e1~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;&lt;br&gt;&lt;br&gt;备注：若只有一个参数的情况下，不需要配置调优参数</td></tr></tbody></table>
+<p>&lt;span id=&quot;95e650eb&quot;&gt;&lt;/span&gt;</p>
+<h3><strong>编辑实验</strong></h3>
+<table><thead><tr><th><strong>操作</strong></th><th><strong>示意图</strong></th></tr></thead><tbody><tr><td>进行中的实验，点击编辑操作，可对实验的下发版本进行编辑</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/8d4b3656e9fa4fb4b30b6bfc0265c8aa~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td><strong>编辑下发版本</strong>&lt;br&gt;&lt;br&gt;可对之前预留版本进行关闭，上线后对该版本参数进行下发&lt;br&gt;&lt;br&gt;该版本会进入冷启动过程（冷启动流量为在线版本的平均流量）&lt;br&gt;&lt;br&gt;<strong>编辑下发参数</strong>&lt;br&gt;&lt;br&gt;允许下发版本调整下发参数&lt;br&gt;&lt;br&gt;当下发参数调整后，该对应版本会进入冷启动过程（重新积累数据进行调优，冷启动流量为在线版本的平均流量）</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/b35923cf0e7643fba741d89c49cef661~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td><strong>流量配置</strong>&lt;br&gt;&lt;br&gt;当做了如下操作后流量分配会发生变化：&lt;br&gt;&lt;br&gt;&lt;br&gt;1. <strong>预留版本 打开 \-\-\&gt; 关闭</strong>&lt;br&gt;&lt;br&gt;&lt;br&gt;流量：进入冷启动，冷启动流量比例为在线版本的平均流量&lt;br&gt;&lt;br&gt;&lt;br&gt;2. <strong>预留版本 关闭 \-\-\&gt; 打卡</strong>&lt;br&gt;&lt;br&gt;&lt;br&gt;流量：调整为0，原有流量回收。&lt;br&gt;&lt;br&gt;&lt;br&gt;3. <strong>下发参数变化</strong>&lt;br&gt;&lt;br&gt;&lt;br&gt;流量：参数变化的版本重新进入冷启动，冷启动流量比例为在线版本的平均流量。&lt;br&gt;&lt;br&gt;<strong>其余版本：</strong> &lt;br&gt;&lt;br&gt;在流量调中过程中，在未进入冷启动的版本之间，保持调整前的流量分配比例。</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/c1ff5dd21519472783b8768b3c946e0f~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr><tr><td><strong>保存提醒</strong>&lt;br&gt;&lt;br&gt;保存时会做弹窗确认提醒，提示本次编辑后对下发版本，参数调整的调整以及调整后冷启动流量的配置。</td><td>&lt;span&gt;<img src="https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/9aed89aff5e44c8ca1344a2a86b73523~tplv-goo7wpa0wc-image.image" loading="lazy"> &lt;/span&gt;</td></tr></tbody></table>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot; data-tips-is-title=&quot;true&quot;&gt;注意&lt;/div&gt;</p>
+<p>&lt;div data-tips=&quot;true&quot; data-tips-type=&quot;warning&quot;&gt;修改运行中MAB实验的实验版本配置的实验参数value值，实验报告中的指标数据和数据提升比率将不再可信，报告中的流量分配部分仍然可信。&lt;/div&gt;</p>
+<p>&lt;span id=&quot;eb040515&quot;&gt;&lt;/span&gt;</p>
+<h1>查看实验报告</h1>
+<p>实验开启后，您也可以在实验列表中，通过实验操作入口点击进入实验报告页面，查看实验报告，详情请参见：<a href="https://www.volcengine.com/docs/6287/196493" target="_blank" rel="noopener">MAB报告综述</a>。</p>
+<p>对于非体验一致性场景的报告阅读，可以查看<a href="https://www.volcengine.com/docs/6287/1784547" target="_blank" rel="noopener">MAB实验报告解读：非体验一致性场景</a></p></article>
+<div class="foot">内容整理自火山引擎 DataTester A/B testing 文档库 · <a href="https://slzcn.github.io/ab-experiment-kb/">← 返回 A/B 实验知识库</a></div>
+</div></body></html>
