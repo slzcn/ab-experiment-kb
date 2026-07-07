@@ -221,40 +221,17 @@
   </div>
 
   <div class="tabs">
-    <div class="tab on" data-p="upload">📤 批量上传</div>
-    <div class="tab" data-p="arts">📄 文章管理</div>
+    <div class="tab on" data-p="arts">📄 文章管理</div>
     <div class="tab" data-p="cats">🗂 分类配置</div>
   </div>
 
-  <!-- 批量上传 -->
-  <div class="page on" id="tab-upload">
-    <div class="panel">
-      <h2>📤 批量上传文档，自动转码成文章</h2>
-      <div class="desc">支持 PPT / Word / PDF / Excel 等常见格式。上传后<b>秒回</b>，服务器（GitHub Action）自动抽取正文<b>并连同文档里的图片</b>转成带图 Markdown 文章入库——可关闭本页，几分钟后自动同步到线上。</div>
-      <label>默认分类（每个文件可在下方单独调整）</label>
-      <select id="upCat"></select>
-      <label>选择或拖入文件（可多选）</label>
-      <div class="drop" id="drop">
-        <div class="ic">📁</div>
-        <div class="t">点击选择文件，或拖拽到这里</div>
-        <div class="s" id="dropFmt">支持 .pptx .docx .pdf .xlsx .csv .txt .md 等</div>
-      </div>
-      <input type="file" id="fileInput" multiple style="display:none"
-        accept=".pptx,.docx,.pdf,.xlsx,.csv,.txt,.md,.markdown,.html,.htm">
-      <div class="filelist" id="filelist"></div>
-      <div style="margin-top:16px">
-        <button class="btn" id="upBtn" disabled>⬆ 上传（服务器自动转码）</button>
-      </div>
-      <div class="msg" id="upMsg"></div>
-    </div>
-  </div>
-
   <!-- 文章管理 -->
-  <div class="page" id="tab-arts">
+  <div class="page on" id="tab-arts">
     <div class="panel">
       <h2>📄 文章管理 <span class="desc" style="margin:0 0 0 auto" id="artCount"></span></h2>
       <div class="toolbar">
         <input id="artSearch" placeholder="搜索标题…">
+        <button class="btn" id="upOpen" title="上传 PPT/Word/PDF 等文档，自动转码成文章">📤 上传文档</button>
         <button class="btn ghost" id="artReload" title="重新从数据库读取列表">↻ 刷新</button>
       </div>
       <div class="batchbar" id="batchBar">
@@ -304,6 +281,29 @@
     <button class="btn ghost" id="edCancel">取消</button>
   </div>
   <div class="msg" id="edMsg"></div>
+</div>
+
+<!-- 上传文档弹层 -->
+<div class="mask" id="upMask"></div>
+<div class="modal" id="upModal">
+  <div class="mh"><b>📤 上传文档，自动转码成文章</b><span class="x" id="upModalX">✕</span></div>
+  <div class="desc">支持 PPT / Word / PDF / Excel 等格式。上传后<b>秒回</b>，服务器自动抽取正文<b>并连同图片</b>转成文章入库——可关闭本弹层，约 1 分钟自动同步到线上。</div>
+  <label>默认分类（每个文件可在下方单独调整）</label>
+  <select id="upCat"></select>
+  <label>选择或拖入文件（可多选）</label>
+  <div class="drop" id="drop">
+    <div class="ic">📁</div>
+    <div class="t">点击选择文件，或拖拽到这里</div>
+    <div class="s" id="dropFmt">支持 .pptx .docx .pdf .xlsx .csv .txt .md 等</div>
+  </div>
+  <input type="file" id="fileInput" multiple style="display:none"
+    accept=".pptx,.docx,.pdf,.xlsx,.csv,.txt,.md,.markdown,.html,.htm">
+  <div class="filelist" id="filelist"></div>
+  <div style="margin-top:16px;display:flex;gap:10px">
+    <button class="btn" id="upBtn" disabled>⬆ 上传（服务器自动转码）</button>
+    <button class="btn ghost" id="upClose">关闭</button>
+  </div>
+  <div class="msg" id="upMsg"></div>
 </div>
 
 <script>
@@ -624,6 +624,13 @@ function openEdit(id){
 function closeEdit(){$('#mask').classList.remove('on');$('#modal').classList.remove('on');}
 $('#modalX').onclick=closeEdit;$('#edCancel').onclick=closeEdit;$('#mask').onclick=closeEdit;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modal').classList.contains('on'))closeEdit();});
+
+// 上传弹层开关
+function openUpload(){$('#upMask').classList.add('on');$('#upModal').classList.add('on');}
+function closeUpload(){$('#upMask').classList.remove('on');$('#upModal').classList.remove('on');}
+$('#upOpen').onclick=openUpload;
+$('#upModalX').onclick=closeUpload;$('#upClose').onclick=closeUpload;$('#upMask').onclick=closeUpload;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#upModal').classList.contains('on'))closeUpload();});
 $('#edSave').onclick=async()=>{
   const id=+$('#edId').value;
   const title=$('#edTitle').value.trim();
