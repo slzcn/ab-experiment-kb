@@ -708,9 +708,24 @@ $('#edSave').onclick=async()=>{
     await apiSaveArticle({id,title,cat:$('#edCat').value,keywords:$('#edKw').value.trim(),md,body_text});
     msg('#edMsg','ok','✓ 已保存，约十几秒后线上同步');
     await loadData();
-    setTimeout(closeEdit,700);
+    // 保存后关闭弹层，并把刚编辑的这篇滚动到可视区、短暂高亮，方便定位
+    setTimeout(()=>{ closeEdit(); focusArt(id); }, 700);
+    msg('#artMsg','ok',`《${title}》已保存。`);
   }catch(e){msg('#edMsg','err','✗ '+e.message);}
 };
+// 把指定文章滚到视野中并高亮，跨分页时自动翻到它所在页
+function focusArt(id){
+  const list=curList();
+  const idx=list.findIndex(a=>a.id===id);
+  if(idx>=0){ PAGE=Math.floor(idx/PER)+1; renderArts(); }
+  const row=$(`.tbl [data-sel="${id}"]`);
+  if(row){
+    const tr=row.closest('tr');
+    tr.scrollIntoView({block:'center',behavior:'smooth'});
+    tr.style.transition='background .3s'; tr.style.background='rgba(224,99,46,.14)';
+    setTimeout(()=>{tr.style.background='';},1200);
+  }
+}
 async function delArt(id){
   const a=ARTS.find(x=>x.id===id);
   const title=a?a.title:'';
