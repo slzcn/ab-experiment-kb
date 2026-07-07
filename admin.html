@@ -429,7 +429,6 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     <div class="filelist" id="filelist"></div>
     <div style="margin-top:16px;display:flex;gap:10px">
       <button class="btn" id="upBtn" disabled>⬆ 上传文档</button>
-      <button class="btn ghost" id="upClose">取消</button>
     </div>
     <div class="msg" id="upMsg"></div>
   </div>
@@ -938,7 +937,7 @@ function switchPubTab(key){
 document.querySelectorAll('.ptab').forEach(t=>t.onclick=()=>switchPubTab(t.dataset.pt));
 
 $('#upOpen').onclick=()=>openUpload('single');
-$('#upModalX').onclick=closeUpload;$('#upClose').onclick=closeUpload;$('#upMask').onclick=closeUpload;
+$('#upModalX').onclick=closeUpload;$('#upMask').onclick=closeUpload;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#upModal').classList.contains('on'))closeUpload();});
 
 // 发布文章弹层打开时同步分类选项（batch 面板的 #upCat 已由 loadData 更新，单篇的 #pubCat 也要）
