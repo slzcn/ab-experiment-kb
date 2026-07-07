@@ -81,6 +81,32 @@ GitHub Action = 服务器 (.github/workflows/process-uploads.yml，每 5 分钟 
 > 图片存到 `assets/` 并由 Action 推到仓库，md 用 `raw.githubusercontent` 引用
 > （与手工发布的文章图片模型一致）。主站左下角「⚙ 管理后台」可进入。
 
+## 立即刷新公开站（后台「🌐 刷新公开站」按钮）
+
+改数据库（上下线/编辑/删除）后，公开站默认最长等 10 分钟（定时 Action 兜底）才同步。
+后台「🌐 刷新公开站」按钮可立即触发重建，约 1 分钟生效。
+
+它走一个 **Supabase Edge Function** 中转——因为 admin.html 在公开的 GitHub Pages 上，
+不能把 GitHub token 写进前端；token 只存在函数的环境变量里。**部署一次即可：**
+
+```bash
+# 1) 建一个细粒度 GitHub token（只给本仓库、Contents 读写权限即可）：
+#    https://github.com/settings/personal-access-tokens/new
+#    Repository access → Only select repositories → slzcn/ab-experiment-kb
+#    Permissions → Repository permissions → Contents: Read and write
+#
+# 2) 装 Supabase CLI 并登录（若未装）：
+brew install supabase/tap/supabase
+supabase login
+supabase link --project-ref cddkniwbhvcbfgkgomtl
+#
+# 3) 部署函数 + 设置密钥（token 只存服务端，前端拿不到）：
+supabase functions deploy refresh-site --no-verify-jwt
+supabase secrets set GH_TOKEN=<刚建的token> GH_REPO=slzcn/ab-experiment-kb
+```
+
+部署后，后台点「🌐 刷新公开站」即可立即触发。函数源码在 `supabase/functions/refresh-site/`。
+
 ## 同步火山官方最新文档
 ```bash
 python3 sync_volc.py     # 拉火山最新

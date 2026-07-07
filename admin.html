@@ -239,7 +239,8 @@
       <h2>📄 文章管理 <span class="desc" style="margin:0 0 0 auto" id="artCount"></span></h2>
       <div class="toolbar">
         <input id="artSearch" placeholder="搜索标题…">
-        <button class="btn ghost" id="artReload">↻ 刷新</button>
+        <button class="btn ghost" id="artReload" title="重新从数据库读取本页列表">↻ 刷新列表</button>
+        <button class="btn ghost" id="pubRefresh" title="立即让公开网站重建、同步最新改动">🌐 刷新公开站</button>
       </div>
       <div class="batchbar" id="batchBar">
         <span class="cnt" id="batchCnt">已选 0 项</span>
@@ -519,6 +520,21 @@ function updateBatchBar(){
 $('#artSearch').addEventListener('input',renderArts);
 $('#artReload').onclick=async()=>{await loadData();};
 $('#batchClear').onclick=()=>{SELECTED.clear();renderArts();};
+
+// 立即刷新公开站：调 Supabase Edge Function（服务端持 token 触发 GitHub Action 重建）
+$('#pubRefresh').onclick=async()=>{
+  const btn=$('#pubRefresh');btn.disabled=true;
+  msg('#artMsg','load','正在触发公开站刷新…');
+  try{
+    const r=await fetch(SB.url+'/functions/v1/refresh-site',{method:'POST',
+      headers:{apikey:SB.key,Authorization:'Bearer '+SB.key}});
+    const j=await r.json();
+    if(!j.ok)throw new Error(j.error||'触发失败');
+    msg('#artMsg','ok','已触发公开站刷新，约 1 分钟后线上同步最新改动。');
+  }catch(e){
+    msg('#artMsg','err','刷新触发失败：'+e.message+'（若提示未部署，请先部署 refresh-site 函数，见 README）');
+  }finally{ setTimeout(()=>btn.disabled=false,3000); }  // 防连点
+};
 
 // 单篇上线/下线切换
 async function togglePub(id){
