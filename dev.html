@@ -356,7 +356,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     </div>
     <div class="cats" id="cats"></div>
     <div class="write-btn" id="writeBtn">✍ 写一篇新文章</div>
-    <a class="admin-link" href="admin.html">⚙ 管理后台</a>
+    <a class="admin-link" id="adminLink" href="admin.html">⚙ 管理后台</a>
     <div class="side-foot" id="sideFoot"></div>
   </aside>
 
@@ -430,6 +430,13 @@ let KB=null, CUR="all", Q="", INDEX=[];
 let SEARCH={};   // id -> 全文检索文本（kb_search.json 异步加载后填充）
 // 数据文件基址：主站在根目录=''；文章静态页(a/<id>.html)里会被置为 '../' 以回到根目录取数据
 const DATA_BASE = (typeof window!=='undefined' && window.DATA_BASE) || '';
+// 站点根目录路径（含末尾/）：在文章页 /.../a/x.html 里要去掉末尾的 a/，回到站点根，
+// 供拼接分享链接、admin.html 等站点级地址用。
+function siteRoot(){
+  let dir=location.pathname.replace(/[^/]*$/,'');   // 去掉文件名，留目录
+  if(/\/a\/$/.test(dir)) dir=dir.replace(/a\/$/,''); // 文章页在 a/ 子目录 → 回退到根
+  return dir;
+}
 const $=s=>document.querySelector(s);
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -529,6 +536,8 @@ async function boot(){
   else if(PENDING_DOC) render();
   $('#loading').style.display='none'; $('#app').style.display='grid';
   setupSubmit();
+  // 修正管理后台入口：文章页在 a/ 子目录，相对 admin.html 会指到 a/admin.html，用站点根拼绝对路径
+  const al=$('#adminLink'); if(al) al.href=siteRoot()+'admin.html';
   // 首屏已出。若走的是轻量列表(docs 无全文)，后台异步加载全文检索索引，
   // 加载完重建 INDEX——此后搜索从"标题+摘要"升级为"正文全文"。不阻塞首屏。
   loadSearchIndex();
@@ -791,10 +800,9 @@ async function openDoc(id){
   const cl=$('#copyLink');
   if(cl) cl.onclick=async()=>{
     // 复制的是真实静态页地址（可分享、可被搜索引擎收录）；本地 file:// 打开时回退 hash
-    const base=location.pathname.replace(/[^/]*$/,'');   // 去掉 index.html，取目录
     const url=location.protocol==='file:'
       ? location.origin+location.pathname+'#doc='+cl.dataset.id
-      : location.origin+base+'a/'+cl.dataset.id+'.html';
+      : location.origin+siteRoot()+'a/'+cl.dataset.id+'.html';
     let ok=false;
     try{ await navigator.clipboard.writeText(url); ok=true; }
     catch(e){
