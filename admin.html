@@ -348,7 +348,16 @@ async function apiCall(path,method,body){
   const r=await fetch(API_BASE+path,{method,
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiToken()},
     body:body!==undefined?JSON.stringify(body):undefined});
-  if(r.status===401){apiSetToken('');throw new Error('登录已过期，请刷新页面重新输入访问码');}
+  if(r.status===401){
+    apiSetToken('');
+    try{localStorage.removeItem(AUTH_KEY);}catch(e){}
+    // 已过期：踢回登录门（若门 DOM 存在），并友好提示
+    try{
+      const gate=document.getElementById('gate'),app=document.getElementById('app'),err=document.getElementById('gateErr');
+      if(gate&&app){gate.style.display='';app.style.display='none';if(err)err.textContent='登录已过期，请重新输入访问码';}
+    }catch(e){}
+    throw new Error('登录已过期，请重新登录');
+  }
   const d=await r.json().catch(()=>({}));
   if(!r.ok||(d&&d.ok===false)) throw new Error('操作失败 '+r.status+' '+JSON.stringify(d).slice(0,120));
   return d;
@@ -366,7 +375,7 @@ function msg(el,cls,txt){const m=$(el);m.className='msg show '+cls;m.textContent
 function msgClear(el){const m=$(el);m.className='msg';m.textContent='';}
 
 // ---- 访问控制 ----
-const AUTH_KEY='ab_kb_auth_ts', AUTH_TTL=24*3600*1000;
+const AUTH_KEY='ab_kb_auth_ts', AUTH_TTL=2*3600*1000; // 对齐 EdgeFn JWT TTL(2h)
 function loggedIn(){try{const t=+localStorage.getItem(AUTH_KEY);return t&&(Date.now()-t)<AUTH_TTL;}catch(e){return false;}}
 async function doGate(){
   const pin=$('#gatePin').value.trim(), err=$('#gateErr');
@@ -408,12 +417,12 @@ async function boot(){
 }
 
 async function loadData(){
-  // 带 published 查询；该列未 ALTER 出来时退回不带它（过渡期兼容）
-  const artQ='ab_articles?select=id,doc_id,title,cat,keywords,md,updated,is_internal,published&order=updated.desc';
-  const artQ0='ab_articles?select=id,doc_id,title,cat,keywords,md,updated,is_internal&order=updated.desc';
-  let arts;
-  try{ arts=await sbGet(artQ); }catch(e){ arts=await sbGet(artQ0); }
-  CATS=await sbGet('ab_categories?select=key,icon,name,descr,ord&order=ord');
+  // 读走 Edge Function（service_role 读全部含未发布），跟写操作统一收口
+  const [a,c]=await Promise.all([apiCall('/articles','GET'),apiCall('/categories','GET')]);
+  const arts=(a&&a.articles)||[];
+  CATS=(c&&c.categories)||[];
+  // EdgeFn 已按 id desc 返回，这里按 updated desc 兼容原来的展示顺序
+  arts.sort((x,y)=>String(y.updated||'').localeCompare(String(x.updated||'')));
   ARTS=arts;
   SELECTED.clear();
   fillCatSelect($('#upCat'));
