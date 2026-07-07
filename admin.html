@@ -294,6 +294,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       grid-template-areas:
         'title  title  title'
         'cat    date   date'
+        'line   line   line'
         'sw     acts   acts';
       gap:6px 8px;align-items:center}
     .tbl td{border:none;padding:0;display:block;min-width:0}
@@ -304,9 +305,11 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     /* 行2：分类靠左 + 日期 */
     .tbl tr>td:nth-child(3){grid-area:cat;justify-self:start}
     .tbl tr>td:nth-child(4){grid-area:date;color:var(--dim);font-size:12px;justify-self:start}
-    /* 行3（底部操作条，上方分隔线）：上下线开关靠左 + 编辑/删除靠右，同一行 */
-    .tbl tr>td:nth-child(5){grid-area:sw;justify-self:start;margin-top:8px;padding-top:10px;border-top:1px solid var(--line);width:100%;box-sizing:border-box}
-    .tbl .acts{grid-area:acts;justify-self:end;margin-top:8px;padding-top:10px;border-top:1px solid var(--line);width:100%;box-sizing:border-box;display:flex;gap:8px;justify-content:flex-end;align-items:center}
+    /* 行3：一整条横跨全行的分隔线（伪元素，避免两格各自 border 断成两截）*/
+    .tbl tr::before{content:'';grid-area:line;height:1px;background:var(--line);margin-top:4px}
+    /* 行4（底部操作条）：上下线开关靠左 + 编辑/删除靠右，同一行 */
+    .tbl tr>td:nth-child(5){grid-area:sw;justify-self:start}
+    .tbl .acts{grid-area:acts;justify-self:end;display:flex;gap:8px;justify-content:flex-end;align-items:center}
     .tbl .acts .btn{flex:0 0 auto}
     /* 分类配置：每条目上下堆叠，名称输入不再被压扁 */
     .catrow{flex-wrap:wrap;gap:6px 8px;padding:12px 0}
