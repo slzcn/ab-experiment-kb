@@ -491,17 +491,21 @@ async function loadData(){
 }
 
 // 翻页/搜索只重拉文章（分类已在内存），比 loadData 少一半网络
+// 版本号防竞速：快速连续翻页/搜索时，只采用最后一个请求的结果
+let _reqSeq=0;
 async function loadPage(){
-  if(LOADING) return;
+  const seq=++_reqSeq;
   LOADING=true;
   try{
     const q=encodeURIComponent(Q||'');
     const a=await apiCall(`/articles?page=${PAGE}&per=${PER}${q?'&q='+q:''}`,'GET');
+    // 不是最新一个请求的结果→丢弃（避免慢的旧请求覆盖快的新请求）
+    if(seq!==_reqSeq) return;
     ARTS=(a&&a.articles)||[];
     TOTAL=(a&&typeof a.total==='number')?a.total:ARTS.length;
     if(a&&typeof a.pubCount==='number'&&a.pubCount>=0) PUB_COUNT=a.pubCount;
     renderArts();
-  } finally { LOADING=false; }
+  } finally { if(seq===_reqSeq) LOADING=false; }
 }
 
 // ================= 批量上传（纯 web：直传 Storage + 建 job，服务器 Action 处理）=================
