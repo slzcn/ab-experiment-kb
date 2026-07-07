@@ -342,8 +342,18 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   @media (orientation:landscape) and (max-height:500px){
     .app{grid-template-columns:1fr}
     aside{position:fixed;left:0;top:0;bottom:0;width:min(300px,70vw);z-index:50;
-      transform:translateX(-100%);transition:.25s;box-shadow:var(--sh)}
+      transform:translateX(-100%);transition:.25s;box-shadow:var(--sh);
+      display:flex;flex-direction:column;overflow:hidden}
     aside.open{transform:none}
+    /* 横屏高度极矮：brand 收紧、隐藏副标题与底部统计，把空间全让给可滚动的分类列表 */
+    .brand{padding:12px 16px 10px}
+    .brand h1{font-size:15px}
+    .brand p{display:none}
+    .cats{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 10px 12px}
+    .cat{padding:8px 12px;font-size:13px}
+    .write-btn{flex:none;margin:6px 12px;padding:10px;font-size:13.5px}
+    .admin-link{flex:none;padding:6px 12px 10px;font-size:12.5px}
+    .side-foot{display:none}
     .mtoggle{display:grid;place-items:center;position:fixed;left:12px;top:10px;z-index:60;
       width:38px;height:38px;border-radius:11px;background:var(--brand);color:#fff;
       font-size:17px;box-shadow:var(--sh);cursor:pointer}
