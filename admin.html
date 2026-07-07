@@ -133,8 +133,8 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .btn.ghost:hover{color:var(--brand);border-color:var(--brand);background:transparent;transform:none;box-shadow:none}
   .btn.danger{background:transparent;color:var(--bad);border-color:transparent;padding:6px 10px;font-weight:600;font-size:12.5px;box-shadow:none}
   .btn.danger:hover{background:rgba(229,72,77,.1);transform:none;box-shadow:none}
-  .msg{margin-top:14px;font-size:13px;border-radius:9px;padding:0}
-  .msg.show{padding:11px 14px}
+  .msg{margin-top:14px;font-size:13px;border-radius:9px;padding:0;opacity:0;transition:opacity .3s}
+  .msg.show{padding:11px 14px;opacity:1}
   .msg.ok{background:rgba(63,185,80,.12);color:#2f9e44}
   .msg.err{background:rgba(229,72,77,.1);color:var(--bad)}
   .msg.load{background:var(--panel);color:var(--sub)}
@@ -591,8 +591,17 @@ async function apiDeleteArticle(idExpr){ // idExpr: 单个 id 或 'in.(1,2,3)'
 // 分类：upsert / 删除
 async function apiSaveCategory(row){return (await apiCall('/category','POST',{row})).data;}
 async function apiDeleteCategory(key){return apiCall('/category?key='+encodeURIComponent(key),'DELETE');}
-function msg(el,cls,txt){const m=$(el);m.className='msg show '+cls;m.textContent=txt;}
-function msgClear(el){const m=$(el);m.className='msg';m.textContent='';}
+// 统一提示：ok/err 自动淑出消失（load 进行中不自消，等被 ok/err 覆盖）
+const _MSG_TIMERS={};
+const _MSG_TTL={ok:3500,err:5000};
+function msg(el,cls,txt){
+  const m=$(el);m.className='msg show '+cls;m.textContent=txt;
+  if(_MSG_TIMERS[el]){clearTimeout(_MSG_TIMERS[el]);delete _MSG_TIMERS[el];}
+  const ttl=_MSG_TTL[cls];
+  if(ttl){_MSG_TIMERS[el]=setTimeout(()=>{msgClear(el);delete _MSG_TIMERS[el];},ttl);}
+}
+function msgClear(el){const m=$(el);if(!m)return;m.className='msg';m.textContent='';
+  if(_MSG_TIMERS[el]){clearTimeout(_MSG_TIMERS[el]);delete _MSG_TIMERS[el];}}
 // 顶部 toast：始终可见（列表底部操作、批量条遮挡都不影响）。load 不自动消失，ok/err 定时消失。
 let _toastTimer=null;
 function toast(cls,txt,ms){
@@ -725,6 +734,7 @@ function addFiles(list){
     if(!FILES.some(x=>x.file.name===f.name&&x.file.size===f.size))
       FILES.push({file:f, cat:def});
   });
+  if(FILES.length)msgClear('#upMsg');   // 选了文件就清掉“请先选文件”的旧提示
   renderFileList();
 }
 function catOptions(sel){
