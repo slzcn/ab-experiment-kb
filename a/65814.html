@@ -489,9 +489,17 @@ function applyKB(kb){
   KB=kb;
   buildIndex();
   renderCats(); renderFoot();
+  // 若要直达某篇（文章静态页），首屏不先渲染列表，避免"列表闪一下再跳文章"
+  if(PENDING_DOC) return;
   // 若正停在列表页则重渲染（阅读态不打断用户）
   if(!document.querySelector('.reader')) render();
 }
+
+// 直达目标：文章静态页注入 window.INIT_DOC；否则看 URL #doc=<id>。boot 前先定，供 applyKB 判断。
+const PENDING_DOC = (()=>{
+  if(typeof window!=='undefined'&&window.INIT_DOC) return +window.INIT_DOC;
+  const m=/#doc=(\d+)/.exec(location.hash||''); return m?+m[1]:0;
+})();
 
 async function boot(){
   marked.setOptions({breaks:true, gfm:true});
@@ -522,12 +530,12 @@ async function boot(){
     }catch(e){}
   }
   if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试'; return; }
+  // 直达某篇：先把文章渲染好再显示 #app（await 正文加载完），彻底不闪列表；
+  // 目标文章不存在（已下线/删除）时回退列表
+  if(PENDING_DOC && KB.docs.some(d=>d.id===PENDING_DOC)) await openDoc(PENDING_DOC);
+  else if(PENDING_DOC) render();
   $('#loading').style.display='none'; $('#app').style.display='grid';
   setupSubmit();
-  // 直达某篇：文章静态页(a/<id>.html)会注入 window.INIT_DOC；否则看 URL #doc=<id>
-  const m=/#doc=(\d+)/.exec(location.hash||'');
-  const initId = (typeof window!=='undefined'&&window.INIT_DOC) ? +window.INIT_DOC : (m?+m[1]:0);
-  if(initId && KB.docs.some(d=>d.id===initId)) openDoc(initId);
   // 首屏已出。若走的是轻量列表(docs 无全文)，后台异步加载全文检索索引，
   // 加载完重建 INDEX——此后搜索从"标题+摘要"升级为"正文全文"。不阻塞首屏。
   loadSearchIndex();
