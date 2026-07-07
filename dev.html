@@ -293,7 +293,10 @@
     <div class="top">
       <div class="searchbox">
         <span class="si">🔍</span>
-        <input id="q" placeholder="搜索实验设计 / 报告解读 / 广告投放 / 假设检验…（支持标题+正文全文检索）" autocomplete="off">
+        <input id="q" placeholder="搜索实验设计 / 报告解读 / 广告投放…"
+          data-ph-full="搜索实验设计 / 报告解读 / 广告投放 / 假设检验…（支持标题+正文全文检索）"
+          data-ph-mid="搜索实验设计 / 报告解读 / 广告投放…"
+          data-ph-min="搜索文章…（标题+正文）" autocomplete="off">
         <span class="clr" id="clr">✕</span>
       </div>
       <div class="stat" id="stat"></div>
@@ -862,6 +865,29 @@ $('#edTitle').addEventListener('input',updatePrev);
 $('#edCat').addEventListener('change',updatePrev);
 $('#edDownload').onclick=downloadMd;
 $('#edSubmit').onclick=submitArticle;
+
+// 搜索框 placeholder 按输入框实际宽度自适应，避免窄浏览器里长文案被截断
+(function(){
+  const q=$('#q'); if(!q)return;
+  // 用一段隐藏文本测量给定文案在当前字体下的像素宽度
+  const meas=document.createElement('span');
+  meas.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;left:-9999px';
+  document.body.appendChild(meas);
+  function fits(text){
+    const cs=getComputedStyle(q);
+    meas.style.font=cs.font||`${cs.fontSize} ${cs.fontFamily}`;
+    meas.textContent=text;
+    // 可用文字宽度 = 输入框宽 - 左右图标/内边距(约 46+46)
+    return meas.offsetWidth <= q.clientWidth-92;
+  }
+  function pick(){
+    const full=q.dataset.phFull, mid=q.dataset.phMid, min=q.dataset.phMin;
+    q.placeholder = fits(full)?full : fits(mid)?mid : min;
+  }
+  pick();
+  if(window.ResizeObserver){ new ResizeObserver(pick).observe(q); }
+  else{ window.addEventListener('resize',pick); }
+})();
 
 boot();
 </script>
