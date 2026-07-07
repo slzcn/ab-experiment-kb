@@ -284,15 +284,20 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     .tab-action{flex:1 1 100%;justify-content:center;padding:11px}
     .panel{padding:16px 14px}
     .panel h2{font-size:14.5px;flex-wrap:wrap}
-    /* 文章列表：表格→堆叠卡片，操作按钮单独一行、不再被挤出屏 */
-    .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+    /* 文章列表：表格→堆叠卡片。卡片内：标题 / 分类·日期同行 / 底部一行放经 上下线开关+编辑+删除 */
+    .tbl,.tbl tbody{display:block;width:100%}
     .tbl thead{display:none}
-    .tbl tr{position:relative;border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:10px}
-    .tbl td{border:none;padding:3px 0}
-    .tbl td.chk{position:absolute;top:12px;right:12px;width:auto;padding:0}  /* 复选框浮到卡片右上角 */
-    .tbl tr>td:nth-child(2){padding-right:32px}   /* 标题格留出右上角复选框的空间 */
+    .tbl tr{position:relative;border:1px solid var(--line);border-radius:11px;padding:12px 14px 10px;margin-bottom:10px;display:flex;flex-wrap:wrap;align-items:center}
+    .tbl td{border:none;padding:0;display:block}
+    .tbl td.chk{position:absolute;top:12px;right:12px;width:auto;padding:0;flex:0 0 auto}  /* 复选框浮到卡片右上角 */
+    .tbl tr>td:nth-child(2){padding-right:32px;margin-bottom:6px;flex:1 1 100%}   /* 标题占整行，留出右上角复选框空间 */
     .tbl td .tt{font-size:14px}
-    .tbl .acts{text-align:left;margin-top:8px;display:flex;gap:8px}
+    /* 分类(第3格) 与 日期(第4格) 并到同一行 */
+    .tbl tr>td:nth-child(3){flex:0 0 auto;margin-right:12px}
+    .tbl tr>td:nth-child(4){flex:1 1 auto;color:var(--dim)}
+    /* 底部操作条：状态开关(第5格)靠左 + 编辑/删除(第6格 acts)靠右，同一行 */
+    .tbl tr>td:nth-child(5){flex:0 0 auto;order:5;margin-top:10px}
+    .tbl .acts{flex:1 1 auto;order:6;margin-top:10px;display:inline-flex;gap:8px;justify-content:flex-end;text-align:right}
     .tbl .acts .btn{flex:0 0 auto}
     /* 分类配置：每条目上下堆叠，名称输入不再被压扁 */
     .catrow{flex-wrap:wrap;gap:6px 8px;padding:12px 0}
