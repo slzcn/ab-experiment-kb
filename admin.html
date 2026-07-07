@@ -303,6 +303,11 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     .fitem{flex-wrap:wrap}
     .fitem .nm{flex:1 1 100%}
     .fitem .fcat{flex:1 1 auto}
+    /* 批量浮条：小屏收紧内边距/字号，居中且不溢出（按钮多时也能一行放下）*/
+    .batchbar{gap:3px;padding:7px 8px;bottom:14px;max-width:calc(100vw - 16px)}
+    .batchbar .cnt{padding:0 5px 0 7px;font-size:12px}
+    .batchbar .bb{padding:8px 9px;font-size:12px;gap:3px}
+    .batchbar .sp{margin:4px 1px}
   }
 </style>
 </head>
