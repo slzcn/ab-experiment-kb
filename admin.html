@@ -359,9 +359,9 @@ function renderFileList(){
 const ST_LABEL={queued:'排队中',processing:'转码中…',done:'✓ 完成',error:'✗ 失败'};
 const ST_COLOR={queued:'var(--dim)',processing:'var(--accent)',done:'var(--ok)',error:'var(--bad)'};
 function paintRows(rows){
-  // rows: upload_jobs 记录，按 path 里的序号匹配回文件行（path = batch/<i>_<name>）
+  // rows: upload_jobs 记录，按 path 里的序号匹配回文件行（path = batch/<i><ext>）
   rows.forEach(row=>{
-    const mi=/\/(\d+)_/.exec(row.path||'');
+    const mi=/\/(\d+)(?:\.|$)/.exec(row.path||'');
     if(!mi)return;
     const el=$('#fst'+(+mi[1]));if(!el)return;
     const st=row.status;
@@ -389,8 +389,10 @@ $('#upBtn').onclick=async()=>{
     //    path 前缀文件序号，既避免同名冲突，也便于回填进度时定位文件行
     for(let i=0;i<FILES.length;i++){
       const x=FILES[i];
-      const safe=x.file.name.replace(/[^\w.\-一-龥]/g,'_');
-      const path=`${batch}/${i}_${safe}`;
+      // Storage key 只允许安全字符（中文等会报 InvalidKey）；真实文件名存在 job.filename，
+      // 故路径只用 序号+扩展名 保证唯一即可，转码取标题走 filename 不受影响
+      const ext=(x.file.name.match(/\.[^.]+$/)||[''])[0].toLowerCase().replace(/[^.a-z0-9]/g,'');
+      const path=`${batch}/${i}${ext}`;
       await uploadToStorage(x.file,path);
       await sbWrite('upload_jobs','POST',
         {batch,filename:x.file.name,cat:x.cat,path,status:'queued'});
