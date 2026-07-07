@@ -333,6 +333,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <div class="toolbar">
         <input id="artSearch" placeholder="搜索标题…">
         <button class="btn ghost" id="artReload" title="重新从数据库读取列表">↻ 刷新</button>
+        <button class="btn ghost" id="trashOpen" title="查看已删除的文章，可恢复或彻底删除">🗑 回收站</button>
       </div>
       <div class="batchbar" id="batchBar">
         <span class="cnt" id="batchCnt">已选 0 项</span>
@@ -358,6 +359,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <div id="catWrap"><div class="empty">加载中…</div></div>
       <div style="margin-top:16px;display:flex;gap:10px">
         <button class="btn ghost" id="catAdd">＋ 新增分类</button>
+        <button class="btn ghost" id="catRestore" title="把系统预设的默认分类补齐回来（不影响你现有分类）">↺ 恢复默认</button>
         <button class="btn" id="catSave">✓ 保存分类</button>
       </div>
       <div class="msg" id="catMsg"></div>
@@ -432,6 +434,19 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     </div>
     <div class="msg" id="upMsg"></div>
   </div>
+</div>
+
+<!-- 回收站弹层 -->
+<div class="mask" id="trashMask"></div>
+<div class="modal" id="trashModal">
+  <div class="mh"><b>🗑 回收站</b><span class="x" id="trashModalX">✕</span></div>
+  <div class="desc">已删除的文章暂存在这里，可<b>恢复</b>到文章列表，或<b>彻底删除</b>（不可撤销）。恢复/彻底删除约 1 分钟后同步到线上。</div>
+  <div class="toolbar" style="margin:12px 0 4px">
+    <span class="desc" id="trashCount" style="margin-right:auto"></span>
+    <button class="btn ghost danger" id="trashEmpty" title="彻底删除回收站里的全部文章">🧹 清空回收站</button>
+  </div>
+  <div id="trashWrap" style="max-height:52vh;overflow:auto;min-height:0"><div class="empty">加载中…</div></div>
+  <div class="msg" id="trashMsg"></div>
 </div>
 
 <!-- 通用确认弹层（替代系统 confirm）-->
@@ -882,7 +897,7 @@ async function bulkAction(kind){
       if(!await confirmBox({title:`删除选中的 ${n} 篇？`,
         html:`将删除选中的 <b>${n}</b> 篇文章，此操作不可撤销。`}))return;
       msg('#artMsg','load',`正在删除 ${n} 篇…`);
-      await apiDeleteArticle('in.('+ids.join(',')+')');
+      await apiDeleteArticle('in.('+ids.join(',')+')'); // 软删除→回收站
     }else{
       msg('#artMsg','load',`正在${verb} ${n} 篇…`);
       await Promise.all(ids.map(x=>apiSaveArticle({id:x, published:kind==='on'})));
@@ -999,17 +1014,97 @@ function focusArt(id){
 async function delArt(id){
   const a=ARTS.find(x=>x.id===id);
   const title=a?a.title:'';
-  if(!await confirmBox({title:'删除这篇文章？',
-    html:`将删除《<b>${esc(title)}</b>》，此操作不可撤销。`}))return;
+  if(!await confirmBox({title:'删除这篇文章？',okText:'移入回收站',
+    html:`将把《<b>${esc(title)}</b>》移入回收站，可随时恢复。`}))return;
   msg('#artMsg','load','正在删除…');
   try{
     await apiDeleteArticle(String(id));
     await loadPage();
     // 删后校验：列表里还在 = 实际没删掉，明确报错而非静默
     if(ARTS.some(x=>x.id===id)) msg('#artMsg','err',`删除未生效：《${title}》仍在库中，请重试或检查权限。`);
-    else msg('#artMsg','ok',`已删除《${title}》。`);
+    else msg('#artMsg','ok',`已把《${title}》移入回收站，可在回收站恢复。`);
   }catch(e){ msg('#artMsg','err','删除失败：'+e.message); }
 }
+
+// ================= 回收站 =================
+let TRASH=[];
+function openTrash(){$('#trashMask').classList.add('on');$('#trashModal').classList.add('on');loadTrash();}
+function closeTrash(){$('#trashMask').classList.remove('on');$('#trashModal').classList.remove('on');}
+$('#trashOpen').onclick=openTrash;
+$('#trashModalX').onclick=closeTrash;$('#trashMask').onclick=closeTrash;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#trashModal').classList.contains('on'))closeTrash();});
+
+async function loadTrash(){
+  $('#trashWrap').innerHTML='<div class="empty">加载中…</div>';msgClear('#trashMsg');
+  try{
+    const d=await apiCall('/trash','GET');
+    TRASH=d.trash||[];
+    drawTrash();
+  }catch(e){ $('#trashWrap').innerHTML='<div class="empty">加载失败：'+esc(e.message)+'</div>'; }
+}
+function drawTrash(){
+  $('#trashCount').textContent='共 '+TRASH.length+' 篇';
+  $('#trashEmpty').style.display=TRASH.length?'':'none';
+  if(!TRASH.length){$('#trashWrap').innerHTML='<div class="empty">回收站是空的</div>';return;}
+  $('#trashWrap').innerHTML='<table style="width:100%;border-collapse:collapse;font-size:13px">'
+    +TRASH.map(a=>`<tr style="border-bottom:1px solid var(--line)">
+      <td style="padding:9px 6px">${esc(a.title||'(无标题)')}<div style="font-size:11px;color:var(--dim);margin-top:2px">分类：${esc(a.cat||'-')} · 删除于 ${a.deleted_at?a.deleted_at.slice(0,16).replace('T',' '):''}</div></td>
+      <td style="padding:9px 6px;text-align:right;white-space:nowrap">
+        <button class="btn ghost" style="padding:5px 12px" data-restore="${a.id}">↩ 恢复</button>
+        <button class="btn danger" style="padding:5px 12px;margin-left:6px" data-hard="${a.id}">彻底删除</button>
+      </td></tr>`).join('')
+    +'</table>';
+  $('#trashWrap').querySelectorAll('[data-restore]').forEach(b=>b.onclick=()=>restoreArt(+b.dataset.restore));
+  $('#trashWrap').querySelectorAll('[data-hard]').forEach(b=>b.onclick=()=>hardDelArt(+b.dataset.hard));
+}
+async function restoreArt(id){
+  const a=TRASH.find(x=>x.id===id);const title=a?a.title:'';
+  msg('#trashMsg','load','正在恢复…');
+  try{
+    await apiCall('/restore?id='+id,'POST');
+    await loadTrash();
+    await loadPage();
+    msg('#trashMsg','ok',`已恢复《${title}》到文章列表。`);
+  }catch(e){ msg('#trashMsg','err','恢复失败：'+e.message); }
+}
+async function hardDelArt(id){
+  const a=TRASH.find(x=>x.id===id);const title=a?a.title:'';
+  if(!await confirmBox({title:'彻底删除？',okText:'彻底删除',
+    html:`将<b>永久删除</b>《<b>${esc(title)}</b>》，此操作<b>不可恢复</b>。`}))return;
+  msg('#trashMsg','load','正在彻底删除…');
+  try{
+    await apiCall('/article?id='+id+'&hard=1','DELETE');
+    await loadTrash();
+    msg('#trashMsg','ok',`已彻底删除《${title}》。`);
+  }catch(e){ msg('#trashMsg','err','删除失败：'+e.message); }
+}
+$('#trashEmpty').onclick=async()=>{
+  if(!TRASH.length)return;
+  if(!await confirmBox({title:'清空回收站？',okText:'全部彻底删除',
+    html:`将<b>永久删除</b>回收站里的全部 <b>${TRASH.length}</b> 篇文章，此操作<b>不可恢复</b>。`}))return;
+  msg('#trashMsg','load','正在清空…');
+  try{
+    const ids=TRASH.map(a=>a.id);
+    await apiCall('/article?id=in.('+ids.join(',')+')&hard=1','DELETE');
+    await loadTrash();
+    msg('#trashMsg','ok','回收站已清空。');
+  }catch(e){ msg('#trashMsg','err','清空失败：'+e.message); }
+};
+
+// ================= 分类恢复默认（补齐缺失，保留自建）=================
+$('#catRestore').onclick=async()=>{
+  if(!await confirmBox({title:'恢复默认分类？',okText:'恢复默认',danger:false,
+    html:'将把系统预设的默认分类<b>补齐</b>回来（只补被删掉的默认分类）。<br>你现有的分类<b>不受影响</b>，不会被覆盖或删除。'}))return;
+  msg('#catMsg','load','正在恢复默认分类…');
+  try{
+    const d=await apiCall('/restore-categories?mode=missing','POST');
+    await loadData();
+    const n=d.inserted||0;
+    msg('#catMsg','ok', n>0
+      ? `✓ 已补齐 ${n} 个默认分类，约十几秒后线上同步`
+      : '✓ 默认分类都在，无需补齐');
+  }catch(e){ msg('#catMsg','err','✗ '+e.message); }
+};
 
 // ================= 分类配置 =================
 let CAT_EDIT=[];
