@@ -355,7 +355,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <p>营销增长中心 · 数据驱动决策手册</p>
     </div>
     <div class="cats" id="cats"></div>
-    <div class="write-btn" id="writeBtn">✍ 写一篇新文章</div>
+    <div class="write-btn" id="writeBtn">✍ 写新文章</div>
     <a class="admin-link" id="adminLink" href="admin.html">⚙ 管理后台</a>
     <div class="side-foot" id="sideFoot"></div>
   </aside>
@@ -393,7 +393,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 <div class="editor-mask" id="editorMask"></div>
 <div class="editor" id="editor">
   <div class="ed-head">
-    <b>✍ 写一篇新文章</b>
+    <b>✍ 写新文章</b>
     <span class="ed-close" id="edClose">✕</span>
   </div>
   <div class="ed-body">
@@ -407,8 +407,8 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <label>正文（Markdown）</label>
       <textarea id="edMd" placeholder="# 标题&#10;&#10;正文用 Markdown 书写，支持 **加粗**、列表、表格、代码块…&#10;&#10;## 小节&#10;- 要点一&#10;- 要点二"></textarea>
       <div class="ed-actions">
-        <button class="ed-btn" id="edSubmit" style="display:none">✓ 提交并发布</button>
-        <button class="ed-btn" id="edDownload">⬇ 导出 .md 文件</button>
+        <button class="ed-btn" id="edSubmit" style="display:none">✓ 发布文章</button>
+        <button class="ed-btn" id="edDownload">⬇ 导出 .md</button>
       </div>
       <div class="ed-msg" id="edMsg"></div>
       <div class="ed-hint" id="edHint">
@@ -559,7 +559,7 @@ function setupSubmit(){
   $('#edSubmit').style.display='';
   $('#edDownload').classList.add('ghost2');
   $('#edDownload').textContent='⬇ 导出';
-  $('#edHint').innerHTML='点「提交并发布」即可存入数据库，稍后自动同步到页面（约十几秒），无需手动处理文件。';
+  $('#edHint').innerHTML='点「发布文章」即可存入数据库，稍后自动同步到页面（约十几秒），无需手动处理文件。';
 }
 
 function renderFoot(){
@@ -924,7 +924,7 @@ async function submitArticle(){
   if(!d.title){edMsg('err','请先填写标题');return;}
   if(!d.md.trim()){edMsg('err','正文不能为空');return;}
   const btn=$('#edSubmit'); btn.disabled=true;
-  edMsg('load','正在提交并发布，请稍候…');
+  edMsg('load','正在发布，请稍候…');
   try{
     const row=await submitToDB(d);
     // 纯静态：不回连数据库。用刚写库的 row（同一 id）插入内存，让提交者当场看到；

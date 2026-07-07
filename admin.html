@@ -358,7 +358,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <div id="catWrap"><div class="empty">加载中…</div></div>
       <div style="margin-top:16px;display:flex;gap:10px">
         <button class="btn ghost" id="catAdd">＋ 新增分类</button>
-        <button class="btn" id="catSave">保存全部</button>
+        <button class="btn" id="catSave">✓ 保存分类</button>
       </div>
       <div class="msg" id="catMsg"></div>
     </div>
@@ -379,7 +379,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   <label>正文（Markdown）</label>
   <textarea id="edMd"></textarea>
   <div style="margin-top:16px;display:flex;gap:10px">
-    <button class="btn" id="edSave">保存修改</button>
+    <button class="btn" id="edSave">✓ 保存修改</button>
     <button class="btn ghost" id="edCancel">取消</button>
   </div>
   <div class="msg" id="edMsg"></div>
@@ -409,7 +409,6 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 直接写 Markdown 即可…"></textarea>
     <div style="margin-top:16px;display:flex;gap:10px">
       <button class="btn" id="pubSave">✓ 发布文章</button>
-      <button class="btn ghost" id="pubClose1">关闭</button>
     </div>
     <div class="msg" id="pubMsg"></div>
   </div>
@@ -429,8 +428,8 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       accept=".pptx,.docx,.pdf,.xlsx,.csv,.txt,.md,.markdown,.html,.htm">
     <div class="filelist" id="filelist"></div>
     <div style="margin-top:16px;display:flex;gap:10px">
-      <button class="btn" id="upBtn" disabled>⬆ 上传（服务器自动转码）</button>
-      <button class="btn ghost" id="upClose">关闭</button>
+      <button class="btn" id="upBtn" disabled>⬆ 上传文档</button>
+      <button class="btn ghost" id="upClose">取消</button>
     </div>
     <div class="msg" id="upMsg"></div>
   </div>
@@ -939,7 +938,7 @@ function switchPubTab(key){
 document.querySelectorAll('.ptab').forEach(t=>t.onclick=()=>switchPubTab(t.dataset.pt));
 
 $('#upOpen').onclick=()=>openUpload('single');
-$('#upModalX').onclick=closeUpload;$('#upClose').onclick=closeUpload;$('#pubClose1').onclick=closeUpload;$('#upMask').onclick=closeUpload;
+$('#upModalX').onclick=closeUpload;$('#upClose').onclick=closeUpload;$('#upMask').onclick=closeUpload;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#upModal').classList.contains('on'))closeUpload();});
 
 // 发布文章弹层打开时同步分类选项（batch 面板的 #upCat 已由 loadData 更新，单篇的 #pubCat 也要）
