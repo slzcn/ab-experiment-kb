@@ -100,7 +100,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   a{color:inherit;text-decoration:none}
   ::selection{background:var(--brand);color:#fff}
   /* ---- 布局 ---- */
-  .app{display:grid;grid-template-columns:280px 1fr;height:100vh}
+  .app{display:grid;grid-template-columns:280px 1fr;height:100vh;height:100dvh}  /* dvh 兼容iOS Safari 动态地址栏 */
   /* 侧栏 */
   aside{background:var(--bg2);border-right:1px solid var(--line);
     display:flex;flex-direction:column;overflow:hidden}
@@ -234,7 +234,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     color:var(--accent);font-weight:700;font-size:13px}
   .md [data-tips-type="warning"],.md [data-tips-type="danger"]{border-color:var(--brand)}
   /* 加载/滚动条 */
-  .loading{display:grid;place-items:center;height:100vh;color:var(--sub);font-size:14px;gap:14px}
+  .loading{display:grid;place-items:center;height:100vh;height:100dvh;color:var(--sub);font-size:14px;gap:14px}
   .spin{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--brand);
     border-radius:50%;animation:sp .8s linear infinite}
   @keyframes sp{to{transform:rotate(360deg)}}
@@ -253,7 +253,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   /* 编辑器抽屉 */
   /* 登录门 */
   .login-mask{display:none;position:fixed;inset:0;background:rgba(60,50,35,.4);z-index:100;
-    backdrop-filter:blur(3px);align-items:center;justify-content:center}
+    -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);align-items:center;justify-content:center}
   .login-mask.on{display:flex}
   .login-box{background:var(--bg2);border:1px solid var(--line);border-radius:16px;
     padding:32px 30px;width:min(360px,90vw);text-align:center;box-shadow:var(--sh)}
@@ -267,7 +267,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .login-box .ed-btn{width:100%;margin-top:14px}
   .login-err{color:var(--brand2);font-size:12.5px;min-height:18px;margin-top:10px}
   .login-tip{font-size:11px;color:var(--dim);margin-top:6px}
-  .editor-mask{display:none;position:fixed;inset:0;background:rgba(60,50,35,.34);z-index:80;backdrop-filter:blur(2px)}
+  .editor-mask{display:none;position:fixed;inset:0;background:rgba(60,50,35,.34);z-index:80;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
   .editor-mask.on{display:block}
   .editor{position:fixed;top:0;right:0;bottom:0;width:min(920px,94vw);z-index:90;
     background:var(--bg);box-shadow:-10px 0 40px rgba(120,100,70,.22);
