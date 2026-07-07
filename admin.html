@@ -453,7 +453,9 @@ $$('.tab').forEach(t=>t.onclick=()=>{
 // ---- 全局数据 ----
 let CATS=[], ARTS=[];
 const SELECTED=new Set();   // 文章管理里勾选的文章 id
-let PAGE=1, PER=20;         // 分页：当前页 / 每页条数
+let PAGE=1, PER=20;         // 分页：当前页 / 每页条数（走后端分页）
+let TOTAL=0, PUB_COUNT=0, Q='';  // 后端分页：总数/上线数/当前搜索词
+let LOADING=false;          // 防并发加载
 
 function catOf(k){return CATS.find(c=>c.key===k)||{icon:'📎',name:k||'其他'};}
 function fillCatSelect(sel,val){
@@ -465,21 +467,41 @@ function fillCatSelect(sel,val){
 async function boot(){
   marked.setOptions({breaks:true,gfm:true});
   await loadData();
-  $('#topSub').textContent=`共 ${ARTS.length} 篇 · ${CATS.length} 个分类`;
+  $('#topSub').textContent=`共 ${TOTAL} 篇 · ${CATS.length} 个分类`;
 }
 
 async function loadData(){
-  // 读走 Edge Function（service_role 读全部含未发布），跟写操作统一收口
-  const [a,c]=await Promise.all([apiCall('/articles','GET'),apiCall('/categories','GET')]);
-  const arts=(a&&a.articles)||[];
-  CATS=(c&&c.categories)||[];
-  // EdgeFn 已按 id desc 返回，这里按 updated desc 兼容原来的展示顺序
-  arts.sort((x,y)=>String(y.updated||'').localeCompare(String(x.updated||'')));
-  ARTS=arts;
-  SELECTED.clear();
-  fillCatSelect($('#upCat'));
-  fillCatSelect($('#edCat'));
-  renderArts(); renderCats();
+  // 读走 Edge Function 后端分页：只拉第一页 + 分类（首屏轻量）
+  LOADING=true;
+  try{
+    const q=encodeURIComponent(Q||'');
+    const [a,c]=await Promise.all([
+      apiCall(`/articles?page=${PAGE}&per=${PER}${q?'&q='+q:''}`,'GET'),
+      apiCall('/categories','GET')
+    ]);
+    ARTS=(a&&a.articles)||[];
+    TOTAL=(a&&typeof a.total==='number')?a.total:ARTS.length;
+    PUB_COUNT=(a&&typeof a.pubCount==='number'&&a.pubCount>=0)?a.pubCount:-1;
+    CATS=(c&&c.categories)||[];
+    SELECTED.clear();
+    fillCatSelect($('#upCat'));
+    fillCatSelect($('#edCat'));
+    renderArts(); renderCats();
+  } finally { LOADING=false; }
+}
+
+// 翻页/搜索只重拉文章（分类已在内存），比 loadData 少一半网络
+async function loadPage(){
+  if(LOADING) return;
+  LOADING=true;
+  try{
+    const q=encodeURIComponent(Q||'');
+    const a=await apiCall(`/articles?page=${PAGE}&per=${PER}${q?'&q='+q:''}`,'GET');
+    ARTS=(a&&a.articles)||[];
+    TOTAL=(a&&typeof a.total==='number')?a.total:ARTS.length;
+    if(a&&typeof a.pubCount==='number'&&a.pubCount>=0) PUB_COUNT=a.pubCount;
+    renderArts();
+  } finally { LOADING=false; }
 }
 
 // ================= 批量上传（纯 web：直传 Storage + 建 job，服务器 Action 处理）=================
@@ -579,7 +601,7 @@ $('#upBtn').onclick=async()=>{
           if(fail.length)m+=` 失败 ${fail.length} 篇：`+fail.map(r=>r.filename).join('、');
           msg('#upMsg', fail.length?(ok?'ok':'err'):'ok', m);
           FILES=[];renderFileList();
-          await loadData();
+          await loadPage();
         }else if(ticks>=MAX){
           clearInterval(POLL);POLL=null;
           msg('#upMsg','err','处理超时（服务器 Action 可能未运行或排队中）。文件已上传，稍后可在“文章管理”查看是否入库，或到 GitHub Actions 页面查看进度。');
@@ -594,19 +616,22 @@ $('#upBtn').onclick=async()=>{
 // ================= 文章管理 =================
 const isPub=a=>a.published!==false;   // 缺字段/未设 → 视为上线
 function curList(){
-  const q=($('#artSearch').value||'').toLowerCase().trim();
-  return ARTS.filter(a=>!q||(a.title||'').toLowerCase().includes(q));
+  // 后端已按 Q 过滤+分页，此处直接返回当前页数据
+  return ARTS;
 }
 function renderArts(){
   const list=curList();
-  const onN=ARTS.filter(isPub).length;
-  $('#artCount').textContent=`共 ${ARTS.length} 篇 · 上线 ${onN} · 下线 ${ARTS.length-onN}`;
+  // 统计：TOTAL/PUB_COUNT 来自后端；PUB_COUNT=-1 时（搜索态）不显示上线/下线
+  const cntLine=(PUB_COUNT>=0)
+    ? `共 ${TOTAL} 篇 · 上线 ${PUB_COUNT} · 下线 ${TOTAL-PUB_COUNT}`
+    : `搜索结果 ${TOTAL} 篇`;
+  $('#artCount').textContent=cntLine;
   if(!list.length){$('#artWrap').innerHTML='<div class="empty">没有匹配的文章</div>';updateBatchBar();return;}
-  // 分页：把过滤后的列表切成当前页
-  const pages=Math.max(1,Math.ceil(list.length/PER));
+  // 分页：list 已是当前页，页数用 TOTAL 算
+  const pages=Math.max(1,Math.ceil(TOTAL/PER));
   if(PAGE>pages)PAGE=pages;
   const start=(PAGE-1)*PER;
-  const pageList=list.slice(start,start+PER);
+  const pageList=list;   // 后端已切页
   const allSel=pageList.length&&pageList.every(a=>SELECTED.has(a.id));
   $('#artWrap').innerHTML=`<table class="tbl"><thead><tr>
     <th class="chk"><input type="checkbox" id="chkAll" ${allSel?'checked':''} title="选择本页全部"></th>
@@ -621,7 +646,7 @@ function renderArts(){
         <button class="btn ghost" style="padding:5px 12px;font-size:12px" data-edit="${a.id}">编辑</button>
         <button class="btn danger" data-del="${a.id}">删除</button>
       </td></tr>`;}).join('')}</tbody></table>`
-    +renderPager(list.length,pages,start,pageList.length);
+    +renderPager(TOTAL,pages,start,pageList.length);
   $('#artWrap').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openEdit(+b.dataset.edit));
   $('#artWrap').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delArt(+b.dataset.del));
   $('#artWrap').querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>togglePub(+b.dataset.toggle));
@@ -663,18 +688,27 @@ function bindPager(pages){
     if(v==='prev')PAGE=Math.max(1,PAGE-1);
     else if(v==='next')PAGE=Math.min(pages,PAGE+1);
     else PAGE=+v;
-    renderArts();
+    loadPage();  // 翻页走后端
     window.scrollTo({top:0,behavior:'smooth'});
   });
   const ps=$('#perSel');
-  if(ps)ps.onchange=()=>{PER=+ps.value;PAGE=1;renderArts();};
+  if(ps)ps.onchange=()=>{PER=+ps.value;PAGE=1;loadPage();};
 }
 function updateBatchBar(){
   const n=SELECTED.size;
   $('#batchBar').classList.toggle('on',n>0);
   if(n)$('#batchCnt').textContent=`已选 ${n} 项`;
 }
-$('#artSearch').addEventListener('input',()=>{PAGE=1;renderArts();});
+// 搜索防抖 300ms + 走后端
+let _searchTimer=null;
+$('#artSearch').addEventListener('input',()=>{
+  clearTimeout(_searchTimer);
+  _searchTimer=setTimeout(()=>{
+    Q=($('#artSearch').value||'').trim();
+    PAGE=1;
+    loadPage();
+  },300);
+});
 $('#artReload').onclick=async()=>{await loadData();};
 $('#batchClear').onclick=()=>{SELECTED.clear();renderArts();};
 
@@ -710,7 +744,7 @@ async function bulkAction(kind){
       await Promise.all(ids.map(x=>apiSaveArticle({id:x, published:kind==='on'})));
     }
     SELECTED.clear();
-    await loadData();
+    await loadPage();
     if(kind==='del'){
       const left=ids.filter(id=>ARTS.some(x=>x.id===id)).length;
       if(left) msg('#artMsg','err',`删除未完全生效：还有 ${left} 篇仍在库中，请重试或检查权限。`);
@@ -760,7 +794,7 @@ $('#edSave').onclick=async()=>{
   try{
     await apiSaveArticle({id,title,cat:$('#edCat').value,keywords:$('#edKw').value.trim(),md,body_text});
     msg('#edMsg','ok','✓ 已保存，约十几秒后线上同步');
-    await loadData();
+    await loadPage();
     // 保存后关闭弹层，并把刚编辑的这篇滚动到可视区、短暂高亮，方便定位
     setTimeout(()=>{ closeEdit(); focusArt(id); }, 700);
     msg('#artMsg','ok',`《${title}》已保存。`);
@@ -787,7 +821,7 @@ async function delArt(id){
   msg('#artMsg','load','正在删除…');
   try{
     await apiDeleteArticle(String(id));
-    await loadData();
+    await loadPage();
     // 删后校验：列表里还在 = 实际没删掉，明确报错而非静默
     if(ARTS.some(x=>x.id===id)) msg('#artMsg','err',`删除未生效：《${title}》仍在库中，请重试或检查权限。`);
     else msg('#artMsg','ok',`已删除《${title}》。`);
