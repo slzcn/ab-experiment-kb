@@ -471,7 +471,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       accept=".pptx,.docx,.pdf,.xlsx,.csv,.txt,.md,.markdown,.html,.htm">
     <div class="filelist" id="filelist"></div>
     <div style="margin-top:16px;display:flex;gap:10px">
-      <button class="btn" id="upBtn" disabled>⬆ 上传文档</button>
+      <button class="btn" id="upBtn">⬆ 上传文档</button>
     </div>
     <div class="msg" id="upMsg"></div>
   </div>
@@ -737,7 +737,6 @@ function renderFileList(){
     <span class="rm" data-i="${i}">✕</span></div>`).join('');
   wrap.querySelectorAll('.fcat').forEach(el=>el.onchange=()=>{FILES[+el.dataset.i].cat=el.value;});
   wrap.querySelectorAll('.rm').forEach(el=>el.onclick=()=>{FILES.splice(+el.dataset.i,1);renderFileList();});
-  $('#upBtn').disabled=!FILES.length;
 }
 // 各状态在文件行右侧的呈现
 const ST_LABEL={queued:'排队中',processing:'转码中…',done:'✓ 完成',error:'✗ 失败'};
@@ -766,7 +765,7 @@ async function uploadToStorage(file,path){
 }
 let POLL=null;
 $('#upBtn').onclick=async()=>{
-  if(!FILES.length)return;
+  if(!FILES.length){msg('#upMsg','err','请先选择或拖入要上传的文件。');return;}
   const btn=$('#upBtn');btn.disabled=true;
   const batch='b'+Date.now();
   try{
@@ -811,7 +810,7 @@ $('#upBtn').onclick=async()=>{
     },4000);
   }catch(e){
     msg('#upMsg','err','✗ '+e.message);
-  }finally{btn.disabled=!FILES.length;}
+  }finally{btn.disabled=false;}
 };
 
 // ================= 文章管理 =================

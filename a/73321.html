@@ -435,6 +435,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 <script>
 let KB=null, CUR="all", Q="", INDEX=[];
 let SEARCH={};   // id -> 全文检索文本（kb_search.json 异步加载后填充）
+let listScroll=0, listShown=0;   // 打开文章前列表的滚动位置/已渲染卡片数，返回时恢复
 // 数据文件基址：主站在根目录=''；文章静态页(a/<id>.html)里会被置为 '../' 以回到根目录取数据
 const DATA_BASE = (typeof window!=='undefined' && window.DATA_BASE) || '';
 // 站点根目录路径（含末尾/）：在文章页 /.../a/x.html 里要去掉末尾的 a/，回到站点根，
@@ -776,6 +777,8 @@ async function openDoc(id){
   const d=KB.docs.find(x=>x.id===id); if(!d)return;
   const c=catOf(d.cat);
   const v=$('#bodyView');
+  // 打开文章前，若当前是列表视图，记住其滚动位置，返回时恢复
+  if(!v.querySelector('.reader')) listScroll=v.scrollTop;
   let md=await getMd(id);
   // 去掉正文开头与标题重复的一级标题（页面头部已显示大标题）
   md=(md||'').replace(/^\s*#\s+.*(?:\r?\n)+/, '');
@@ -813,6 +816,8 @@ async function openDoc(id){
     if(onArticlePage){ location.href = siteRoot(); return; }  // 回真正的列表页（根目录）
     try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
     render();
+    // 恢复到点进文章前的列表滚动位置（render 会重置到顶部，这里还原）
+    requestAnimationFrame(()=>{ const bv=$('#bodyView'); if(bv) bv.scrollTop=listScroll; });
   };
   const cl=$('#copyLink');
   if(cl) cl.onclick=async()=>{
