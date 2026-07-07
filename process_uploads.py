@@ -28,7 +28,7 @@ ALLOWED_EXT = {".pptx", ".docx", ".pdf", ".xlsx", ".xlsm",
 
 
 def _set(job_id, patch):
-    patch["updated_at"] = datetime.datetime.utcnow().isoformat()
+    patch["updated_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
     SB.update("upload_jobs", f"id=eq.{job_id}", patch)
 
 
