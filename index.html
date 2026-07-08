@@ -197,6 +197,11 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     color:var(--dim);font-size:12.5px;text-align:center}
   /* markdown 正文 */
   .md{font-size:16px;line-height:1.9;color:#3a3733}
+  /* 正文按需加载时的占位 */
+  .md-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:13px;padding:60px 0;color:var(--dim);font-size:13px}
+  .md-loading .spin{width:30px;height:30px;border:3px solid var(--line);border-top-color:var(--brand);
+    border-radius:50%;animation:sp .8s linear infinite}
   .md h1,.md h2,.md h3,.md h4{color:var(--ink);font-weight:750;line-height:1.4;
     margin:1.9em 0 .7em;scroll-margin-top:20px;letter-spacing:-.005em}
   .md h1{font-size:23px}
@@ -769,6 +774,7 @@ function groupImages(scope){
   });
 }
 
+let _docSeq=0;
 async function openDoc(id, opts){
   opts=opts||{};
   const d=KB.docs.find(x=>x.id===id); if(!d)return;
@@ -776,14 +782,13 @@ async function openDoc(id, opts){
   const v=$('#bodyView');
   // 打开文章前，若当前是列表视图，记住其滚动位置，返回时恢复
   if(!v.querySelector('.reader')){ listScroll=v.scrollTop; listShown=SHOWN; }
-  let md=await getMd(id);
-  // 去掉正文开头与标题重复的一级标题（页面头部已显示大标题）
-  md=(md||'').replace(/^\s*#\s+.*(?:\r?\n)+/, '');
-  let html=marked.parse(md);
   const isInternal = d.internal || !/^https?:/.test(d.url||'');
   const srcFoot = isInternal
     ? '本文为营销增长中心内部沉淀'
     : '内容整理自火山引擎 DataTester A/B testing 文档库';
+  // 【体感优化】：先立即渲染外壳(标题/meta/返回按钮)+ 正文加载占位,秒切页面消除假死感;
+  // 正文异步获取(首次点开需拉 kb_docs.json ~2MB),加载完再填充 .md 区。
+  const seq = (++_docSeq);
   v.innerHTML=`<div class="reader">
     <div class="rtop">
       <span class="rlink" id="rback">← 返回列表</span>
@@ -797,11 +802,19 @@ async function openDoc(id, opts){
         ${d.updated?`<span>🕐 ${d.updated}</span>`:''}
       </div>
     </article>
-    <div class="md">${html}</div>
+    <div class="md" id="mdBody"><div class="md-loading"><div class="spin"></div><div>正在加载正文…</div></div></div>
     <div class="rfoot">${srcFoot}</div>
   </div>`;
   v.scrollTop=0;
-  groupImages(v);
+  // 异步取正文并填充(带 seq 竞态守卫:用户快速切换文章时,老请求返回后不再覆盖新页面)
+  (async()=>{
+    let md=await getMd(id);
+    if(seq!==_docSeq) return;  // 已切到别的文章,丢弃本次结果
+    md=(md||'').replace(/^\s*#\s+.*(?:\r?\n)+/, '');
+    const html=marked.parse(md);
+    const mdEl=$('#mdBody');
+    if(mdEl){ mdEl.innerHTML=html; groupImages(v); }
+  })();
   // 地址栏换成真实静态页地址 a/<id>.html（pushState，不刷新页面）：地址真实可分享、可后退。
   // 文章静态页(a/<id>.html，注入 INIT_DOC)首次打开自己那篇时地址已对，不再 push；
   // 由浏览器后退(popstate)触发的打开也不 push（opts.push=false）。file:// 本地无法 pushState 跳目录，降级 hash。
