@@ -367,7 +367,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   <div class="ic">🔐</div>
   <h2>A/B 实验知识库 · 管理后台</h2>
   <p>此操作仅限授权用户</p>
-  <input id="gatePin" type="password" inputmode="numeric" placeholder="访问码" autocomplete="off">
+  <input id="gatePin" type="password" inputmode="numeric" placeholder="访问码" autocomplete="off" onfocus="this.placeholder=''" onblur="if(!this.value)this.placeholder='访问码'">
   <button class="btn" id="gateBtn">进入后台</button>
   <div id="gateErr"></div>
   <div class="tip">登录后 2 小时内免再次验证</div>
@@ -1337,7 +1337,7 @@ $('#catSave').onclick=async()=>{
 };
 
 // 启动：已登录直接进（先预热首屏数据请求，让网络往返尽早开始）
-if(loggedIn()){ prefetchFirst(); enter(); } else setTimeout(()=>$('#gatePin').focus(),80);
+if(loggedIn()){ prefetchFirst(); enter(); }
 </script>
 </body>
 </html>
