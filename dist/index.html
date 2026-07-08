@@ -410,7 +410,6 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <textarea id="edMd" placeholder="# 标题&#10;&#10;正文用 Markdown 书写，支持 **加粗**、列表、表格、代码块…&#10;&#10;## 小节&#10;- 要点一&#10;- 要点二"></textarea>
       <div class="ed-actions">
         <button class="ed-btn" id="edSubmit" style="display:none">✓ 发布文章</button>
-        <button class="ed-btn" id="edDownload">⬇ 导出 .md</button>
       </div>
       <div class="ed-msg" id="edMsg"></div>
       <div class="ed-hint" id="edHint"></div>
@@ -561,8 +560,6 @@ async function loadSearchIndex(){
 // 写文章提交：页面纯静态读取，但提交直接写 Supabase（之后由 Action 重生成静态文件同步）
 function setupSubmit(){
   $('#edSubmit').style.display='';
-  $('#edDownload').classList.add('ghost2');
-  $('#edDownload').textContent='⬇ 导出';
   $('#edHint').innerHTML='';
 }
 
@@ -915,20 +912,6 @@ function updatePrev(){
   $('#edPrevTitle').textContent=d.title||'（未填标题）';
   $('#edPrevBody').innerHTML=marked.parse(d.md||'*在左侧输入 Markdown，这里实时预览…*');
 }
-function downloadMd(){
-  const d=edData();
-  if(!d.title){alert('请先填写标题');return;}
-  if(!d.md.trim()){alert('正文不能为空');return;}
-  const today=new Date().toISOString().slice(0,10);
-  const front=`---\ntitle: ${d.title}\ncat: ${d.cat}\nkeywords: ${d.kw}\ndate: ${today}\n---\n\n`;
-  const blob=new Blob([front+d.md],{type:'text/markdown;charset=utf-8'});
-  // 文件名：安全化标题
-  const safe=d.title.replace(/[\/\\:*?"<>|\s]+/g,'_').slice(0,40);
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob); a.download=`${safe}.md`;
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(a.href);
-}
 function edMsg(cls,txt){const m=$('#edMsg');m.className='ed-msg '+cls;m.textContent=txt;}
 function plainText(md){
   return (md||'').replace(/!\[[^\]]*\]\([^)]*\)/g,'').replace(/<[^>]+>/g,'')
@@ -973,7 +956,7 @@ async function submitArticle(){
       render(); openDoc(newId);   // 用确定的 id 打开，避免同名标题匹配错文章
     },700);
   }catch(e){
-    edMsg('err','提交失败：'+e.message+'（可改用「导出」兜底）');
+    edMsg('err','提交失败：'+e.message);
   }finally{ btn.disabled=false; }
 }
 $('#writeBtn').onclick=requireAuthThenEdit;
@@ -985,7 +968,6 @@ $('#editorMask').onclick=closeEditor;
 $('#edMd').addEventListener('input',updatePrev);
 $('#edTitle').addEventListener('input',updatePrev);
 $('#edCat').addEventListener('change',updatePrev);
-$('#edDownload').onclick=downloadMd;
 $('#edSubmit').onclick=submitArticle;
 
 // 搜索框 placeholder：按框宽能放几个关键词就放几个，末尾不做省略号。
