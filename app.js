@@ -125,6 +125,11 @@ async function boot(){
   // 首屏已出。若走的是轻量列表(docs 无全文)，后台异步加载全文检索索引，
   // 加载完重建 INDEX——此后搜索从"标题+摘要"升级为"正文全文"。不阻塞首屏。
   loadSearchIndex();
+  // 首屏出来后，浏览器空闲时后台预拉全量正文 kb_docs.json，让用户点开第一篇文章时
+  // 正文已在缓存、秒开，消除"第一次点开等待"。用 requestIdleCallback 不抢首屏/搜索索引带宽。
+  const _pre=()=>ensureDocsCache();
+  if('requestIdleCallback' in window) requestIdleCallback(_pre, {timeout:4000});
+  else setTimeout(_pre, 1500);
 }
 
 async function loadSearchIndex(){
@@ -329,14 +334,25 @@ function render(){
 }
 
 // 正文按需加载：轻量列表无 md，点开文章时从 kb_docs.json 取（取一次缓存整份）
-let DOCS_CACHE=null;
+let DOCS_CACHE=null, _docsInflight=null;
+// 拉取全量正文 kb_docs.json 到 DOCS_CACHE（带 inflight 锁防并发重复拉）。
+// getMd 和首屏后台预拉共用：预拉让用户点开文章时正文已就绪，消除“第一次点开等待”。
+function ensureDocsCache(){
+  if(DOCS_CACHE) return Promise.resolve(DOCS_CACHE);
+  if(_docsInflight) return _docsInflight;
+  _docsInflight = (async()=>{
+    try{ const r=await fetchT(dataUrl('kb_docs.json'), 20000); if(r.ok) DOCS_CACHE=await r.json(); }
+    catch(e){}
+    if(!DOCS_CACHE) DOCS_CACHE={};
+    _docsInflight=null;
+    return DOCS_CACHE;
+  })();
+  return _docsInflight;
+}
 async function getMd(id){
   const d=KB.docs.find(x=>x.id===id);
-  if(d && d.md) return d.md;                    // 已有正文（内嵌/完整版）
-  if(!DOCS_CACHE){
-    try{ const r=await fetchT(dataUrl('kb_docs.json'), 20000); if(r.ok) DOCS_CACHE=await r.json(); }
-    catch(e){ DOCS_CACHE={}; }
-  }
+  if(d && d.md) return d.md;                    // 已有正文（内嵌/完整版/直达 INIT_MD）
+  await ensureDocsCache();
   return (DOCS_CACHE&&DOCS_CACHE[String(id)])||'（正文加载失败，请刷新重试）';
 }
 
