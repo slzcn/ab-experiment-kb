@@ -40,11 +40,24 @@ def git(*args, capture=True):
 
 # ---------------- 配置 ----------------
 def load_sb_config():
-    cfg = json.load(open(os.path.join(HERE, "sb_config.json"), encoding="utf-8"))
-    url = cfg["url"].rstrip("/")
-    # 服务端（GitHub Action / 本地维护脚本）优先用 service_role（写库/读删 Storage 需要）。
-    # 前端从不用本文件；anon key 仅作无 service_role 时的只读回退。
-    key = os.environ.get("SB_SERVICE_KEY") or os.environ.get("SUPABASE_SERVICE_KEY") or cfg["key"]
+    # 服务端（GitHub Action / 本地维护脚本）优先用环境变量：
+    #   SB_URL / SUPABASE_URL                 —— 项目地址
+    #   SB_SERVICE_KEY / SUPABASE_SERVICE_KEY —— service_role（写库/读删 Storage 需要）
+    # 本地开发无环境变量时，回退读 sb_config.json（该文件不入库，仅本机存 anon 只读 key）。
+    # Action 里 sb_config.json 不存在，故必须能纯靠环境变量工作。
+    env_url = os.environ.get("SB_URL") or os.environ.get("SUPABASE_URL")
+    env_key = os.environ.get("SB_SERVICE_KEY") or os.environ.get("SUPABASE_SERVICE_KEY")
+    cfg = {}
+    cfg_path = os.path.join(HERE, "sb_config.json")
+    if os.path.exists(cfg_path):
+        try:
+            cfg = json.load(open(cfg_path, encoding="utf-8"))
+        except Exception:
+            cfg = {}
+    url = (env_url or cfg.get("url", "")).rstrip("/")
+    key = env_key or cfg.get("key", "")
+    if not url or not key:
+        raise RuntimeError("缺少 Supabase 配置：请设 SB_URL/SB_SERVICE_KEY 环境变量，或提供 sb_config.json")
     return url, key
 
 

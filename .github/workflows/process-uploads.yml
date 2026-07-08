@@ -32,8 +32,10 @@ jobs:
       - name: 处理待上传文档（转码 → 入库）
         id: proc
         env:
+          SB_URL: https://cddkniwbhvcbfgkgomtl.supabase.co
           SB_SERVICE_KEY: ${{ secrets.SB_SERVICE_KEY }}
         run: |
+          set -o pipefail   # 否则 python 崩了也被 tee 吞成成功，任务静默失败
           python3 process_uploads.py | tee /tmp/proc.log
           # 把 HAS_NEW 传给后续步骤
           grep -q 'HAS_NEW=1' /tmp/proc.log && echo "has_new=1" >> "$GITHUB_OUTPUT" || echo "has_new=0" >> "$GITHUB_OUTPUT"
