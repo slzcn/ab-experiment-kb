@@ -10,7 +10,6 @@
 文章、数据、脚本、线上产物全在这里，改完一条命令即可更新线上——不再有第二份拷贝。
 
 在线地址（GitHub Pages，公网免登录）：https://slzcn.github.io/ab-experiment-kb/
-飞书妙搭（企业内可见）：https://fenmikeji.aiforce.cloud/app/app_179k37gs08n
 
 ## 新增一篇文章 → 一步更新线上
 

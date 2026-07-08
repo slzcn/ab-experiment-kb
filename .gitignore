@@ -18,3 +18,6 @@ supabase_uploads.sql
 # 爬虫原始中间产物（非网站数据）
 raw_docs.json
 sb_config.json
+
+# 妙搭应用 id（企业内网标识，不公开）
+.miaoda_app
