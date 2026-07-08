@@ -750,11 +750,13 @@ function fetchArticles(pg){
   }).catch(e=>{ PAGE_INFLIGHT.delete(key); throw e; });
   PAGE_INFLIGHT.set(key,pr); return pr;
 }
-// 后台静默预取相邻页（不阻塞、不报错、不动画）
-function prefetchNeighbors(pages){
-  [PAGE+1,PAGE-1].forEach(pg=>{
-    if(pg>=1 && (!pages||pg<=pages)){ const key=pageKey(pg);
-      if(!(PAGE_CACHE.get(key)&&Date.now()-PAGE_CACHE.get(key).ts<PAGE_TTL)) fetchArticles(pg).catch(()=>{}); }
+// 后台静默预取指定页码（不阻塞、不报错、不动画）。用于预取分页器上所有可见页码，点哪个都秒切
+function prefetchPages(list){
+  (list||[]).forEach(pg=>{
+    if(typeof pg!=='number' || pg<1 || pg===PAGE) return;   // 跳过省略号/当前页
+    const key=pageKey(pg);
+    if(PAGE_CACHE.get(key)&&Date.now()-PAGE_CACHE.get(key).ts<PAGE_TTL) return; // 已有新鲜缓存
+    fetchArticles(pg).catch(()=>{});
   });
 }
 function clearPageCache(){ PAGE_CACHE.clear(); PAGE_INFLIGHT.clear(); }
@@ -778,8 +780,7 @@ async function loadPage(){
     if(rec.pub!=null)PUB_COUNT=rec.pub;
     renderArts();
     if(wrap) wrap.classList.remove('loading');
-    // 翻页只换表格内容、不滚动页面。翻完预取相邻页，下次翻页命中缓存秒切
-    prefetchNeighbors(Math.max(1,Math.ceil((TOTAL||0)/PER)));
+    // 翻页只换表格内容、不滚动页面。预取由 renderPager 触发（预取分页器上所有可见页码）
   } finally { if(seq===_reqSeq){ LOADING=false; if(wrap) wrap.classList.remove('loading'); } }
 }
 
@@ -951,6 +952,8 @@ function renderPager(total,pages,start,shown){
     if(p===1||p===pages||(p>=PAGE-win&&p<=PAGE+win))nums.push(p);
     else if(nums[nums.length-1]!=='…')nums.push('…');
   }
+  // 预取分页器上所有可见页码（首页/末页/当前页附近），用户点哪个都秒切
+  setTimeout(()=>prefetchPages(nums),0);
   return `<div class="pager">
     <span class="info">第 ${start+1}–${start+shown} / 共 ${total} 篇</span>
     <span class="sp"></span>
