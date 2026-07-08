@@ -246,22 +246,21 @@ function bindCards(scope){
   (scope||document).querySelectorAll('.card:not([data-bound])').forEach(el=>{
     el.dataset.bound='1';
     const id=+el.dataset.id;
-    // 【移动端点击可靠性】不单依赖浏览器合成的 click(手指微动/滞后易丢，
-    // 导致“选中态但没进正文”)。用 pointerdown 记落点，pointerup 时若位移 <10px
-    // (非滚动/拖选)则视为点击直接 openDoc。click 作为兽底(键盘 Enter/无 pointer 环境)。
-    let sx=0, sy=0, moved=false, handled=false;
-    el.addEventListener('pointerdown', e=>{ sx=e.clientX; sy=e.clientY; moved=false; }, {passive:true});
-    el.addEventListener('pointermove', e=>{
-      if(Math.abs(e.clientX-sx)>10 || Math.abs(e.clientY-sy)>10) moved=true;
+    // 【移动端点击可靠性】双保险：
+    // 1) click 主触发（浏览器合成的 click 已处理有效点击判定，最常见可靠）
+    // 2) touchend 兽底：部分移动端（尤其 webview）click 合成会因手指微动/元素位移而失败，
+    //    手动监听 touchstart 记落点、touchend 判位移 <12px 则直接 openDoc（带去重防与 click 双触发）。
+    let handled=false;
+    const fire=()=>{ if(handled) return; handled=true; setTimeout(()=>handled=false, 500); openDoc(id); };
+    el.addEventListener('click', fire);
+    let tx=0, ty=0;
+    el.addEventListener('touchstart', e=>{ if(e.touches[0]){ tx=e.touches[0].clientX; ty=e.touches[0].clientY; } }, {passive:true});
+    el.addEventListener('touchend', e=>{
+      const t=e.changedTouches&&e.changedTouches[0];
+      if(!t) return;
+      if(Math.abs(t.clientX-tx)>12 || Math.abs(t.clientY-ty)>12) return;  // 有滞拖=滚动，不算点击
+      fire();
     }, {passive:true});
-    el.addEventListener('pointerup', e=>{
-      if(moved) return;                                    // 拖动=滚动/选择，不算点击
-      if(e.pointerType==='mouse' && e.button!==0) return;  // 非左键不算
-      handled=true;                                        // 标记，让紧随的合成 click 跳过
-      setTimeout(()=>{ handled=false; }, 400);
-      openDoc(id);
-    });
-    el.addEventListener('click', ()=>{ if(!handled) openDoc(id); });
   });
 }
 let LOADING=false;
