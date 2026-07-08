@@ -179,10 +179,19 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     .toolbar .btn .lbl{display:none}
     .toolbar .btn{padding:9px 12px}
   }
-  .tbl{width:100%;border-collapse:collapse;font-size:13px}
+  #artWrap{position:relative;transition:opacity .15s}
+  #artWrap.loading{opacity:.55;pointer-events:none}
+  #artWrap.loading::after{content:'';position:absolute;left:0;top:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,var(--brand),transparent);
+    animation:pgbar 1s ease-in-out infinite}
+  @keyframes pgbar{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .tbl{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
   .tbl th,.tbl td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
   .tbl th{font-size:11.5px;color:var(--dim);font-weight:700;text-transform:none}
   .tbl td .tt{font-weight:600;color:var(--ink)}
+  .tbl td{overflow:hidden;text-overflow:ellipsis}
+  .tbl td.titlecell{white-space:normal}
+  .tbl td.titlecell .tt{display:inline}
   .tbl .cat{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--brand2);
     background:rgba(224,99,46,.1);padding:2px 9px;border-radius:20px;white-space:nowrap}
   .tbl .badge{font-size:10.5px;color:var(--accent);border:1px solid rgba(192,122,46,.4);border-radius:5px;padding:0 5px;margin-left:6px}
@@ -693,9 +702,12 @@ async function loadData(){
 // 翻页/搜索只重拉文章（分类已在内存），比 loadData 少一半网络
 // 版本号防竞速：快速连续翻页/搜索时，只采用最后一个请求的结果
 let _reqSeq=0;
-async function loadPage(){
+async function loadPage(opts){
   const seq=++_reqSeq;
   LOADING=true;
+  const wrap=$('#artWrap');
+  // 加载态：保留旧表格、只淡化+顶部进度条，避免清空造成的“闪一下”
+  if(wrap && wrap.querySelector('.tbl')) wrap.classList.add('loading');
   try{
     const q=encodeURIComponent(Q||'');
     const a=await apiCall(`/articles?page=${PAGE}&per=${PER}${q?'&q='+q:''}`,'GET');
@@ -705,7 +717,13 @@ async function loadPage(){
     TOTAL=(a&&typeof a.total==='number')?a.total:ARTS.length;
     if(a&&typeof a.pubCount==='number'&&a.pubCount>=0) PUB_COUNT=a.pubCount;
     renderArts();
-  } finally { if(seq===_reqSeq) LOADING=false; }
+    if(wrap) wrap.classList.remove('loading');
+    // 翻页后把列表区顶部平滑带回视野（滚动列表容器而非硬跳整页顶）
+    if(opts&&opts.scrollTop&&wrap){
+      const y=wrap.getBoundingClientRect().top+window.pageYOffset-80;
+      window.scrollTo({top:Math.max(0,y),behavior:'smooth'});
+    }
+  } finally { if(seq===_reqSeq){ LOADING=false; if(wrap) wrap.classList.remove('loading'); } }
 }
 
 // ================= 批量上传（纯 web：直传 Storage + 建 job，服务器 Action 处理）=================
@@ -837,12 +855,12 @@ function renderArts(){
   const start=(PAGE-1)*PER;
   const pageList=list;   // 后端已切页
   const allSel=pageList.length&&pageList.every(a=>SELECTED.has(a.id));
-  $('#artWrap').innerHTML=`<table class="tbl"><thead><tr>
+  $('#artWrap').innerHTML=`<table class="tbl"><colgroup><col style="width:34px"><col><col style="width:130px"><col style="width:120px"><col style="width:90px"><col style="width:150px"></colgroup><thead><tr>
     <th class="chk"><input type="checkbox" id="chkAll" ${allSel?'checked':''} title="选择本页全部"></th>
     <th>标题</th><th>分类</th><th>发布日期</th><th>状态</th><th></th></tr></thead><tbody>${
     pageList.map(a=>{const c=catOf(a.cat);const pub=isPub(a);return `<tr class="${SELECTED.has(a.id)?'sel':''}">
       <td class="chk"><input type="checkbox" data-sel="${a.id}" ${SELECTED.has(a.id)?'checked':''}></td>
-      <td><span class="tt">${esc(a.title)}</span>${a.is_internal?'<span class="badge">内部</span>':''}</td>
+      <td class="titlecell"><span class="tt">${esc(a.title)}</span>${a.is_internal?'<span class="badge">内部</span>':''}</td>
       <td><span class="cat">${c.icon} ${esc(c.name)}</span></td>
       <td style="color:var(--dim);font-size:12px">${esc(a.updated||'—')}</td>
       <td><span class="sw ${pub?'on':'off'}" data-toggle="${a.id}" title="${pub?'点击下线（从公开站移除）':'点击上线（公开站显示）'}"><span class="track"></span><span class="lbl">${pub?'上线':'下线'}</span></span></td>
@@ -892,8 +910,7 @@ function bindPager(pages){
     if(v==='prev')PAGE=Math.max(1,PAGE-1);
     else if(v==='next')PAGE=Math.min(pages,PAGE+1);
     else PAGE=+v;
-    loadPage();  // 翻页走后端
-    window.scrollTo({top:0,behavior:'smooth'});
+    loadPage({scrollTop:true});  // 翻页走后端，平滑带回列表顶
   });
   const ps=$('#perSel');
   if(ps)ps.onchange=()=>{PER=+ps.value;PAGE=1;loadPage();};
