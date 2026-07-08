@@ -934,7 +934,23 @@ $('#artSearch').addEventListener('input',()=>{
     loadPage();
   },300);
 });
-$('#artReload').onclick=async()=>{await loadData();};
+// 刷新：之前只 await loadData()、无任何反馈——Edge Function 冷启动 1~3s 内按钮毫无变化，
+// 数据没变时 renderArts 重画后画面又和点击前一样，加上出错(401/网络)被静默吞掉，用户就觉得"点了没反应"。
+// 现在补齐反馈：按钮禁用防连点 + 列表进 loading 态(淡化+顶部进度条) + toast 明确告知刷新中/已刷新/失败。
+$('#artReload').onclick=async()=>{
+  const btn=$('#artReload'); if(btn.disabled)return;
+  const wrap=$('#artWrap');
+  btn.disabled=true; if(wrap)wrap.classList.add('loading');
+  toast('load','正在从数据库刷新…');
+  try{
+    await loadData();
+    toast('ok',`已刷新 · 共 ${TOTAL} 篇`);
+  }catch(e){
+    toast('err','刷新失败：'+(e&&e.message||'网络错误'));
+  }finally{
+    btn.disabled=false; if(wrap)wrap.classList.remove('loading');
+  }
+};
 $('#batchClear').onclick=()=>{SELECTED.clear();renderArts();};
 // 全选本页：当前页全部已选则取消、否则全选（与表头复选框同义，放浮条里更显眼）
 $('#batchSelPage').onclick=()=>{
