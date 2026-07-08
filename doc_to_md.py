@@ -62,46 +62,84 @@ def _save_img(data, slug, seen):
     return url
 
 
-# ---------------- PPTX：按幻灯片顺序，文字 + 该页图片 ----------------
+# ---------------- PPTX：按幻灯片顺序，标题/正文层级 + 表格 + 该页图片 ----------------
+def _shape_text_md(shp, is_title):
+    """把一个文本框转成 md：标题框 → 小标题；正文框 → 保留项目符号层级的列表/段落。"""
+    tf = shp.text_frame
+    lines = []
+    for p in tf.paragraphs:
+        t = p.text.strip()
+        if not t:
+            continue
+        lvl = getattr(p, "level", 0) or 0
+        lines.append((lvl, t))
+    if not lines:
+        return ""
+    if is_title:
+        return "## " + " ".join(t for _, t in lines)
+    # 正文：多行→带缩进的无序列表（保留 PPT 的层级）；单行→普通段落
+    if len(lines) == 1:
+        return lines[0][1]
+    return "\n".join(("  " * lvl) + "- " + t for lvl, t in lines)
+
+
 def _pptx(path, slug):
     from pptx import Presentation
-    from pptx.util import Emu
     prs = Presentation(path)
     seen = {}
     imgs = []
     md_parts = []
-    for i, slide in enumerate(prs.slides, 1):
-        texts = []
-        pics = []
+    BIG = 1 << 60  # top 缺失时排到末尾
+    for slide in prs.slides:
+        try:
+            title_shp = slide.shapes.title
+        except Exception:
+            title_shp = None
+        # 收集本页所有内容为 (top, kind, md)，再按纵向位置统一排序还原阅读顺序
+        items = []
         for shp in slide.shapes:
-            if shp.has_text_frame:
-                t = "\n".join(p.text for p in shp.text_frame.paragraphs if p.text.strip())
-                if t.strip():
-                    texts.append(t.strip())
-            # 只认 PICTURE(13)：对非图片形状取 .image 会抛异常，别放进条件里求值
+            top = shp.top if getattr(shp, "top", None) is not None else BIG
+            # 图片
             if shp.shape_type == 13:
                 try:
                     url = _save_img(shp.image.blob, slug, seen)
-                    if url:
-                        pics.append(url)
+                    if url: items.append((top, "img", url))
                 except Exception:
                     pass
-        block = []
-        if texts:
-            # 第一行当小标题，其余作正文
-            head = texts[0].split("\n")[0].strip()
-            if head:
-                block.append(f"## {head}")
-            body = "\n\n".join(texts)
-            # 去掉重复的标题行
-            body = "\n".join(ln for ln in body.split("\n") if ln.strip() != head)
-            if body.strip():
-                block.append(body.strip())
-        for u in pics:
-            block.append(f"![]({u})")
-            imgs.append(u)
-        if block:
-            md_parts.append("\n\n".join(block))
+                continue
+            # 表格
+            if getattr(shp, "has_table", False) and shp.has_table:
+                rows = [[c.text for c in r.cells] for r in shp.table.rows]
+                tbl = _rows_to_md_table([r for r in rows if any((c or "").strip() for c in r)])
+                if tbl: items.append((top, "tbl", tbl))
+                continue
+            # 文本框
+            if shp.has_text_frame and shp.text_frame.text.strip():
+                is_title = shp is title_shp
+                md = _shape_text_md(shp, is_title)
+                if md:
+                    # 标题占位符永远置顶（top 记为 -1）
+                    items.append((-1 if is_title else top, "title" if is_title else "body", md))
+        items.sort(key=lambda x: x[0])
+        # 若整页没有标题占位符，把最靠上的正文首行提升为小标题
+        if items and not any(k == "title" for _, k, _ in items):
+            for idx, (top, kind, md) in enumerate(items):
+                if kind == "body":
+                    first, *rest = md.split("\n")
+                    first = first.lstrip("- ").strip()
+                    new = [(top, "title", "## " + first)]
+                    if rest and "\n".join(rest).strip():
+                        new.append((top, "body", "\n".join(rest)))
+                    items[idx:idx+1] = new
+                    break
+        parts = []
+        for top, kind, md in items:
+            if kind == "img":
+                imgs.append(md); parts.append(f"![]({md})")
+            else:
+                parts.append(md)
+        if parts:
+            md_parts.append("\n\n".join(parts))
     return "\n\n".join(md_parts), imgs
 
 
@@ -146,19 +184,12 @@ def _docx(path, slug):
                 if url:
                     md_parts.append(f"![]({url})")
                     imgs.append(url)
-    # 表格
+    # 表格（转义 | 与换行，统一列数，避免撑破/错列）
     for tb in d.tables:
-        rows = []
-        for r in tb.rows:
-            cells = [c.text.strip().replace("\n", " ") for c in r.cells]
-            if any(cells):
-                rows.append("| " + " | ".join(cells) + " |")
-        if rows:
-            # 加表头分隔
-            if len(rows) >= 1:
-                ncol = rows[0].count("|") - 1
-                rows.insert(1, "|" + "---|" * ncol)
-            md_parts.append("\n".join(rows))
+        rows = [[c.text for c in r.cells] for r in tb.rows if any(c.text.strip() for c in r.cells)]
+        tbl = _rows_to_md_table(rows)
+        if tbl:
+            md_parts.append(tbl)
     return "\n\n".join(md_parts), imgs
 
 
@@ -200,12 +231,35 @@ def _csv_md(path):
     rows = []
     with open(path, encoding="utf-8", errors="replace", newline="") as f:
         for r in csv.reader(f):
-            if any(c.strip() for c in r):
-                rows.append("| " + " | ".join(c.strip() for c in r) + " |")
-    if rows:
-        ncol = rows[0].count("|") - 1
-        rows.insert(1, "|" + "---|" * ncol)
-    return "\n".join(rows)
+            if any((c or "").strip() for c in r):
+                rows.append(r)
+    return _rows_to_md_table(rows)
+
+
+def _fmt_cell(v):
+    """把单元格值格式化成适合 md 表格的一行文本：保留位置、转义 | 、把换行变 <br>。"""
+    if v is None:
+        return ""
+    if isinstance(v, float):
+        # 整数值的浮点去掉 .0（Excel 里 9 常被读成 9.0）
+        v = int(v) if v.is_integer() else round(v, 6)
+    s = str(v).strip()
+    s = s.replace("\\", "\\\\").replace("|", "\\|")   # 转义竖线，避免撑破列
+    s = re.sub(r"\r?\n", "<br>", s)                    # 单元格内换行 → <br>，保证一行
+    return s
+
+
+def _rows_to_md_table(rows):
+    """rows: 二维列表(已按最大列数对齐)。生成合法 md 表格：首行表头 + 分隔行 + 数据行。"""
+    if not rows:
+        return ""
+    ncol = max(len(r) for r in rows)
+    def line(cells):
+        cells = list(cells) + [""] * (ncol - len(cells))   # 补齐到统一列数
+        return "| " + " | ".join(_fmt_cell(c) for c in cells) + " |"
+    out = [line(rows[0]), "|" + "---|" * ncol]
+    out += [line(r) for r in rows[1:]]
+    return "\n".join(out)
 
 
 def _xlsx_md(path):
@@ -213,15 +267,24 @@ def _xlsx_md(path):
     wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
     out = []
     for ws in wb.worksheets:
-        rows = []
+        # 收集非空行（保留单元格位置，不丢中间的空格），并裁掉整行/整列皆空的边缘
+        raw = []
         for row in ws.iter_rows(values_only=True):
-            cells = [str(c) for c in row if c is not None]
-            if cells:
-                rows.append("| " + " | ".join(cells) + " |")
-        if rows:
-            ncol = rows[0].count("|") - 1
-            rows.insert(1, "|" + "---|" * ncol)
-            out.append(f"## {ws.title}\n\n" + "\n".join(rows))
+            if any(c is not None and str(c).strip() for c in row):
+                raw.append(list(row))
+        if not raw:
+            continue
+        # 裁掉尾部全空的列（避免一堆空列）
+        maxc = 0
+        for r in raw:
+            for j in range(len(r) - 1, -1, -1):
+                if r[j] is not None and str(r[j]).strip():
+                    maxc = max(maxc, j + 1); break
+        rows = [r[:maxc] for r in raw]
+        tbl = _rows_to_md_table(rows)
+        if tbl:
+            title = ws.title if ws.title and not ws.title.lower().startswith("sheet") else ""
+            out.append((f"## {title}\n\n" if title else "") + tbl)
     return "\n\n".join(out)
 
 
