@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模板1）AB试验需求模版V3.2 · A/B 实验知识库</title>
-<meta name="description" content="1. 试验设计文档（编程试验） AB试验设计文档说明 1. 本文档目的在于帮助梳理试验目标，以助于快速形成试验设计。在试验实施落地后，也能根据此文档复盘效果是否达到目的，思考如何进行下一步迭代。 2.根据试验设计的需求，">
+<meta name="description" content="1. 试验设计文档（编程试验） AB试验设计文档说明1. 本文档目的在于帮助梳理试验目标，以助于快速形成试验设计。在试验实施落地后，也能根据此文档复盘效果是否达到目的，思考如何进行下一步迭代。2.根据试验设计的需求，能梳">
 <link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/910000004.html">
 <meta property="og:title" content="模板1）AB试验需求模版V3.2">
-<meta property="og:description" content="1. 试验设计文档（编程试验） AB试验设计文档说明 1. 本文档目的在于帮助梳理试验目标，以助于快速形成试验设计。在试验实施落地后，也能根据此文档复盘效果是否达到目的，思考如何进行下一步迭代。 2.根据试验设计的需求，">
+<meta property="og:description" content="1. 试验设计文档（编程试验） AB试验设计文档说明1. 本文档目的在于帮助梳理试验目标，以助于快速形成试验设计。在试验实施落地后，也能根据此文档复盘效果是否达到目的，思考如何进行下一步迭代。2.根据试验设计的需求，能梳">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/910000004.html">
 <script>window.DATA_BASE="../";window.INIT_DOC=910000004;</script>
@@ -445,18 +445,6 @@ function siteRoot(){
 }
 const $=s=>document.querySelector(s);
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-// Supabase 数据源（A方案：文章存数据库，前端实时读）
-const SB={
-  url:'https://cddkniwbhvcbfgkgomtl.supabase.co',
-  key:'***REMOVED_PUBLISHABLE_KEY***'
-};
-
-async function sbGet(path){
-  const r=await fetch(SB.url+'/rest/v1/'+path,{headers:{apikey:SB.key,Authorization:'Bearer '+SB.key}});
-  if(!r.ok) throw new Error('DB '+r.status);
-  return r.json();
-}
 
 // ===== Edge Function 鉴权层（写操作走服务端，前端不碰 service_role）=====
 const API_BASE=SB.url+'/functions/v1/admin-api';

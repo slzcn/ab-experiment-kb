@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>素材2)+实施+AB+测试（课件原件） · A/B 实验知识库</title>
-<meta name="description" content="从想法到落地 要做正确的试验 需要明确业务目标和实现路径 需要进行充分的思考、收集、沟通并达成共识 要正确地做试验 需要掌握相关的试验规范，确保科学严谨 需要众多角色进行配合，在恰当时间安排好各自的工作 学习目标 理解从">
+<title>素材2)实施 AB测试（课件原件） · A/B 实验知识库</title>
+<meta name="description" content="从想法到落地 要做正确的试验 需要明确业务目标和实现路径 需要进行充分的思考、收集、沟通并达成共识 要正确地做试验 需要掌握相关的试验规范，确保科学严谨 需要众多角色进行配合，在恰当时间安排好各自的工作 学习目标 Lea">
 <link rel="canonical" href="https://slzcn.github.io/ab-experiment-kb/a/910000006.html">
-<meta property="og:title" content="素材2)+实施+AB+测试（课件原件）">
-<meta property="og:description" content="从想法到落地 要做正确的试验 需要明确业务目标和实现路径 需要进行充分的思考、收集、沟通并达成共识 要正确地做试验 需要掌握相关的试验规范，确保科学严谨 需要众多角色进行配合，在恰当时间安排好各自的工作 学习目标 理解从">
+<meta property="og:title" content="素材2)实施 AB测试（课件原件）">
+<meta property="og:description" content="从想法到落地 要做正确的试验 需要明确业务目标和实现路径 需要进行充分的思考、收集、沟通并达成共识 要正确地做试验 需要掌握相关的试验规范，确保科学严谨 需要众多角色进行配合，在恰当时间安排好各自的工作 学习目标 Lea">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/910000006.html">
 <script>window.DATA_BASE="../";window.INIT_DOC=910000006;</script>
@@ -445,18 +445,6 @@ function siteRoot(){
 }
 const $=s=>document.querySelector(s);
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-// Supabase 数据源（A方案：文章存数据库，前端实时读）
-const SB={
-  url:'https://cddkniwbhvcbfgkgomtl.supabase.co',
-  key:'***REMOVED_PUBLISHABLE_KEY***'
-};
-
-async function sbGet(path){
-  const r=await fetch(SB.url+'/rest/v1/'+path,{headers:{apikey:SB.key,Authorization:'Bearer '+SB.key}});
-  if(!r.ok) throw new Error('DB '+r.status);
-  return r.json();
-}
 
 // ===== Edge Function 鉴权层（写操作走服务端，前端不碰 service_role）=====
 const API_BASE=SB.url+'/functions/v1/admin-api';
