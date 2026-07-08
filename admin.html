@@ -164,6 +164,16 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .fitem .st{flex:0 0 auto;font-size:12px;font-weight:700;min-width:44px;text-align:right}
   .fitem .rm{cursor:pointer;color:var(--dim);flex:0 0 auto}
   .fitem .rm:hover{color:var(--bad)}
+  /* 回收站：卡片行，跟文件行同一设计语言 */
+  .titem{display:flex;align-items:center;gap:12px;background:var(--bg);
+    border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin-bottom:8px}
+  .titem:last-child{margin-bottom:0}
+  .titem .ti{flex:1;min-width:0}
+  .titem .ti .tt{font-size:13.5px;font-weight:700;color:var(--ink);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .titem .ti .tm{font-size:11.5px;color:var(--dim);margin-top:3px}
+  .titem .ta{flex:0 0 auto;display:flex;gap:6px;align-items:center}
+  .titem .ta .btn{padding:6px 12px}
   /* 文章列表表格 */
   /* 一行放下：搜索框自适应伸缩填充剩余宽度，按钮不换行不压缩 */
   .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:nowrap}
@@ -493,7 +503,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 <div class="mask" id="trashMask"></div>
 <div class="modal" id="trashModal">
   <div class="mh"><b>🗑 回收站</b><span class="x" id="trashModalX">✕</span></div>
-  <div class="desc">已删除的文章暂存在这里，可<b>恢复</b>到文章列表，或<b>彻底删除</b>（不可撤销）。</div>
+  <div class="desc">已删除的文章可恢复，或彻底删除（不可撤销）。</div>
   <div class="toolbar" style="margin:12px 0 4px">
     <span class="desc" id="trashCount" style="margin-right:auto"></span>
     <button class="btn ghost danger" id="trashEmpty" title="彻底删除回收站里的全部文章">🧹 清空回收站</button>
@@ -1165,17 +1175,23 @@ async function loadTrash(){
   }catch(e){ $('#trashWrap').innerHTML='<div class="empty">加载失败：'+esc(e.message)+'</div>'; }
 }
 function drawTrash(){
-  $('#trashCount').textContent='共 '+TRASH.length+' 篇';
+  $('#trashCount').textContent=TRASH.length+' 篇';
   $('#trashEmpty').style.display=TRASH.length?'':'none';
   if(!TRASH.length){$('#trashWrap').innerHTML='<div class="empty">回收站是空的</div>';return;}
-  $('#trashWrap').innerHTML='<table style="width:100%;border-collapse:collapse;font-size:13px">'
-    +TRASH.map(a=>`<tr style="border-bottom:1px solid var(--line)">
-      <td style="padding:9px 6px">${esc(a.title||'(无标题)')}<div style="font-size:11px;color:var(--dim);margin-top:2px">分类：${esc(a.cat||'-')} · 删除于 ${a.deleted_at?a.deleted_at.slice(0,16).replace('T',' '):''}</div></td>
-      <td style="padding:9px 6px;text-align:right;white-space:nowrap">
-        <button class="btn ghost" style="padding:5px 12px" data-restore="${a.id}">↩ 恢复</button>
-        <button class="btn danger" style="padding:5px 12px;margin-left:6px" data-hard="${a.id}">彻底删除</button>
-      </td></tr>`).join('')
-    +'</table>';
+  $('#trashWrap').innerHTML=TRASH.map(a=>{
+    const cat=catOf(a.cat);
+    const when=a.deleted_at?a.deleted_at.slice(0,10):'';
+    return `<div class="titem">
+      <div class="ti">
+        <div class="tt">${esc(a.title||'(无标题)')}</div>
+        <div class="tm">${cat.icon} ${esc(cat.name)}${when?' · 删于 '+when:''}</div>
+      </div>
+      <div class="ta">
+        <button class="btn ghost" data-restore="${a.id}">↩ 恢复</button>
+        <button class="btn danger" data-hard="${a.id}">删除</button>
+      </div>
+    </div>`;
+  }).join('');
   $('#trashWrap').querySelectorAll('[data-restore]').forEach(b=>b.onclick=()=>restoreArt(+b.dataset.restore));
   $('#trashWrap').querySelectorAll('[data-hard]').forEach(b=>b.onclick=()=>hardDelArt(+b.dataset.hard));
 }
@@ -1186,30 +1202,30 @@ async function restoreArt(id){
     await apiCall('/restore?id='+id,'POST');
     await loadTrash();
     await loadPage();
-    msg('#trashMsg','ok',`已恢复《${title}》到文章列表。`);
+    msg('#trashMsg','ok',`已恢复《${title}》`);
   }catch(e){ msg('#trashMsg','err','恢复失败：'+e.message); }
 }
 async function hardDelArt(id){
   const a=TRASH.find(x=>x.id===id);const title=a?a.title:'';
-  if(!await confirmBox({title:'彻底删除？',okText:'彻底删除',
-    html:`将<b>永久删除</b>《<b>${esc(title)}</b>》，此操作<b>不可恢复</b>。`}))return;
+  if(!await confirmBox({title:'彻底删除？',okText:'删除',
+    html:`永久删除《<b>${esc(title)}</b>》，不可恢复。`}))return;
   msg('#trashMsg','load','正在彻底删除…');
   try{
     await apiCall('/article?id='+id+'&hard=1','DELETE');
     await loadTrash();
-    msg('#trashMsg','ok',`已彻底删除《${title}》。`);
+    msg('#trashMsg','ok',`已删除《${title}》`);
   }catch(e){ msg('#trashMsg','err','删除失败：'+e.message); }
 }
 $('#trashEmpty').onclick=async()=>{
   if(!TRASH.length)return;
-  if(!await confirmBox({title:'清空回收站？',okText:'全部彻底删除',
-    html:`将<b>永久删除</b>回收站里的全部 <b>${TRASH.length}</b> 篇文章，此操作<b>不可恢复</b>。`}))return;
+  if(!await confirmBox({title:'清空回收站？',okText:'清空',
+    html:`永久删除全部 <b>${TRASH.length}</b> 篇，不可恢复。`}))return;
   msg('#trashMsg','load','正在清空…');
   try{
     const ids=TRASH.map(a=>a.id);
     await apiCall('/article?id=in.('+ids.join(',')+')&hard=1','DELETE');
     await loadTrash();
-    msg('#trashMsg','ok','回收站已清空。');
+    msg('#trashMsg','ok','回收站已清空');
   }catch(e){ msg('#trashMsg','err','清空失败：'+e.message); }
 };
 
