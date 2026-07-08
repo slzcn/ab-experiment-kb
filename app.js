@@ -254,9 +254,23 @@ function _appendBatch(){
   const next=RES.slice(SHOWN, SHOWN+PAGE);
   list.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
   SHOWN+=next.length; bindCards(list);
-  // 让本批新卡片错落淡入（可见的瀑布流效果）
+  // 让本批新卡片错落淡入（可见的瀑布流效果）；
+  // .new 期间 pointer-events:none屏蔽点击，动画结束后移除 .new 开启点击。
   const cards=list.querySelectorAll('.card');
-  for(let i=start;i<SHOWN;i++){ const el=cards[i]; if(el){ el.classList.add('new'); el.style.animationDelay=((i-start)*55)+'ms'; } }
+  for(let i=start;i<SHOWN;i++){
+    const el=cards[i];
+    if(!el) continue;
+    el.classList.add('new');
+    el.style.animationDelay=((i-start)*55)+'ms';
+    el.addEventListener('animationend',function _rm(ev){
+      // 只响应入场动画，不误伤其它可能的子元素动画
+      if(ev && ev.animationName && ev.animationName!=='cardIn') return;
+      el.classList.remove('new');
+      el.removeEventListener('animationend', _rm);
+    });
+    // 兵底：若因某种原因 animationend 未触发，兽定时器到时强行开启点击
+    setTimeout(()=>el.classList.remove('new'), 900);
+  }
   const sen=$('#sentinel');
   if(sen){
     sen.className='loadmore-wrap'; sen.removeAttribute('style');

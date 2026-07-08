@@ -146,7 +146,9 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .list{display:grid;gap:12px;max-width:860px;margin:0 auto;width:100%}
   /* 瀑布流新卡片淡入上浮 */
   @keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  .card.new{animation:cardIn .42s cubic-bezier(.22,.61,.36,1) both}
+  /* .new 入场动画期间禁用点击：避免用户在卡片淡入中点击时因 opacity/transform 变化导致 hit-test 抹除、
+     hover 黄亮了却没触发 click 的偶发现象；动画结束的 animationend 会移除 .new 类，点击恢复。*/
+  .card.new{animation:cardIn .42s cubic-bezier(.22,.61,.36,1) both;pointer-events:none}
   /* 底部“加载更多”指示器 —— 居中胶囊 */
   .loadmore-wrap{max-width:860px;margin:0 auto;padding:26px 0 14px;display:flex;justify-content:center}
   .loadmore{display:inline-flex;align-items:center;justify-content:center;gap:9px;
@@ -692,9 +694,23 @@ function _appendBatch(){
   const next=RES.slice(SHOWN, SHOWN+PAGE);
   list.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
   SHOWN+=next.length; bindCards(list);
-  // 让本批新卡片错落淡入（可见的瀑布流效果）
+  // 让本批新卡片错落淡入（可见的瀑布流效果）；
+  // .new 期间 pointer-events:none屏蔽点击，动画结束后移除 .new 开启点击。
   const cards=list.querySelectorAll('.card');
-  for(let i=start;i<SHOWN;i++){ const el=cards[i]; if(el){ el.classList.add('new'); el.style.animationDelay=((i-start)*55)+'ms'; } }
+  for(let i=start;i<SHOWN;i++){
+    const el=cards[i];
+    if(!el) continue;
+    el.classList.add('new');
+    el.style.animationDelay=((i-start)*55)+'ms';
+    el.addEventListener('animationend',function _rm(ev){
+      // 只响应入场动画，不误伤其它可能的子元素动画
+      if(ev && ev.animationName && ev.animationName!=='cardIn') return;
+      el.classList.remove('new');
+      el.removeEventListener('animationend', _rm);
+    });
+    // 兵底：若因某种原因 animationend 未触发，兽定时器到时强行开启点击
+    setTimeout(()=>el.classList.remove('new'), 900);
+  }
   const sen=$('#sentinel');
   if(sen){
     sen.className='loadmore-wrap'; sen.removeAttribute('style');
