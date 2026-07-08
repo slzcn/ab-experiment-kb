@@ -101,7 +101,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   ::selection{background:var(--brand);color:#fff}
   /* ---- 布局 ---- */
   .app{display:grid;grid-template-columns:240px 1fr;height:100vh;height:100dvh;
-    max-width:1000px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}  /* 整体居中,两侧留白 */
+    max-width:1200px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}  /* 整体居中,两侧留白,适配主流大显示器 */
   /* 侧栏 */
   aside{background:var(--bg2);border-right:1px solid var(--line);
     display:flex;flex-direction:column;overflow:hidden}
@@ -149,12 +149,12 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .stat b{color:var(--brand2)}
   .body{flex:1;overflow-y:auto;padding:22px 34px 60px;scroll-behavior:smooth}
   /* 列表卡片 */
-  .list{display:grid;gap:12px;max-width:720px;margin:0 auto;width:100%}
+  .list{display:grid;gap:12px;max-width:860px;margin:0 auto;width:100%}
   /* 瀑布流新卡片淡入上浮 */
   @keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .card.new{animation:cardIn .42s cubic-bezier(.22,.61,.36,1) both}
   /* 底部“加载更多”指示器 */
-  .loadmore{max-width:720px;margin:0 auto;text-align:center;color:var(--dim);font-size:12.5px;
+  .loadmore{max-width:860px;margin:0 auto;text-align:center;color:var(--dim);font-size:12.5px;
     padding:18px 0 8px;display:flex;align-items:center;justify-content:center;gap:9px}
   .loadmore .dot{width:15px;height:15px;border:2px solid var(--line);border-top-color:var(--brand);
     border-radius:50%;animation:sp .7s linear infinite}
@@ -179,7 +179,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .empty .big{font-size:48px;margin-bottom:14px;opacity:.6}
   /* 阅读态 */
   /* 阅读态：舒适阅读宽度、克制的头部、可呼吸的正文 */
-  .reader{max-width:720px;margin:0 auto;padding:0 4px}
+  .reader{max-width:860px;margin:0 auto;padding:0 4px}
   .rtop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:26px}
   /* 返回/复制是辅助操作，弱化为安静的灰色文字链接，不做成按钮 */
   .rlink{display:inline-flex;align-items:center;gap:5px;cursor:pointer;user-select:none;white-space:nowrap;
@@ -212,10 +212,10 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   /* 配图：按高度约束，不放大糊图，居中；成对图并排 */
   .md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);
     box-shadow:0 4px 16px rgba(120,100,70,.1)}
-  .md p>img{display:block;margin:20px auto;max-height:460px;width:auto}
+  .md p>img{display:block;margin:20px auto;max-height:560px;width:auto}
   /* 相邻配图并排成一行（由 JS 包进 .imrow） */
   .imrow{display:flex;gap:14px;justify-content:center;align-items:flex-start;flex-wrap:wrap;margin:20px 0}
-  .imrow img{margin:0;max-height:520px;width:auto;max-width:calc(50% - 7px);flex:0 1 auto}
+  .imrow img{margin:0;max-height:560px;width:auto;max-width:calc(50% - 7px);flex:0 1 auto}
   .md blockquote{border-left:3px solid var(--brand);background:var(--panel);
     padding:12px 18px;margin:1.2em 0;border-radius:0 10px 10px 0;color:var(--sub)}
   .md hr{border:none;border-top:1px solid var(--line);margin:2em 0}
