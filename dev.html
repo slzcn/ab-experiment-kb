@@ -764,7 +764,8 @@ function groupImages(scope){
   });
 }
 
-async function openDoc(id){
+async function openDoc(id, opts){
+  opts=opts||{};
   const d=KB.docs.find(x=>x.id===id); if(!d)return;
   const c=catOf(d.cat);
   const v=$('#bodyView');
@@ -796,21 +797,17 @@ async function openDoc(id){
   </div>`;
   v.scrollTop=0;
   groupImages(v);
-  // 在主站(index.html)：仅切视图并同步 #doc= hash，可就地返回列表；
-  // 在文章静态页(a/<id>.html，注入了 INIT_DOC)：不改 hash——因为刷新会再读 INIT_DOC 回到文章，
-  // 所以「返回列表」直接导航到根目录知识库首页。
+  // 地址栏换成真实静态页地址 a/<id>.html（pushState，不刷新页面）：地址真实可分享、可后退。
+  // 文章静态页(a/<id>.html，注入 INIT_DOC)首次打开自己那篇时地址已对，不再 push；
+  // 由浏览器后退(popstate)触发的打开也不 push（opts.push=false）。file:// 本地无法 pushState 跳目录，降级 hash。
   const onArticlePage = (typeof window!=='undefined' && window.INIT_DOC);
-  if(!onArticlePage){
+  if(opts.push!==false && location.protocol!=='file:'){
+    const target=siteRoot()+'a/'+id+'.html';
+    try{ if(location.pathname!==new URL(target,location.href).pathname) history.pushState({doc:id},'',target); }catch(e){}
+  }else if(location.protocol==='file:' && !onArticlePage){
     try{ if(location.hash!=='#doc='+id) history.replaceState(null,'','#doc='+id); }catch(e){}
   }
-  $('#rback').onclick=()=>{
-    if(onArticlePage){ location.href = siteRoot(); return; }  // 回真正的列表页（根目录）
-    try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
-    render();
-    // render 只渲染首批并重置到顶部；先补齐到之前的批数，再恢复滚动位置，才能回到原处
-    while(SHOWN<listShown && SHOWN<RES.length) renderMore();
-    requestAnimationFrame(()=>{ const bv=$('#bodyView'); if(bv) bv.scrollTop=listScroll; });
-  };
+  $('#rback').onclick=()=>backToList(true);
   const cl=$('#copyLink');
   if(cl) cl.onclick=async()=>{
     // 复制的是真实静态页地址（可分享、可被搜索引擎收录）；本地 file:// 打开时回退 hash
@@ -829,6 +826,24 @@ async function openDoc(id){
     setTimeout(()=>{ cl.innerHTML=old; cl.classList.remove('copied'); }, 1800);
   };
 }
+
+// 返回列表：切回列表视图并恢复浏览位置。push=true 时把地址栏推回首页（供“返回”按钮用）；
+// 文章静态页(INIT_DOC)上没有内存里的列表来路，直接整页跳根目录首页。
+function backToList(push){
+  if(typeof window!=='undefined' && window.INIT_DOC){ location.href=siteRoot(); return; }
+  if(push && location.protocol!=='file:'){ try{ history.pushState({list:1},'',siteRoot()); }catch(e){} }
+  else if(push){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+  render();
+  while(SHOWN<listShown && SHOWN<RES.length) renderMore();   // 补齐批数才够高
+  requestAnimationFrame(()=>{ const bv=$('#bodyView'); if(bv) bv.scrollTop=listScroll; });
+}
+// 浏览器前进/后退：地址是 a/<id>.html → 打开该篇；否则回列表。均不再 push（避免历史循环）。
+window.addEventListener('popstate',()=>{
+  if(!KB) return;
+  const m=/\/a\/(\d+)\.html$/.exec(location.pathname);
+  if(m && KB.docs.some(d=>d.id===+m[1])) openDoc(+m[1],{push:false});
+  else backToList(false);
+});
 
 // 搜索
 $('#q').addEventListener('input',e=>{
