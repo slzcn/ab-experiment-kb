@@ -413,9 +413,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         <button class="ed-btn" id="edDownload">⬇ 导出 .md</button>
       </div>
       <div class="ed-msg" id="edMsg"></div>
-      <div class="ed-hint" id="edHint">
-        导出的 .md 文件可作为本地备份。默认发布方式：在上方编辑器直接写并点「发布文章」（右侧为实时预览），或到后台批量上传文档。
-      </div>
+      <div class="ed-hint" id="edHint"></div>
     </div>
     <div class="ed-preview" id="edPrev">
       <div class="ed-prev-tag" id="edPrevTag"></div>
@@ -565,7 +563,7 @@ function setupSubmit(){
   $('#edSubmit').style.display='';
   $('#edDownload').classList.add('ghost2');
   $('#edDownload').textContent='⬇ 导出';
-  $('#edHint').innerHTML='点「发布文章」即可存入数据库。';
+  $('#edHint').innerHTML='';
 }
 
 function renderFoot(){
