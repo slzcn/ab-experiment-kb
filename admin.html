@@ -505,10 +505,10 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 <div class="mask" id="trashMask"></div>
 <div class="modal" id="trashModal">
   <div class="mh"><b>🗑 回收站</b><span class="x" id="trashModalX">✕</span></div>
-  <div class="desc">已删除的文章可恢复，或彻底删除（不可撤销）。</div>
+  <div class="desc">删除的文章可恢复；彻底删除不可撤销。</div>
   <div class="toolbar" style="margin:12px 0 4px">
     <span class="desc" id="trashCount" style="margin-right:auto"></span>
-    <button class="btn ghost danger" id="trashEmpty" title="彻底删除回收站里的全部文章">🧹 清空回收站</button>
+    <button class="btn ghost danger" id="trashEmpty" title="彻底删除回收站里的全部文章">🧹 清空</button>
   </div>
   <div id="trashWrap" style="max-height:52vh;overflow:auto;min-height:0"><div class="empty">加载中…</div></div>
   <div class="msg" id="trashMsg"></div>
@@ -699,6 +699,7 @@ function prefetchFirst(){
       apiCall(`/articles?page=1&per=${PER}`,'GET').catch(()=>null),
       apiCall('/categories','GET').catch(()=>null)
     ]);
+    setTimeout(prefetchTrash,300);   // 空闲预拉回收站，首次点开秒显
   }catch(e){ _PREFETCH=null; }
   return _PREFETCH;
 }
@@ -1063,6 +1064,7 @@ async function bulkAction(kind){
         html:`确定删除选中的 <b>${ids.length}</b> 篇文章吗？可在回收站恢复。`})){_bulkBusy=false;return;}
       toast('load',`正在删除 ${ids.length} 篇…`);
       await apiDeleteArticle('in.('+ids.join(',')+')'); // 软删除→回收站
+      TRASH_CACHE=null;   // 回收站新增了条目，失效缓存
     }else{
       toast('load',`正在${verb} ${n} 篇…`);
       await Promise.all(targets.map(x=>apiSaveArticle({id:x, published:kind==='on'})));
@@ -1187,7 +1189,7 @@ async function delArt(id){
   _delBusy.add(id);
   toast('load','正在删除…');
   try{
-    await apiDeleteArticle(String(id));
+    await apiDeleteArticle(String(id)); TRASH_CACHE=null;
     clearPageCache(); await loadPage();
     // 删后校验：列表里还在 = 实际没删掉，明确报错而非静默
     if(ARTS.some(x=>x.id===id)) toast('err',`删除未生效：《${title}》仍在库中，请重试`,4000);
@@ -1198,18 +1200,39 @@ async function delArt(id){
 
 // ================= 回收站 =================
 let TRASH=[];
+// 回收站缓存(TTL 30s)+飞行请求复用+预取：打开秒显、后台静默刷新，不再每次干等后端
+let TRASH_CACHE=null;            // {trash,ts}
+let _trashFlight=null;          // 进行中的 /trash 请求，复用不重复
+const TRASH_TTL=30000;
+function fetchTrash(){           // 复用飞行请求，返回 {trash}
+  if(_trashFlight) return _trashFlight;
+  _trashFlight=apiCall('/trash','GET').then(d=>{
+    TRASH_CACHE={trash:d.trash||[],ts:Date.now()}; _trashFlight=null; return TRASH_CACHE;
+  }).catch(e=>{ _trashFlight=null; throw e; });
+  return _trashFlight;
+}
+function prefetchTrash(){        // 登录后台后后台预拉，首次点开即有数据
+  try{ if(!apiToken())return; if(TRASH_CACHE&&Date.now()-TRASH_CACHE.ts<TRASH_TTL)return; fetchTrash().catch(()=>{}); }catch(e){}
+}
 function openTrash(){$('#trashMask').classList.add('on');$('#trashModal').classList.add('on');loadTrash();}
 function closeTrash(){$('#trashMask').classList.remove('on');$('#trashModal').classList.remove('on');}
 $('#trashOpen').onclick=openTrash;
 $('#trashModalX').onclick=closeTrash;$('#trashMask').onclick=closeTrash;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#trashModal').classList.contains('on'))closeTrash();});
 
-async function loadTrash(){
-  $('#trashWrap').innerHTML='<div class="empty">加载中…</div>';msgClear('#trashMsg');
+async function loadTrash(force){
+  msgClear('#trashMsg');
+  const fresh=TRASH_CACHE&&Date.now()-TRASH_CACHE.ts<TRASH_TTL;
+  if(TRASH_CACHE&&!force){        // 有缓存先秒显(哪怕略旧)，再后台刷新
+    TRASH=TRASH_CACHE.trash; drawTrash();
+    if(fresh) return;            // 新鲜则不再打扰后端
+    fetchTrash().then(rec=>{ TRASH=rec.trash; drawTrash(); }).catch(()=>{});
+    return;
+  }
+  $('#trashWrap').innerHTML='<div class="empty">加载中…</div>';
   try{
-    const d=await apiCall('/trash','GET');
-    TRASH=d.trash||[];
-    drawTrash();
+    const rec=await fetchTrash();
+    TRASH=rec.trash; drawTrash();
   }catch(e){ $('#trashWrap').innerHTML='<div class="empty">加载失败：'+esc(e.message)+'</div>'; }
 }
 function drawTrash(){
@@ -1238,7 +1261,7 @@ async function restoreArt(id){
   msg('#trashMsg','load','正在恢复…');
   try{
     await apiCall('/restore?id='+id,'POST');
-    await loadTrash();
+    TRASH_CACHE=null; await loadTrash(true);
     clearPageCache(); await loadPage();
     msg('#trashMsg','ok',`已恢复《${title}》`);
   }catch(e){ msg('#trashMsg','err','恢复失败：'+e.message); }
@@ -1250,7 +1273,7 @@ async function hardDelArt(id){
   msg('#trashMsg','load','正在彻底删除…');
   try{
     await apiCall('/article?id='+id+'&hard=1','DELETE');
-    await loadTrash();
+    TRASH_CACHE=null; await loadTrash(true);
     msg('#trashMsg','ok',`已删除《${title}》`);
   }catch(e){ msg('#trashMsg','err','删除失败：'+e.message); }
 }
@@ -1262,7 +1285,7 @@ $('#trashEmpty').onclick=async()=>{
   try{
     const ids=TRASH.map(a=>a.id);
     await apiCall('/article?id=in.('+ids.join(',')+')&hard=1','DELETE');
-    await loadTrash();
+    TRASH_CACHE=null; await loadTrash(true);
     msg('#trashMsg','ok','回收站已清空');
   }catch(e){ msg('#trashMsg','err','清空失败：'+e.message); }
 };

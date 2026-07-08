@@ -320,7 +320,7 @@ function render(){
   if(IO){ IO.disconnect(); IO=null; }
   $('#stat').innerHTML = Q
     ? `找到 <b>${RES.length}</b> 篇匹配「${esc(Q)}」的知识`
-    : `共 <b>${RES.length}</b> 篇 · 全库 <b>${KB.docs.length}</b> 篇 · 每篇可溯源至官方原文`;
+    : `共 <b>${RES.length}</b> 篇 · 全库 <b>${KB.docs.length}</b> 篇 · 每篇均源自官方权威资料`;
   const v=$('#listView');
   if(!RES.length){
     v.innerHTML=`<div class="empty"><div class="big">🔍</div>没有找到相关内容，换个关键词试试</div>`;return;
