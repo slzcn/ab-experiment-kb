@@ -146,12 +146,15 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   /* 瀑布流新卡片淡入上浮 */
   @keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .card.new{animation:cardIn .42s cubic-bezier(.22,.61,.36,1) both}
-  /* 底部“加载更多”指示器 */
-  .loadmore{max-width:860px;margin:0 auto;text-align:center;color:var(--dim);font-size:12.5px;
-    padding:18px 0 8px;display:flex;align-items:center;justify-content:center;gap:9px}
-  .loadmore .dot{width:15px;height:15px;border:2px solid var(--line);border-top-color:var(--brand);
-    border-radius:50%;animation:sp .7s linear infinite}
-  .loadmore.done{color:var(--dim);opacity:.7}
+  /* 底部“加载更多”指示器 —— 居中胶囊 */
+  .loadmore-wrap{max-width:860px;margin:0 auto;padding:26px 0 14px;display:flex;justify-content:center}
+  .loadmore{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    padding:9px 20px;border-radius:999px;background:var(--panel);border:1px solid var(--line);
+    color:var(--sub);font-size:12.5px;font-weight:600;letter-spacing:.2px;
+    box-shadow:0 1px 4px rgba(120,100,70,.06)}
+  .loadmore .dot{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--brand);
+    border-radius:50%;animation:sp .7s linear infinite;flex:0 0 auto}
+  .loadmore.done{color:var(--dim);background:transparent;border-color:transparent;box-shadow:none;font-weight:500}
   .loadmore.done .dot{display:none}
   .card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);
     padding:17px 19px;cursor:pointer;transition:.18s;position:relative;overflow:hidden}
@@ -228,9 +231,11 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     color:var(--accent);font-weight:700;font-size:13px}
   .md [data-tips-type="warning"],.md [data-tips-type="danger"]{border-color:var(--brand)}
   /* 加载/滚动条 */
-  .loading{display:grid;place-items:center;height:100vh;height:100dvh;color:var(--sub);font-size:14px;gap:14px}
-  .spin{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--brand);
+  .loading{display:grid;place-items:center;height:100vh;height:100dvh;gap:16px;text-align:center}
+  .spin{width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--brand);
     border-radius:50%;animation:sp .8s linear infinite}
+  .loading .ld-t{color:var(--ink);font-size:15px;font-weight:600;letter-spacing:.3px}
+  .loading .ld-s{color:var(--dim);font-size:12.5px;margin-top:-6px}
   @keyframes sp{to{transform:rotate(360deg)}}
   ::-webkit-scrollbar{width:9px;height:9px}
   ::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
@@ -345,7 +350,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 </head>
 <body>
 <script type="application/json" id="kbdata"><!--KB_DATA--></script>
-<div class="loading" id="loading"><div class="spin"></div><div>正在加载知识库…</div></div>
+<div class="loading" id="loading"><div class="spin"></div><div class="ld-t">正在加载知识库</div><div class="ld-s">首次加载稍候片刻</div></div>
 
 <div class="app" id="app" style="display:none">
   <div class="mtoggle" id="mtoggle">☰</div>
@@ -531,7 +536,7 @@ async function boot(){
       else{ const r=await fetchT(dataUrl('kb.json'), 15000); applyKB(await r.json()); shown=true; }
     }catch(e){}
   }
-  if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试（可能是网络问题，请检查能否访问 GitHub）'; return; }
+  if(!shown){ $('#loading').innerHTML='<div class="ld-t">加载失败，请刷新重试</div><div class="ld-s">可能是网络问题，请检查能否访问 GitHub</div>'; return; }
   // 直达某篇：先把文章渲染好再显示 #app（await 正文加载完），彻底不闪列表；
   // 目标文章不存在（已下线/删除）时回退列表
   if(PENDING_DOC && KB.docs.some(d=>d.id===PENDING_DOC)) await openDoc(PENDING_DOC);
@@ -677,10 +682,11 @@ function _appendBatch(){
   for(let i=start;i<SHOWN;i++){ const el=cards[i]; if(el){ el.classList.add('new'); el.style.animationDelay=((i-start)*55)+'ms'; } }
   const sen=$('#sentinel');
   if(sen){
+    sen.className='loadmore-wrap'; sen.removeAttribute('style');
     if(SHOWN>=RES.length){
-      sen.className='loadmore done'; sen.innerHTML='— 已显示全部 '+RES.length+' 篇 —'; sen.removeAttribute('style');
+      sen.innerHTML='<div class="loadmore done">— 已显示全部 '+RES.length+' 篇 —</div>';
     }else{
-      sen.className='loadmore'; sen.innerHTML='下滑加载更多（已显示 '+SHOWN+' / '+RES.length+'）';
+      sen.innerHTML='<div class="loadmore"><span class="dot"></span>正在加载更多（'+SHOWN+' / '+RES.length+'）</div>';
     }
   }
 }
@@ -691,7 +697,7 @@ function renderMore(first){
   if(SHOWN>=RES.length) return;
   LOADING=true;
   const sen=$('#sentinel');
-  if(sen){ sen.className='loadmore'; sen.innerHTML='<span class="dot"></span>正在加载更多…'; }
+  if(sen){ sen.className='loadmore-wrap'; sen.innerHTML='<div class="loadmore"><span class="dot"></span>正在加载更多…</div>'; }
   setTimeout(()=>{ _appendBatch(); LOADING=false; }, 480);
 }
 function render(){
