@@ -144,7 +144,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     color:var(--dim);cursor:pointer;font-size:18px;display:none}
   .stat{margin-top:11px;color:var(--dim);font-size:12.5px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
   .stat b{color:var(--brand2)}
-  .body{flex:1;overflow-y:auto;padding:22px 34px 60px;scroll-behavior:smooth}
+  .body{flex:1;overflow-y:auto;padding:22px 34px 60px}
   /* 列表卡片 */
   .list{display:grid;gap:12px;max-width:860px;margin:0 auto;width:100%}
   /* 瀑布流新卡片淡入上浮 */
@@ -853,8 +853,11 @@ function backToList(push){
   if(push && location.protocol!=='file:'){ try{ history.pushState({list:1},'',siteRoot()); }catch(e){} }
   else if(push){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
   render();
-  while(SHOWN<listShown && SHOWN<RES.length) renderMore();   // 补齐批数才够高
-  requestAnimationFrame(()=>{ const bv=$('#bodyView'); if(bv) bv.scrollTop=listScroll; });
+  // 同步补齐返回前已展开的批数（renderMore 非首批是 480ms 异步+LOADING 锁，while 里补不动，
+  // 会导致列表高度不够、scrollTop 恢复失败回到顶部）。直接同步 _appendBatch 补够高度。
+  while(SHOWN<listShown && SHOWN<RES.length) _appendBatch();
+  // 高度补足后立即定位（无 smooth，瞬间到位，不出现滚动过程）
+  const bv=$('#bodyView'); if(bv) bv.scrollTop=listScroll;
 }
 // 浏览器前进/后退：地址是 a/<id>.html → 打开该篇；否则回列表。均不再 push（避免历史循环）。
 window.addEventListener('popstate',()=>{
