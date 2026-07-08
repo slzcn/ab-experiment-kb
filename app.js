@@ -244,7 +244,24 @@ function cardHTML(d){
 }
 function bindCards(scope){
   (scope||document).querySelectorAll('.card:not([data-bound])').forEach(el=>{
-    el.dataset.bound='1'; el.onclick=()=>openDoc(+el.dataset.id);
+    el.dataset.bound='1';
+    const id=+el.dataset.id;
+    // 【移动端点击可靠性】不单依赖浏览器合成的 click(手指微动/滞后易丢，
+    // 导致“选中态但没进正文”)。用 pointerdown 记落点，pointerup 时若位移 <10px
+    // (非滚动/拖选)则视为点击直接 openDoc。click 作为兽底(键盘 Enter/无 pointer 环境)。
+    let sx=0, sy=0, moved=false, handled=false;
+    el.addEventListener('pointerdown', e=>{ sx=e.clientX; sy=e.clientY; moved=false; }, {passive:true});
+    el.addEventListener('pointermove', e=>{
+      if(Math.abs(e.clientX-sx)>10 || Math.abs(e.clientY-sy)>10) moved=true;
+    }, {passive:true});
+    el.addEventListener('pointerup', e=>{
+      if(moved) return;                                    // 拖动=滚动/选择，不算点击
+      if(e.pointerType==='mouse' && e.button!==0) return;  // 非左键不算
+      handled=true;                                        // 标记，让紧随的合成 click 跳过
+      setTimeout(()=>{ handled=false; }, 400);
+      openDoc(id);
+    });
+    el.addEventListener('click', ()=>{ if(!handled) openDoc(id); });
   });
 }
 let LOADING=false;

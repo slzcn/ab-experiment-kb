@@ -166,8 +166,15 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     -webkit-user-select:none;user-select:none}
   .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
     background:var(--brand);transform:scaleY(0);transform-origin:center;transition:.18s}
-  .card:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:var(--sh)}
-  .card:hover::before{transform:scaleY(1)}
+  /* hover 高亮只在真鼠标设备生效：避免触屏 tap 后 :hover 粘滞，卡片停在橙框选中态
+     （手机上点一下 hover 触发橙框，若同次 click 未接住就停在选中态）。*/
+  @media(hover:hover){
+    .card:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:var(--sh)}
+    .card:hover::before{transform:scaleY(1)}
+  }
+  /* 触屏/通用：按下瞬间反馈，抬手即消，不留粘滞选中态 */
+  .card:active{border-color:var(--brand);box-shadow:var(--sh)}
+  .card:active::before{transform:scaleY(1)}
   .card h3{font-size:16px;font-weight:750;line-height:1.45;color:var(--ink)}
   .card .excerpt{color:var(--sub);font-size:13px;line-height:1.65;margin-top:8px;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -684,7 +691,24 @@ function cardHTML(d){
 }
 function bindCards(scope){
   (scope||document).querySelectorAll('.card:not([data-bound])').forEach(el=>{
-    el.dataset.bound='1'; el.onclick=()=>openDoc(+el.dataset.id);
+    el.dataset.bound='1';
+    const id=+el.dataset.id;
+    // 【移动端点击可靠性】不单依赖浏览器合成的 click(手指微动/滞后易丢，
+    // 导致“选中态但没进正文”)。用 pointerdown 记落点，pointerup 时若位移 <10px
+    // (非滚动/拖选)则视为点击直接 openDoc。click 作为兽底(键盘 Enter/无 pointer 环境)。
+    let sx=0, sy=0, moved=false, handled=false;
+    el.addEventListener('pointerdown', e=>{ sx=e.clientX; sy=e.clientY; moved=false; }, {passive:true});
+    el.addEventListener('pointermove', e=>{
+      if(Math.abs(e.clientX-sx)>10 || Math.abs(e.clientY-sy)>10) moved=true;
+    }, {passive:true});
+    el.addEventListener('pointerup', e=>{
+      if(moved) return;                                    // 拖动=滚动/选择，不算点击
+      if(e.pointerType==='mouse' && e.button!==0) return;  // 非左键不算
+      handled=true;                                        // 标记，让紧随的合成 click 跳过
+      setTimeout(()=>{ handled=false; }, 400);
+      openDoc(id);
+    });
+    el.addEventListener('click', ()=>{ if(!handled) openDoc(id); });
   });
 }
 let LOADING=false;
