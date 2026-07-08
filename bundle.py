@@ -87,6 +87,16 @@ if os.path.isdir(ART_DIR):
 else:
     os.makedirs(ART_DIR, exist_ok=True)
 
+# d/<id>.json: 每篇一个单独正文文件(仅 {"md":...})，供前端按需/分片预热
+# （只拉可见那几篇，不一把拉 2.1MB 全量 kb_docs.json，省流量）。
+D_DIR = os.path.join(HERE, "d")
+if os.path.isdir(D_DIR):
+    for fn in os.listdir(D_DIR):
+        if fn.endswith(".json"):
+            os.remove(os.path.join(D_DIR, fn))
+else:
+    os.makedirs(D_DIR, exist_ok=True)
+
 
 def esc(s):
     return _html.escape(str(s or ""), quote=True)
@@ -120,6 +130,10 @@ for d in docs:
     # ⬇ 用 lambda 避免替换串里的反斜杠被 re.sub 当转义序列解析(正文含 \u/$/\1 时会炒)
     page = re.sub(r"<title>.*?</title>", lambda m: head_inject, page, count=1, flags=re.S)
     open(os.path.join(ART_DIR, f"{did}.html"), "w", encoding="utf-8").write(page)
+    # 同时写单篇正文 JSON（前端按需预热用，比拉整份 kb_docs.json 省流量）
+    open(os.path.join(D_DIR, f"{did}.json"), "w", encoding="utf-8").write(
+        json.dumps({"md": md}, ensure_ascii=False)
+    )
 
 # --- 完成 ---
 root_kb = os.path.getsize(root_out) // 1024

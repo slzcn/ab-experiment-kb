@@ -573,11 +573,11 @@ async function boot(){
   // 首屏已出。若走的是轻量列表(docs 无全文)，后台异步加载全文检索索引，
   // 加载完重建 INDEX——此后搜索从"标题+摘要"升级为"正文全文"。不阻塞首屏。
   loadSearchIndex();
-  // 首屏出来后，浏览器空闲时后台预拉全量正文 kb_docs.json，让用户点开第一篇文章时
-  // 正文已在缓存、秒开，消除"第一次点开等待"。用 requestIdleCallback 不抢首屏/搜索索引带宽。
-  const _pre=()=>ensureDocsCache();
-  if('requestIdleCallback' in window) requestIdleCallback(_pre, {timeout:4000});
-  else setTimeout(_pre, 1500);
+  // 首屏出来后，浏览器空闲时只预热【当前可见那几篇】的正文(单篇 d/<id>.json)，
+  // 不一把拉 2.1MB 全量，省流量。用户每往下滞一批再预热那一批(见 _appendBatch)。
+  const _pre=()=>prefetchVisible();
+  if('requestIdleCallback' in window) requestIdleCallback(_pre, {timeout:3000});
+  else setTimeout(_pre, 1200);
 }
 
 async function loadSearchIndex(){
@@ -749,6 +749,9 @@ function _appendBatch(){
       sen.innerHTML='<div class="loadmore"><span class="dot"></span>正在加载更多（'+SHOWN+' / '+RES.length+'）</div>';
     }
   }
+  // 本批卡片出现后，空闲时预热这一批的正文（每往下滞一批就提前拉那一批，省流量）
+  if('requestIdleCallback' in window) requestIdleCallback(()=>prefetchVisible(), {timeout:3000});
+  else setTimeout(()=>prefetchVisible(), 300);
 }
 // first=true 为首批（立即渲染，秒开）；滚动触发的批次先显示“加载中”停顿一下再出，让用户看得见
 function renderMore(first){
@@ -782,26 +785,55 @@ function render(){
 }
 
 // 正文按需加载：轻量列表无 md，点开文章时从 kb_docs.json 取（取一次缓存整份）
-let DOCS_CACHE=null, _docsInflight=null;
-// 拉取全量正文 kb_docs.json 到 DOCS_CACHE（带 inflight 锁防并发重复拉）。
-// getMd 和首屏后台预拉共用：预拉让用户点开文章时正文已就绪，消除“第一次点开等待”。
+// 【按需/分片预热】DOCS_CACHE 按 id 存单篇正文。
+// 预热不拉整份 2.1MB 的 kb_docs.json，而是只拉可见那几篇的单篇 d/<id>.json(每篇仅几KB)，
+// 省流量；用户每往下滞一批就预热那一批。全量 kb_docs.json 仅作最后兽底。
+let DOCS_CACHE={}, _docsFullInflight=null;
+const _docInflight={};   // id -> Promise，防单篇并发重复拉
+// 拉单篇正文 d/<id>.json 存入 DOCS_CACHE（已有/已在拉则直接复用）
+function prefetchDoc(id){
+  const key=String(id);
+  if(DOCS_CACHE[key]!=null) return Promise.resolve(DOCS_CACHE[key]);
+  if(_docInflight[key]) return _docInflight[key];
+  const d=KB.docs&&KB.docs.find(x=>x.id===+id);
+  if(d && d.md){ DOCS_CACHE[key]=d.md; return Promise.resolve(d.md); }  // 已有正文(直达 INIT_MD/内嵌)
+  _docInflight[key]=(async()=>{
+    try{
+      const r=await fetchT(dataUrl('d/'+key+'.json'), 12000);
+      if(r.ok){ const j=await r.json(); if(j && typeof j.md==='string'){ DOCS_CACHE[key]=j.md; } }
+    }catch(e){}
+    delete _docInflight[key];
+    return DOCS_CACHE[key];
+  })();
+  return _docInflight[key];
+}
+// 兽底：拉全量 kb_docs.json(单篇拉失败时才用)
 function ensureDocsCache(){
-  if(DOCS_CACHE) return Promise.resolve(DOCS_CACHE);
-  if(_docsInflight) return _docsInflight;
-  _docsInflight = (async()=>{
-    try{ const r=await fetchT(dataUrl('kb_docs.json'), 20000); if(r.ok) DOCS_CACHE=await r.json(); }
+  if(_docsFullInflight) return _docsFullInflight;
+  _docsFullInflight=(async()=>{
+    try{ const r=await fetchT(dataUrl('kb_docs.json'), 20000); if(r.ok){ const all=await r.json(); Object.assign(DOCS_CACHE, all); } }
     catch(e){}
-    if(!DOCS_CACHE) DOCS_CACHE={};
-    _docsInflight=null;
+    _docsFullInflight=null;
     return DOCS_CACHE;
   })();
-  return _docsInflight;
+  return _docsFullInflight;
+}
+// 预热当前列表已渲染(可见)的那批文章正文。idle 时逐篇拉单篇，不抢带宽。
+function prefetchVisible(){
+  try{
+    const ids=RES.slice(0, SHOWN).map(d=>d.id).filter(id=>DOCS_CACHE[String(id)]==null);
+    ids.forEach(id=>prefetchDoc(id));
+  }catch(e){}
 }
 async function getMd(id){
+  const key=String(id);
   const d=KB.docs.find(x=>x.id===id);
-  if(d && d.md) return d.md;                    // 已有正文（内嵌/完整版/直达 INIT_MD）
-  await ensureDocsCache();
-  return (DOCS_CACHE&&DOCS_CACHE[String(id)])||'（正文加载失败，请刷新重试）';
+  if(d && d.md) return d.md;                    // 已有正文（内嵌/直达 INIT_MD）
+  if(DOCS_CACHE[key]!=null) return DOCS_CACHE[key]; // 已预热
+  const one=await prefetchDoc(id);              // 未预热到→单篇拉
+  if(one!=null) return one;
+  await ensureDocsCache();                      // 单篇拉不到→兽底拉全量
+  return (DOCS_CACHE[key]!=null)?DOCS_CACHE[key]:'（正文加载失败，请刷新重试）';
 }
 
 // 把正文里“相邻的多张图”并排成一行(.imrow)。
