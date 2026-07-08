@@ -62,7 +62,7 @@ function applyKB(kb){
   // 若要直达某篇（文章静态页），首屏不先渲染列表，避免"列表闪一下再跳文章"
   if(PENDING_DOC) return;
   // 若正停在列表页则重渲染（阅读态不打断用户）
-  if(!document.querySelector('.reader')) render();
+  if(!inReader()) render();
 }
 
 // 直达目标：文章静态页注入 window.INIT_DOC；否则看 URL #doc=<id>。boot 前先定，供 applyKB 判断。
@@ -139,7 +139,7 @@ async function loadSearchIndex(){
     if(!r.ok) return;
     SEARCH=await r.json();
     buildIndex();               // 用全文重建检索索引
-    if(Q && !document.querySelector('.reader')) render();  // 用户已在搜且停列表 → 用全文重刷结果
+    if(Q && !inReader()) render();  // 用户已在搜且停列表 → 用全文重刷结果
   }catch(e){}
 }
 
@@ -181,7 +181,7 @@ function renderCats(){
   $('#cats').innerHTML=h;
   document.querySelectorAll('.cat').forEach(el=>el.onclick=()=>{
     CUR=el.dataset.k; renderCats(); render(); closeSide();
-    $('#bodyView').scrollTop=0;
+    $('#listView').scrollTop=0;
   });
 }
 
@@ -321,7 +321,7 @@ function render(){
   $('#stat').innerHTML = Q
     ? `找到 <b>${RES.length}</b> 篇匹配「${esc(Q)}」的知识`
     : `共 <b>${RES.length}</b> 篇 · 全库 <b>${KB.docs.length}</b> 篇 · 每篇可溯源至官方原文`;
-  const v=$('#bodyView');
+  const v=$('#listView');
   if(!RES.length){
     v.innerHTML=`<div class="empty"><div class="big">🔍</div>没有找到相关内容，换个关键词试试</div>`;return;
   }
@@ -437,9 +437,10 @@ async function openDoc(id, opts){
   opts=opts||{};
   const d=KB.docs.find(x=>x.id===id); if(!d)return;
   const c=catOf(d.cat);
-  const v=$('#bodyView');
-  // 打开文章前，若当前是列表视图，记住其滚动位置，返回时恢复
-  if(!v.querySelector('.reader')){ listScroll=v.scrollTop; listShown=SHOWN; }
+  const v=$('#readerView');
+  // 打开文章前，若当前停在列表视图，记住列表滚动位置（返回时天然还在，无需重建）
+  if(!inReader()){ const lv=$('#listView'); listScroll=lv?lv.scrollTop:0; listShown=SHOWN; }
+  showReader();
   const isInternal = d.internal || !/^https?:/.test(d.url||'');
   const srcFoot = isInternal
     ? '本文为营销增长中心内部沉淀'
@@ -503,18 +504,22 @@ async function openDoc(id, opts){
   };
 }
 
+// —— 列表/阅读器双容器：切换只切 display，列表 DOM 常驻不重建（返回列表不刷新、位置天然保留）——
+function inReader(){ const r=$('#readerView'); return !!(r && r.style.display!=='none'); }
+function showReader(){ const l=$('#listView'),r=$('#readerView'); if(l)l.style.display='none'; if(r)r.style.display=''; }
+function showList(){ const l=$('#listView'),r=$('#readerView'); if(r)r.style.display='none'; if(l)l.style.display=''; }
+
 // 返回列表：切回列表视图并恢复浏览位置。push=true 时把地址栏推回首页（供“返回”按钮用）；
 // 文章静态页(INIT_DOC)上没有内存里的列表来路，直接整页跳根目录首页。
 function backToList(push){
   if(typeof window!=='undefined' && window.INIT_DOC){ location.href=siteRoot(); return; }
   if(push && location.protocol!=='file:'){ try{ history.pushState({list:1},'',siteRoot()); }catch(e){} }
   else if(push){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
-  render();
-  // 同步补齐返回前已展开的批数（renderMore 非首批是 480ms 异步+LOADING 锁，while 里补不动，
-  // 会导致列表高度不够、scrollTop 恢复失败回到顶部）。直接同步 _appendBatch 补够高度。
-  while(SHOWN<listShown && SHOWN<RES.length) _appendBatch();
-  // 高度补足后立即定位（无 smooth，瞬间到位，不出现滚动过程）
-  const bv=$('#bodyView'); if(bv) bv.scrollTop=listScroll;
+  // 列表容器常驻，不重建、不重渲：只把阅读器藏起来、列表显出来。
+  // 滚动位置、已展开的卡片、图片、观察器全部原样保留 —— 返回零刷新、零跳动。
+  const lv=$('#listView');
+  if(lv && !lv.querySelector('.list') && !lv.querySelector('.empty')) render(); // 极端兜底：列表从未建过才重建
+  showList();
 }
 // 浏览器前进/后退：地址是 a/<id>.html → 打开该篇；否则回列表。均不再 push（避免历史循环）。
 window.addEventListener('popstate',()=>{
