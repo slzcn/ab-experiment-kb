@@ -17,3 +17,4 @@ supabase_published.sql
 supabase_uploads.sql
 # 爬虫原始中间产物（非网站数据）
 raw_docs.json
+sb_config.json

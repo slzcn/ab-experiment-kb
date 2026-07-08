@@ -540,17 +540,6 @@ function confirmBox(opts){
   });
 }
 
-// ---- Supabase ----
-const SB={url:'https://cddkniwbhvcbfgkgomtl.supabase.co',key:'***REMOVED_PUBLISHABLE_KEY***'};
-const SBH={apikey:SB.key,Authorization:'Bearer '+SB.key};
-async function sbGet(path){const r=await fetch(SB.url+'/rest/v1/'+path,{headers:SBH});if(!r.ok)throw new Error('读取失败 '+r.status);return r.json();}
-async function sbWrite(path,method,body,extra){
-  const r=await fetch(SB.url+'/rest/v1/'+path,{method,
-    headers:{...SBH,'Content-Type':'application/json',Prefer:'return=minimal',...(extra||{})},
-    body:body?JSON.stringify(body):undefined});
-  if(!r.ok){const t=await r.text();throw new Error('写入失败 '+r.status+' '+t.slice(0,120));}
-}
-
 // ===== Edge Function 鉴权层（写操作走服务端，前端不碰 service_role）=====
 const API_BASE=SB.url+'/functions/v1/admin-api';
 const API_TOKEN_KEY='ab_kb_api_token';
