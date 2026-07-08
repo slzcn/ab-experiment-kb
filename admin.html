@@ -399,7 +399,6 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         <button class="bb x" id="batchClear" title="取消选择">✕</button>
       </div>
       <div id="artWrap"><div class="empty">加载中…</div></div>
-      <div class="desc" style="margin-top:12px">上线/下线改动即时写入数据库，并自动触发公开网站重建，约 1 分钟同步生效，无需任何手动操作；本页是实时的。</div>
     </div>
   </div>
 
@@ -451,7 +450,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 
   <!-- 子面板 1：发布单篇（Markdown 编辑）-->
   <div class="ppane on" id="pp-single">
-    <div class="desc">直接手写 Markdown 发布一篇新文章。保存后约 1 分钟自动同步到公开网站。</div>
+    <div class="desc">直接手写 Markdown 发布一篇新文章。</div>
     <label>标题</label>
     <input id="pubTitle" placeholder="输入文章标题">
     <label>分类</label>
@@ -470,7 +469,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 
   <!-- 子面板 2：批量上传文档（原有功能）-->
   <div class="ppane" id="pp-batch">
-    <div class="desc">支持 PPT / Word / PDF / Excel 等格式。上传后<b>秒回</b>，服务器自动抽取正文<b>并连同图片</b>转成文章入库——可关闭本弹层，约 1 分钟自动同步到线上。</div>
+    <div class="desc">支持 PPT / Word / PDF / Excel 等格式。上传后<b>秒回</b>，服务器自动抽取正文<b>并连同图片</b>转成文章入库。</div>
     <label>默认分类（每个文件可在下方单独调整）</label>
     <select id="upCat"></select>
     <label>选择或拖入文件（可多选）</label>
@@ -493,7 +492,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 <div class="mask" id="trashMask"></div>
 <div class="modal" id="trashModal">
   <div class="mh"><b>🗑 回收站</b><span class="x" id="trashModalX">✕</span></div>
-  <div class="desc">已删除的文章暂存在这里，可<b>恢复</b>到文章列表，或<b>彻底删除</b>（不可撤销）。恢复/彻底删除约 1 分钟后同步到线上。</div>
+  <div class="desc">已删除的文章暂存在这里，可<b>恢复</b>到文章列表，或<b>彻底删除</b>（不可撤销）。</div>
   <div class="toolbar" style="margin:12px 0 4px">
     <span class="desc" id="trashCount" style="margin-right:auto"></span>
     <button class="btn ghost danger" id="trashEmpty" title="彻底删除回收站里的全部文章">🧹 清空回收站</button>
@@ -799,7 +798,7 @@ $('#upBtn').onclick=async()=>{
       await uploadToStorage(x.file,path);
       await apiCall('/upload-job','POST',{row:{batch,filename:x.file.name,cat:x.cat,path,status:'queued'}});
     }
-    msg('#upMsg','ok',`已上传 ${FILES.length} 个文件，服务器正在后台转码入库，可关闭本页，几分钟后自动同步到线上。`);
+    msg('#upMsg','ok',`已上传 ${FILES.length} 个文件，服务器正在后台转码入库，可关闭本页。`);
     // 2) 轮询这个 batch 的 job 进度（服务器 Action 每隔几分钟处理一批）
     const total=FILES.length;
     if(POLL)clearInterval(POLL);
@@ -815,7 +814,7 @@ $('#upBtn').onclick=async()=>{
           const ok=rows.filter(r=>r.status==='done').length;
           const imgs=rows.reduce((a,r)=>a+(r.images||0),0);
           const fail=rows.filter(r=>r.status==='error');
-          let m=`处理完成：成功 ${ok}/${total} 篇，抽出 ${imgs} 张图，已同步到线上。`;
+          let m=`处理完成：成功 ${ok}/${total} 篇，抽出 ${imgs} 张图。`;
           if(fail.length)m+=` 失败 ${fail.length} 篇：`+fail.map(r=>r.filename).join('、');
           msg('#upMsg', fail.length?(ok?'ok':'err'):'ok', m);
           FILES=[];renderFileList();
@@ -1007,7 +1006,7 @@ async function bulkAction(kind){
       else toast('ok',`已删除 ${ids.length} 篇`);
     }else{
       const skipped=ids.length-n;
-      toast('ok',`已${verb} ${n} 篇`+(skipped?`（${skipped} 篇本已是该状态，已跳过）`:'')+'，约 1 分钟后同步');
+      toast('ok',`已${verb} ${n} 篇`+(skipped?`（${skipped} 篇本已是该状态，已跳过）`:''));
     }
   }catch(e){toast('err','批量操作失败：'+e.message,4000);}
   finally{ _bulkBusy=false; }
@@ -1071,7 +1070,7 @@ $('#pubSave').onclick=async()=>{
   try{
     const row={title,cat:$('#pubCat').value,keywords:$('#pubKw').value.trim(),md,body_text};
     const saved=await apiSaveArticle(row);
-    msg('#pubMsg','ok','✓ 已发布《'+title+'》，约十几秒后同步到公开网站');
+    msg('#pubMsg','ok','✓ 已发布《'+title+'》');
     // 清空表单，方便继续发下一篇
     $('#pubTitle').value='';$('#pubKw').value='';$('#pubMd').value='';
     await loadPage();
@@ -1090,7 +1089,7 @@ $('#edSave').onclick=async()=>{
   msg('#edMsg','load','保存中…');
   try{
     await apiSaveArticle({id,title,cat:$('#edCat').value,keywords:$('#edKw').value.trim(),md,body_text});
-    msg('#edMsg','ok','✓ 已保存，约十几秒后线上同步');
+    msg('#edMsg','ok','✓ 已保存');
     await loadPage();
     // 保存后关闭弹层，并把刚编辑的这篇滚动到可视区、短暂高亮，方便定位
     setTimeout(()=>{ closeEdit(); focusArt(id); toast('ok',`《${title}》已保存`); }, 700);
@@ -1201,7 +1200,7 @@ $('#catRestore').onclick=async()=>{
   try{
     const d=await apiCall('/restore-categories?mode=reset','POST');
     await loadData();
-    msg('#catMsg','ok','✓ 已重置为默认 12 个分类，约十几秒后线上同步');
+    msg('#catMsg','ok','✓ 已重置为默认 12 个分类');
   }catch(e){ msg('#catMsg','err','✗ '+e.message); }
 };
 
@@ -1257,7 +1256,7 @@ $('#catSave').onclick=async()=>{
       const k=String(c.key||'').trim(); if(!k) continue;
       await apiSaveCategory({key:k,icon:c.icon||'📁',name:String(c.name||'').trim(),descr:c.descr||'',ord:c.ord||0});
     }
-    msg('#catMsg','ok','✓ 分类已保存，约十几秒后线上同步');
+    msg('#catMsg','ok','✓ 分类已保存');
     await loadData();
   }catch(e){msg('#catMsg','err','✗ '+e.message);}
 };

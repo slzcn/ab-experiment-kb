@@ -503,7 +503,7 @@ async function fetchT(url, ms=8000){
 // 数据文件 URL：带分钟级 cache-bust。kb_*.json 在 GitHub Pages 上带 CDN/浏览器缓存(max-age=600)，
 // 不破缓存的话后台改动后最多要等 10 分钟才可见（妙搭薄壳、以及已打开过首页的浏览器都吃旧缓存）。
 // 用「分钟」做 ?v= key：同一分钟内同 URL → 命中缓存(每分钟至多回源一次，不打爆 Pages)；跨分钟即取新 →
-// 后台改动后约 1 分钟内可见。本站(DATA_BASE='')同样受益：浏览器不再压着 10 分钟旧数据。
+// 本站(DATA_BASE='')读取最新数据。
 function dataUrl(name){ return DATA_BASE+name+'?v='+Math.floor(Date.now()/60000); }
 
 async function boot(){
@@ -564,7 +564,7 @@ function setupSubmit(){
   $('#edSubmit').style.display='';
   $('#edDownload').classList.add('ghost2');
   $('#edDownload').textContent='⬇ 导出';
-  $('#edHint').innerHTML='点「发布文章」即可存入数据库，稍后自动同步到页面（约十几秒），无需手动处理文件。';
+  $('#edHint').innerHTML='点「发布文章」即可存入数据库。';
 }
 
 function renderFoot(){
@@ -963,14 +963,14 @@ async function submitArticle(){
   try{
     const row=await submitToDB(d);
     // 纯静态：不回连数据库。用刚写库的 row（同一 id）插入内存，让提交者当场看到；
-    // 线上静态文件由数据库变化触发 GitHub Action 重新生成（约十几秒后全网同步）。
+    // 线上静态文件由数据库变化触发 GitHub Action 重新生成。
     const newId=row.doc_id;
     KB.docs.push({id:newId,title:d.title,cat:d.cat,
       keywords:row.keywords,md:d.md,text:row.body_text,
       excerpt:(row.body_text||'').slice(0,140),len:(row.body_text||'').length,
       updated:row.updated,url:'',internal:true});
     KB.meta.total=KB.docs.length;
-    edMsg('ok','《'+d.title+'》已提交，约十几秒后自动同步到线上。');
+    edMsg('ok','《'+d.title+'》已提交。');
     buildIndex();
     renderCats(); renderFoot();
     setTimeout(()=>{
