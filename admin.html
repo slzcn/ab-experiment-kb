@@ -621,7 +621,7 @@ async function doGate(){
   err.textContent='校验中…';
   try{
     const ok=await apiLogin(pin);
-    if(ok){try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){} enter();}
+    if(ok){try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){} prefetchFirst(); enter();}
     else err.textContent='访问码不正确';
   }catch(e){err.textContent='网络错误，请重试';}
 }
@@ -655,8 +655,8 @@ const LIST_CACHE_KEY='ab_kb_list_cache_v1';
 function readListCache(){
   try{ const raw=localStorage.getItem(LIST_CACHE_KEY); if(!raw) return null;
     const d=JSON.parse(raw);
-    // 仅在第一页无搜索时用缓存，且缓存不超过 10 分钟
-    if(d&&d.arts&&Date.now()-d.ts<600000) return d; }catch(e){}
+    // 有缓存就先秒显(后台 loadData 一定会拉最新覆盖，准确性不受影响)；仅极旧(>24h)缓存不用，防表结构变更
+    if(d&&d.arts&&Date.now()-d.ts<86400000) return d; }catch(e){}
   return null;
 }
 function writeListCache(){
@@ -677,15 +677,35 @@ async function boot(){
   $('#topSub').textContent=`共 ${TOTAL} 篇 · ${CATS.length} 个分类`;
 }
 
+// 首屏数据预热：脚本一执行(已登录时)就并行发起，boot 直接复用，省掉串行等待
+let _PREFETCH=null;
+function prefetchFirst(){
+  try{
+    if(!apiToken()) return null;
+    _PREFETCH=Promise.all([
+      apiCall(`/articles?page=1&per=${PER}`,'GET').catch(()=>null),
+      apiCall('/categories','GET').catch(()=>null)
+    ]);
+  }catch(e){ _PREFETCH=null; }
+  return _PREFETCH;
+}
 async function loadData(){
   // 读走 Edge Function 后端分页：只拉第一页 + 分类（首屏轻量）
   LOADING=true;
   try{
     const q=encodeURIComponent(Q||'');
-    const [a,c]=await Promise.all([
-      apiCall(`/articles?page=${PAGE}&per=${PER}${q?'&q='+q:''}`,'GET'),
-      apiCall('/categories','GET')
-    ]);
+    // 首屏(第1页无搜索)优先复用已预热的请求，避免重复网络往返
+    let a,c;
+    if(_PREFETCH && PAGE===1 && !Q){
+      [a,c]=await _PREFETCH; _PREFETCH=null;
+      if(!a||!c){ [a,c]=await Promise.all([
+        apiCall(`/articles?page=1&per=${PER}`,'GET'), apiCall('/categories','GET') ]); }
+    } else {
+      [a,c]=await Promise.all([
+        apiCall(`/articles?page=${PAGE}&per=${PER}${q?'&q='+q:''}`,'GET'),
+        apiCall('/categories','GET')
+      ]);
+    }
     ARTS=(a&&a.articles)||[];
     TOTAL=(a&&typeof a.total==='number')?a.total:ARTS.length;
     PUB_COUNT=(a&&typeof a.pubCount==='number'&&a.pubCount>=0)?a.pubCount:-1;
@@ -1262,8 +1282,8 @@ $('#catSave').onclick=async()=>{
   }catch(e){msg('#catMsg','err','✗ '+e.message);}
 };
 
-// 启动：已登录直接进
-if(loggedIn())enter(); else setTimeout(()=>$('#gatePin').focus(),80);
+// 启动：已登录直接进（先预热首屏数据请求，让网络往返尽早开始）
+if(loggedIn()){ prefetchFirst(); enter(); } else setTimeout(()=>$('#gatePin').focus(),80);
 </script>
 </body>
 </html>
