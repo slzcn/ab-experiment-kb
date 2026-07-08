@@ -142,10 +142,10 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .msg.load{background:#fff;color:var(--sub);border:1px solid var(--line)}
   /* 顶部居中 toast：始终可见（不被底部批量条/滚动遮挡）*/
   #toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-24px);z-index:200;
-    max-width:calc(100vw - 24px);padding:11px 18px;border-radius:12px;font-size:13.5px;font-weight:600;
+    max-width:min(520px,calc(100vw - 24px));padding:11px 18px;border-radius:12px;font-size:13.5px;font-weight:600;
     box-shadow:0 10px 34px rgba(120,100,70,.24);opacity:0;pointer-events:none;
-    transition:transform .24s cubic-bezier(.2,.7,.3,1),opacity .2s;white-space:nowrap;
-    max-width:calc(100vw - 24px);overflow:hidden;text-overflow:ellipsis}
+    transition:transform .24s cubic-bezier(.2,.7,.3,1),opacity .2s;
+    line-height:1.5;word-break:break-word;text-align:center}
   #toast.on{transform:translate(-50%,0);opacity:1}
   #toast.ok{background:#e9f7ec;color:#2f7d3a;border:1px solid rgba(63,185,80,.35)}
   #toast.err{background:#fdeceb;color:var(--bad);border:1px solid rgba(229,72,77,.35)}
@@ -302,12 +302,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     .tabs{gap:6px;margin-bottom:16px}
     .tab{flex:1 1 0;min-width:0;padding:9px 6px;font-size:12.5px;text-align:center}
     .tabs .tab-sp{display:none}
-    /* 「发布文章」改为固定右下角悬浮按钮：向下滚动也始终可见，不再随页面滚走 */
-    .tab-action{position:fixed;right:16px;bottom:20px;z-index:180;
-      flex:0 0 auto;justify-content:center;padding:13px 20px;
-      background:var(--brand);color:#fff;border-color:var(--brand);font-size:14px;font-weight:700;
-      border-radius:26px;box-shadow:0 8px 24px rgba(224,99,46,.38)}
-    .tab-action:hover,.tab-action:active{background:var(--brand);color:#fff;border-color:var(--brand)}
+    .tab-action{flex:1 1 100%;justify-content:center;padding:11px}
     .panel{padding:16px 14px}
     .panel h2{font-size:14.5px;flex-wrap:wrap}
     /* 文章列表：表格→堆叠卡片。卡片内：标题 / 分类·日期同行 / 底部一行放经 上下线开关+编辑+删除 */
@@ -612,13 +607,14 @@ async function apiDeleteCategory(key){return apiCall('/category?key='+encodeURIC
 const _MSG_TIMERS={};
 const _MSG_TTL={ok:3500,err:5000};
 function msg(el,cls,txt){
-  const m=$(el);m.className='msg show '+cls;m.textContent=txt;
-  if(_MSG_TIMERS[el]){clearTimeout(_MSG_TIMERS[el]);delete _MSG_TIMERS[el];}
-  const ttl=_MSG_TTL[cls];
-  if(ttl){_MSG_TIMERS[el]=setTimeout(()=>{msgClear(el);delete _MSG_TIMERS[el];},ttl);}
+  // 统一交互：所有操作提示都走全站顶部悬浮 toast（同一位置/风格/交互），不再用各弹层内联块
+  toast(cls,txt);
 }
-function msgClear(el){const m=$(el);if(!m)return;m.className='msg';m.textContent='';
-  if(_MSG_TIMERS[el]){clearTimeout(_MSG_TIMERS[el]);delete _MSG_TIMERS[el];}}
+function msgClear(el){
+  // 提示统一走顶部 toast：清除即隐藏当前 toast（若还挂着 load 态）
+  const t=$('#toast'); if(t) t.classList.remove('on');
+  clearTimeout(_toastTimer);
+}
 // 顶部 toast：始终可见（列表底部操作、批量条遮挡都不影响）。load 不自动消失，ok/err 定时消失。
 let _toastTimer=null;
 function toast(cls,txt,ms){
