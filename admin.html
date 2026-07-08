@@ -133,11 +133,13 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .btn.ghost:hover{color:var(--brand);border-color:var(--brand);background:transparent;transform:none;box-shadow:none}
   .btn.danger{background:transparent;color:var(--bad);border-color:transparent;padding:6px 10px;font-weight:600;font-size:12.5px;box-shadow:none}
   .btn.danger:hover{background:rgba(229,72,77,.1);transform:none;box-shadow:none}
-  .msg{margin-top:14px;font-size:13px;border-radius:9px;padding:0;opacity:0;transition:opacity .3s}
-  .msg.show{padding:11px 14px;opacity:1}
-  .msg.ok{background:rgba(63,185,80,.12);color:#2f9e44}
-  .msg.err{background:rgba(229,72,77,.1);color:var(--bad)}
-  .msg.load{background:var(--panel);color:var(--sub)}
+  /* 弹层内提示：跟全站顶部 toast 用同一套视觉语言（圆角+描边+配色+字重），风格统一 */
+  .msg{margin-top:14px;font-size:13px;font-weight:600;border-radius:12px;padding:0;opacity:0;
+    transition:opacity .3s,padding .3s;line-height:1.5}
+  .msg.show{padding:11px 15px;opacity:1}
+  .msg.ok{background:#e9f7ec;color:#2f7d3a;border:1px solid rgba(63,185,80,.35)}
+  .msg.err{background:#fdeceb;color:var(--bad);border:1px solid rgba(229,72,77,.35)}
+  .msg.load{background:#fff;color:var(--sub);border:1px solid var(--line)}
   /* 顶部居中 toast：始终可见（不被底部批量条/滚动遮挡）*/
   #toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-24px);z-index:200;
     max-width:calc(100vw - 24px);padding:11px 18px;border-radius:12px;font-size:13.5px;font-weight:600;
@@ -300,7 +302,12 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     .tabs{gap:6px;margin-bottom:16px}
     .tab{flex:1 1 0;min-width:0;padding:9px 6px;font-size:12.5px;text-align:center}
     .tabs .tab-sp{display:none}
-    .tab-action{flex:1 1 100%;justify-content:center;padding:11px}
+    /* 「发布文章」改为固定右下角悬浮按钮：向下滚动也始终可见，不再随页面滚走 */
+    .tab-action{position:fixed;right:16px;bottom:20px;z-index:180;
+      flex:0 0 auto;justify-content:center;padding:13px 20px;
+      background:var(--brand);color:#fff;border-color:var(--brand);font-size:14px;font-weight:700;
+      border-radius:26px;box-shadow:0 8px 24px rgba(224,99,46,.38)}
+    .tab-action:hover,.tab-action:active{background:var(--brand);color:#fff;border-color:var(--brand)}
     .panel{padding:16px 14px}
     .panel h2{font-size:14.5px;flex-wrap:wrap}
     /* 文章列表：表格→堆叠卡片。卡片内：标题 / 分类·日期同行 / 底部一行放经 上下线开关+编辑+删除 */
