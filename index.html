@@ -494,7 +494,7 @@ async function boot(){
   // 纯静态：只读静态内容，不连数据库。静态文件由数据库变化触发 Action 重新生成。
   // 1) 首屏只下轻量列表 kb_index.json（无正文，几百KB → 快）；正文点开时按需拉
   try{
-    const r=await fetch(DATA_BASE+'kb_index.json',{cache:'no-cache'});
+    const r=await fetch(DATA_BASE+'kb_index.json');
     if(r.ok){
       const idx=await r.json();
       if(idx&&idx.docs&&idx.docs.length){ applyKB(idx); shown=true; }
@@ -503,7 +503,7 @@ async function boot(){
   // 2) 回退：完整 kb_cache.json（含正文）
   if(!shown){
     try{
-      const r=await fetch(DATA_BASE+'kb_cache.json',{cache:'no-cache'});
+      const r=await fetch(DATA_BASE+'kb_cache.json');
       if(r.ok){ const c=await r.json(); if(c&&c.docs&&c.docs.length){ applyKB(c); shown=true; } }
     }catch(e){}
   }
@@ -533,7 +533,7 @@ async function boot(){
 async function loadSearchIndex(){
   if(KB && KB.docs && KB.docs[0] && KB.docs[0].text!==undefined) return; // 已含全文(cache/embed 路径)
   try{
-    const r=await fetch(DATA_BASE+'kb_search.json',{cache:'no-cache'});
+    const r=await fetch(DATA_BASE+'kb_search.json');
     if(!r.ok) return;
     SEARCH=await r.json();
     buildIndex();               // 用全文重建检索索引
@@ -714,7 +714,7 @@ async function getMd(id){
   const d=KB.docs.find(x=>x.id===id);
   if(d && d.md) return d.md;                    // 已有正文（内嵌/完整版）
   if(!DOCS_CACHE){
-    try{ const r=await fetch(DATA_BASE+'kb_docs.json',{cache:'no-cache'}); if(r.ok) DOCS_CACHE=await r.json(); }
+    try{ const r=await fetch(DATA_BASE+'kb_docs.json'); if(r.ok) DOCS_CACHE=await r.json(); }
     catch(e){ DOCS_CACHE={}; }
   }
   return (DOCS_CACHE&&DOCS_CACHE[String(id)])||'（正文加载失败，请刷新重试）';
