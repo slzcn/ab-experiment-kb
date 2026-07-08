@@ -15,16 +15,24 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SB = Supabase()
 
 cats = SB.get("ab_categories?select=key,icon,name,descr,ord&order=ord")
-# 带 published 列查询；若该列尚未 ALTER 出来（PostgREST 400），退回不带该列的查询，
-# 保证 Action 在“加字段 SQL 还没跑”的过渡期也不会挂。
+# 拉文章：只要未删除(deleted_at 为空)的。带 published/deleted_at 列查询，逐级降级，
+# 保证某列尚未 ALTER 出来时 Action 也不挂。
+_SEL = "doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal"
 try:
-    arts = SB.get("ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal,published&order=doc_id")
+    # 首选：服务端就过滤掉回收站(deleted_at 非空)的文章，从源头杜绝泄漏到公开站
+    arts = SB.get(f"ab_articles?select={_SEL},published,deleted_at&deleted_at=is.null&order=doc_id")
 except Exception:
-    arts = SB.get("ab_articles?select=doc_id,title,cat,keywords,md,body_text,updated,source_url,is_internal&order=doc_id")
+    try:
+        arts = SB.get(f"ab_articles?select={_SEL},published&order=doc_id")
+    except Exception:
+        arts = SB.get(f"ab_articles?select={_SEL}&order=doc_id")
 
-# 只把「上线」文章写进公开静态文件——下线的库里保留、但公开站不显示。
-# published 为 None（老数据未设/该列不存在）按上线处理。
-arts = [a for a in arts if a.get("published", True) is not False]
+# 双保险（即便走了不带 deleted_at 过滤的降级查询，也在本地再滤一遍）：
+#  - deleted_at 有值 = 已删除(在回收站) → 不进公开站
+#  - published 为 False = 已下线 → 不进公开站；None/缺失 按上线处理
+arts = [a for a in arts
+        if not a.get("deleted_at")
+        and a.get("published", True) is not False]
 
 categories = [{"key":c["key"],"icon":c["icon"],"name":c["name"],"desc":c.get("descr","")} for c in cats]
 
