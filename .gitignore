@@ -1,2 +1,19 @@
 __pycache__/
 *.pyc
+
+# —— 以下为纯本地运维/构建文件，不发布到公网（GitHub Pages）——
+# 手动运维脚本（Action 不依赖；Action 用的 gen_cache/bundle/process_uploads/kb_common/doc_to_md/dev.html 仍在仓库）
+add.py
+publish.py
+refresh.py
+build_kb.py
+seed_supabase.py
+crawl.py
+sync_volc.py
+# 后端表结构/RLS/触发器设计（在 Supabase 控制台手动跑，无需公开暴露后端设计）
+supabase_schema.sql
+supabase_autosync.sql
+supabase_published.sql
+supabase_uploads.sql
+# 爬虫原始中间产物（非网站数据）
+raw_docs.json
