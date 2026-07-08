@@ -100,7 +100,8 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   a{color:inherit;text-decoration:none}
   ::selection{background:var(--brand);color:#fff}
   /* ---- 布局 ---- */
-  .app{display:grid;grid-template-columns:280px 1fr;height:100vh;height:100dvh}  /* dvh 兼容iOS Safari 动态地址栏 */
+  .app{display:grid;grid-template-columns:280px 1fr;height:100vh;height:100dvh;
+    max-width:1400px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}  /* 整体居中,两侧留白 */
   /* 侧栏 */
   aside{background:var(--bg2);border-right:1px solid var(--line);
     display:flex;flex-direction:column;overflow:hidden}
@@ -506,6 +507,11 @@ async function fetchT(url, ms=8000){
   try{ return await fetch(url,{signal:ctl.signal}); }
   finally{ clearTimeout(t); }
 }
+// 数据文件 URL：带分钟级 cache-bust。kb_*.json 在 GitHub Pages 上带 CDN/浏览器缓存(max-age=600)，
+// 不破缓存的话后台改动后最多要等 10 分钟才可见（妙搭薄壳、以及已打开过首页的浏览器都吃旧缓存）。
+// 用「分钟」做 ?v= key：同一分钟内同 URL → 命中缓存(每分钟至多回源一次，不打爆 Pages)；跨分钟即取新 →
+// 后台改动后约 1 分钟内可见。本站(DATA_BASE='')同样受益：浏览器不再压着 10 分钟旧数据。
+function dataUrl(name){ return DATA_BASE+name+'?v='+Math.floor(Date.now()/60000); }
 
 async function boot(){
   marked.setOptions({breaks:true, gfm:true});
@@ -513,7 +519,7 @@ async function boot(){
   // 纯静态：只读静态内容，不连数据库。静态文件由数据库变化触发 Action 重新生成。
   // 1) 首屏只下轻量列表 kb_index.json（无正文，几百KB → 快）；正文点开时按需拉
   try{
-    const r=await fetchT(DATA_BASE+'kb_index.json');
+    const r=await fetchT(dataUrl('kb_index.json'));
     if(r.ok){
       const idx=await r.json();
       if(idx&&idx.docs&&idx.docs.length){ applyKB(idx); shown=true; }
@@ -522,7 +528,7 @@ async function boot(){
   // 2) 回退：完整 kb_cache.json（含正文）
   if(!shown){
     try{
-      const r=await fetchT(DATA_BASE+'kb_cache.json', 15000);
+      const r=await fetchT(dataUrl('kb_cache.json'), 15000);
       if(r.ok){ const c=await r.json(); if(c&&c.docs&&c.docs.length){ applyKB(c); shown=true; } }
     }catch(e){}
   }
@@ -532,7 +538,7 @@ async function boot(){
       const embed=document.getElementById('kbdata');
       const raw=embed?embed.textContent.trim():'';
       if(raw && raw[0]==='{'){ applyKB(JSON.parse(raw)); shown=true; }
-      else{ const r=await fetchT(DATA_BASE+'kb.json', 15000); applyKB(await r.json()); shown=true; }
+      else{ const r=await fetchT(dataUrl('kb.json'), 15000); applyKB(await r.json()); shown=true; }
     }catch(e){}
   }
   if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试（可能是网络问题，请检查能否访问 GitHub）'; return; }
@@ -552,7 +558,7 @@ async function boot(){
 async function loadSearchIndex(){
   if(KB && KB.docs && KB.docs[0] && KB.docs[0].text!==undefined) return; // 已含全文(cache/embed 路径)
   try{
-    const r=await fetchT(DATA_BASE+'kb_search.json', 20000);
+    const r=await fetchT(dataUrl('kb_search.json'), 20000);
     if(!r.ok) return;
     SEARCH=await r.json();
     buildIndex();               // 用全文重建检索索引
@@ -733,7 +739,7 @@ async function getMd(id){
   const d=KB.docs.find(x=>x.id===id);
   if(d && d.md) return d.md;                    // 已有正文（内嵌/完整版）
   if(!DOCS_CACHE){
-    try{ const r=await fetchT(DATA_BASE+'kb_docs.json', 20000); if(r.ok) DOCS_CACHE=await r.json(); }
+    try{ const r=await fetchT(dataUrl('kb_docs.json'), 20000); if(r.ok) DOCS_CACHE=await r.json(); }
     catch(e){ DOCS_CACHE={}; }
   }
   return (DOCS_CACHE&&DOCS_CACHE[String(id)])||'（正文加载失败，请刷新重试）';

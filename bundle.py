@@ -27,9 +27,15 @@ root_html = html.replace("<!--KB_DATA-->", "")
 root_out = os.path.join(HERE, "index.html")
 open(root_out, "w", encoding="utf-8").write(root_html)
 
-# 2) dist/index.html（妙搭/本地双击）：内嵌全量正文，离线自足。
+# 2) dist/index.html（妙搭/本地双击）：
+#    - 注入 window.DATA_BASE 指向 GitHub Pages，让妙搭页运行时 fetch 那份"数据库变化即自动刷新"的
+#      kb_*.json —— 后台上下线/删除文章后，妙搭首页也能约 1 分钟内自动同步（不再需要手动 --miaoda）。
+#    - 仍内嵌全量正文作离线兜底：boot() 的 fetch 链全部失败（断网/Pages 不可达）时回退到内嵌数据，不白屏。
+#    妙搭静态托管会把子路径 fallback 到 index.html，本身取不到独立 kb.json，DATA_BASE 指远程正好补上。
 kb_safe = kb.replace("</", "<\\/")   # 转义 </script 防止提前闭合
-dist_html = html.replace("<!--KB_DATA-->", kb_safe)
+# DATA_BASE 末尾带 /；Pages 的 json 有 CDN 缓存(max-age=600)，boot()/按需加载里会自动 append ?v= 破缓存。
+dist_data_base = '<script>window.DATA_BASE="%s/";</script>' % SITE
+dist_html = html.replace("<!--KB_DATA-->", kb_safe).replace("</head>", dist_data_base + "\n</head>", 1)
 os.makedirs(os.path.join(HERE, "dist"), exist_ok=True)
 open(os.path.join(HERE, "dist", "index.html"), "w", encoding="utf-8").write(dist_html)
 
