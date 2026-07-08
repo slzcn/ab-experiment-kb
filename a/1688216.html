@@ -576,8 +576,6 @@ function setupSubmit(){
 
 function renderFoot(){
   const total=KB.docs.length;
-  const internal=KB.docs.filter(d=>d.internal).length;
-  const official=total-internal;
   const cats=KB.categories.filter(c=>KB.docs.some(d=>d.cat===c.key)).length;
   // 最近更新日期
   const dates=KB.docs.map(d=>d.updated).filter(Boolean).sort();
@@ -587,11 +585,7 @@ function renderFoot(){
       <div class="sf-pill"><b>${total}</b><span>篇知识</span></div>
       <div class="sf-pill"><b>${cats}</b><span>大主题</span></div>
     </div>
-    <div class="sf-line"><span class="sf-dot"></span>知识库在线 · 最近更新 ${latest||'—'}</div>
-    <div class="sf-src">
-      <b>官方权威 ${official} 篇</b>整理自火山引擎 DataTester，篇篇可溯源原文；
-      ${internal?`<b>内部沉淀 ${internal} 篇</b>为团队实战经验。`:'并支持团队持续沉淀内部经验。'}
-    </div>`;
+    <div class="sf-line"><span class="sf-dot"></span>知识库在线 · 最近更新 ${latest||'—'}</div>`;
 }
 
 function counts(){
