@@ -11,6 +11,10 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://slzcn.github.io/ab-experiment-kb/a/160705.html">
 <script>window.DATA_BASE="../";window.INIT_DOC=160705;</script>
+<script>/* 首屏提速：解析 HTML 时立即并行预取轻量列表 kb_index.json（不等 JS 执行完再 fetch，消除串行等待）。
+ * 缓存 key 与下方 dataUrl 同规则（每 10 分钟），保证 preload 与后续 fetch URL 一致才能命中。*/
+(function(){try{var b=(window.DATA_BASE||'');var v=Math.floor(Date.now()/600000);var l=document.createElement('link');l.rel='preload';l.as='fetch';l.href=b+'kb_index.json?v='+v;document.head.appendChild(l);}catch(e){}})();
+</script>
 <script>/* marked.min.js 内联(避免国内 jsdelivr 加载慢阻塞首屏) */
 /**
  * marked v15.0.12 - a markdown parser
@@ -513,7 +517,7 @@ async function fetchT(url, ms=8000){
 // 不破缓存的话后台改动后最多要等 10 分钟才可见（妙搭薄壳、以及已打开过首页的浏览器都吃旧缓存）。
 // 用「分钟」做 ?v= key：同一分钟内同 URL → 命中缓存(每分钟至多回源一次，不打爆 Pages)；跨分钟即取新 →
 // 本站(DATA_BASE='')读取最新数据。
-function dataUrl(name){ return DATA_BASE+name+'?v='+Math.floor(Date.now()/60000); }
+function dataUrl(name){ return DATA_BASE+name+'?v='+Math.floor(Date.now()/600000); }
 
 async function boot(){
   marked.setOptions({breaks:true, gfm:true});
