@@ -20,6 +20,15 @@ app_js = open(os.path.join(HERE,"app.js"), encoding="utf-8").read()
 marked = open(os.path.join(HERE,"marked.min.js"), encoding="utf-8").read()
 SITE = "https://slzcn.github.io/ab-experiment-kb"
 
+# 外链资源的内容哈希做 cache-bust：Pages 版的 app.css/app.js 走 <link>/<script src> 外链，
+# GitHub Pages 给它们 cache-control:max-age=600，改样式后回访用户(尤其移动端浏览器缓存顽固)
+# 会一直吃旧文件、看不到变化。给 URL 加 ?v=<内容哈希>：内容变→URL变→强制取新；内容不变→URL不变→
+# 继续命中缓存。比时间戳更优(不误伤未改动的文件)。dist 是内联的、无此问题，不受影响。
+import hashlib
+def _ver(s): return hashlib.md5(s.encode("utf-8")).hexdigest()[:8]
+CSS_V = _ver(app_css)
+JS_V  = _ver(app_js)
+
 
 def render(base_prefix, kb_data_block, extra_head_inject=""):
     """按占位符渲染模板。
@@ -34,9 +43,9 @@ def render(base_prefix, kb_data_block, extra_head_inject=""):
       <!--KB_DATA-->    → kb_data_block
     """
     out = tpl
-    out = out.replace("<!--APP_CSS-->", f'<link rel="stylesheet" href="{base_prefix}app.css">')
+    out = out.replace("<!--APP_CSS-->", f'<link rel="stylesheet" href="{base_prefix}app.css?v={CSS_V}">')
     out = out.replace("<!--MARKED_JS-->", f'<script src="{base_prefix}marked.min.js"></script>')
-    out = out.replace("<!--APP_JS-->", f'<script src="{base_prefix}app.js"></script>')
+    out = out.replace("<!--APP_JS-->", f'<script src="{base_prefix}app.js?v={JS_V}"></script>')
     out = out.replace("<!--KB_DATA-->", kb_data_block)
     if extra_head_inject:
         # 注入到 </head> 之前
