@@ -495,13 +495,22 @@ const PENDING_DOC = (()=>{
   const m=/#doc=(\d+)/.exec(location.hash||''); return m?+m[1]:0;
 })();
 
+// 带超时的 fetch：任一请求挂起(国内访问 GitHub Pages 偶发)不会让首屏无限转圈，
+// 超时即抛错走下一个回退路径。默认 8 秒。
+async function fetchT(url, ms=8000){
+  const ctl=new AbortController();
+  const t=setTimeout(()=>ctl.abort(), ms);
+  try{ return await fetch(url,{signal:ctl.signal}); }
+  finally{ clearTimeout(t); }
+}
+
 async function boot(){
   marked.setOptions({breaks:true, gfm:true});
   let shown=false;
   // 纯静态：只读静态内容，不连数据库。静态文件由数据库变化触发 Action 重新生成。
   // 1) 首屏只下轻量列表 kb_index.json（无正文，几百KB → 快）；正文点开时按需拉
   try{
-    const r=await fetch(DATA_BASE+'kb_index.json');
+    const r=await fetchT(DATA_BASE+'kb_index.json');
     if(r.ok){
       const idx=await r.json();
       if(idx&&idx.docs&&idx.docs.length){ applyKB(idx); shown=true; }
@@ -510,7 +519,7 @@ async function boot(){
   // 2) 回退：完整 kb_cache.json（含正文）
   if(!shown){
     try{
-      const r=await fetch(DATA_BASE+'kb_cache.json');
+      const r=await fetchT(DATA_BASE+'kb_cache.json', 15000);
       if(r.ok){ const c=await r.json(); if(c&&c.docs&&c.docs.length){ applyKB(c); shown=true; } }
     }catch(e){}
   }
@@ -520,10 +529,10 @@ async function boot(){
       const embed=document.getElementById('kbdata');
       const raw=embed?embed.textContent.trim():'';
       if(raw && raw[0]==='{'){ applyKB(JSON.parse(raw)); shown=true; }
-      else{ const r=await fetch(DATA_BASE+'kb.json'); applyKB(await r.json()); shown=true; }
+      else{ const r=await fetchT(DATA_BASE+'kb.json', 15000); applyKB(await r.json()); shown=true; }
     }catch(e){}
   }
-  if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试'; return; }
+  if(!shown){ $('#loading').innerHTML='加载失败，请刷新重试（可能是网络问题，请检查能否访问 GitHub）'; return; }
   // 直达某篇：先把文章渲染好再显示 #app（await 正文加载完），彻底不闪列表；
   // 目标文章不存在（已下线/删除）时回退列表
   if(PENDING_DOC && KB.docs.some(d=>d.id===PENDING_DOC)) await openDoc(PENDING_DOC);
@@ -540,7 +549,7 @@ async function boot(){
 async function loadSearchIndex(){
   if(KB && KB.docs && KB.docs[0] && KB.docs[0].text!==undefined) return; // 已含全文(cache/embed 路径)
   try{
-    const r=await fetch(DATA_BASE+'kb_search.json');
+    const r=await fetchT(DATA_BASE+'kb_search.json', 20000);
     if(!r.ok) return;
     SEARCH=await r.json();
     buildIndex();               // 用全文重建检索索引
@@ -721,7 +730,7 @@ async function getMd(id){
   const d=KB.docs.find(x=>x.id===id);
   if(d && d.md) return d.md;                    // 已有正文（内嵌/完整版）
   if(!DOCS_CACHE){
-    try{ const r=await fetch(DATA_BASE+'kb_docs.json'); if(r.ok) DOCS_CACHE=await r.json(); }
+    try{ const r=await fetchT(DATA_BASE+'kb_docs.json', 20000); if(r.ok) DOCS_CACHE=await r.json(); }
     catch(e){ DOCS_CACHE={}; }
   }
   return (DOCS_CACHE&&DOCS_CACHE[String(id)])||'（正文加载失败，请刷新重试）';
