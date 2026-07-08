@@ -732,23 +732,54 @@ async function loadData(){
 // 翻页/搜索只重拉文章（分类已在内存），比 loadData 少一半网络
 // 版本号防竞速：快速连续翻页/搜索时，只采用最后一个请求的结果
 let _reqSeq=0;
+// 页级缓存：翻过的页秒显；相邻页后台预取，点"下一页/上一页"直接命中。key=搜索词|每页|页码
+const PAGE_CACHE=new Map();       // key -> {arts,total,pub,ts}
+const PAGE_INFLIGHT=new Map();    // key -> Promise（防并发重复拉同一页）
+const PAGE_TTL=30000;             // 30s 内的页缓存可直接用
+function pageKey(pg){ return (Q||'')+'|'+PER+'|'+pg; }
+function fetchArticles(pg){
+  const key=pageKey(pg);
+  const hit=PAGE_CACHE.get(key);
+  if(hit && Date.now()-hit.ts<PAGE_TTL) return Promise.resolve(hit);
+  if(PAGE_INFLIGHT.has(key)) return PAGE_INFLIGHT.get(key);
+  const q=encodeURIComponent(Q||'');
+  const pr=apiCall(`/articles?page=${pg}&per=${PER}${q?'&q='+q:''}`,'GET').then(a=>{
+    const rec={arts:(a&&a.articles)||[], total:(a&&typeof a.total==='number')?a.total:null,
+      pub:(a&&typeof a.pubCount==='number'&&a.pubCount>=0)?a.pubCount:null, ts:Date.now()};
+    PAGE_CACHE.set(key,rec); PAGE_INFLIGHT.delete(key); return rec;
+  }).catch(e=>{ PAGE_INFLIGHT.delete(key); throw e; });
+  PAGE_INFLIGHT.set(key,pr); return pr;
+}
+// 后台静默预取相邻页（不阻塞、不报错、不动画）
+function prefetchNeighbors(pages){
+  [PAGE+1,PAGE-1].forEach(pg=>{
+    if(pg>=1 && (!pages||pg<=pages)){ const key=pageKey(pg);
+      if(!(PAGE_CACHE.get(key)&&Date.now()-PAGE_CACHE.get(key).ts<PAGE_TTL)) fetchArticles(pg).catch(()=>{}); }
+  });
+}
+function clearPageCache(){ PAGE_CACHE.clear(); PAGE_INFLIGHT.clear(); }
 async function loadPage(){
   const seq=++_reqSeq;
   LOADING=true;
   const wrap=$('#artWrap');
-  // 加载态：保留旧表格、只淡化+顶部进度条，避免清空造成的“闪一下”
-  if(wrap && wrap.querySelector('.tbl')) wrap.classList.add('loading');
+  const key=pageKey(PAGE);
+  const cached=PAGE_CACHE.get(key);
+  // 缓存命中且新鲜→先秒显（无 loading 淡化），仍在后台校验最新
+  const fresh=cached && Date.now()-cached.ts<PAGE_TTL;
+  if(fresh){
+    ARTS=cached.arts; if(cached.total!=null)TOTAL=cached.total; if(cached.pub!=null)PUB_COUNT=cached.pub;
+    renderArts();
+  } else if(wrap && wrap.querySelector('.tbl')) wrap.classList.add('loading');
   try{
-    const q=encodeURIComponent(Q||'');
-    const a=await apiCall(`/articles?page=${PAGE}&per=${PER}${q?'&q='+q:''}`,'GET');
-    // 不是最新一个请求的结果→丢弃（避免慢的旧请求覆盖快的新请求）
-    if(seq!==_reqSeq) return;
-    ARTS=(a&&a.articles)||[];
-    TOTAL=(a&&typeof a.total==='number')?a.total:ARTS.length;
-    if(a&&typeof a.pubCount==='number'&&a.pubCount>=0) PUB_COUNT=a.pubCount;
+    const rec=await fetchArticles(PAGE);
+    if(seq!==_reqSeq) return;   // 慢的旧请求→丢弃
+    ARTS=rec.arts;
+    if(rec.total!=null)TOTAL=rec.total;
+    if(rec.pub!=null)PUB_COUNT=rec.pub;
     renderArts();
     if(wrap) wrap.classList.remove('loading');
-    // 翻页只换表格内容、不滚动页面（此前的 window.scrollTo 会让整页跳一下，主人反馈别跳）。
+    // 翻页只换表格内容、不滚动页面。翻完预取相邻页，下次翻页命中缓存秒切
+    prefetchNeighbors(Math.max(1,Math.ceil((TOTAL||0)/PER)));
   } finally { if(seq===_reqSeq){ LOADING=false; if(wrap) wrap.classList.remove('loading'); } }
 }
 
@@ -849,7 +880,7 @@ $('#upBtn').onclick=async()=>{
           if(fail.length)m+=` 失败 ${fail.length} 篇：`+fail.map(r=>r.filename).join('、');
           msg('#upMsg', fail.length?(ok?'ok':'err'):'ok', m);
           FILES=[];renderFileList();
-          await loadPage();
+          clearPageCache(); await loadPage();
         }else if(ticks>=MAX){
           clearInterval(POLL);POLL=null;
           msg('#upMsg','err','处理超时（服务器 Action 可能未运行或排队中）。文件已上传，稍后可在“文章管理”查看是否入库，或到 GitHub Actions 页面查看进度。');
@@ -939,7 +970,7 @@ function bindPager(pages){
     loadPage();  // 翻页走后端，只换内容、不滚动页面
   });
   const ps=$('#perSel');
-  if(ps)ps.onchange=()=>{PER=+ps.value;PAGE=1;loadPage();};
+  if(ps)ps.onchange=()=>{PER=+ps.value;PAGE=1;clearPageCache();loadPage();};
 }
 function updateBatchBar(){
   const n=SELECTED.size;
@@ -957,6 +988,7 @@ $('#artSearch').addEventListener('input',()=>{
   _searchTimer=setTimeout(()=>{
     Q=($('#artSearch').value||'').trim();
     PAGE=1;
+    clearPageCache();
     loadPage();
   },300);
 });
@@ -996,7 +1028,7 @@ async function togglePub(id){
   const sw=$(`[data-toggle="${id}"]`); if(sw)sw.classList.add('busy');
   try{
     await apiSaveArticle({id, published:next});
-    a.published=next; renderArts();
+    a.published=next; clearPageCache(); renderArts();
     toast('ok', next?`《${a.title}》已上线`:`《${a.title}》已下线`);
   }catch(e){
     if(sw)sw.classList.remove('busy');
@@ -1030,7 +1062,7 @@ async function bulkAction(kind){
       await Promise.all(targets.map(x=>apiSaveArticle({id:x, published:kind==='on'})));
     }
     SELECTED.clear();
-    await loadPage();
+    clearPageCache(); await loadPage();
     if(kind==='del'){
       const left=ids.filter(id=>ARTS.some(x=>x.id===id)).length;
       if(left) toast('err',`删除未完全生效：还有 ${left} 篇仍在库中`,4000);
@@ -1104,7 +1136,7 @@ $('#pubSave').onclick=async()=>{
     msg('#pubMsg','ok','✓ 已发布《'+title+'》');
     // 清空表单，方便继续发下一篇
     $('#pubTitle').value='';$('#pubKw').value='';$('#pubMd').value='';
-    await loadPage();
+    clearPageCache(); await loadPage();
     // 定位新文章（用返回的 id 或用标题匹配）
     const newId=(saved&&saved.id)||null;
     setTimeout(()=>{ closeUpload(); if(newId)focusArt(newId); toast('ok','《'+title+'》已发布，正在同步'); }, 900);
@@ -1121,7 +1153,7 @@ $('#edSave').onclick=async()=>{
   try{
     await apiSaveArticle({id,title,cat:$('#edCat').value,keywords:$('#edKw').value.trim(),md,body_text});
     msg('#edMsg','ok','✓ 已保存');
-    await loadPage();
+    clearPageCache(); await loadPage();
     // 保存后关闭弹层，并把刚编辑的这篇滚动到可视区、短暂高亮，方便定位
     setTimeout(()=>{ closeEdit(); focusArt(id); toast('ok',`《${title}》已保存`); }, 700);
   }catch(e){msg('#edMsg','err','✗ '+e.message);}
@@ -1150,7 +1182,7 @@ async function delArt(id){
   toast('load','正在删除…');
   try{
     await apiDeleteArticle(String(id));
-    await loadPage();
+    clearPageCache(); await loadPage();
     // 删后校验：列表里还在 = 实际没删掉，明确报错而非静默
     if(ARTS.some(x=>x.id===id)) toast('err',`删除未生效：《${title}》仍在库中，请重试`,4000);
     else toast('ok',`已删除《${title}》，可在回收站恢复`);
@@ -1201,7 +1233,7 @@ async function restoreArt(id){
   try{
     await apiCall('/restore?id='+id,'POST');
     await loadTrash();
-    await loadPage();
+    clearPageCache(); await loadPage();
     msg('#trashMsg','ok',`已恢复《${title}》`);
   }catch(e){ msg('#trashMsg','err','恢复失败：'+e.message); }
 }
