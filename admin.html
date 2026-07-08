@@ -541,7 +541,9 @@ function confirmBox(opts){
 }
 
 // ===== Edge Function 鉴权层（写操作走服务端，前端不碰 service_role）=====
-const API_BASE=SB.url+'/functions/v1/admin-api';
+// Supabase 项目地址（公开，非密钥）。弃用 anon key 后 SB 对象已删，
+// 若再引用 SB 会在顶层 const 求值时抛 ReferenceError → 整个后台脚本中断打不开。
+const API_BASE='https://cddkniwbhvcbfgkgomtl.supabase.co/functions/v1/admin-api';
 const API_TOKEN_KEY='ab_kb_api_token';
 function apiToken(){try{return localStorage.getItem(API_TOKEN_KEY)||'';}catch(e){return '';}}
 function apiSetToken(t){try{localStorage.setItem(API_TOKEN_KEY,t||'');}catch(e){}}
