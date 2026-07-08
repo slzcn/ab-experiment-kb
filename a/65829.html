@@ -168,7 +168,10 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .loadmore.done{color:var(--dim);background:transparent;border-color:transparent;box-shadow:none;font-weight:500}
   .loadmore.done .dot{display:none}
   .card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);
-    padding:17px 19px;cursor:pointer;transition:.18s;position:relative;overflow:hidden}
+    padding:17px 19px;cursor:pointer;transition:.18s;position:relative;overflow:hidden;
+    /* 卡片整体可点进正文：禁选中，避免点击时手指/鼠标微动被判成拖选文本→文字高亮选中却不触发 click，
+       表现为"点了进选中态但没进正文"。正文 .md 区不加此项，仍可正常选中复制。 */
+    -webkit-user-select:none;user-select:none}
   .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
     background:var(--brand);transform:scaleY(0);transform-origin:center;transition:.18s}
   .card:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:var(--sh)}
