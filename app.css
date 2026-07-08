@@ -148,6 +148,9 @@
   .md img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);
     box-shadow:0 4px 16px rgba(120,100,70,.1)}
   .md p>img{display:block;margin:20px auto;max-height:560px;width:auto}
+  /* 图片异步加载：未加载完时淡入过渡，避免生硬弹出 */
+  .md img.lazyimg{opacity:0;transition:opacity .35s ease}
+  .md img.lazyimg.loaded{opacity:1}
   /* 相邻配图并排成一行（由 JS 包进 .imrow） */
   .imrow{display:flex;gap:14px;justify-content:center;align-items:flex-start;flex-wrap:wrap;margin:20px 0}
   .imrow img{margin:0;max-height:560px;width:auto;max-width:calc(50% - 7px);flex:0 1 auto}

@@ -393,6 +393,18 @@ async function getMd(id){
 function groupImages(scope){
   const md=(scope||document).querySelector('.md'); if(!md) return;
   const imgs=[...md.querySelectorAll('img')];
+  // 图片异步加载：文字先渲染，图片懒加载/异步解码，不阻塞正文文字
+  imgs.forEach(im=>{
+    im.setAttribute('loading','lazy');
+    im.setAttribute('decoding','async');
+    im.classList.add('lazyimg');
+    // 加载完成/失败后移除占位骨架样式
+    if(im.complete){ im.classList.add('loaded'); }
+    else {
+      im.addEventListener('load', ()=>im.classList.add('loaded'), {once:true});
+      im.addEventListener('error', ()=>im.classList.add('loaded'), {once:true});
+    }
+  });
   const seen=new Set();
   imgs.forEach(img=>{
     if(seen.has(img)) return;
