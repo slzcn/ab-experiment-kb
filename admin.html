@@ -197,7 +197,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     background:linear-gradient(90deg,transparent,var(--brand),transparent);
     animation:pgbar 1s ease-in-out infinite}
   @keyframes pgbar{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-  .tbl{width:100%;min-width:760px;border-collapse:collapse;font-size:13px;table-layout:fixed}
+  .tbl{width:100%;min-width:880px;border-collapse:collapse;font-size:13px;table-layout:fixed}
   .tbl th,.tbl td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
   .tbl th{font-size:11.5px;color:var(--dim);font-weight:700;text-transform:none}
   .tbl td .tt{font-weight:600;color:var(--ink)}
@@ -917,7 +917,7 @@ function renderArts(){
   const start=(PAGE-1)*PER;
   const pageList=list;   // 后端已切页
   const allSel=pageList.length&&pageList.every(a=>SELECTED.has(a.id));
-  $('#artWrap').innerHTML=`<table class="tbl"><colgroup><col style="width:34px"><col><col style="width:130px"><col style="width:120px"><col style="width:72px"><col style="width:150px"></colgroup><thead><tr>
+  $('#artWrap').innerHTML=`<table class="tbl"><colgroup><col style="width:34px"><col style="min-width:200px"><col style="width:190px"><col style="width:110px"><col style="width:100px"><col style="width:150px"></colgroup><thead><tr>
     <th class="chk"><input type="checkbox" id="chkAll" ${allSel?'checked':''} title="选择本页全部"></th>
     <th>标题</th><th>分类</th><th>发布日期</th><th class="statecell">状态</th><th></th></tr></thead><tbody>${
     pageList.map(a=>{const c=catOf(a.cat);const pub=isPub(a);return `<tr class="${SELECTED.has(a.id)?'sel':''}">
