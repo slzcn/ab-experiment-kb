@@ -250,6 +250,7 @@
   #toast.load{background:#fff;color:var(--sub);border:1px solid var(--line)}
   .ed-hint{font-size:11.5px;color:var(--dim);line-height:1.6;margin-top:12px;
     background:var(--panel);padding:11px 13px;border-radius:9px}
+  .ed-hint:empty{display:none}  /* 无内容时不显示空胶囊色块（避免发布按钮下方出现空色块） */
   .ed-hint code{background:var(--bg2);padding:1px 6px;border-radius:5px;color:var(--brand2);font-size:11px}
   .ed-preview{padding:22px 26px;overflow-y:auto;background:var(--bg2)}
   .ed-prev-tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;
