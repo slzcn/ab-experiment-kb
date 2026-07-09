@@ -197,13 +197,19 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     background:linear-gradient(90deg,transparent,var(--brand),transparent);
     animation:pgbar 1s ease-in-out infinite}
   @keyframes pgbar{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-  .tbl{width:100%;min-width:880px;border-collapse:collapse;font-size:13px;table-layout:fixed}
+  /* 表格响应式列宽:auto 布局 + 各列 min-width 兜底 + 标题列 max-width 防独吞。
+     窗口在 820-1132px 之间时所有列按内容比例等比缩放,不是只缩标题列。 */
+  .tbl{width:100%;min-width:820px;border-collapse:collapse;font-size:13px}
   .tbl th,.tbl td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
   .tbl th{font-size:11.5px;color:var(--dim);font-weight:700;text-transform:none}
   .tbl td .tt{font-weight:600;color:var(--ink)}
   .tbl td.titlecell,.tbl td.catcell{white-space:normal;overflow:visible;text-overflow:clip;word-break:break-word}
   .tbl td.titlecell .tt{display:inline}
-  .tbl th.statecell,.tbl td.statecell{padding-left:4px;padding-right:4px}
+  .tbl th.titlecell,.tbl td.titlecell{min-width:180px;max-width:360px}
+  .tbl th.catcell,.tbl td.catcell{min-width:160px}
+  .tbl th.datecell,.tbl td.datecell{min-width:96px;white-space:nowrap;color:var(--dim);font-size:12px}
+  .tbl th.statecell,.tbl td.statecell{min-width:92px;padding-left:4px;padding-right:4px}
+  .tbl th.actscell,.tbl td.acts{min-width:138px}
   .tbl .cat{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--brand2);
     background:rgba(224,99,46,.1);padding:2px 9px;border-radius:20px;white-space:normal;max-width:100%;box-sizing:border-box}
   .tbl .badge{font-size:10.5px;color:var(--accent);border:1px solid rgba(192,122,46,.4);border-radius:5px;padding:0 5px;margin-left:6px}
@@ -917,14 +923,14 @@ function renderArts(){
   const start=(PAGE-1)*PER;
   const pageList=list;   // 后端已切页
   const allSel=pageList.length&&pageList.every(a=>SELECTED.has(a.id));
-  $('#artWrap').innerHTML=`<table class="tbl"><colgroup><col style="width:34px"><col style="min-width:200px"><col style="width:190px"><col style="width:110px"><col style="width:100px"><col style="width:150px"></colgroup><thead><tr>
+  $('#artWrap').innerHTML=`<table class="tbl"><thead><tr>
     <th class="chk"><input type="checkbox" id="chkAll" ${allSel?'checked':''} title="选择本页全部"></th>
-    <th>标题</th><th>分类</th><th>发布日期</th><th class="statecell">状态</th><th></th></tr></thead><tbody>${
+    <th class="titlecell">标题</th><th class="catcell">分类</th><th class="datecell">发布日期</th><th class="statecell">状态</th><th class="actscell"></th></tr></thead><tbody>${
     pageList.map(a=>{const c=catOf(a.cat);const pub=isPub(a);return `<tr class="${SELECTED.has(a.id)?'sel':''}">
       <td class="chk"><input type="checkbox" data-sel="${a.id}" ${SELECTED.has(a.id)?'checked':''}></td>
       <td class="titlecell"><span class="tt">${esc(a.title)}</span>${a.is_internal?'<span class="badge">内部</span>':''}</td>
       <td class="catcell"><span class="cat">${c.icon} ${esc(c.name)}</span></td>
-      <td style="color:var(--dim);font-size:12px">${esc(a.updated||'—')}</td>
+      <td class="datecell">${esc(a.updated||'—')}</td>
       <td class="statecell"><span class="sw ${pub?'on':'off'}" data-toggle="${a.id}" title="${pub?'点击下线（从公开站移除）':'点击上线（公开站显示）'}"><span class="track"></span><span class="lbl">${pub?'上线':'下线'}</span></span></td>
       <td class="acts">
         <button class="btn ghost" style="padding:5px 12px;font-size:12px" data-edit="${a.id}">编辑</button>
