@@ -238,6 +238,16 @@
   .ed-msg.ok{display:block;background:rgba(63,185,80,.12);color:#2f9e44;border:1px solid rgba(63,185,80,.3)}
   .ed-msg.err{display:block;background:rgba(224,99,46,.1);color:var(--brand2);border:1px solid rgba(224,99,46,.3)}
   .ed-msg.load{display:block;background:var(--panel);color:var(--sub)}
+  /* 顶部居中悬浮 toast：与后台 admin 同一套视觉语言（圆角+描边+配色+字重），全站提示统一 */
+  #toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-24px);z-index:200;
+    max-width:min(520px,calc(100vw - 24px));padding:11px 18px;border-radius:12px;font-size:13.5px;font-weight:600;
+    box-shadow:0 10px 34px rgba(120,100,70,.24);opacity:0;pointer-events:none;
+    transition:transform .24s cubic-bezier(.2,.7,.3,1),opacity .2s;
+    line-height:1.5;word-break:break-word;text-align:center}
+  #toast.on{transform:translate(-50%,0);opacity:1}
+  #toast.ok{background:#e9f7ec;color:#2f7d3a;border:1px solid rgba(63,185,80,.35)}
+  #toast.err{background:#fdeceb;color:var(--brand2);border:1px solid rgba(224,99,46,.35)}
+  #toast.load{background:#fff;color:var(--sub);border:1px solid var(--line)}
   .ed-hint{font-size:11.5px;color:var(--dim);line-height:1.6;margin-top:12px;
     background:var(--panel);padding:11px 13px;border-radius:9px}
   .ed-hint code{background:var(--bg2);padding:1px 6px;border-radius:5px;color:var(--brand2);font-size:11px}

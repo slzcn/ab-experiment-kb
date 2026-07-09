@@ -597,10 +597,19 @@ function edData(){
 function updatePrev(){
   const d=edData(); const c=catOf(d.cat);
   $('#edPrevTag').innerHTML=`${c.icon} ${esc(c.name)}`;
-  $('#edPrevTitle').textContent=d.title||'（未填标题）';
+  $('#edPrevTitle').textContent=d.title||'请输入标题';
   $('#edPrevBody').innerHTML=marked.parse(d.md||'*在左侧输入 Markdown，这里实时预览…*');
 }
-function edMsg(cls,txt){const m=$('#edMsg');m.className='ed-msg '+cls;m.textContent=txt;}
+let _toastTimer=null;
+function toast(cls,txt,ms){
+  const t=$('#toast'); if(!t)return;
+  t.className=cls; t.textContent=txt;
+  requestAnimationFrame(()=>t.classList.add('on'));
+  clearTimeout(_toastTimer);
+  if(cls!=='load') _toastTimer=setTimeout(()=>t.classList.remove('on'), ms||2600);
+}
+// 发布结果提示统一走全站顶部悬浮 toast（同 admin 后台一致的位置/风格/交互），不再用编辑器内联小条
+function edMsg(cls,txt){ toast(cls,txt); }
 function plainText(md){
   return (md||'').replace(/!\[[^\]]*\]\([^)]*\)/g,'').replace(/<[^>]+>/g,'')
     .replace(/```[\s\S]*?```/g,'').replace(/[#>*`|\-]{1,}/g,' ').replace(/\s+/g,' ').trim();
@@ -634,7 +643,7 @@ async function submitArticle(){
       excerpt:(row.body_text||'').slice(0,140),len:(row.body_text||'').length,
       updated:row.updated,url:'',internal:true});
     KB.meta.total=KB.docs.length;
-    edMsg('ok','《'+d.title+'》已提交。');
+    edMsg('ok','《'+d.title+'》已提交');
     buildIndex();
     renderCats(); renderFoot();
     setTimeout(()=>{

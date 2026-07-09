@@ -855,7 +855,7 @@ async function uploadToStorage(file,path){
 }
 let POLL=null;
 $('#upBtn').onclick=async()=>{
-  if(!FILES.length){msg('#upMsg','err','请先选择或拖入要上传的文件。');return;}
+  if(!FILES.length){msg('#upMsg','err','请选择或拖入要上传的文件');return;}
   const btn=$('#upBtn');btn.disabled=true;
   const batch='b'+Date.now();
   try{
