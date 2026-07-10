@@ -550,6 +550,37 @@ async function fetchT(url, ms=8000){
 // 本站(DATA_BASE='')读取最新数据。
 function dataUrl(name){ return DATA_BASE+name+'?v='+Math.floor(Date.now()/600000); }
 
+// ===== 安全: marked 输出的 HTML 在 innerHTML 前必须过滤(防持久型 XSS) =====
+// 零依赖内联 sanitizer: 移除危险标签 + on* 事件属性 + javascript:/危险 data: 协议
+function sanitizeHtml(dirty){
+  try{
+    const tpl=document.createElement('template');
+    tpl.innerHTML=String(dirty==null?'':dirty);
+    const BAD_TAGS=new Set(['SCRIPT','STYLE','IFRAME','OBJECT','EMBED','LINK','META','BASE','FORM','INPUT','BUTTON','TEXTAREA','SVG','MATH']);
+    const walk=(root)=>{
+      const nodes=[...root.querySelectorAll('*')];
+      for(const el of nodes){
+        if(BAD_TAGS.has(el.tagName)){ el.remove(); continue; }
+        // 清除所有 on* 事件属性 & 危险协议
+        for(const attr of [...el.attributes]){
+          const name=attr.name.toLowerCase();
+          const val=(attr.value||'').replace(/[\s\u0000-\u001F]/g,'').toLowerCase();
+          if(name.startsWith('on')){ el.removeAttribute(attr.name); continue; }
+          if((name==='href'||name==='src'||name==='xlink:href')){
+            // 只允许 http/https/相对路径/mailto; 图片可放行 data:image
+            const okData = (el.tagName==='IMG' && val.startsWith('data:image/'));
+            if(val.startsWith('javascript:')||val.startsWith('vbscript:')||(val.startsWith('data:')&&!okData)){
+              el.removeAttribute(attr.name);
+            }
+          }
+          if(name==='style' && /expression|javascript:|url\(/i.test(attr.value||'')){ el.removeAttribute(attr.name); }
+        }
+      }
+    };
+    walk(tpl.content);
+    return tpl.innerHTML;
+  }catch(e){ return ''; }
+}
 async function boot(){
   marked.setOptions({breaks:true, gfm:true});
   let shown=false;
@@ -935,7 +966,7 @@ async function openDoc(id, opts){
     let md=await getMd(id);
     if(seq!==_docSeq) return;  // 已切到别的文章,丢弃本次结果
     md=(md||'').replace(/^\s*#\s+.*(?:\r?\n)+/, '');
-    const html=marked.parse(md);
+    const html=sanitizeHtml(marked.parse(md));
     const mdEl=$('#mdBody');
     if(mdEl){ mdEl.innerHTML=html; groupImages(v); }
   })();
@@ -1063,7 +1094,7 @@ function updatePrev(){
   const d=edData(); const c=catOf(d.cat);
   $('#edPrevTag').innerHTML=`${c.icon} ${esc(c.name)}`;
   $('#edPrevTitle').textContent=d.title||'请输入标题';
-  $('#edPrevBody').innerHTML=marked.parse(d.md||'*在左侧输入 Markdown，这里实时预览…*');
+  $('#edPrevBody').innerHTML=sanitizeHtml(marked.parse(d.md||'*在左侧输入 Markdown，这里实时预览…*'));
 }
 let _toastTimer=null;
 function toast(cls,txt,ms){
