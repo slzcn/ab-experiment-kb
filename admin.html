@@ -99,6 +99,39 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   .top .sub{font-size:12px;color:var(--dim)}
   .top a.back{font-size:13px;color:var(--dim);text-decoration:none}
   .top a.back:hover{color:var(--brand)}
+  /* 头部右侧操作区（与前台风格统一） */
+  .top-acts{display:flex;align-items:center;gap:8px}
+  .hd-ic{display:inline-flex;align-items:center;font-family:inherit;font-size:13px;font-weight:600;
+    color:var(--sub);background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+    padding:8px 13px;cursor:pointer;transition:.15s}
+  .hd-ic:hover{color:var(--brand);border-color:var(--brand);background:rgba(224,99,46,.05);transform:translateY(-1px)}
+  .hd-me{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:17px;cursor:pointer;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;
+    transition:.15s;user-select:none}
+  .hd-me:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(224,99,46,.4)}
+  /* 个人空间弹层（与前台一致） */
+  .me-mask{position:fixed;inset:0;background:rgba(20,16,12,.34);backdrop-filter:blur(3px);z-index:9998;opacity:0;pointer-events:none;transition:.2s}
+  .me-mask.on{opacity:1;pointer-events:auto}
+  .me-panel{position:fixed;z-index:9999;left:50%;top:50%;transform:translate(-50%,-46%) scale(.97);
+    width:min(380px,92vw);background:var(--bg2);border:1px solid var(--line);border-radius:18px;
+    box-shadow:0 24px 60px rgba(20,16,12,.28);opacity:0;pointer-events:none;transition:.2s;overflow:hidden}
+  .me-panel.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+  .me-head{display:flex;align-items:center;gap:13px;padding:22px 20px 18px;border-bottom:1px solid var(--line);
+    background:linear-gradient(135deg,rgba(224,99,46,.06),transparent)}
+  .me-bigav{width:46px;height:46px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:24px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff}
+  .me-info{flex:1;min-width:0}
+  .me-info b{display:block;font-size:15px;font-weight:800;color:var(--ink)}
+  .me-info span{display:block;font-size:11.5px;color:var(--dim);margin-top:3px;line-height:1.5}
+  .me-x{cursor:pointer;font-size:18px;color:var(--dim);flex:none;align-self:flex-start;transition:.15s}
+  .me-x:hover{color:var(--brand)}
+  .me-acts{padding:14px;display:flex;flex-direction:column;gap:8px}
+  .me-act{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:11px;border:1px solid var(--line);
+    background:var(--bg);color:var(--sub);font-size:13.5px;font-weight:700;cursor:pointer;transition:.15s;
+    text-align:left;text-decoration:none;width:100%;font-family:inherit}
+  .me-act span{font-size:16px;width:22px;text-align:center;flex:none}
+  .me-act:hover{background:var(--panel);border-color:var(--brand);color:var(--ink);transform:translateY(-1px)}
+  .me-act.danger:hover{border-color:var(--brand);color:var(--brand)}
   /* tab */
   .tabs{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
   .tab{padding:9px 18px;font-size:13.5px;font-weight:700;color:var(--sub);background:var(--bg2);
@@ -379,6 +412,23 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   <div class="tip">登录后 2 小时内免再次验证</div>
 </div>
 
+<!-- 个人空间面板（前后台共用：登录状态 + 退出入口） -->
+<div class="me-mask" id="meMask"></div>
+<div class="me-panel" id="mePanel">
+  <div class="me-head">
+    <span class="me-bigav">👤</span>
+    <div class="me-info">
+      <b id="meName">已登录用户</b>
+      <span id="meStatus">登录有效期内可管理文章与分类</span>
+    </div>
+    <span class="me-x" id="meClose">✕</span>
+  </div>
+  <div class="me-acts">
+    <a class="me-act" id="meHome" href="index.html"><span>🏠</span>回到知识库首页</a>
+    <button class="me-act danger" id="meLogout"><span>🚪</span>退出登录</button>
+  </div>
+</div>
+
 <div class="wrap" id="app" style="display:none">
   <div class="top">
     <div class="brand">
@@ -388,7 +438,12 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         <div class="sub" id="topSub">加载中…</div>
       </div>
     </div>
-    <a class="back" href="index.html">← 返回知识库</a>
+    <div class="top-acts">
+      <button class="hd-ic" id="artReload" title="重新从数据库读取列表">↻<span class="lbl"> 刷新</span></button>
+      <button class="hd-ic" id="trashOpen" title="查看已删除的文章，可恢复或彻底删除">🗑<span class="lbl"> 回收站</span></button>
+      <button class="hd-ic" id="hdHome" title="返回上一页">🏠<span class="lbl"> 返回首页</span></button>
+      <span class="hd-me" id="hdMe" title="个人空间">👤</span>
+    </div>
   </div>
 
   <div class="tabs">
@@ -404,8 +459,6 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       <h2>📄 文章管理 <span class="desc" style="margin:0 0 0 auto" id="artCount"></span></h2>
       <div class="toolbar">
         <input id="artSearch" placeholder="搜索标题…">
-        <button class="btn ghost" id="artReload" title="重新从数据库读取列表">↻<span class="lbl"> 刷新</span></button>
-        <button class="btn ghost" id="trashOpen" title="查看已删除的文章，可恢复或彻底删除">🗑<span class="lbl"> 回收站</span></button>
       </div>
       <div class="batchbar" id="batchBar">
         <span class="cnt" id="batchCnt">已选 0 项</span>
@@ -1366,7 +1419,36 @@ $('#catSave').onclick=async()=>{
 };
 
 // 启动：已登录直接进（先预热首屏数据请求，让网络往返尽早开始）
+// 前后台共用登录：未登录 → 回真正首页 index.html 登录（登后 localStorage token 同域共享，回来直接进）；
+// gate 登录门作为降级兵底（图 index 跳转异常时仍可本地登）。
+function goHomeLogin(){
+  try{ location.href=(function(){let d=location.pathname.replace(/[^/]*$/,'');return d;})()+'index.html?login=1&from=admin'; }
+  catch(e){ location.href='index.html'; }
+}
+function adminBack(){
+  // 返回上一页；无历史时兼底回知识库首页
+  if(history.length>1){ history.back(); setTimeout(()=>{ /* 兼底：若 back 未离开本页 */ },400); }
+  else{ location.href='index.html'; }
+}
+// 个人空间
+function openMe(){ $('#meMask').classList.add('on'); $('#mePanel').classList.add('on'); }
+function closeMe(){ $('#meMask').classList.remove('on'); $('#mePanel').classList.remove('on'); }
+function doLogout(){
+  try{localStorage.removeItem(AUTH_KEY);}catch(e){}
+  apiSetToken('');
+  // 退出回到真正首页（未登录浏览态）
+  location.href='index.html';
+}
+(function(){
+  const h=$('#hdHome'); if(h) h.onclick=adminBack;
+  const m=$('#hdMe'); if(m) m.onclick=openMe;
+  const mx=$('#meClose'); if(mx) mx.onclick=closeMe;
+  const mm=$('#meMask'); if(mm) mm.onclick=closeMe;
+  const lo=$('#meLogout'); if(lo) lo.onclick=doLogout;
+})();
+
 if(loggedIn()){ prefetchFirst(); enter(); }
+else{ goHomeLogin(); }
 </script>
 </body>
 </html>

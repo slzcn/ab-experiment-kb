@@ -566,6 +566,12 @@ async function doLogin(){
     if(ok){
       try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){}
       $('#loginMask').classList.remove('on');
+      if(typeof refreshMe==='function') refreshMe();
+      // 前后台共用登录：若从后台因未登录被退回首页，登后自动回跳后台
+      try{
+        const sp=new URLSearchParams(location.search);
+        if(sp.get('from')==='admin'){ location.href=siteRoot()+'admin.html'; return; }
+      }catch(e){}
       openEditor();
     }else{ err.textContent='访问码不正确'; }
   }catch(e){ err.textContent='网络错误，请稍后重试'; }
@@ -660,6 +666,43 @@ $('#writeBtn').onclick=requireAuthThenEdit;
 $('#loginBtn').onclick=doLogin;
 $('#loginPin').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 $('#loginMask').addEventListener('click',e=>{if(e.target===$('#loginMask'))$('#loginMask').classList.remove('on');});
+
+/* ===== 个人空间（前后台共用退出入口） ===== */
+function refreshMe(){
+  const on=loggedIn();
+  const st=$('#meSt'); if(st){ st.textContent=on?'已登录':'未登录'; st.classList.toggle('on',on); }
+  const nm=$('#meName'); if(nm) nm.textContent=on?'已登录用户':'未登录';
+  const stt=$('#meStatus'); if(stt) stt.textContent=on?'登录有效期内可写文章、进入管理后台':'登录后可写文章、进入管理后台';
+  const bl=$('#meLogin'); if(bl) bl.style.display=on?'none':'flex';
+  const lo=$('#meLogout'); if(lo) lo.style.display=on?'flex':'none';
+  const ad=$('#meAdmin'); if(ad) ad.href=siteRoot()+'admin.html';
+}
+function openMe(){ refreshMe(); $('#meMask').classList.add('on'); $('#mePanel').classList.add('on'); closeSide(); }
+function closeMe(){ $('#meMask').classList.remove('on'); $('#mePanel').classList.remove('on'); }
+function doLogout(){
+  try{localStorage.removeItem(AUTH_KEY);}catch(e){}
+  apiSetToken('');
+  refreshMe();
+  // 退出后回到真正首页（未登录浏览态）
+  location.href=siteRoot()+'index.html';
+}
+(function(){
+  const me=$('#meEntry'); if(me) me.onclick=openMe;
+  const mx=$('#meClose'); if(mx) mx.onclick=closeMe;
+  const mm=$('#meMask'); if(mm) mm.onclick=closeMe;
+  const ml=$('#meLogin'); if(ml) ml.onclick=()=>{ closeMe(); requireAuthThenEdit(); };
+  const mo=$('#meLogout'); if(mo) mo.onclick=doLogout;
+  refreshMe();
+  // 前后台共用登录：若带 ?login=1（通常从后台未登录回跳）且尚未登录，自动弹登录门
+  try{
+    const sp=new URLSearchParams(location.search);
+    if(sp.get('login')==='1' && !loggedIn()){
+      $('#loginErr').textContent=''; $('#loginPin').value='';
+      $('#loginMask').classList.add('on');
+      setTimeout(()=>$('#loginPin').focus(),80);
+    }
+  }catch(e){}
+})();
 $('#edClose').onclick=closeEditor;
 $('#editorMask').onclick=closeEditor;
 $('#edMd').addEventListener('input',updatePrev);
