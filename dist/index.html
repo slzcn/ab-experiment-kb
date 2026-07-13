@@ -379,42 +379,6 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     /* 登录门 */
     .login-box{padding:26px 22px}
   }
-
-  /* ===== 个人空间入口（侧栏） ===== */
-  .me-entry{display:flex;align-items:center;gap:9px;margin:2px 14px 10px;padding:9px 12px;
-    border-radius:11px;border:1px solid var(--line);background:var(--bg2);cursor:pointer;
-    transition:.15s;user-select:none}
-  .me-entry:hover{background:var(--panel);border-color:var(--brand);transform:translateY(-1px)}
-  .me-av{width:24px;height:24px;border-radius:50%;flex:none;display:flex;align-items:center;
-    justify-content:center;font-size:14px;background:linear-gradient(135deg,var(--brand),var(--brand2));}
-  .me-tx{font-size:12.5px;font-weight:700;color:var(--sub)}
-  .me-st{margin-left:auto;font-size:10px;padding:2px 7px;border-radius:6px;background:var(--panel);color:var(--dim)}
-  .me-st.on{background:rgba(63,185,80,.14);color:var(--ok)}
-
-  /* ===== 个人空间弹层 ===== */
-  .me-mask{position:fixed;inset:0;background:rgba(20,16,12,.34);backdrop-filter:blur(3px);
-    z-index:120;opacity:0;pointer-events:none;transition:.2s}
-  .me-mask.on{opacity:1;pointer-events:auto}
-  .me-panel{position:fixed;z-index:121;left:50%;top:50%;transform:translate(-50%,-46%) scale(.97);
-    width:min(380px,92vw);background:var(--bg2);border:1px solid var(--line);border-radius:18px;
-    box-shadow:0 24px 60px rgba(20,16,12,.28);opacity:0;pointer-events:none;transition:.2s;overflow:hidden}
-  .me-panel.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
-  .me-head{display:flex;align-items:center;gap:13px;padding:22px 20px 18px;border-bottom:1px solid var(--line);
-    background:linear-gradient(135deg,rgba(224,99,46,.06),transparent)}
-  .me-bigav{width:46px;height:46px;border-radius:50%;flex:none;display:flex;align-items:center;
-    justify-content:center;font-size:24px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff}
-  .me-info{flex:1;min-width:0}
-  .me-info b{display:block;font-size:15px;font-weight:800;color:var(--ink)}
-  .me-info span{display:block;font-size:11.5px;color:var(--dim);margin-top:3px;line-height:1.5}
-  .me-x{cursor:pointer;font-size:18px;color:var(--dim);flex:none;align-self:flex-start;transition:.15s}
-  .me-x:hover{color:var(--brand)}
-  .me-acts{padding:14px;display:flex;flex-direction:column;gap:8px}
-  .me-act{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:11px;
-    border:1px solid var(--line);background:var(--bg);color:var(--sub);font-size:13.5px;font-weight:700;
-    cursor:pointer;transition:.15s;text-align:left;text-decoration:none;width:100%;font-family:inherit}
-  .me-act span{font-size:16px;width:22px;text-align:center;flex:none}
-  .me-act:hover{background:var(--panel);border-color:var(--brand);color:var(--ink);transform:translateY(-1px)}
-  .me-act.danger:hover{border-color:var(--brand);color:var(--brand)}
 </style>
 <script>window.DATA_BASE="https://slzcn.github.io/ab-experiment-kb/";</script>
 </head>
@@ -433,7 +397,6 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     <div class="cats" id="cats"></div>
     <div class="write-btn" id="writeBtn">✍ 写新文章</div>
     <a class="admin-link" id="adminLink" href="admin.html">⚙ 管理后台</a>
-    <div class="me-entry" id="meEntry"><span class="me-av" id="meAv">👤</span><span class="me-tx" id="meTx">个人空间</span><span class="me-st" id="meSt"></span></div>
     <div class="side-foot" id="sideFoot"></div>
   </aside>
 
@@ -454,25 +417,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   </main>
 </div>
 
-<!-- 个人空间面板（前后台共用：登录状态 + 退出入口） -->
-<div class="me-mask" id="meMask"></div>
-<div class="me-panel" id="mePanel">
-  <div class="me-head">
-    <span class="me-bigav" id="meBigAv">👤</span>
-    <div class="me-info">
-      <b id="meName">未登录</b>
-      <span id="meStatus">登录后可写文章、进入管理后台</span>
-    </div>
-    <span class="me-x" id="meClose">✕</span>
-  </div>
-  <div class="me-acts">
-    <a class="me-act" id="meAdmin" href="admin.html"><span>⚙️</span>管理后台</a>
-    <button class="me-act" id="meLogin"><span>🔑</span>登录</button>
-    <button class="me-act danger" id="meLogout"><span>🚪</span>退出登录</button>
-  </div>
-</div>
-
-<!-- 写文章访问控制（共用登录门） -->
+<!-- 写文章访问控制 -->
 <div class="login-mask" id="loginMask">
   <div class="login-box">
     <div class="login-ic">🔒</div>
@@ -1086,12 +1031,6 @@ async function doLogin(){
     if(ok){
       try{localStorage.setItem(AUTH_KEY,String(Date.now()));}catch(e){}
       $('#loginMask').classList.remove('on');
-      if(typeof refreshMe==='function') refreshMe();
-      // 前后台共用登录：若从后台因未登录被退回首页，登后自动回跳后台
-      try{
-        const sp=new URLSearchParams(location.search);
-        if(sp.get('from')==='admin'){ location.href=siteRoot()+'admin.html'; return; }
-      }catch(e){}
       openEditor();
     }else{ err.textContent='访问码不正确'; }
   }catch(e){ err.textContent='网络错误，请稍后重试'; }
@@ -1186,43 +1125,6 @@ $('#writeBtn').onclick=requireAuthThenEdit;
 $('#loginBtn').onclick=doLogin;
 $('#loginPin').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 $('#loginMask').addEventListener('click',e=>{if(e.target===$('#loginMask'))$('#loginMask').classList.remove('on');});
-
-/* ===== 个人空间（前后台共用退出入口） ===== */
-function refreshMe(){
-  const on=loggedIn();
-  const st=$('#meSt'); if(st){ st.textContent=on?'已登录':'未登录'; st.classList.toggle('on',on); }
-  const nm=$('#meName'); if(nm) nm.textContent=on?'已登录用户':'未登录';
-  const stt=$('#meStatus'); if(stt) stt.textContent=on?'登录有效期内可写文章、进入管理后台':'登录后可写文章、进入管理后台';
-  const bl=$('#meLogin'); if(bl) bl.style.display=on?'none':'flex';
-  const lo=$('#meLogout'); if(lo) lo.style.display=on?'flex':'none';
-  const ad=$('#meAdmin'); if(ad) ad.href=siteRoot()+'admin.html';
-}
-function openMe(){ refreshMe(); $('#meMask').classList.add('on'); $('#mePanel').classList.add('on'); closeSide(); }
-function closeMe(){ $('#meMask').classList.remove('on'); $('#mePanel').classList.remove('on'); }
-function doLogout(){
-  try{localStorage.removeItem(AUTH_KEY);}catch(e){}
-  apiSetToken('');
-  refreshMe();
-  // 退出后回到真正首页（未登录浏览态）
-  location.href=siteRoot()+'index.html';
-}
-(function(){
-  const me=$('#meEntry'); if(me) me.onclick=openMe;
-  const mx=$('#meClose'); if(mx) mx.onclick=closeMe;
-  const mm=$('#meMask'); if(mm) mm.onclick=closeMe;
-  const ml=$('#meLogin'); if(ml) ml.onclick=()=>{ closeMe(); requireAuthThenEdit(); };
-  const mo=$('#meLogout'); if(mo) mo.onclick=doLogout;
-  refreshMe();
-  // 前后台共用登录：若带 ?login=1（通常从后台未登录回跳）且尚未登录，自动弹登录门
-  try{
-    const sp=new URLSearchParams(location.search);
-    if(sp.get('login')==='1' && !loggedIn()){
-      $('#loginErr').textContent=''; $('#loginPin').value='';
-      $('#loginMask').classList.add('on');
-      setTimeout(()=>$('#loginPin').focus(),80);
-    }
-  }catch(e){}
-})();
 $('#edClose').onclick=closeEditor;
 $('#editorMask').onclick=closeEditor;
 $('#edMd').addEventListener('input',updatePrev);

@@ -26,7 +26,6 @@
     <div class="cats" id="cats"></div>
     <div class="write-btn" id="writeBtn">✍ 写新文章</div>
     <a class="admin-link" id="adminLink" href="admin.html">⚙ 管理后台</a>
-    <div class="me-entry" id="meEntry"><span class="me-av" id="meAv">👤</span><span class="me-tx" id="meTx">个人空间</span><span class="me-st" id="meSt"></span></div>
     <div class="side-foot" id="sideFoot"></div>
   </aside>
 
@@ -47,25 +46,7 @@
   </main>
 </div>
 
-<!-- 个人空间面板（前后台共用：登录状态 + 退出入口） -->
-<div class="me-mask" id="meMask"></div>
-<div class="me-panel" id="mePanel">
-  <div class="me-head">
-    <span class="me-bigav" id="meBigAv">👤</span>
-    <div class="me-info">
-      <b id="meName">未登录</b>
-      <span id="meStatus">登录后可写文章、进入管理后台</span>
-    </div>
-    <span class="me-x" id="meClose">✕</span>
-  </div>
-  <div class="me-acts">
-    <a class="me-act" id="meAdmin" href="admin.html"><span>⚙️</span>管理后台</a>
-    <button class="me-act" id="meLogin"><span>🔑</span>登录</button>
-    <button class="me-act danger" id="meLogout"><span>🚪</span>退出登录</button>
-  </div>
-</div>
-
-<!-- 写文章访问控制（共用登录门） -->
+<!-- 写文章访问控制 -->
 <div class="login-mask" id="loginMask">
   <div class="login-box">
     <div class="login-ic">🔒</div>
